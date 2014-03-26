@@ -2,17 +2,30 @@
 
 html
 	head
-		title λ
+		title Lamda OS
 		link(rel='stylesheet', href='/styles/screen.css')
+		link(rel="icon", href="img/favicon.png", type="image/png")
 
 	body(id=page)
 		nav#navBar
 			h1#logo
 				a(href='/') λ
 			div.links
-				a.explorer(href='/explorer') Explorer
-				a.contacts(href='/contacts') Contacts
-				a.contacts(href='/tasks') Tasks
+				// TODO: 'Things', 'Calendar', 'Sheetmusic', 'Music', 'Movies', 'Documents'
+				each name in ['Explorer', 'Contacts', 'Tasks']
+					- var path = '/' + name.toLowerCase()
+					- var className = name + ' ' + (page === name.toLowerCase() ? 'active' : '')
+					- console.log(page, name)
+					a(href=path, class=className)= name
+
+
+
+				//a.contacts(href='/contacts') Contacts
+				//a.contacts(href='/tasks') Tasks
+				// a.things(href='/things') Things
+				// calendar
+				// sheetmusic
+				// Music
 
 		block content
 

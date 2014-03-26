@@ -4,6 +4,13 @@ var fs = require('fs'),
 
 	path = './home/tasks'
 
+function sortByCompletion(a, b) {
+	if (a.hasOwnProperty('completed_at'))
+		if (b.hasOwnProperty('completed_at'))
+			return 0
+		else
+			return 1
+}
 
 module.exports = function (req, res) {
 
@@ -12,38 +19,41 @@ module.exports = function (req, res) {
 		keys = {}
 
 
-	files.forEach(function (file) {
+	files.forEach(function (fileName) {
 
-		fs.readFile(path + '/' + file, {encoding: 'utf-8'}, function (error, fileContent) {
+		fs.readFile(
+			(path + '/' + fileName),
+			{encoding: 'utf-8'},
+			function (error, fileContent) {
 
-			if (error) throw error
+				if (error) throw error
 
-			var jsonListData = ''
-
-
-			if (fileContent !== '') {
-
-				jsonListData = yaml.safeLoad(fileContent)
-
-				util.writeAvailableKeys(keys, jsonListData)
+				var listData = ''
 
 
-				if(!jsonListData.hasOwnProperty('tasks'))
-					jsonListData.tasks = []
+				if (fileContent !== '') {
 
-			}
+					listData = yaml.safeLoad(fileContent)
 
-			lists.push(jsonListData)
+					util.writeAvailableKeys(keys, listData)
+
+					if (!listData.hasOwnProperty('tasks'))
+						listData.tasks = []
+				}
+
+				listData.tasks.sort(sortByCompletion)
+
+				lists.push(listData)
 
 
-			if (lists.length === files.length) {
+				if (lists.length === files.length) {
 
-				res.render('tasks', {
-					page: 'tasks',
-					lists: lists
-				})
-			}
+					res.render('tasks', {
+						page: 'tasks',
+						lists: lists
+					})
+				}
 
-		})
+			})
 	})
 }

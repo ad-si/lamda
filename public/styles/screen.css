@@ -97,6 +97,9 @@ menu {
   margin-right: 0.4em;
   padding: 0.1em 0.4em;
 }
+#navBar .active {
+  text-decoration: underline;
+}
 #logo {
   display: inline-block;
   width: 2em;
@@ -119,4 +122,36 @@ menu {
   height: 100%;
   resize: none;
   outline: none;
+}
+#tasks .content {
+  padding: 0;
+}
+#tasks ul {
+  list-style-type: none;
+}
+#tasks aside {
+  width: 200px;
+  display: inline-block;
+  vertical-align: top;
+  border-right: 1px solid #505050;
+}
+#tasks aside li {
+  border-bottom: 1px solid #505050;
+  padding: 0.4em 0.8em;
+  cursor: pointer;
+}
+#tasks article {
+  display: inline-block;
+  width: 600px;
+  vertical-align: top;
+  padding: 2em;
+}
+#tasks article li {
+  border: 1px solid #505050;
+  background-color: #323232;
+  color: #b4b4b4;
+  margin-bottom: 0.5em;
+  padding: 0.5em 1em;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
 }
