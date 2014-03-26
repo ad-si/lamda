@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	div.content
+		ul
+			each list in lists
+				li task.title
+					ul
+						if list.tasks
+							each task in list.tasks
+								- var style = (task.completed_at) ? 'text-decoration: line-through' : 'font-weight: bold'
+								li(style=style)= task.title
+
+
+
+	include partials/console

@@ -1,0 +1,20 @@
+!!!5
+
+html
+	head
+		title λ
+		link(rel='stylesheet', href='/styles/screen.css')
+
+	body(id=page)
+		nav#navBar
+			h1#logo
+				a(href='/') λ
+			div.links
+				a.explorer(href='/explorer') Explorer
+				a.contacts(href='/contacts') Contacts
+				a.contacts(href='/tasks') Tasks
+
+		block content
+
+	script(src="/bower_components/jquery/jquery.js")
+	script(src="/js/index.js")
