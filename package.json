@@ -1,0 +1,16 @@
+{
+	"name": "Lamda",
+	"description": "An antisocial and file-based web operating system",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"express": "~3.4.1",
+		"jade": "~0.35.0",
+		"stylus": "~0.38.0",
+		"nib": "~1.0.1",
+		"js-yaml": "^3.0.2"
+	}
+}

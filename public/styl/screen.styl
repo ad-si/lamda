@@ -1,0 +1,74 @@
+@import '../../../_src/helper.styl'
+
+fontSize = 14px
+
+fg = gray(255)
+fgMuted = gray(180)
+
+bg = gray(0)
+bgMuted = gray(50)
+bgLightContrast = gray(80)
+
+
+@import '../../../_src/screen.styl'
+
+menu
+	display: inline-block
+	width: 2em
+	height: 80%
+	background-color: gray(0,0.1)
+	vertical-align: top
+
+#columns
+	display: inline-block
+	vertical-align: top
+	height: 80%
+	overflow: scroll
+	div:first-of-type
+		border-right: 1px solid main
+		padding: 2em
+		display: inline-block
+		vertical-align: top
+		border-right: 1px solid bgLightContrast
+		ul
+			list-style: none
+			line-height: 1.5
+			li
+				span
+					display: inline-block
+					background-color: lightblue
+					width: 1em
+					height: 1em
+					margin-right: 0.4em
+
+#navBar
+	width: 100%
+	height: 2em
+	background-color: bg
+	.buttons
+		display: inline-block
+		button
+			background-color: gray(255, 0.3)
+			color: fgMuted
+
+#logo
+	display: inline-block
+	width: 2em
+	text-align: center
+	color: fgMuted
+	font-size: 1.5em
+	line-height: (fontSize * 2)
+	vertical-align: middle
+
+#console
+	width: 100%
+	height: 3em
+	font-family: Consolas, monospace
+	textarea
+		background-color: bg
+		color: fg
+		padding: 0.5em
+		width: 100%
+		height: 100%
+		resize: none
+		outline: none
