@@ -11,6 +11,10 @@
 
 	}
 
+	Mousetrap.bind('/', function(){
+		$('#console').toggle()
+	})
+
 	/*files.addEvenetListener('click', function(event){
 		event.preventDefault()
 

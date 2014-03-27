@@ -54,6 +54,15 @@ app.get(/\/api\/files\/?(.*)/, function (req, res) {
 app.get('/explorer', explorer)
 app.get('/contacts', contacts)
 app.get('/tasks', tasks)
+app.get('/tasks/:list', tasks)
+
+
+app.locals.title = 'Lamda OS'
+app.locals.scripts = [
+	'/components/jquery/jquery.js',
+	'/components/mousetrap/mousetrap.js',
+	'/js/index.js'
+]
 
 
 app.listen(app.get('port'), function () {
