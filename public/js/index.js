@@ -1,16 +1,5 @@
 !function (window, document) {
 
-	function Explorer(){
-
-		var current
-
-		this.path = function(){
-
-		}
-
-
-	}
-
 	Mousetrap.bind('/', function(){
 		$('#console').toggle()
 	})
@@ -24,7 +13,7 @@
 
 		console.log(depth)
 
-	})*/
+	})
 
 	$(document)
 		.on('click', '#columns a', function (event) {
@@ -34,6 +23,6 @@
 				console.log(data)
 			})
 		})
-
+	*/
 
 }(window, document)

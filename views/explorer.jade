@@ -2,13 +2,12 @@ extends layout
 
 block content
 
-	div#columns
-		div(data-depth="1")
+	div#columns.content
+		div
 			ul
 				each file in files
 					li
 						span
-						a(data-path=file.path)
-							= file.name
+						a(href='/explorer' + file.path)= file.name
 
 	include partials/console

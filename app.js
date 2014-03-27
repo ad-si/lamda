@@ -42,16 +42,9 @@ app.use(express.errorHandler())
 
 app.get('/', index)
 
-app.get(/\/api\/files\/?(.*)/, function (req, res) {
+app.get(/\/api\/files(\/?.*)/, api.files)
 
-	var path = req.params[0] ? '/' + req.params[0] : ''
-
-	api.files(path, function (data) {
-		res.send(data)
-	})
-})
-
-app.get('/explorer', explorer)
+app.get(/\/explorer(\/?.*)/, explorer)
 app.get('/contacts', contacts)
 app.get('/tasks', tasks)
 app.get('/tasks/:list', tasks)

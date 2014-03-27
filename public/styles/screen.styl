@@ -15,9 +15,6 @@ bgLightContrast = gray(80)
 
 @import '../../../_src/screen.styl'
 
-body
-	padding-bottom consoleHeight
-
 menu
 	display: inline-block
 	width: 2em
@@ -26,8 +23,8 @@ menu
 	vertical-align: top
 
 .content
-	height 100%
-	padding 1em
+	min-height 100%
+	padding 3em 1em 1em 1em
 
 #contacts
 	table
@@ -39,32 +36,36 @@ menu
 		td
 			padding 0.2em 0.5em
 
-#columns
-	display: inline-block
-	vertical-align: top
-	height: 80%
-	overflow: scroll
-	div:first-of-type
-		padding: 2em
-		display: inline-block
-		vertical-align: top
-		border-right: 1px solid bgLightContrast
-		ul
-			list-style: none
-			line-height: 1.5
-			li
-				span
-					display: inline-block
-					background-color: lightblue
-					width: 1em
-					height: 1em
-					margin-right: 0.4em
+#explorer
+	.content
+		display flex
+		//align-items stretch
+		padding 2em 0 0 0
+
+	#columns
+		> div
+			overflow scroll
+		div:first-of-type
+			flex-basis 300px
+			padding 1em 0 1em 1em
+			border-right 1px solid bgLightContrast
+			ul
+				list-style none
+				line-height 1.5
+				li
+					span
+						display inline-block
+						background-color lightblue
+						width 1em
+						height 1em
+						margin-right 0.4em
 
 #navBar
 	width: 100%
 	height: 2em
 	background-color: bg
-	position relative
+	position fixed
+	top 0
 	.links
 		display inline-block
 	.right
@@ -111,22 +112,20 @@ menu
 
 #tasks
 	.content
-		display -webkit-flex
-		-webkit-align-items stretch
-		padding 0
+		display flex
+		align-items stretch
+		padding 2em 0 0 0
 	ul
 		list-style-type none
 	aside
-		//-webkit-flex-grow 1
-		//-webkit-flex 1 1 auto
-		width 200px
+		flex-basis 200px
 		border-right 1px solid bgLightContrast
 		li
 			border-bottom 1px solid bgLightContrast
 			padding 0.4em 0.8em
 			cursor pointer
 	article
-		-webkit-flex-grow 1
+		flex 1
 		padding 2em
 		li
 			border 1px solid bgLightContrast

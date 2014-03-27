@@ -41,7 +41,7 @@ function getList(fileName, callback) {
 
 module.exports = function (req, res) {
 
-	var paramList = req.params.list
+	var paramList = req.params.list || 'inbox'
 
 	lists = []
 	files = fs.readdirSync(path)
@@ -65,7 +65,7 @@ module.exports = function (req, res) {
 				res.render('tasks', {
 					page: 'tasks',
 					lists: lists,
-					currentList: paramList || 'inbox'
+					currentList: paramList
 				})
 			}
 		})

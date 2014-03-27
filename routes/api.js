@@ -1,61 +1,15 @@
-var fs = require('fs')
-
-module.exports.files = function (path, callback) {
-
-	function getStats(readPath, callback) {
-
-		fs.stat(readPath, function (err, stats) {
-
-			if (err) throw err
-
-			stats.path = path
-
-			callback(stats)
-		})
-	}
-
-	function readFiles(readPath, callback) {
-
-		var files = []
-
-		fs.readdir(readPath, function (err, item) {
-
-			if (err) throw err
+var fs = require('fs'),
+	files = require('../api/files')
 
 
-			item.forEach(function (file) {
+module.exports.files = function (req, callback) {
 
-				var fileInfo = {
-					type: '',
-					name: file,
-					path: (path + '/' + file).replace(/(\/)+/g, '/')
-				}
+	var path = ''
 
-				if(fs.lstatSync(readPath + '/' + file).isDirectory())
-					fileInfo.type = 'directory'
+	if(req.params)
+		path = '/' + req.params[0]
 
-				files.push(fileInfo)
-			})
-
-			callback(files)
-		})
-	}
-
-
-	fs.lstat('..' + path, function (err, stats) {
-
-		if (err) throw err
-
-		if (stats.isDirectory()){
-
-			if(path.substr(-1) == '/')
-				readFiles('..' + path, callback)
-			else
-				getStats('..' + path, callback)
-		}
-
-		else
-			getStats('..' + path, callback)
-
+	files(path, function (data) {
+		callback(data)
 	})
 }
