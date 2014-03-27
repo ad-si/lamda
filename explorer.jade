@@ -3,11 +3,14 @@ extends layout
 block content
 
 	div#columns.content
-		div
-			ul
-				each file in files
-					li
-						span
-						a(href='/explorer' + file.path)= file.name
+		//-console.log(columns)
+		each column in columns
+			div
+				ul
+					if(column && column.length)
+						each file in column
+							li
+								span
+								a(href='/explorer/' + file)= file
 
 	include partials/console
