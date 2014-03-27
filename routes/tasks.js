@@ -60,8 +60,6 @@ module.exports = function (req, res) {
 					return 0
 				})
 
-				lists.forEach(function(list){console.log(list.id)})
-
 				res.render('tasks', {
 					page: 'tasks',
 					lists: lists,

@@ -1,5 +1,4 @@
-var fs = require('fs'),
-	baseURL = '/Users/adrian/Sites/lamda/home'
+var fs = require('fs')
 
 module.exports = function (path, callback) {
 

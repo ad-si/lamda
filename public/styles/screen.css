@@ -72,24 +72,31 @@ menu {
   padding: 2em 0 0 0;
 }
 #explorer #columns > div {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -o-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
   overflow: scroll;
-}
-#explorer #columns div:first-of-type {
-  -webkit-flex-basis: 300px;
-  flex-basis: 300px;
-  padding: 1em 0 1em 1em;
   border-right: 1px solid #505050;
+  padding: 1em 0 1em 1em;
 }
-#explorer #columns div:first-of-type ul {
+#explorer #columns > div ul {
   list-style: none;
   line-height: 1.5;
 }
-#explorer #columns div:first-of-type ul li span {
+#explorer #columns > div li span {
   display: inline-block;
   background-color: #add8e6;
   width: 1em;
   height: 1em;
   margin-right: 0.4em;
+}
+#explorer #columns div:first-of-type {
+  -webkit-flex-basis: 300px;
+  flex-basis: 300px;
 }
 #navBar {
   width: 100%;
