@@ -5,15 +5,20 @@ block content
 		aside
 			ul
 				each list in lists
-					li= list.name
+					li
+						a(href='/tasks/' + list.id)= list.name
 		article
 			ul
 				each list in lists
-					if list.tasks
-						each task in list.tasks
-							- var style = (task.completed_at) ? 'text-decoration: line-through' : 'font-weight: bold'
-							li(style=style)= task.title
+					if list.id === currentList
+						if list.tasks
+							each task in list.tasks
+								- var style = (task.completed_at) ? 'text-decoration: line-through' : 'font-weight: bold'
+								li(style=style)= task.title
 
 
 
 	include partials/console
+
+block scripts
+	script(src='/js/' + page + '.js')

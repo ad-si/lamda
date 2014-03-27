@@ -2,32 +2,27 @@
 
 html
 	head
-		title Lamda OS
+		title= title
 		link(rel='stylesheet', href='/styles/screen.css')
-		link(rel="icon", href="img/favicon.png", type="image/png")
+		link(rel='icon', href='/img/favicon.png', type='image/png')
 
 	body(id=page)
 		nav#navBar
 			h1#logo
 				a(href='/') λ
-			div.links
+			.links
 				// TODO: 'Things', 'Calendar', 'Sheetmusic', 'Music', 'Movies', 'Documents'
 				each name in ['Explorer', 'Contacts', 'Tasks']
 					- var path = '/' + name.toLowerCase()
 					- var className = name + ' ' + (page === name.toLowerCase() ? 'active' : '')
-					- console.log(page, name)
 					a(href=path, class=className)= name
 
-
-
-				//a.contacts(href='/contacts') Contacts
-				//a.contacts(href='/tasks') Tasks
-				// a.things(href='/things') Things
-				// calendar
-				// sheetmusic
-				// Music
+			.right
+				a.settings(href='/settings') Settings
 
 		block content
 
-	script(src="/bower_components/jquery/jquery.js")
-	script(src="/js/index.js")
+	each link in scripts
+		script(src=link)
+
+	block scripts
