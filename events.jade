@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	div.content
+		ul
+			//-JSON.stringify(days, null, 2)
+			each day in days
+				li
+					each event in day.events
+						span= event.title + ' '
+
+	include partials/console
