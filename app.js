@@ -8,7 +8,8 @@ var express = require('express'),
 	index = require('./routes/index'),
 	explorer = require('./routes/explorer'),
 	tasks = require('./routes/tasks'),
-	contacts = require('./routes/contacts')
+	contacts = require('./routes/contacts'),
+	events = require('./routes/events')
 
 
 function compile(str, path) {
@@ -42,8 +43,10 @@ app.use(express.errorHandler())
 
 app.get('/', index)
 
+app.get('/api/events', api.events)
 app.get(/\/api\/files(\/?.*)/, api.files)
 
+app.get('/events', events)
 app.get(/\/explorer(\/?.*)/, explorer)
 app.get('/contacts', contacts)
 app.get('/tasks', tasks)
