@@ -9,13 +9,14 @@ var express = require('express'),
 	explorer = require('./routes/explorer'),
 	tasks = require('./routes/tasks'),
 	contacts = require('./routes/contacts'),
-	events = require('./routes/events')
+	events = require('./routes/events'),
+	devMode = true //(app.get('env') === 'development')
 
 
 function compile(str, path) {
 	return stylus(str)
 		.set('filename', path)
-		.set('compress', false)
+		.set('compress', !devMode)
 		.use(nib())
 		.import('nib')
 }
@@ -36,9 +37,9 @@ app.use(stylus.middleware({
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 
-//if (app.get('env') === 'development') {
-app.use(express.errorHandler())
-//}
+if (devMode) {
+	app.use(express.errorHandler())
+}
 
 
 app.get('/', index)
