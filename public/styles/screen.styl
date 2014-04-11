@@ -64,12 +64,17 @@ menu
 				list-style none
 				line-height 1.5
 			li
+				padding-left 0.2em
 				span
+					vertical-align middle
 					display inline-block
 					background-color lightblue
 					width 1em
 					height 1em
 					margin-right 0.4em
+				&.active
+					background-color rgba(fg, 0.1)
+
 		div:first-of-type
 			flex-basis 200px
 		div:last-of-type
