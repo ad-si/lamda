@@ -1,3 +1,8 @@
 extends layout
 
 block content
+	div.content
+		each value, key in settings
+			label= key + ': '
+			input(type='text', value=value)
+			br

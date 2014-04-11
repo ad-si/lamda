@@ -1,8 +1,7 @@
 var fs = require('fs'),
 
 	files = require('../api/files'),
-	pathToJson = require('../api/pathToJson'),
-	baseURL = '/Users/adrian/Sites/lamda/home'
+	pathToJson = require('../api/pathToJson')
 
 
 module.exports = function (req, res) {
@@ -69,8 +68,8 @@ module.exports = function (req, res) {
 	res.render('files', {
 		page: 'files',
 		columns: buildColumns(
-			pathToJson(baseURL, pathParam),
-			pathToJson(baseURL, pathParam).children
+			pathToJson(global.baseURL, pathParam),
+			pathToJson(global.baseURL, pathParam).children
 		)
 	})
 }
