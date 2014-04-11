@@ -3,6 +3,7 @@
 width = 920px
 consoleHeight = 10em
 theme = 'dark'
+//theme = 'light'
 
 fontSize = 14px
 
@@ -49,12 +50,13 @@ menu
 #explorer
 	.content
 		display flex
+		flex-direction row
 		//align-items stretch
 		padding 2em 0 0 0
 
 	#columns
 		> div
-			flex-grow 1
+			flex 1 1 auto
 			overflow scroll
 			border-right 1px solid bgLightContrast
 			padding 1em 0 1em 1em
@@ -69,7 +71,9 @@ menu
 					height 1em
 					margin-right 0.4em
 		div:first-of-type
-			flex-basis 300px
+			flex-basis 200px
+		div:last-of-type
+			border-right none
 
 #navBar
 	z-index 1

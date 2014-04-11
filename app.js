@@ -2,6 +2,7 @@ var express = require('express'),
 	nib = require('nib'),
 	stylus = require('stylus'),
 	path = require('path'),
+	yaml = require('js-yaml'),
 	app = express(),
 
 	api = require('./routes/api'),
@@ -10,8 +11,9 @@ var express = require('express'),
 	tasks = require('./routes/tasks'),
 	contacts = require('./routes/contacts'),
 	events = require('./routes/events'),
-	devMode = true //(app.get('env') === 'development')
-
+	settings = require('./routes/settings'),
+	devMode = true, //(app.get('env') === 'development')
+	config = yaml.safeLoad('./home/config')
 
 function compile(str, path) {
 	return stylus(str)
@@ -37,9 +39,9 @@ app.use(stylus.middleware({
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 
-if (devMode) {
-	app.use(express.errorHandler())
-}
+if (devMode) app.use(express.errorHandler())
+
+app.set('baseURL', process.env.baseURL || __dirname + '/home')
 
 
 app.get('/', index)
@@ -52,6 +54,7 @@ app.get(/\/explorer(\/?.*)/, explorer)
 app.get('/contacts', contacts)
 app.get('/tasks', tasks)
 app.get('/tasks/:list', tasks)
+app.get('/settings', settings)
 
 
 app.locals.title = 'Lamda OS'
