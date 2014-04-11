@@ -7,11 +7,24 @@ block content
 		each column in columns
 			div
 				ul
-					if(column.entries && column.entries.length)
-						each file in column.entries
-							li(class= (file === column.active) ? 'active' : '')
-								span
-								a(href='/files' + column.path + '/' + file)= file
-		div#file
+					if(column.entries)
+						if(column.entries.length)
+							each file in column.entries
+								li(class= (file === column.active) ? 'active' : '')
+									span
+									a(href='/files' + column.path + '/' + file)= file
+						else
+							p.muted This directory is empty
+
+					else if(column.file)
+
+						if(column.file.type === 'text')
+							pre= column.file.content
+
+						if(column.file.type === 'yaml')
+							pre= column.file.content
+					
+					else
+						p.muted Can not be displayed
 
 	include partials/console
