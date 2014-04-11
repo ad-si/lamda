@@ -70,16 +70,22 @@ menu {
   display: -ms-flexbox;
   display: box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   padding: 2em 0 0 0;
 }
 #explorer #columns > div {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
-  -ms-box-flex: 1;
   box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
   overflow: scroll;
   border-right: 1px solid #505050;
   padding: 1em 0 1em 1em;
@@ -96,8 +102,11 @@ menu {
   margin-right: 0.4em;
 }
 #explorer #columns div:first-of-type {
-  -webkit-flex-basis: 300px;
-  flex-basis: 300px;
+  -webkit-flex-basis: 200px;
+  flex-basis: 200px;
+}
+#explorer #columns div:last-of-type {
+  border-right: none;
 }
 #navBar {
   z-index: 1;
