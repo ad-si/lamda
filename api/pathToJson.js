@@ -35,8 +35,17 @@ module.exports = function pathToJson(baseURL, file) {
 		}
 		else {
 			currentDepth++
-			// could be a symlink or something else!
-			info.type = "file"
+
+			// TODO: Map all possible file types
+
+			if(path.extname(info.name) === '.txt')
+				info.type = 'text'
+
+			else if(path.extname(info.name) === '.yaml')
+				info.type = 'yaml'
+
+			else
+				info.type = "file" // Could be a symlink or something else!
 		}
 
 		if(currentDepth > maxDepth)

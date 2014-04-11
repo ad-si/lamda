@@ -40,6 +40,9 @@ button {
   cursor: pointer;
   outline: none;
 }
+.muted {
+  color: rgba(255,255,255,0.1);
+}
 menu {
   display: inline-block;
   width: 2em;

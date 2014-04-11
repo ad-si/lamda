@@ -1,6 +1,9 @@
-var files = require('../api/files'),
+var fs = require('fs'),
+
+	files = require('../api/files'),
 	pathToJson = require('../api/pathToJson'),
 	baseURL = '/Users/adrian/Sites/lamda/home'
+
 
 module.exports = function (req, res) {
 
@@ -10,32 +13,51 @@ module.exports = function (req, res) {
 		path = ''
 
 
-	function buildColumns(children) {
+	function buildColumns(element, children) {
 
-		children.forEach(function (child) {
 
-			if (!columns[depth]){
+		if (children) {
+
+			if (!columns[depth])
 				columns[depth] = {
 					active: '',
 					path: path,
 					entries: []
 				}
+
+			children.forEach(function (child) {
+
+				if (typeof child === 'object') {
+
+					columns[depth].path = path
+					path = path + '/' + child.name
+
+					columns[depth].active = child.name
+					columns[depth].entries.push(child.name)
+					depth++
+					buildColumns(child, child.children)
+					depth--
+				}
+				else
+					columns[depth].entries.push(child)
+			})
+		}
+		else {
+			columns[depth] = {
+				file: element
 			}
 
-			if (typeof child === 'object') {
+			// TODO: Map file types to functions
 
-				columns[depth].path = path
-				path = path + '/' + child.name
+			if(columns[depth].file.type === 'text')
+				columns[depth].file.content = fs
+					.readFileSync(columns[depth].file.path, 'utf8')
 
-				columns[depth].active = child.name
-				columns[depth].entries.push(child.name)
-				depth++
-				buildColumns(child.children)
-				depth--
-			}
-			else
-				columns[depth].entries.push(child)
-		})
+			else if(columns[depth].file.type === 'yaml')
+				columns[depth].file.content = fs
+					.readFileSync(columns[depth].file.path, 'utf8')
+		}
+
 
 		return columns
 	}
@@ -46,6 +68,9 @@ module.exports = function (req, res) {
 
 	res.render('files', {
 		page: 'files',
-		columns: buildColumns(pathToJson(baseURL, pathParam).children)
+		columns: buildColumns(
+			pathToJson(baseURL, pathParam),
+			pathToJson(baseURL, pathParam).children
+		)
 	})
 }
