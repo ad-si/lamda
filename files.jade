@@ -9,7 +9,7 @@ block content
 				ul
 					if(column.entries && column.entries.length)
 						each file in column.entries
-							li
+							li(class= (file === column.active) ? 'active' : '')
 								span
 								a(href='/files' + column.path + '/' + file)= file
 		div#file
