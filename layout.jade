@@ -20,7 +20,8 @@ html
 						span | <!-- whitespace -->
 
 			.right
-				a.settings(href='/settings') Settings
+				a.settings(href='/settings', class=(page === 'settings') ? 'active' : '').
+					Settings
 
 		block content
 
