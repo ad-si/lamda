@@ -63,7 +63,7 @@ menu {
 #contacts table td {
   padding: 0.2em 0.5em;
 }
-#explorer .content {
+#files .content {
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -78,7 +78,7 @@ menu {
   flex-direction: row;
   padding: 2em 0 0 0;
 }
-#explorer #columns > div {
+#files #columns > div {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
@@ -90,22 +90,22 @@ menu {
   border-right: 1px solid #505050;
   padding: 1em 0 1em 1em;
 }
-#explorer #columns > div ul {
+#files #columns > div ul {
   list-style: none;
   line-height: 1.5;
 }
-#explorer #columns > div li span {
+#files #columns > div li span {
   display: inline-block;
   background-color: #add8e6;
   width: 1em;
   height: 1em;
   margin-right: 0.4em;
 }
-#explorer #columns div:first-of-type {
+#files #columns div:first-of-type {
   -webkit-flex-basis: 200px;
   flex-basis: 200px;
 }
-#explorer #columns div:last-of-type {
+#files #columns div:last-of-type {
   border-right: none;
 }
 #navBar {
