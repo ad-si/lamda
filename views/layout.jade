@@ -11,12 +11,12 @@ html
 			h1#logo
 				a(href='/') λ
 			.links
-				// TODO:  , 'Sheetmusic', 'Music', 'Movies', 'Documents'
-				each name in ['Events', 'Explorer', 'Contacts', 'Tasks', 'Things']
+				// TODO:  , 'Sheetmusic', 'Music', 'Movies', 'Documents', 'Projects'
+				each name in ['Events', 'Files', 'Contacts', 'Tasks', 'Things']
 					- var path = '/' + name.toLowerCase()
 					- var className = name + ' ' + (page === name.toLowerCase() ? 'active' : '')
 					a(href=path, class=className)= name
-					if(name === 'Explorer')
+					if(name === 'Files')
 						span | <!-- whitespace -->
 
 			.right

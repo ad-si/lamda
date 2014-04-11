@@ -7,7 +7,7 @@ var express = require('express'),
 
 	api = require('./routes/api'),
 	index = require('./routes/index'),
-	explorer = require('./routes/explorer'),
+	files = require('./routes/files'),
 	tasks = require('./routes/tasks'),
 	contacts = require('./routes/contacts'),
 	events = require('./routes/events'),
@@ -50,7 +50,7 @@ app.get('/api/events', api.events)
 app.get(/\/api\/files(\/?.*)/, api.files)
 
 app.get('/events', events)
-app.get(/\/explorer(\/?.*)/, explorer)
+app.get(/\/files(\/?.*)/, files)
 app.get('/contacts', contacts)
 app.get('/tasks', tasks)
 app.get('/tasks/:list', tasks)

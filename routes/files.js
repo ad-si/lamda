@@ -44,8 +44,8 @@ module.exports = function (req, res) {
 	//console.log(JSON.stringify(pathToJson(baseURL, pathParam), null, 2))
 	//console.log(JSON.stringify(buildColumns(pathToJson(baseURL, pathParam).children), null, 2))
 
-	res.render('explorer', {
-		page: 'explorer',
+	res.render('files', {
+		page: 'files',
 		columns: buildColumns(pathToJson(baseURL, pathParam).children)
 	})
 }
