@@ -94,12 +94,19 @@ menu {
   list-style: none;
   line-height: 1.5;
 }
+#files #columns > div li {
+  padding-left: 0.2em;
+}
 #files #columns > div li span {
+  vertical-align: middle;
   display: inline-block;
   background-color: #add8e6;
   width: 1em;
   height: 1em;
   margin-right: 0.4em;
+}
+#files #columns > div li.active {
+  background-color: rgba(255,255,255,0.1);
 }
 #files #columns div:first-of-type {
   -webkit-flex-basis: 200px;
