@@ -1,15 +1,47 @@
 var fs = require('fs'),
-	files = require('../api/files')
+	path = require('path'),
+
+	yaml = require('js-yaml'),
+	util = require('../util')
 
 
-module.exports.files = function (req, callback) {
+module.exports = function (req, res) {
 
-	var path = ''
+	var things = [],
+		files = fs.readdirSync(global.baseURL + '/things'),
+		fileCounter = files.length
 
-	if(req.params)
-		path = '/' + req.params[0]
 
-	files(path, function (data) {
-		callback(data)
+	files.forEach(function (file) {
+
+		if (path.extname(file) === '.yaml') {
+
+			var filePath = global.baseURL + '/things/' + file
+
+			fs.readFile(
+				filePath,
+				{encoding: 'utf-8'},
+				function (error, fileContent) {
+
+					if (error) throw error
+
+					var jsonData = yaml.safeLoad(fileContent)
+
+					jsonData.imageSource = '/img/things/' +
+						path.basename(filePath, '.yaml') + '.jpg'
+
+					things.push(jsonData)
+
+					if (things.length === fileCounter) {
+
+						res.render('things', {
+							page: 'things',
+							things: things
+						})
+					}
+				})
+		}
+		else
+			fileCounter--
 	})
 }

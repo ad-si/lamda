@@ -12,6 +12,7 @@ var express = require('express'),
 	contacts = require('./routes/contacts'),
 	events = require('./routes/events'),
 	settings = require('./routes/settings'),
+	things = require('./routes/things'),
 	devMode = true, //(app.get('env') === 'development')
 	config = yaml.safeLoad('./home/config')
 
@@ -30,6 +31,7 @@ app.set('view engine', 'jade')
 
 app.use(express.favicon())
 app.use(express.logger('dev'))
+app.use(express.compress())
 app.use(express.bodyParser())
 app.use(express.methodOverride())
 app.use(app.router)
@@ -55,6 +57,7 @@ app.get('/contacts', contacts)
 app.get('/tasks', tasks)
 app.get('/tasks/:list', tasks)
 app.get('/settings', settings)
+app.get('/things', things)
 
 
 app.locals.title = 'Lamda OS'

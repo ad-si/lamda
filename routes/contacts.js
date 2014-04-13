@@ -9,7 +9,7 @@ module.exports = function (req, res) {
 
 	var contacts = [],
 		files = fs.readdirSync(path),
-		keys = {}
+		keysCollection = []
 
 
 	files.forEach(function (file) {
@@ -20,9 +20,9 @@ module.exports = function (req, res) {
 
 			var jsonContactData = yaml.safeLoad(fileContent)
 
-			util.writeAvailableKeys(keys, jsonContactData)
+			util.writeKeys(keysCollection, jsonContactData)
 
-			contacts.push(util.formatAddress(jsonContactData))
+			contacts.push(util.formatData(jsonContactData))
 
 
 			if (contacts.length === files.length) {
@@ -30,7 +30,7 @@ module.exports = function (req, res) {
 				res.render('contacts', {
 					page: 'contacts',
 					contacts: contacts,
-					keys: Object.keys(keys),
+					availableKeys: Object.keys(keysCollection),
 					sortedKeys: [
 						'name',
 						'nickname',
