@@ -43,6 +43,22 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 if (devMode) app.use(express.errorHandler())
 
+app.use(function(req, res, next){
+
+	res.status(404)
+
+	if (req.accepts('html'))
+		res.render('404.jade', { url: req.url })
+
+	else if (req.accepts('json'))
+		res.send({ error: 'Not found' })
+
+	else
+		res.type('txt').send('Not found')
+})
+
+
+
 app.set('baseURL', process.env.baseURL || __dirname + '/home')
 
 
