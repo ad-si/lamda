@@ -83,13 +83,17 @@ app.locals.scripts = [
 	'/js/index.js'
 ]
 
-// TODO: 'Sheetmusic', 'Music', 'Movies', 'Documents', 'Projects'
 app.locals.apps = [
 	'Events',
 	'Files',
 	'Contacts',
 	'Tasks',
-	'Things'
+	'Pictures',
+	'Music',
+	'Movies',
+	'Docs',
+	'Things',
+	'Projects'
 ]
 
 

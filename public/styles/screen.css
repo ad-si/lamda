@@ -928,11 +928,26 @@ menu {
 #navBar .tasksIcon:before {
   content: '\e0c4';
 }
+#navBar .settingsIcon:before {
+  content: '\e0d5';
+}
+#navBar .picturesIcon:before {
+  content: '\e075';
+}
+#navBar .musicIcon:before {
+  content: '\e072';
+}
+#navBar .moviesIcon:before {
+  content: '\e062';
+}
+#navBar .docsIcon:before {
+  content: '\e047';
+}
 #navBar .thingsIcon:before {
   content: '\e02b';
 }
-#navBar .settingsIcon:before {
-  content: '\e0d5';
+#navBar .projectsIcon:before {
+  content: '\e0a9';
 }
 #logo {
   display: inline-block;
