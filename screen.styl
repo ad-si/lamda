@@ -1,9 +1,11 @@
 @import '../../../_src/helper.styl'
+@import './openIconic.styl'
 
 width = 920px
 consoleHeight = 10em
+color = rgb(100,150,200)
 theme = 'dark'
-//theme = 'light'
+theme = 'light'
 
 fontSize = 14px
 
@@ -22,6 +24,12 @@ if theme == 'light'
 	bg = gray(255)
 	bgMuted = gray(220)
 	bgLightContrast = gray(150)
+
+
+getFontSmoothing()
+	if theme == 'dark'
+		antialiased
+
 
 
 @import '../../../_src/screen.styl'
@@ -96,33 +104,72 @@ menu
 	background-color bg
 	position fixed
 	top 0
-	.links
+
+	.links,
+	.right
 		display inline-block
+		vertical-align middle
+		font-size 12px
+		a
+			//background-color gray(255, 0.2)
+			color fgMuted
+			margin-right 0.8em
+			padding 0.1em 0.4em
+			&:hover
+				color fg
+		.oi
+			margin-right 0.4em
 	.right
 		position: absolute
 		right: 1em
-		top: 0.4em
-	.links,
-	.right
-		a
-			font-size 12px
-			display inline-block
-			//background-color gray(255, 0.2)
-			border-radius 2px
-			color fgMuted
-			margin-right 0.4em
-			padding 0.1em 0.4em
+		top: 25%
 	.active
-		text-decoration underline
+		color color !important
+	.files
+		border-right 1px solid fgMuted
+		padding-right 1.4em !important
+
+	// Icons
+
+	.eventsIcon:before
+		content '\e02a'
+	.filesIcon:before
+		content: '\e084'
+	.contactsIcon:before
+		content '\e0a1'
+	.tasksIcon:before
+		content '\e0c4'
+	.thingsIcon:before
+		content '\e02b'
+	.settingsIcon:before
+		content '\e0d5'
+
+	// Can't change color of image
+	/*.events
+		padding-left 1em !important
+		background-image url(../img/openIconic/svg/list.svg)
+		background-repeat no-repeat
+		background-position 0 50%
+		svg path
+			fill red
+			*/
+
 
 #logo
-	display: inline-block
-	width: 2em
-	text-align: center
-	color: fgMuted
-	font-size: 1.5em
-	line-height: (fontSize * 2)
-	vertical-align: middle
+	display inline-block
+	text-align center
+	font-size 1.5em
+	line-height (fontSize * 2)
+	vertical-align middle
+	border-right 1px solid fgMuted
+	margin-right 1em
+	a
+		padding 0 1em
+		display inline-block
+		width 100%
+		height 100%
+		color fgMuted
+		font-smoothing getFontSmoothing()
 
 #console
 	display none
