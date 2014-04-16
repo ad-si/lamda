@@ -8,24 +8,25 @@ block content
 					// Print available keys in a sorted order
 					each key in sortedKeys
 						if availableKeys.indexOf(key) !== -1
-							td= key.toUpperCase()
+							th= key.toUpperCase()
 			tbody
 				each contact in contacts
 					tr
 						each key in sortedKeys
 							if Object.keys(contact).indexOf(key) !== -1
-								td(class = key)
+								td(class=key, title=contact[key])
 									if key === 'website'
 										// TODO: Take care of https
-										a(href=contact[key])= contact[key] ? contact[key].substring(7) : ''
+										a(href=contact[key], target='_blank')
+											= contact[key] ? contact[key].substring(7) : ''
 
 									else if key === 'facebook'
-										// TODO: Take care of https
-										a(href='https://facebook.com/' + contact[key])= contact[key]
+										a(href='https://facebook.com/' + contact[key], , target='_blank')
+											= contact[key]
 
 									else if key === 'email'
-										a(href='mailto:' + contact[key]) &#x1f4e7
-										//contact[key]
+										a(href='mailto:' + contact[key], target='_blank')
+											= contact[key]
 
 									else if key === 'birthday'
 										=contact[key].toISOString().substr(0,10)
