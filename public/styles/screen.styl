@@ -5,7 +5,7 @@ width = 920px
 consoleHeight = 10em
 color = rgb(100,150,200)
 theme = 'dark'
-theme = 'light'
+//theme = 'light'
 
 fontSize = 14px
 
@@ -30,6 +30,17 @@ getFontSmoothing()
 	if theme == 'dark'
 		antialiased
 
+getBgImage(iconName, type = 'openIconic')
+	if theme == 'dark'
+		color = 'white'
+	else
+		color = 'black'
+
+	background-image url('../' + type + '/png/' + color + '/' + iconName + '-2x.png')
+	background-repeat no-repeat
+	background-position 50% 50%
+	background-size auto 100%
+
 
 
 @import '../../../_src/screen.styl'
@@ -52,16 +63,31 @@ menu
 
 #contacts
 	table
+		text-align left
 		width 100%
 		font-size 11px
-		thead
-			color: fg
+
 		tr:nth-of-type(2n)
 			background-color rgba(bg, 0.1)
-		td
+		thead
+			color: fg
+		th, td
 			padding 0.2em 0.5em
-	.birthday
+		a
+			display inline-block
+	.email
+		text-align center
+		a
+			display inline-block
+			width 2em
+			height 100%
+			text-indent -9999px
+			getBgImage('envelope-closed')
+	// Not very helpful right now
+	/*.birthday
 		white-space nowrap
+		text-indent -9999px
+		getBgImage('birthday-cake', 'ucanicon')*/
 
 
 #files
@@ -83,11 +109,10 @@ menu
 			li
 				padding-left 0.2em
 				span
-					vertical-align middle
 					display inline-block
-					background-color lightblue
-					width 1em
-					height 1em
+					getBgImage('folder')
+					width 0.8em
+					height 0.8em
 					margin-right 0.4em
 				&.active
 					background-color rgba(fg, 0.1)

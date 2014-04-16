@@ -10,7 +10,7 @@ block content
 					if(column.entries)
 						if(column.entries.length)
 							each file in column.entries
-								li(class= (file === column.active) ? 'active' : '')
+								li(class=(file === column.active) ? 'active' : '')
 									span
 									a(href='/files' + column.path + '/' + file)= file
 						else
