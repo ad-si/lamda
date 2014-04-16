@@ -9,19 +9,19 @@ html
 	body(id=page)
 		nav#navBar
 			h1#logo
-				a(href='/') λ
+				a(href='/', class=(page === 'home') ? 'active' : '') λ
 			.links
-				// TODO:  , 'Sheetmusic', 'Music', 'Movies', 'Documents', 'Projects'
-				each name in ['Events', 'Files', 'Contacts', 'Tasks', 'Things']
+				each name in apps
 					- var path = '/' + name.toLowerCase()
-					- var className = name + ' ' + (page === name.toLowerCase() ? 'active' : '')
-					a(href=path, class=className)= name
-					if(name === 'Files')
-						span | <!-- whitespace -->
+					- var className = name.toLowerCase() + ' ' + (page === name.toLowerCase() ? 'active' : '')
+					a(href=path, class=className, title=name)
+						span(class= name.toLowerCase() + 'Icon oi', data-glyph, aria-hidden='true')
+						=name
 
 			.right
-				a.settings(href='/settings', class=(page === 'settings') ? 'active' : '').
-					Settings
+				a.settings(href='/settings', class=(page === 'settings') ? 'active' : '')
+					span(class= 'settingsIcon oi', data-glyph, aria-hidden='true')
+					| Settings
 
 		block content
 

@@ -67,6 +67,15 @@ app.locals.scripts = [
 	'/js/index.js'
 ]
 
+// TODO: 'Sheetmusic', 'Music', 'Movies', 'Documents', 'Projects'
+app.locals.apps = [
+	'Events',
+	'Files',
+	'Contacts',
+	'Tasks',
+	'Things'
+]
+
 
 global.baseURL = '/Users/adrian/Sites/lamda/home'
 
