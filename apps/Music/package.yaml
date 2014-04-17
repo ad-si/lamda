@@ -1,0 +1,10 @@
+name: Music
+version: 0.0.1
+lamda:
+  main: ./index.js
+  view: ./music.jade
+  styles:
+    - ./public/music.styl
+  scripts:
+    - ./public/music.js
+
