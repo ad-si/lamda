@@ -7,6 +7,8 @@ color = rgb(100,150,200)
 theme = 'dark'
 //theme = 'light'
 
+isLinkTextVisible = false
+
 fontSize = 14px
 
 if theme == 'dark'
@@ -144,6 +146,8 @@ menu
 				color fg
 		.oi
 			margin-right 0.4em
+		.text
+			display isLinkTextVisible ? inherit : none
 	.right
 		position: absolute
 		right: 1em
@@ -172,6 +176,8 @@ menu
 		content '\e072'
 	.moviesIcon:before
 		content '\e062'
+	.booksIcon:before
+		content '\e020'
 	.docsIcon:before
 		content '\e047'
 	.thingsIcon:before
