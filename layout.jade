@@ -11,12 +11,12 @@ html
 			h1#logo
 				a(href='/', class=(page === 'home') ? 'active' : '') λ
 			.links
-				each name in apps
+				each app, name in apps
 					- var path = '/' + name.toLowerCase()
 					- var className = name.toLowerCase() + ' ' + (page === name.toLowerCase() ? 'active' : '')
 					a(href=path, class=className, title=name)
 						span(class= name.toLowerCase() + 'Icon oi', data-glyph, aria-hidden='true')
-						=name
+						span.text=name
 
 			.right
 				a.settings(href='/settings', class=(page === 'settings') ? 'active' : '')
