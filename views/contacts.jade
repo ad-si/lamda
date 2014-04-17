@@ -1,38 +1,37 @@
 extends layout
 
 block content
-	div.content
-		table
-			thead
+	table
+		thead
+			tr
+				// Print available keys in a sorted order
+				each key in sortedKeys
+					if availableKeys.indexOf(key) !== -1
+						th= key.toUpperCase()
+		tbody
+			each contact in contacts
 				tr
-					// Print available keys in a sorted order
 					each key in sortedKeys
-						if availableKeys.indexOf(key) !== -1
-							th= key.toUpperCase()
-			tbody
-				each contact in contacts
-					tr
-						each key in sortedKeys
-							if Object.keys(contact).indexOf(key) !== -1
-								td(class=key, title=contact[key])
-									if key === 'website'
-										// TODO: Take care of https
-										a(href=contact[key], target='_blank')
-											= contact[key] ? contact[key].substring(7) : ''
+						if Object.keys(contact).indexOf(key) !== -1
+							td(class=key, title=contact[key])
+								if key === 'website'
+									// TODO: Take care of https
+									a(href=contact[key], target='_blank')
+										= contact[key] ? contact[key].substring(7) : ''
 
-									else if key === 'facebook'
-										a(href='https://facebook.com/' + contact[key], , target='_blank')
-											= contact[key]
+								else if key === 'facebook'
+									a(href='https://facebook.com/' + contact[key], , target='_blank')
+										= contact[key]
 
-									else if key === 'email'
-										a(href='mailto:' + contact[key], target='_blank')
-											= contact[key]
+								else if key === 'email'
+									a(href='mailto:' + contact[key], target='_blank')
+										= contact[key]
 
-									else if key === 'birthday'
-										=contact[key].toISOString().substr(0,10)
+								else if key === 'birthday'
+									=contact[key].toISOString().substr(0,10)
 
-									else
-										=contact[key]
-							else
-								td
+								else
+									=contact[key]
+						else
+							td
 	include partials/console

@@ -1,15 +1,12 @@
 extends layout
 
 block content
-	div.content
-		ul
-			//-JSON.stringify(days, null, 2)
-			each day in days
-				li(class= day.today ? 'today' : '')
-					div.date= day.date.substr(0,10)
-					div.day
-						each event in day.events
-							div.event(style=event.style)= event.title + ' '
-							// LATEST TODO: position left
-
-	include partials/console
+	ul
+		//-JSON.stringify(days, null, 2)
+		each day in days
+			li(class= day.today ? 'today' : '')
+				div.date= day.date.substr(0,10)
+				div.day
+					each event in day.events
+						div.event(style=event.style)= event.title + ' '
+						// LATEST TODO: position left

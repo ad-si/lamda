@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	div.content
+	div
 		aside
 			ul
 				each list in lists
@@ -16,9 +16,6 @@ block content
 								- var style = (task.completed_at) ? 'text-decoration: line-through' : 'font-weight: bold'
 								li(style=style)= task.title
 
-
-
-	include partials/console
 
 block scripts
 	script(src='/js/' + page + '.js')

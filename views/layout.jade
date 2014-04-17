@@ -6,7 +6,7 @@ html
 		link(rel='stylesheet', href='/styles/screen.css')
 		link(rel='icon', href='/img/favicon.png', type='image/png')
 
-	body(id=page)
+	body
 		nav#navBar
 			h1#logo
 				a(href='/', class=(page === 'home') ? 'active' : '') λ
@@ -23,7 +23,11 @@ html
 					span(class= 'settingsIcon oi', data-glyph, aria-hidden='true')
 					| Settings
 
-		block content
+		.spacer
+			.content(id=page)
+				block content
+
+	include partials/console
 
 	each link in scripts
 		script(src=link)
