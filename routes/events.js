@@ -4,6 +4,7 @@ var fs = require('fs'),
 	moment = require('moment'),
 	clone = require('clone')
 
+
 function splitEvents(events, startDate, endDate) {
 
 	var i
@@ -90,6 +91,7 @@ function addStyleInformation(events){
 
 	return events
 }
+
 
 module.exports = function (req, res) {
 

@@ -1,7 +1,8 @@
 var fs = require('fs'),
 
-	files = require('../api/files'),
-	pathToJson = require('../api/pathToJson')
+	pathToJson = require('../api/pathToJson'),
+	fsToJson = require('../api/fsToJson')
+//files = require('../api/files'),
 
 
 module.exports = function (req, res) {
@@ -13,7 +14,6 @@ module.exports = function (req, res) {
 
 
 	function buildColumns(element, children) {
-
 
 		if (children) {
 
@@ -48,11 +48,11 @@ module.exports = function (req, res) {
 
 			// TODO: Map file types to functions
 
-			if(columns[depth].file.type === 'text')
+			if (columns[depth].file.type === 'text')
 				columns[depth].file.content = fs
 					.readFileSync(columns[depth].file.path, 'utf8')
 
-			else if(columns[depth].file.type === 'yaml')
+			else if (columns[depth].file.type === 'yaml')
 				columns[depth].file.content = fs
 					.readFileSync(columns[depth].file.path, 'utf8')
 		}
@@ -62,6 +62,7 @@ module.exports = function (req, res) {
 	}
 
 	//console.log(baseURL, pathParam)
+	//console.log(JSON.stringify(fsToJson(baseURL), null, 2))
 	//console.log(JSON.stringify(pathToJson(baseURL, pathParam), null, 2))
 	//console.log(JSON.stringify(buildColumns(pathToJson(baseURL, pathParam).children), null, 2))
 

@@ -16,14 +16,14 @@ module.exports = function (path, callback) {
 
 	function readFiles(readPath, callback) {
 
-		var files = []
+		var returnFiles = []
 
-		fs.readdir(readPath, function (err, item) {
+		fs.readdir(readPath, function (err, files) {
 
 			if (err) throw err
 
 
-			item.forEach(function (file) {
+			files.forEach(function (file) {
 
 				var fileInfo = {
 					type: '',
@@ -34,10 +34,10 @@ module.exports = function (path, callback) {
 				if(fs.lstatSync(readPath + '/' + file).isDirectory())
 					fileInfo.type = 'directory'
 
-				files.push(fileInfo)
+				returnFiles.push(fileInfo)
 			})
 
-			callback(files)
+			callback(returnFiles)
 		})
 	}
 

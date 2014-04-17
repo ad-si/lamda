@@ -4,7 +4,6 @@ var fs = require('fs'),
 
 module.exports = function pathToJson(baseURL, file) {
 
-
 	var nodes = file.split('/'),
 		currentDepth = 0,
 		maxDepth = 0,

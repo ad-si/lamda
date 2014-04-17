@@ -904,6 +904,10 @@ menu {
 #navBar .right .oi {
   margin-right: 0.4em;
 }
+#navBar .links .text,
+#navBar .right .text {
+  display: none;
+}
 #navBar .right {
   position: absolute;
   right: 1em;
@@ -939,6 +943,9 @@ menu {
 }
 #navBar .moviesIcon:before {
   content: '\e062';
+}
+#navBar .booksIcon:before {
+  content: '\e020';
 }
 #navBar .docsIcon:before {
   content: '\e047';
