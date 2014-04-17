@@ -1,9 +1,7 @@
 extends layout
 
 block content
-
-	div#columns.content
-		-console.log(columns)
+	div#columns
 		each column in columns
 			div
 				ul
@@ -11,8 +9,9 @@ block content
 						if(column.entries.length)
 							each file in column.entries
 								li(class=(file === column.active) ? 'active' : '')
-									span
-									a(href='/files' + column.path + '/' + file)= file
+									a(href='/files' + column.path + '/' + file)
+										span
+										= file
 						else
 							p.muted This directory is empty
 
@@ -26,5 +25,3 @@ block content
 
 					else
 						p.muted Can not be displayed
-
-	include partials/console

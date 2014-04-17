@@ -1,10 +1,7 @@
 extends layout
 
 block content
-	div.content
-		each thing in things
-			div
-				img(src=thing.imageSource)
-				p= thing.name
-
-	include partials/console
+	each thing in things
+		div
+			img(src=thing.imageSource)
+			p= thing.name
