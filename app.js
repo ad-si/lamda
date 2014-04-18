@@ -23,8 +23,8 @@ var express = require('express'),
 		},
 		'Pictures': {
 		},
-		'Music': {
-		},
+		//'Music': {
+		//},
 		'Movies': {
 		},
 		'Books': {
@@ -98,10 +98,10 @@ app.get('/settings', settings)
 app.get('/api/events', api.events)
 app.get(/\/api\/files(\/?.*)/, api.files)
 
-app.get('/api/music/songs', api.music.songs)
-app.get('/api/music/artists', api.music.artists)
-app.get('/api/music/:artist', api.music.artist)
-app.get('/api/music/:artist/:song', api.music.song)
+//app.get('/api/music/songs', api.music.songs)
+//app.get('/api/music/artists', api.music.artists)
+//app.get('/api/music/:artist', api.music.artist)
+//app.get('/api/music/:artist/:song', api.music.song)
 
 
 // Custom Apps
@@ -114,7 +114,7 @@ app.get('/contacts', apps.Contacts.module)
 app.get('/tasks', apps.Tasks.module)
 app.get('/tasks/:list', apps.Tasks.module)
 
-app.get('/music', apps.Music.module.index)
+//app.get('/music', apps.Music.module.index)
 //app.get('/music/songs', apps.Music.module.songs)
 //app.get('/music/artists', apps.Music.module.artists)
 //app.get('/music/:artist', apps.Music.module.artist)

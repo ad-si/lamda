@@ -1,8 +1,17 @@
 extends layout
 
 block content
-	div.content
-		each value, key in settings
-			label= key + ': '
-			input(type='text', value=value)
-			br
+	each value, key in availableSettings
+		label= key.substr(0,1).toUpperCase() + key.substr(1) + ': '
+		if Array.isArray(value)
+			select
+				each option in value
+					if settings[key] === option
+						option('selected')=  option
+					else
+						option=  option
+		else if typeof value === typeof settings[key]
+			input(type='text', value=settings[key])
+		else
+			input(type='text', value='Provided incorrect value!', readonly)
+		br
