@@ -1,4 +1,10 @@
 var express = require('express'),
+	errorHandler = require('errorhandler'),
+	favicon = require('static-favicon'),
+	bodyParser = require('body-parser'),
+	methodOverride = require('method-override'),
+	compress = require('compression'),
+	logger = require('morgan'),
 	nib = require('nib'),
 	stylus = require('stylus'),
 	path = require('path'),
@@ -58,33 +64,11 @@ app.set('port', process.env.PORT || 2000)
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
-app.use(express.favicon())
-app.use(express.logger('dev'))
-app.use(express.compress())
-app.use(express.bodyParser())
-app.use(express.methodOverride())
-app.use(app.router)
-app.use(stylus.middleware({
-	src: __dirname + '/public',
-	compile: compile
-}))
-app.use(express.static(path.join(__dirname, 'public')))
-
-if (devMode) app.use(express.errorHandler())
-
-app.use(function (req, res, next) {
-
-	res.status(404)
-
-	if (req.accepts('html'))
-		res.render('404.jade', { page: 'error404', url: req.url })
-
-	else if (req.accepts('json'))
-		res.send({ error: 'Not found' })
-
-	else
-		res.type('txt').send('Not found')
-})
+app.use(favicon())
+app.use(logger('dev'))
+app.use(compress())
+app.use(bodyParser())
+app.use(methodOverride())
 
 
 app.set('baseURL', process.env.baseURL || __dirname + '/home')
@@ -135,6 +119,31 @@ app.locals.config = config
 
 
 global.baseURL = '/Users/adrian/Sites/lamda/home'
+
+
+app.use(stylus.middleware({
+	src: __dirname + '/public',
+	compile: compile
+}))
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+if (devMode)
+	app.use(errorHandler())
+
+app.use(function (req, res, next) {
+
+	res.status(404)
+
+	if (req.accepts('html'))
+		res.render('404.jade', { page: 'error404', url: req.url })
+
+	else if (req.accepts('json'))
+		res.send({ error: 'Not found' })
+
+	else
+		res.type('txt').send('Not found')
+})
 
 
 app.listen(app.get('port'), function () {
