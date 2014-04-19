@@ -1,5 +1,7 @@
 @import '../../../_src/helper.styl'
 @import './openIconic.styl'
+@import './icons.styl'
+
 
 width = 920px
 consoleHeight = 10em
@@ -74,63 +76,90 @@ menu
 #navBar
 	z-index 1
 	width 100%
-	height 2em
+	height 30px
+	line-height 30px
 	background-color bg
 	position fixed
 	top 0
 
+	ul
+		list-style-type none
+	li
+		display inline-block
+
+	#logo
+		vertical-align top
+		display inline-block
+		text-align center
+		font-size 20px
+		border-right 1px solid fgMuted
+		margin-right 1em
+		a
+			padding 0 1em
+			display inline-block
+			width 100%
+			color fgMuted
+			font-smoothing getFontSmoothing()
+
 	.links,
 	.right
+		vertical-align top
+		font-size 12px !important
 		display inline-block
-		vertical-align middle
-		font-size 12px
+		height 30px
+		line-height 30px
 		a
-			//background-color gray(255, 0.2)
+			display inline-block
 			color fgMuted
 			margin-right 0.8em
-			padding 0.1em 0.4em
+			padding 0 0.8em
+			height 100%
 			&:hover
 				color fg
-		.oi
-			margin-right 0.4em
 		.text
 			display isLinkTextVisible ? inherit : none
 	.right
-		position: absolute
-		right: 1em
-		top: 25%
+		float right
+		img
+			vertical-align -10%
+			background-color mediumspringgreen
+			height 1.4em
+			width 1.4em
+			margin-right 0.5em
 	.active
 		color color !important
 	.files
 		border-right 1px solid fgMuted
-		padding-right 1.4em !important
+		margin-right 0.8em
+	.oi
+		margin-right isLinkTextVisible ? 0.4em : none
 
 	// Icons
 
 	.eventsIcon:before
-		content '\e02a'
+		calendarIcon()
 	.filesIcon:before
-		content: '\e084'
+		listIcon()
 	.contactsIcon:before
-		content '\e0a1'
+		personIcon()
 	.tasksIcon:before
-		content '\e0c4'
-	.settingsIcon:before
-		content '\e0d5'
+		checkMarkIcon()
 	.picturesIcon:before
-		content '\e075'
+		pictureIcon()
 	.musicIcon:before
-		content '\e072'
+		headphonesIcon()
 	.moviesIcon:before
-		content '\e062'
+		eyeIcon()
 	.booksIcon:before
-		content '\e020'
+		bookIcon()
 	.docsIcon:before
-		content '\e047'
+		textIcon()
 	.thingsIcon:before
-		content '\e02b'
+		slrIcon()
 	.projectsIcon:before
-		content '\e0a9'
+		ganttIcon()
+	.settingsIcon:before
+		wrenchIcon()
 
 	// Can't change color of image
 	/*.events
@@ -143,25 +172,11 @@ menu
 			*/
 
 
-#logo
-	display inline-block
-	text-align center
-	font-size 1.5em
-	line-height (fontSize * 2)
-	vertical-align middle
-	border-right 1px solid fgMuted
-	margin-right 1em
-	a
-		padding 0 1em
-		display inline-block
-		width 100%
-		height 100%
-		color fgMuted
-		font-smoothing getFontSmoothing()
-
-
 #home
 	padding 2em
+
+#error404
+	padding 4em
 
 
 @import './settings'

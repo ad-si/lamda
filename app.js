@@ -3,10 +3,11 @@ var express = require('express'),
 	stylus = require('stylus'),
 	path = require('path'),
 	yaml = require('js-yaml'),
+	fs = require('fs'),
 	app = express(),
 
 	devMode = true, //(app.get('env') === 'development')
-	config = yaml.safeLoad('./home/config'),
+	config = yaml.safeLoad(fs.readFileSync('./home/config.yaml', 'utf-8')),
 
 	api = require('./routes/api'),
 	index = require('./routes/index'),
@@ -76,7 +77,7 @@ app.use(function (req, res, next) {
 	res.status(404)
 
 	if (req.accepts('html'))
-		res.render('404.jade', { url: req.url })
+		res.render('404.jade', { page: 'error404', url: req.url })
 
 	else if (req.accepts('json'))
 		res.send({ error: 'Not found' })
@@ -130,6 +131,7 @@ app.locals.scripts = [
 	'/js/index.js'
 ]
 app.locals.apps = apps
+app.locals.config = config
 
 
 global.baseURL = '/Users/adrian/Sites/lamda/home'
