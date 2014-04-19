@@ -22,7 +22,7 @@ html
 								span.text=name
 
 			.right
-				a(href='/account', class=(page === 'settings') ? 'active' : '')
+				a(href='/' + config.owner.username, class=(page === config.owner.username) ? 'active' : '')
 					// TODO
 					img(alt='Profile picture', src='/img/placeholder.jpg')
 					span= config.owner.firstname
