@@ -7,12 +7,15 @@ block content
 				// Print available keys in a sorted order
 				each key in sortedKeys
 					if availableKeys.indexOf(key) !== -1
-						th= key.toUpperCase()
+						if key !== 'gender'
+							th= key.toUpperCase()
 		tbody
 			each contact in contacts
-				tr
+				tr(class= contact['gender'])
 					each key in sortedKeys
-						if Object.keys(contact).indexOf(key) !== -1
+						if key === 'gender'
+							// DO nothing
+						else if Object.keys(contact).indexOf(key) !== -1
 							td(class=key, title=contact[key])
 								if key === 'website'
 									// TODO: Take care of https
