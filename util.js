@@ -7,6 +7,9 @@ module.exports.writeKeys = function (keysObject, data) {
 
 module.exports.formatData = function (data) {
 
+	data.gender = data.gender || ''
+
+
 	function formatAddress(addr){
 
 		var addrArray = []
@@ -30,6 +33,7 @@ module.exports.formatData = function (data) {
 
 	if (data.address)
 		data.address = formatAddress(data.address)
+
 
 	return data
 }

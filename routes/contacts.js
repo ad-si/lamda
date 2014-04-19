@@ -34,6 +34,7 @@ module.exports = function (req, res) {
 					sortedKeys: [
 						'name',
 						'nickname',
+						'gender',
 						'birthday',
 						'email',
 						'mobile',
