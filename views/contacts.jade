@@ -16,22 +16,37 @@ block content
 						if key === 'gender'
 							// DO nothing
 						else if Object.keys(contact).indexOf(key) !== -1
-							td(class=key, title=contact[key])
+							- var value = contact[key]
+							td(class=key, title=value)
 								if key === 'website'
 									// TODO: Take care of https
-									a(href=contact[key], target='_blank')
-										= contact[key] ? contact[key].substring(7) : ''
+									a(href=value, target='_blank')
+										= value ? value.substring(7) : ''
 
 								else if key === 'facebook'
-									a(href='https://facebook.com/' + contact[key], , target='_blank')
-										= contact[key]
+									a(href='https://facebook.com/' + value, , target='_blank')
+										= value
 
 								else if key === 'email'
-									a(href='mailto:' + contact[key], target='_blank')
-										= contact[key]
+									- var provider = value.split('@')[1].split('.')
+									- provider.pop()
+									a(href='mailto:' + value, target='_blank', class=provider.join('.'))
+										= value
 
 								else if key === 'birthday'
-									=contact[key].toISOString().substr(0,10)
+									=value.toISOString().substr(0,10)
+									|  (
+									=new Date(new Date - value).toISOString().substr(0,4) - 1970
+									| )
+
+								else if key === 'address'
+									span.country(class=value.countryCode, title=value.country)
+										= value.country + ', '
+									span
+										= value.zip ? value.zip + ' ' : ''
+										= value.city ? value.city + ', ' : ''
+										= value.street ? value.street + ' ' : ''
+										= value.addition ? contact[key].addition : ''
 
 								else
 									=contact[key]

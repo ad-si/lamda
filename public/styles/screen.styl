@@ -1,6 +1,7 @@
 @import '../../../_src/helper.styl'
 @import './openIconic.styl'
 @import './icons.styl'
+@import './flags16.styl'
 
 
 width = 920px
@@ -16,19 +17,20 @@ fontSize = 14px
 if theme == 'dark'
 	fg = gray(255)
 	fgMuted = gray(180)
-	fgLittleContrast = gray(150)
+	fgQuiet = gray(100)
 
 	bg = gray(0)
 	bgMuted = gray(50)
-	bgLightContrast = gray(80)
+	bgQuiet = gray(80)
 
 if theme == 'light'
 	fg = gray(0)
 	fgMuted = gray(50)
+	fgQuiet = gray(80)
 
 	bg = gray(255)
-	bgMuted = gray(220)
-	bgLightContrast = gray(150)
+	bgMuted = gray(180)
+	bgQuiet = gray(100)
 
 
 getFontSmoothing()
@@ -129,7 +131,7 @@ menu
 	.active
 		color color !important
 	.files
-		border-right 1px solid fgMuted
+		border-right 1px solid bgQuiet
 		margin-right 0.8em
 	.oi
 		margin-right isLinkTextVisible ? 0.4em : none
