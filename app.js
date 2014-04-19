@@ -1,3 +1,5 @@
+global.baseURL = '/Users/adrian/Sites/lamda/home'
+
 var express = require('express'),
 	errorHandler = require('errorhandler'),
 	favicon = require('static-favicon'),
@@ -44,19 +46,53 @@ var express = require('express'),
 		}
 	}
 
+apps = {}
 
+fs
+	.readdirSync('./apps')
+	.forEach(function (appName) {
+
+		var appPath = './apps/' + appName,
+			appInfo = yaml.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
+
+		//console.log('ASDF', JSON.stringify(appInfo, null, 2))
+
+		apps[appName] = appInfo
+
+		//apps[appName].lamda.module = require(path.resolve(appPath, appInfo.lamda.main))
+		apps[appName].lamda.path = appPath
+	})
+
+console.log(apps)
+
+/*
 for (var appName in apps) {
 	if (apps.hasOwnProperty(appName))
 		apps[appName].module = require('./routes/' + appName.toLowerCase())
 }
+*/
 
 
 function compile(str, path) {
-	return stylus(str)
+
+	var returnIt = stylus(str)
 		.set('filename', path)
 		.set('compress', !devMode)
 		.use(nib())
 		.import('nib')
+
+
+	/*for(var appName in apps){
+		if(apps.hasOwnProperty(appName)){
+
+			apps[appName].lamda.styles.forEach(function(style){
+				returnIt.import(style)
+			})
+		}
+	}*/
+
+	return returnIt
+
 }
 
 // all environments
@@ -79,6 +115,7 @@ app.get('/', index)
 app.get('/settings', settings)
 
 
+/*
 // API
 app.get('/api/events', api.events)
 app.get(/\/api\/files(\/?.*)/, api.files)
@@ -106,7 +143,7 @@ app.get('/tasks/:list', apps.Tasks.module)
 //app.get('/music/:artist/:song', apps.Music.module.song)
 
 app.get('/things', apps.Things.module)
-
+ */
 
 app.locals.title = 'Lamda OS'
 app.locals.scripts = [
@@ -144,7 +181,6 @@ app.use(function (req, res, next) {
 	else
 		res.type('txt').send('Not found')
 })
-
 
 app.listen(app.get('port'), function () {
 	console.log('Express server listening on port ' + app.get('port'))
