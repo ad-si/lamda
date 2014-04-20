@@ -1,10 +1,6 @@
-name: Music
+name: Things
 version: 0.0.1
-lamda:
-  main: ./index.js
-  view: ./music.jade
-  styles:
-    - /music.styl
-  scripts:
-    - /music.js
+keywords:
+  - lamda
+  - things
 
