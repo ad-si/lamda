@@ -1,0 +1,30 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/files/public/index.css')
+
+block content
+	div#columns
+		each column in columns
+			div
+				ul
+					if(column.entries)
+						if(column.entries.length)
+							each file in column.entries
+								li(class=(file === column.active) ? 'active' : '')
+									a(href='/files' + column.path + '/' + file)
+										span
+										= file
+						else
+							p.muted This directory is empty
+
+					else if(column.file)
+
+						if(column.file.type === 'text')
+							pre= column.file.content
+
+						if(column.file.type === 'yaml')
+							pre= column.file.content
+
+					else
+						p.muted Can not be displayed
