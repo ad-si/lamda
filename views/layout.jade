@@ -4,22 +4,25 @@ html
 	head
 		title= page.charAt(0).toUpperCase() + page.substr(1)
 		// + ' | ' + title
-		link(rel='stylesheet', href='/styles/screen.css')
 		link(rel='icon', href='/img/favicon.png', type='image/png')
+		each style in styles
+			link(rel='stylesheet', href=style)
+		block styles
 
 	body
 		nav#navBar
+
 			h1#logo
 				a(href='/', class=(page === 'home') ? 'active' : '') λ
 			.links
 				ul
-					each app, name in apps
+					each name in appNames
 						- var path = '/' + name.toLowerCase()
 						- var className = name.toLowerCase() + (page === name.toLowerCase() ? ' active' : '')
 						li(class=className)
 							a(href=path, title=name)
 								span(class= name.toLowerCase() + 'Icon oi', data-glyph, aria-hidden='true')
-								span.text=name
+								span.text= name
 
 			.right
 				a(href='/' + config.owner.username, class=(page === config.owner.username) ? 'active' : '')
@@ -29,7 +32,6 @@ html
 				a.settings(href='/settings', class=(page === 'settings') ? 'active' : '')
 					span(class= 'settingsIcon oi', data-glyph, aria-hidden='true')
 					span.text Settings
-
 		.spacer
 			.content(id=page)
 				block content

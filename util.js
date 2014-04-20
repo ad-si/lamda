@@ -1,4 +1,6 @@
 var countries = require('./public/js/countries.json'),
+	nib = require('nib'),
+	stylus = require('stylus'),
 	util = {}
 
 
@@ -18,6 +20,15 @@ function getFromArray(array, key, value) {
 
 function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
+}
+
+util.compileStyl = function(str, path) {
+
+	return stylus(str)
+		.set('filename', path)
+		.set('compress', !devMode)
+		.use(nib())
+		.import('nib')
 }
 
 util.writeKeys = function (keysObject, data) {

@@ -12,7 +12,9 @@ var express = require('express'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 	fs = require('fs'),
+	util = require('util'),
 	app = express(),
+
 
 	devMode = true, //(app.get('env') === 'development')
 	config = yaml.safeLoad(fs.readFileSync('./home/config.yaml', 'utf-8')),
@@ -20,83 +22,55 @@ var express = require('express'),
 	api = require('./routes/api'),
 	index = require('./routes/index'),
 	settings = require('./routes/settings'),
+	appNames = fs.readdirSync('./apps'),
+	apps = {},
+	scripts = [
+		'/components/jquery/jquery.js',
+		'/components/mousetrap/mousetrap.js',
+		'/js/index.js'
+	],
+	styles = [
+		'/styles/screen.css'
+	],
+	title = 'Lamda OS',
+	name
 
-	apps = {
-		'Events': {
-		},
-		'Files': {
-		},
-		'Contacts': {
-		},
-		'Tasks': {
-		},
-		'Pictures': {
-		},
-		//'Music': {
-		//},
-		'Movies': {
-		},
-		'Books': {
-		},
-		'Docs': {
-		},
-		'Things': {
-		},
-		'Projects': {
-		}
+
+appNames.forEach(function (appName) {
+
+	var appPath = './apps/' + appName,
+		appModule = require(appPath)
+
+	apps[appName] = yaml.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
+
+	apps[appName].lamda.module = appModule
+	apps[appName].lamda.path = appPath
+
+	appModule.locals = {
+		title: title,
+		scripts: scripts.concat(apps[appName].lamda.scripts),
+		styles: styles, //.concat(apps[appName].lamda.styles),
+		appNames: appNames,
+		config: config,
+		page: appName
 	}
 
-apps = {}
-
-fs
-	.readdirSync('./apps')
-	.forEach(function (appName) {
-
-		var appPath = './apps/' + appName,
-			appInfo = yaml.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
-
-		//console.log('ASDF', JSON.stringify(appInfo, null, 2))
-
-		apps[appName] = appInfo
-
-		//apps[appName].lamda.module = require(path.resolve(appPath, appInfo.lamda.main))
-		apps[appName].lamda.path = appPath
-	})
-
-console.log(apps)
-
-/*
-for (var appName in apps) {
-	if (apps.hasOwnProperty(appName))
-		apps[appName].module = require('./routes/' + appName.toLowerCase())
-}
-*/
+	app.use('/' + appName, appModule)
+})
 
 
-function compile(str, path) {
+app.locals.title = title
+app.locals.scripts = scripts
+app.locals.styles = styles
+app.locals.appNames = appNames
+app.locals.config = config
 
-	var returnIt = stylus(str)
-		.set('filename', path)
-		.set('compress', !devMode)
-		.use(nib())
-		.import('nib')
+global.baseURL = '/Users/adrian/Sites/lamda/home'
 
-
-	/*for(var appName in apps){
-		if(apps.hasOwnProperty(appName)){
-
-			apps[appName].lamda.styles.forEach(function(style){
-				returnIt.import(style)
-			})
-		}
-	}*/
-
-	return returnIt
-
-}
 
 // all environments
 app.set('port', process.env.PORT || 2000)
+
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
@@ -116,54 +90,55 @@ app.get('/settings', settings)
 
 
 /*
-// API
-app.get('/api/events', api.events)
-app.get(/\/api\/files(\/?.*)/, api.files)
+ // API
+ app.get('/api/events', api.events)
+ app.get(/\/api\/files(\/?.*)/, api.files)
 
-//app.get('/api/music/songs', api.music.songs)
-//app.get('/api/music/artists', api.music.artists)
-//app.get('/api/music/:artist', api.music.artist)
-//app.get('/api/music/:artist/:song', api.music.song)
+ //app.get('/api/music/songs', api.music.songs)
+ //app.get('/api/music/artists', api.music.artists)
+ //app.get('/api/music/:artist', api.music.artist)
+ //app.get('/api/music/:artist/:song', api.music.song)
 
 
-// Custom Apps
-app.get('/events', apps.Events.module)
+ // Custom Apps
+ app.get('/events', apps.Events.module)
 
-app.get(/\/files(\/?.*)/, apps.Files.module)
+ app.get(/\/files(\/?.*)/, apps.Files.module)
 
-app.get('/contacts', apps.Contacts.module)
+ app.get('/contacts', apps.Contacts.module)
 
-app.get('/tasks', apps.Tasks.module)
-app.get('/tasks/:list', apps.Tasks.module)
+ app.get('/tasks', apps.Tasks.module)
+ app.get('/tasks/:list', apps.Tasks.module)
 
-//app.get('/music', apps.Music.module.index)
-//app.get('/music/songs', apps.Music.module.songs)
-//app.get('/music/artists', apps.Music.module.artists)
-//app.get('/music/:artist', apps.Music.module.artist)
-//app.get('/music/:artist/:song', apps.Music.module.song)
+ //app.get('/music', apps.Music.module.index)
+ //app.get('/music/songs', apps.Music.module.songs)
+ //app.get('/music/artists', apps.Music.module.artists)
+ //app.get('/music/:artist', apps.Music.module.artist)
+ //app.get('/music/:artist/:song', apps.Music.module.song)
 
-app.get('/things', apps.Things.module)
+ app.get('/things', apps.Things.module)
  */
 
-app.locals.title = 'Lamda OS'
-app.locals.scripts = [
-	'/components/jquery/jquery.js',
-	'/components/mousetrap/mousetrap.js',
-	'/js/index.js'
-]
-app.locals.apps = apps
-app.locals.config = config
 
+for (name in apps) {
+	if (apps.hasOwnProperty(name)) {
 
-global.baseURL = '/Users/adrian/Sites/lamda/home'
+		app.use('/' + name + '/public', stylus.middleware({
+			src: path.join(__dirname, apps[name].lamda.path) + '/public',
+			compile: util.compileStyl
+		}))
 
+		app.use('/' + name + '/public', express.static(apps[name].lamda.path + '/public'))
+	}
+}
 
 app.use(stylus.middleware({
 	src: __dirname + '/public',
-	compile: compile
+	compile: util.compileStyl
 }))
 
 app.use(express.static(path.join(__dirname, 'public')))
+
 
 if (devMode)
 	app.use(errorHandler())

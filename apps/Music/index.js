@@ -1,14 +1,16 @@
 var fs = require('fs'),
+	express = require('express'),
+	stylus = require('stylus'),
+	path = require('path'),
+	app = express()
 
-	app = {}
+
+app.set('views', __dirname + '/views')
 
 
-app.index = function (request, response) {
+app.get('/', function (request, response) {
 
-	response.render('music', {
-		page: 'music'
-	})
-
-}
+	response.render('music')
+})
 
 module.exports = app

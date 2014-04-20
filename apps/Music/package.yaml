@@ -4,7 +4,7 @@ lamda:
   main: ./index.js
   view: ./music.jade
   styles:
-    - ./public/music.styl
+    - /music.styl
   scripts:
-    - ./public/music.js
+    - /music.js
 
