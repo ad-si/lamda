@@ -1,0 +1,49 @@
+#contacts
+	padding 2em
+	table
+		text-align left
+		width 100%
+		font-size 11px
+
+		.female td:first-child
+			border-left 2px solid #cd5c5c
+		.male td:first-child
+			border-left 2px solid cornflowerblue
+
+		thead
+			color: fg
+		tbody
+			tr:nth-of-type(2n + 1)
+				background-color rgba(bg, 0.1)
+		th, td
+			padding 0.2em 0.5em
+		a
+			display inline-block
+	.email
+		text-align center
+		a
+			display inline-block
+			width 1.5em
+			height 100%
+			text-indent -9999px
+			getBgImage('envelope-closed')
+			background-size auto 14px
+	.address span
+		vertical-align middle
+	.country
+		display inline-block
+		width 16px
+		height 14px
+		text-indent -9999px
+		margin-right 0.2em
+
+
+	for provider in gmail gmx t-online web yahoo
+		.{provider}
+			background-image url(/img/favicons/desaturated/provider.png) !important
+
+// Not very helpful right now
+/*.birthday
+	white-space nowrap
+	text-indent -9999px
+	getBgImage('birthday-cake', 'ucanicon')*/
