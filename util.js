@@ -22,13 +22,15 @@ function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
 }
 
-util.compileStyl = function(str, path) {
+util.compileStyl = function (str, path, theme) {
 
 	return stylus(str)
 		.set('filename', path)
 		.set('compress', !devMode)
 		.use(nib())
 		.import('nib')
+		.import(__dirname + '/public/styles/shared')
+		.import(__dirname + '/public/styles/themes/' + theme)
 }
 
 util.writeKeys = function (keysObject, data) {
@@ -59,10 +61,8 @@ util.formatData = function (data) {
 		return addr
 	}
 
-
 	if (data.address)
 		data.address = formatAddress(data.address)
-
 
 	return data
 }

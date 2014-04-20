@@ -1,4 +1,3 @@
-@import '../../../_src/helper.styl'
 @import './openIconic.styl'
 @import './icons.styl'
 @import './flags16.styl'
@@ -6,6 +5,7 @@
 
 width = 920px
 consoleHeight = 10em
+navBarHeight = 30px
 color = rgb(100,150,200)
 theme = 'dark'
 //theme = 'light'
@@ -13,24 +13,6 @@ theme = 'dark'
 isLinkTextVisible = false
 
 fontSize = 14px
-
-if theme == 'dark'
-	fg = gray(255)
-	fgMuted = gray(180)
-	fgQuiet = gray(100)
-
-	bg = gray(0)
-	bgMuted = gray(50)
-	bgQuiet = gray(80)
-
-if theme == 'light'
-	fg = gray(0)
-	fgMuted = gray(50)
-	fgQuiet = gray(80)
-
-	bg = gray(255)
-	bgMuted = gray(180)
-	bgQuiet = gray(100)
 
 
 getFontSmoothing()
@@ -69,7 +51,7 @@ menu
 	vertical-align top
 
 .spacer
-	padding 2em 0 0 0
+	padding navBarHeight 0 0 0
 
 .content
 	min-height 100%
@@ -78,7 +60,7 @@ menu
 #navBar
 	z-index 1
 	width 100%
-	height 30px
+	height navBarHeight
 	line-height 30px
 	background-color bg
 	position fixed
@@ -182,14 +164,4 @@ menu
 
 
 @import './settings'
-
-@import './contacts'
-@import './files'
-@import './tasks'
-@import './events'
-@import './things'
-
-//@import 'index'
-//@import './_player'
-
 @import './_console'

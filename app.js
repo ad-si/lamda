@@ -1,4 +1,5 @@
 global.baseURL = '/Users/adrian/Sites/lamda/home'
+global.devMode = true //(app.get('env') === 'development')
 
 var express = require('express'),
 	errorHandler = require('errorhandler'),
@@ -12,11 +13,9 @@ var express = require('express'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 	fs = require('fs'),
-	util = require('util'),
+	util = require('./util'),
 	app = express(),
 
-
-	devMode = true, //(app.get('env') === 'development')
 	config = yaml.safeLoad(fs.readFileSync('./home/config.yaml', 'utf-8')),
 
 	api = require('./routes/api'),
@@ -43,13 +42,16 @@ appNames.forEach(function (appName) {
 
 	apps[appName] = yaml.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
 
+	if (!apps[appName].lamda)
+		apps[appName].lamda = {}
+
 	apps[appName].lamda.module = appModule
 	apps[appName].lamda.path = appPath
 
 	appModule.locals = {
 		title: title,
-		scripts: scripts.concat(apps[appName].lamda.scripts),
-		styles: styles, //.concat(apps[appName].lamda.styles),
+		scripts: scripts,
+		styles: styles,
 		appNames: appNames,
 		config: config,
 		page: appName
@@ -125,7 +127,9 @@ for (name in apps) {
 
 		app.use('/' + name + '/public', stylus.middleware({
 			src: path.join(__dirname, apps[name].lamda.path) + '/public',
-			compile: util.compileStyl
+			compile: function (string, path) {
+				return util.compileStyl(string, path, config.theme)
+			}
 		}))
 
 		app.use('/' + name + '/public', express.static(apps[name].lamda.path + '/public'))
@@ -134,7 +138,10 @@ for (name in apps) {
 
 app.use(stylus.middleware({
 	src: __dirname + '/public',
-	compile: util.compileStyl
+	compile: function (string, path) {
+		//console.log(string, path)
+		return util.compileStyl(string, path, config.theme)
+	}
 }))
 
 app.use(express.static(path.join(__dirname, 'public')))

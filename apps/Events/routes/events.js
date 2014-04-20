@@ -1,8 +1,9 @@
 var fs = require('fs'),
-	files = require('../api/files'),
-	events = require('../api/events'),
 	moment = require('moment'),
-	clone = require('clone')
+	clone = require('clone'),
+
+	files = require('../../../api/files'),
+	events = require('../../../api/events')
 
 
 function splitEvents(events, startDate, endDate) {
@@ -55,12 +56,12 @@ function mapEventsToDays(events, startDate, endDate) {
 				day = {
 					date: date,
 					events: events.filter(function (event) {
-						return moment(event.start).toJSON().substr(0,10) ===
-							date.substr(0,10)
+						return moment(event.start).toJSON().substr(0, 10) ===
+							date.substr(0, 10)
 					})
 				}
 
-			if (moment().toJSON().substr(0,10) === date.substr(0,10))
+			if (moment().toJSON().substr(0, 10) === date.substr(0, 10))
 				day.today = true
 
 			days.push(day)
@@ -70,11 +71,11 @@ function mapEventsToDays(events, startDate, endDate) {
 	return days
 }
 
-function addStyleInformation(events){
+function addStyleInformation(events) {
 
-		var minutesPerDay = 1440
+	var minutesPerDay = 1440
 
-	events.forEach(function(event){
+	events.forEach(function (event) {
 
 		var minutesDiff = moment(event.start).diff(moment(event.start).startOf('day'), 'minutes'),
 			duration = moment(event.end).diff(moment(event.start), 'minutes'),
@@ -84,9 +85,9 @@ function addStyleInformation(events){
 			}
 
 		event.style = JSON.stringify(style)
-					.replace(/"/g, '')
-					.replace(/,/g, ';')
-					.replace(/^\{(.*)\}$/g, '$1')
+			.replace(/"/g, '')
+			.replace(/,/g, ';')
+			.replace(/^\{(.*)\}$/g, '$1')
 	})
 
 	return events
@@ -102,7 +103,7 @@ module.exports = function (req, res) {
 		endDate = startDate.clone().add('days', pastDays + futureDays),
 		processedEvents = splitEvents(addStyleInformation(events()), startDate, endDate)
 
-	res.render('events', {
+	res.render('index', {
 		page: 'events',
 		days: mapEventsToDays(processedEvents, startDate, endDate)
 	})
