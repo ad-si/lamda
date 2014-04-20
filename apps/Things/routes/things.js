@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 
 	yaml = require('js-yaml'),
-	util = require('../util')
+	util = require('../../../util')
 
 
 module.exports = function (req, res) {
@@ -34,7 +34,7 @@ module.exports = function (req, res) {
 
 					if (things.length === fileCounter) {
 
-						res.render('things', {
+						res.render('index', {
 							page: 'things',
 							things: things
 						})

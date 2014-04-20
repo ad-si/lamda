@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	yaml = require('js-yaml'),
-	util = require('../util'),
+	util = require('../../../util'),
 
 	path = './home/contacts'
 
@@ -27,7 +27,7 @@ module.exports = function (req, res) {
 
 			if (contacts.length === files.length) {
 
-				res.render('contacts', {
+				res.render('index', {
 					page: 'contacts',
 					contacts: contacts,
 					availableKeys: Object.keys(keysCollection),

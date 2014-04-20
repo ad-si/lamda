@@ -1,0 +1,10 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/things/public/index.css')
+
+block content
+	each thing in things
+		div
+			img(src=thing.imageSource)
+			p= thing.name

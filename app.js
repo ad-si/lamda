@@ -125,14 +125,14 @@ app.get('/settings', settings)
 for (name in apps) {
 	if (apps.hasOwnProperty(name)) {
 
-		app.use('/' + name + '/public', stylus.middleware({
+		app.use('/assets/' + name + '/public', stylus.middleware({
 			src: path.join(__dirname, apps[name].lamda.path) + '/public',
 			compile: function (string, path) {
 				return util.compileStyl(string, path, config.theme)
 			}
 		}))
 
-		app.use('/' + name + '/public', express.static(apps[name].lamda.path + '/public'))
+		app.use('/assets/' + name + '/public', express.static(apps[name].lamda.path + '/public'))
 	}
 }
 

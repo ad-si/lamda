@@ -1,4 +1,7 @@
-extends layout
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/contacts/public/index.css')
 
 block content
 	table
@@ -52,4 +55,4 @@ block content
 									=contact[key]
 						else
 							td
-	include partials/console
+	include ../../../views/partials/console

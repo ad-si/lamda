@@ -1,7 +1,7 @@
 var fs = require('fs'),
 
-	pathToJson = require('../api/pathToJson'),
-	fsToJson = require('../api/fsToJson')
+	pathToJson = require('../../../api/pathToJson'),
+	fsToJson = require('../../../api/fsToJson')
 //files = require('../api/files'),
 
 
@@ -66,7 +66,7 @@ module.exports = function (req, res) {
 	//console.log(JSON.stringify(pathToJson(baseURL, pathParam), null, 2))
 	//console.log(JSON.stringify(buildColumns(pathToJson(baseURL, pathParam).children), null, 2))
 
-	res.render('files', {
+	res.render('index', {
 		page: 'files',
 		columns: buildColumns(
 			pathToJson(global.baseURL, pathParam),

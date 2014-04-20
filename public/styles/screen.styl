@@ -15,22 +15,6 @@ isLinkTextVisible = false
 fontSize = 14px
 
 
-getFontSmoothing()
-	if theme == 'dark'
-		antialiased
-
-getBgImage(iconName, type = 'openIconic')
-	if theme == 'dark'
-		color = 'white'
-	else
-		color = 'black'
-
-	background-image url('../' + type + '/png/' + color + '/' + iconName + '-2x.png')
-	background-repeat no-repeat
-	background-position 50% 50%
-	background-size auto 100%
-
-
 @import '../../../_src/screen.styl'
 
 
