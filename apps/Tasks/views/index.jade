@@ -10,17 +10,17 @@ block content
 				each list in lists
 					li
 						a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
-							= list.name
+							= list.name + ' '
 							if list.tasks
-								span.number= list.tasks.length
+								span.number= list.numberOfCompletedTasks + '/' + list.tasks.length
 		article
 			each list in lists
 				if list.id === currentList
 					if list.tasks
 						ul
 							each task in list.tasks
-								- var style = (task.completed_at) ? 'text-decoration: line-through' : 'font-weight: bold'
-								li(style=style)= task.title
+								- var className = (task.completed_at) ? 'completed' : ''
+								li(class=className)= task.title
 					else
 						p Well done! Nothing left to do!
 
