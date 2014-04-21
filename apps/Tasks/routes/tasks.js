@@ -1,10 +1,10 @@
 var fs = require('fs'),
 	yaml = require('js-yaml'),
-	util = require('../util'),
 
 	path = './home/tasks',
 	lists = [],
 	files
+
 
 function sortByCompletion(a, b) {
 	if (a.hasOwnProperty('completed_at'))
@@ -12,6 +12,12 @@ function sortByCompletion(a, b) {
 			return 0
 		else
 			return 1
+}
+
+function sortAlphabetical(a, b) {
+	if (a.id < b.id) return -1
+	if (a.id > b.id) return 1
+	return 0
 }
 
 function getList(fileName, callback) {
@@ -23,16 +29,13 @@ function getList(fileName, callback) {
 
 			if (error) throw error
 
-			if (fileContent !== '') {
-
+			if (fileContent !== '')
 				var listData = yaml.safeLoad(fileContent)
 
-				if (!listData.hasOwnProperty('tasks'))
-					listData.tasks = []
-			}
-
 			listData.id = fileName.slice(0, -5)
-			listData.tasks = listData.tasks.sort(sortByCompletion)
+
+			if (listData.tasks)
+				listData.tasks = listData.tasks.sort(sortByCompletion)
 
 			callback(listData)
 		}
@@ -52,15 +55,11 @@ module.exports = function (req, res) {
 
 			lists.push(listData)
 
-			if (lists.length === files.length){
+			if (lists.length === files.length) {
 
-				lists = lists.sort(function(a, b){
-					if(a.id < b.id) return -1
-					if(a.id > b.id) return 1
-					return 0
-				})
+				lists = lists.sort(sortAlphabetical)
 
-				res.render('tasks', {
+				res.render('index', {
 					page: 'tasks',
 					lists: lists,
 					currentList: paramList

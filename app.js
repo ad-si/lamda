@@ -40,7 +40,9 @@ appNames.forEach(function (appName) {
 	var appPath = './apps/' + appName,
 		appModule = require(appPath)
 
-	apps[appName] = yaml.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
+
+	apps[appName] = yaml
+		.safeLoad(fs.readFileSync(appPath + '/package.yaml', 'utf-8'))
 
 	if (!apps[appName].lamda)
 		apps[appName].lamda = {}
@@ -132,7 +134,10 @@ for (name in apps) {
 			}
 		}))
 
-		app.use('/assets/' + name + '/public', express.static(apps[name].lamda.path + '/public'))
+		app.use(
+			path.join('/assets/', name, '/public'),
+			express.static(apps[name].lamda.path + '/public')
+		)
 	}
 }
 
