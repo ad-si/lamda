@@ -12,6 +12,8 @@ function sortByCompletion(a, b) {
 			return 0
 		else
 			return 1
+	else
+		return -1
 }
 
 function sortAlphabetical(a, b) {
@@ -29,13 +31,30 @@ function getList(fileName, callback) {
 
 			if (error) throw error
 
+			var completedTasks = [],
+				uncompletedTasks = [],
+				numberOfCompletedTasks = 0
+
 			if (fileContent !== '')
 				var listData = yaml.safeLoad(fileContent)
 
 			listData.id = fileName.slice(0, -5)
 
-			if (listData.tasks)
-				listData.tasks = listData.tasks.sort(sortByCompletion)
+			if (listData.tasks) {
+
+				//listData.tasks = listData.tasks.sort(sortByCompletion)
+
+				listData.tasks.forEach(function (task) {
+					if (task.hasOwnProperty('completed_at'))
+						completedTasks.push(task)
+					else
+						uncompletedTasks.push(task)
+				})
+			}
+
+			listData.numberOfCompletedTasks = completedTasks.length
+
+			listData.tasks = uncompletedTasks.concat(completedTasks)
 
 			callback(listData)
 		}
