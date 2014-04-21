@@ -1,8 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
 
-	yaml = require('js-yaml'),
-	util = require('../../../util')
+	yaml = require('js-yaml')
 
 
 module.exports = function (req, res) {

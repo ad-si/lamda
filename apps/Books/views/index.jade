@@ -1,0 +1,10 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/books/public/index.css')
+
+block content
+	each book in books
+		div
+			img(src=book.imageSource)
+			p= book.name
