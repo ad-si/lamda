@@ -12,15 +12,21 @@ block content
 						a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
 							= list.name + ' '
 							if list.tasks
-								span.number= list.numberOfCompletedTasks + '/' + list.tasks.length
+								span.number
+									= list.numberOfCompletedTasks + '/' + list.tasks.length
 		article
 			each list in lists
 				if list.id === currentList
 					if list.tasks
 						ul
+							form(action='#', method='post')
+								li(class='addNewTask')
+									input(type='text', name='title', placeholder='Add a new task …')
 							each task in list.tasks
 								- var className = (task.completed_at) ? 'completed' : ''
-								li(class=className)= task.title
+								li(class=className)
+									= task.title
+									span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
 					else
 						p Well done! Nothing left to do!
 
