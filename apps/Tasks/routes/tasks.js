@@ -1,31 +1,50 @@
 var fs = require('fs'),
 	yaml = require('js-yaml'),
+	path = require('path'),
+	async = require('async'),
 
-	path = './home/tasks',
-	lists = [],
-	files
+	listPath = baseURL + '/tasks'
 
 
-function sortByCompletion(a, b) {
-	if (a.hasOwnProperty('completed_at'))
-		if (b.hasOwnProperty('completed_at'))
-			return 0
-		else
-			return 1
-	else
-		return -1
+function getFileName(string) {
+
+	var offset = -path.extname(string).length || undefined
+
+	return string.slice(0, offset)
 }
 
-function sortAlphabetical(a, b) {
-	if (a.id < b.id) return -1
-	if (a.id > b.id) return 1
-	return 0
+function byCompletion(a, b) {
+	if (a.hasOwnProperty('completed_at'))
+		return Number(!b.hasOwnProperty('completed_at'))
+
+	return -1
+}
+
+function alphabeticallyBy(attribute, order) {
+
+	var factor
+
+	if (order === 'descending')
+		factor = -1
+	else if (order === 'ascending')
+		factor = 1
+	else
+		throw new Error(order + ' is not allowed here.')
+
+	return function (a, b) {
+		var first = a[attribute],
+			second = b[attribute]
+
+		if (a[attribute] < b[attribute]) return -factor
+		if (a[attribute] > b[attribute]) return factor
+		return 0
+	}
 }
 
 function getList(fileName, callback) {
 
 	fs.readFile(
-		(path + '/' + fileName),
+		(listPath + '/' + fileName),
 		{encoding: 'utf-8'},
 		function (error, fileContent) {
 
@@ -36,20 +55,25 @@ function getList(fileName, callback) {
 				numberOfCompletedTasks = 0
 
 			if (fileContent !== '')
-				var listData = yaml.safeLoad(fileContent)
+				var listData = yaml.safeLoad(fileContent)//,{schema: 'FAILSAFE_SCHEMA'})
 
 			listData.id = fileName.slice(0, -5)
 
 			if (listData.tasks) {
 
-				//listData.tasks = listData.tasks.sort(sortByCompletion)
+				// TODO: Sort by age, due date, importance, …
+				listData
+					.tasks
+					.sort(alphabeticallyBy('created_at', 'descending'))
 
-				listData.tasks.forEach(function (task) {
-					if (task.hasOwnProperty('completed_at'))
-						completedTasks.push(task)
-					else
-						uncompletedTasks.push(task)
-				})
+				listData
+					.tasks
+					.forEach(function (task) {
+						if (task.hasOwnProperty('completed_at'))
+							completedTasks.push(task)
+						else
+							uncompletedTasks.push(task)
+					})
 			}
 
 			listData.numberOfCompletedTasks = completedTasks.length
@@ -61,29 +85,72 @@ function getList(fileName, callback) {
 	)
 }
 
-module.exports = function (req, res) {
 
-	var paramList = req.params.list || 'inbox'
+function writeBackList(filePath, listData) {
 
-	lists = []
-	files = fs.readdirSync(path)
+	listData.tasks.sort(alphabeticallyBy('created_at', 'descending'))
 
-	files.forEach(function (fileName) {
+	fs.writeFile(filePath, yaml.safeDump(listData), function (error) {
 
-		getList(fileName, function (listData) {
+		if (error) throw error
 
-			lists.push(listData)
-
-			if (lists.length === files.length) {
-
-				lists = lists.sort(sortAlphabetical)
-
-				res.render('index', {
-					page: 'tasks',
-					lists: lists,
-					currentList: paramList
-				})
-			}
-		})
+		console.log('Task was saved!')
 	})
+}
+
+
+module.exports = function (req, res, next) {
+
+	//TODO: Set default list in config.yaml
+	var paramList = req.params.list || 'inbox',
+		lists = [],
+		files = fs.readdirSync(listPath),
+		writeBackPath = '',
+		writeBackData,
+		mustWriteBack = false
+
+
+	async.each(
+		files,
+		function (fileName, done) {
+
+			getList(fileName, function (listData) {
+
+				if (req.method === 'POST' &&
+					paramList === getFileName(fileName)) {
+
+					mustWriteBack = true
+
+					listData.tasks.unshift({
+						title: req.body.title,
+						created_at: (new Date).toISOString()
+					})
+
+					writeBackPath = path.join(listPath, fileName)
+					writeBackData = listData
+				}
+
+				lists.push(listData)
+
+				done()
+			})
+		},
+		function (error) {
+
+			if (error) throw error
+
+			lists.sort(alphabeticallyBy('id', 'ascending'))
+
+			res.on('finish', function () {
+				if (mustWriteBack)
+					writeBackList(writeBackPath, writeBackData)
+			})
+
+			res.render('index', {
+				page: 'tasks',
+				lists: lists,
+				currentList: paramList
+			})
+		}
+	)
 }

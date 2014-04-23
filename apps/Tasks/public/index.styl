@@ -17,7 +17,6 @@
 				line-height 2em
 				padding 0 0.8em
 			span
-				display inline-block
 				position absolute
 				right 0.4em
 				font-size 0.8em
@@ -31,11 +30,17 @@
 		flex 1
 		padding 2em
 		li
+			position relative
 			border 1px solid bgQuiet
 			color fgMuted
 			margin-bottom 0.5em
 			padding 0.5em 1em
 			border-radius 4px
+			.createdAt
+				position absolute
+				right 0.5em
+				font-size 0.8em
+				color fgQuiet
 		> p
 			color fgQuiet
 		.completed

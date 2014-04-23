@@ -7,6 +7,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "async": "~0.7.0",
     "body-parser": "~1.0.2",
     "clone": "~0.1.11",
     "compression": "~1.0.1",
@@ -20,6 +21,7 @@
     "morgan": "~1.0.0",
     "nib": "~1.0.2",
     "static-favicon": "~1.0.2",
-    "stylus": "~0.38.0"
+    "stylus": "~0.38.0",
+    "yaml": "^0.2.3"
   }
 }

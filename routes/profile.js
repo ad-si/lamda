@@ -1,21 +1,20 @@
 var fs = require('fs'),
-
 	yaml = require('js-yaml')
 
 
 module.exports = function (request, response) {
 
-	var availableSettings = {
+	var fileContent = fs.readFileSync(global.baseURL + '/config.yaml', 'utf-8'),
+		settings = yaml.safeLoad(fileContent),
+		availableSettings = {
 			theme: ['light', 'dark'],
 			baseURL: '',
 			owner: {}
 		}
 
-	console.log(global.config)
-
 	response.render('settings', {
 		page: 'settings',
-		settings: global.config,
+		settings: settings,
 		availableSettings: availableSettings
 	})
 

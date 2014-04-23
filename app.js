@@ -16,11 +16,12 @@ var express = require('express'),
 	util = require('./util'),
 	app = express(),
 
-	config = yaml.safeLoad(fs.readFileSync('./home/config.yaml', 'utf-8')),
+	config = yaml.safeLoad(fs.readFileSync(baseURL + '/config.yaml', 'utf-8')),
 
 	api = require('./routes/api'),
 	index = require('./routes/index'),
 	settings = require('./routes/settings'),
+	profile = require('./routes/profile'),
 	appNames = fs.readdirSync('./apps'),
 	apps = {},
 	scripts = [
@@ -91,36 +92,19 @@ app.set('baseURL', process.env.baseURL || __dirname + '/home')
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
+app.get('/' + config.username, profile)
 
 
+// TODO: API
 /*
- // API
  app.get('/api/events', api.events)
+
  app.get(/\/api\/files(\/?.*)/, api.files)
 
  //app.get('/api/music/songs', api.music.songs)
  //app.get('/api/music/artists', api.music.artists)
  //app.get('/api/music/:artist', api.music.artist)
  //app.get('/api/music/:artist/:song', api.music.song)
-
-
- // Custom Apps
- app.get('/events', apps.Events.module)
-
- app.get(/\/files(\/?.*)/, apps.Files.module)
-
- app.get('/contacts', apps.Contacts.module)
-
- app.get('/tasks', apps.Tasks.module)
- app.get('/tasks/:list', apps.Tasks.module)
-
- //app.get('/music', apps.Music.module.index)
- //app.get('/music/songs', apps.Music.module.songs)
- //app.get('/music/artists', apps.Music.module.artists)
- //app.get('/music/:artist', apps.Music.module.artist)
- //app.get('/music/:artist/:song', apps.Music.module.song)
-
- app.get('/things', apps.Things.module)
  */
 
 
