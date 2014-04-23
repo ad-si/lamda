@@ -11,12 +11,9 @@ module.exports = function (request, response) {
 			owner: {}
 		}
 
-	console.log(global.config)
-
 	response.render('settings', {
 		page: 'settings',
 		settings: global.config,
 		availableSettings: availableSettings
 	})
-
 }

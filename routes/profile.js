@@ -4,18 +4,18 @@ var fs = require('fs'),
 
 module.exports = function (request, response) {
 
-	var fileContent = fs.readFileSync(global.baseURL + '/config.yaml', 'utf-8'),
-		settings = yaml.safeLoad(fileContent),
-		availableSettings = {
-			theme: ['light', 'dark'],
-			baseURL: '',
-			owner: {}
-		}
+	console.log('test')
 
-	response.render('settings', {
-		page: 'settings',
-		settings: settings,
-		availableSettings: availableSettings
+	var availableFields = {
+		theme: ['light', 'dark'],
+		baseURL: '',
+		owner: {}
+	}
+
+	response.render('profile', {
+		page: 'profile',
+		owner: global.config.owner,
+		availableFields: availableFields
 	})
 
 }

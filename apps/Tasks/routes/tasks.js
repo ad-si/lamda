@@ -123,7 +123,7 @@ module.exports = function (req, res, next) {
 
 					listData.tasks.unshift({
 						title: req.body.title,
-						created_at: (new Date).toISOString()
+						created_at: new Date
 					})
 
 					writeBackPath = path.join(listPath, fileName)

@@ -1,6 +1,3 @@
-global.baseURL = '/Users/adrian/Sites/lamda/home'
-global.devMode = true //(app.get('env') === 'development')
-
 var express = require('express'),
 	errorHandler = require('errorhandler'),
 	favicon = require('static-favicon'),
@@ -15,8 +12,6 @@ var express = require('express'),
 	fs = require('fs'),
 	util = require('./util'),
 	app = express(),
-
-	config = yaml.safeLoad(fs.readFileSync(baseURL + '/config.yaml', 'utf-8')),
 
 	api = require('./routes/api'),
 	index = require('./routes/index'),
@@ -34,6 +29,11 @@ var express = require('express'),
 	],
 	title = 'Lamda OS',
 	name
+
+
+global.baseURL = '/Users/adrian/Sites/lamda/example-home'
+global.devMode = true //(app.get('env') === 'development')
+global.config = yaml.safeLoad(fs.readFileSync(baseURL + '/config.yaml', 'utf-8'))
 
 
 appNames.forEach(function (appName) {
@@ -70,8 +70,6 @@ app.locals.styles = styles
 app.locals.appNames = appNames
 app.locals.config = config
 
-global.baseURL = '/Users/adrian/Sites/lamda/home'
-
 
 // all environments
 app.set('port', process.env.PORT || 2000)
@@ -92,7 +90,7 @@ app.set('baseURL', process.env.baseURL || __dirname + '/home')
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
-app.get('/' + config.username, profile)
+app.get('/' + global.config.owner.username, profile)
 
 
 // TODO: API
