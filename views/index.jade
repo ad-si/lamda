@@ -1,0 +1,9 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/boilerplate/public/index.css')
+
+block content
+	each datum in data
+		div
+			p= datum.title
