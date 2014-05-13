@@ -1,0 +1,12 @@
+{
+  "name": "News",
+  "version": "0.0.1",
+  "keywords": [
+    "news"
+  ],
+  "dependencies": {
+    "crawler": "~0.2.5",
+    "feedparser": "~0.16.6",
+    "request": "^2.34.0"
+  }
+}
