@@ -4,7 +4,20 @@ block styles
 	link(rel='stylesheet', href='/assets/things/public/index.css')
 
 block content
+
+	p You own #{things.length} things.
+
+	br
+
+	- console.log(things)
+
 	each thing in things
+
 		div
-			img(src=thing.imageSource)
-			p= thing.name
+			span= thing.name
+			br
+			if thing.images
+				each imagePath in thing.images
+					if imagePath
+						a(href='/things/' + imagePath)
+							img(src='/thumbs/things/' + imagePath)

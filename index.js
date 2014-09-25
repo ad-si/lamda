@@ -6,6 +6,8 @@ var fs = require('fs'),
 	app = express()
 
 
+app.use(express.static(path.join(global.baseURL, 'things')))
+
 app.set('views', __dirname + '/views')
 
 app.get('/', things)
