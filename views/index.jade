@@ -1,0 +1,35 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/sheetmusic/public/index.css')
+
+block content
+
+	if song
+		p= song.name.replace(/_/g,' ').replace(/-/g, ' - ')
+		br
+
+		.images
+			each imagePath in song.images
+				if imagePath
+					a(href='/sheetmusic' + imagePath)
+						img(src='/sheetmusic' + imagePath)
+
+
+
+	if songs
+		p You have #{songs.length} songs.
+		br
+		ul
+		each song in songs
+			li
+				a(href='/sheetmusic/' + song.name)
+					= song.name.replace(/_/gi, ' ')
+				|  (
+				a(href='/sheetmusic/raw/' + song.name) raw
+				| )
+				//if song.images
+					each imagePath in song.images
+						if imagePath
+							a(href='/sheetmusic/' + imagePath)
+								img(src='/sheetmusic/' + imagePath)

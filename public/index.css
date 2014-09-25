@@ -1,0 +1,20 @@
+#sheetmusic {
+  padding: 2em;
+}
+#sheetmusic > div {
+  vertical-align: top;
+  display: inline-block;
+  background-color: #505050;
+  padding: 1em;
+  margin: 0 1em 1em 0;
+}
+#sheetmusic > div span {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+#sheetmusic img {
+  max-height: 20em;
+  max-width: 20em;
+  margin: 1em;
+  background-color: #fff;
+}
