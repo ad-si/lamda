@@ -1,20 +1,19 @@
 var fs = require('fs'),
 	yaml = require('js-yaml'),
 	util = require('../../../util'),
-
-	path = './home/contacts'
+	contactsPath = global.baseURL + '/contacts'
 
 
 module.exports = function (req, res) {
 
 	var contacts = [],
-		files = fs.readdirSync(path),
+		files = fs.readdirSync(contactsPath),
 		keysCollection = []
 
 
 	files.forEach(function (file) {
 
-		fs.readFile(path + '/' + file, {encoding: 'utf-8'}, function (error, fileContent) {
+		fs.readFile(contactsPath + '/' + file, {encoding: 'utf-8'}, function (error, fileContent) {
 
 			if (error) throw error
 
