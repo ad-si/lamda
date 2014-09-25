@@ -13,13 +13,45 @@ isLinkTextVisible = false
 fontSize = 14px
 
 
-@import '../../../_src/screen.styl'
+*
+	margin 0
+	padding 0
+	font-size 100%
+	box-sizing border-box
+	-webkit-box-sizing border-box
+	border none
 
+html
+	height 100%
+	position relative
 
+body
+	height 100%
+	font-size fontSize
+	font-family "Helvetica", sans-serif
+	font-weight 100
+	color fgMuted
+	background-color bgMuted
 
+.hidden
+	display none
+
+a
+	cursor pointer
+	transition color 0.1s ease-in-out
+	color rgb(100,150,200)
+	text-decoration none
+	&:hover
+		color rgb(50,100,200)
 
 button
 	cursor pointer
+	outline none
+
+hr
+	height 1px
+	background-color fgQuiet
+	margin-bottom 1em
 
 .muted
 	color rgba(fg, 0.1)
@@ -100,8 +132,7 @@ menu
 	.oi
 		margin-right isLinkTextVisible ? 0.4em : none
 
-	// Icons
-
+	// TODO: Move icons into their own apps
 	.eventsIcon:before
 		calendarIcon()
 	.filesIcon:before
@@ -126,6 +157,12 @@ menu
 		ganttIcon()
 	.settingsIcon:before
 		wrenchIcon()
+	.newsIcon:before
+		newsIcon()
+	.sheetmusicIcon:before
+		sheetmusicIcon()
+	.moviesIcon:before
+		moviesIcon()
 
 	// Can't change color of image
 	/*.events

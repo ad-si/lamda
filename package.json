@@ -3,9 +3,6 @@
   "description": "An antisocial and file-based web operating system",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
   "dependencies": {
     "async": "~0.7.0",
     "body-parser": "~1.0.2",
@@ -14,12 +11,14 @@
     "errorhandler": "~1.0.0",
     "express": "~4.0.0",
     "fakesome": "~0.5.3",
+    "gm": "^1.16.0",
     "jade": "~0.35.0",
     "js-yaml": "~3.0.2",
     "method-override": "~1.0.0",
     "moment": "~2.5.1",
     "morgan": "~1.0.0",
     "nib": "~1.0.2",
+    "sharp": "^0.5.2",
     "static-favicon": "~1.0.2",
     "stylus": "~0.38.0",
     "yaml": "^0.2.3"
