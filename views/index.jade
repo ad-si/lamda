@@ -1,0 +1,11 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/movies/public/index.css')
+
+block content
+	ul
+		each movie in movies
+			//video(src=movie.link, controls='controls')
+			li: a(href=movie.link)
+				= movie.name

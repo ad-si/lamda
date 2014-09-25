@@ -1,0 +1,11 @@
+#boilerplate {
+  padding: 2em;
+}
+#boilerplate > div {
+  vertical-align: top;
+  display: inline-block;
+  background-color: #505050;
+  padding: 1em;
+  margin: 0 1em 1em 0;
+  width: 120px;
+}
