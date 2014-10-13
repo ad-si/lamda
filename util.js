@@ -1,10 +1,10 @@
 var countries = require('./public/js/countries.json'),
-	nib = require('nib'),
-	stylus = require('stylus'),
-	util = {}
+    nib = require('nib'),
+    stylus = require('stylus'),
+    util = {}
 
 
-function getFromArray(array, key, value) {
+function getFromArray (array, key, value) {
 
 	var soughtElement = null
 
@@ -18,9 +18,14 @@ function getFromArray(array, key, value) {
 	return soughtElement
 }
 
-function capitalize(string) {
+function capitalize (string) {
 	return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
 }
+
+
+util.getFromArray = getFromArray
+
+util.capitalize = capitalize
 
 util.compileStyl = function (str, path, theme) {
 
@@ -45,7 +50,7 @@ util.formatData = function (data) {
 	data.gender = data.gender || ''
 
 
-	function formatAddress(addr) {
+	function formatAddress (addr) {
 
 		if (addr.country) {
 
@@ -53,9 +58,9 @@ util.formatData = function (data) {
 				addr.countryCode = addr.country
 			else
 				addr.countryCode =
-					getFromArray(countries, 'name', capitalize(addr.country))
-						.cca2
-						.toLowerCase()
+				getFromArray(countries, 'name', capitalize(addr.country))
+					.cca2
+					.toLowerCase()
 		}
 
 		return addr
@@ -67,7 +72,9 @@ util.formatData = function (data) {
 	return data
 }
 
-util.getFromArray = getFromArray
-util.capitalize = capitalize
+util.isImage = function (fileName) {
+	return fileName.search(/.+\.(jpg|png)$/gi) !== -1
+}
+
 
 module.exports = util
