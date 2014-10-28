@@ -1,6 +1,11 @@
 doctype html
 head
-	title #(song.name) | Raw
+	title #{song.name} | Raw
+	- viewport = ['width=device-width']
+	- viewport[1] = 'initial-scale=1'
+	- viewport[2] = 'minimum-scale=1'
+	- viewport[3] = 'maximum-scale=10'
+	meta(name='viewport', content=viewport.join())
 	style.
 		* {
 			border: 0;
@@ -8,19 +13,33 @@ head
 			margin: 0;
 			box-sizing: border-box;
 		}
-		body {
+
+		img {
+			border-color: rgb(255,100,0);
+			border-style: solid;
+			padding: 2px;
+		}
+
+		img:last-of-type {
+			border: none;
+		}
+
+		.inline {
 			white-space: nowrap;
 		}
 
-		img {
+		.inline img {
 			max-height: 100%;
-			max-width: 80%;
+			max-width: 100%;
 			vertical-align: top;
-			border-right: 1px solid rgb(255,120,0);
-			padding: 2px;
+			border-width: 0 1px 1px 0;
 		}
-body
+
+		.wrapped img {
+			max-width: 100%;
+			border-width: 0 0 1px 0;
+		}
+body(class=style)
 	each imagePath in song.images
 		if imagePath
-			a(href=imagePath)
-				img(src=imagePath)
+			img(src=imagePath)

@@ -16,20 +16,37 @@ block content
 						img(src='/sheetmusic' + imagePath)
 
 
-
 	if songs
 		p You have #{songs.length} songs.
 		br
-		ul
-		each song in songs
-			li
-				a(href='/sheetmusic/' + song.name)
-					= song.name.replace(/_/gi, ' ')
-				|  (
-				a(href='/sheetmusic/raw/' + song.name) raw
-				| )
-				//if song.images
-					each imagePath in song.images
-						if imagePath
-							a(href='/sheetmusic/' + imagePath)
-								img(src='/sheetmusic/' + imagePath)
+		table
+			thead
+				th Name
+				th View
+				th Pages
+			tbody
+
+				each song in songs
+					tr
+						td.name
+							a(href='/sheetmusic/' + song.name)
+								= song.name.replace(/_/gi, ' ')
+						td
+							a(
+							href='/sheetmusic/raw/#{song.name}?style=wrapped'
+							)
+								span.oi(data-glyph='resize-height')
+							= ' '
+							a(
+							href='/sheetmusic/raw/#{song.name}?style=inline'
+							)
+								span.oi(data-glyph='resize-width')
+
+
+						td.pages
+							if song.images
+								each imagePath, index in song.images
+									if imagePath
+										a.badge(href='/sheetmusic/' + imagePath)
+											= (index + 1)
+										= ' '

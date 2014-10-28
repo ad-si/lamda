@@ -2,7 +2,9 @@ var fs = require('fs'),
     path = require('path'),
 
     yaml = require('js-yaml'),
-    gm = require('gm')
+    gm = require('gm'),
+    util = require('../../../util')
+
 
 function getImageUrl (fileName, name) {
 
@@ -11,10 +13,6 @@ function getImageUrl (fileName, name) {
 
 	else
 		return false
-}
-
-function isImage (fileName) {
-	return fileName.search(/.+\.(jpg|png)$/gi) !== -1
 }
 
 module.exports.songs = function (req, res) {
@@ -41,14 +39,11 @@ module.exports.songs = function (req, res) {
 			return
 		}
 
-		images = files.map(function (fileName) {
-
-			if (fileName.search(/.+\.(jpg|png)$/gi) !== -1)
+		images = files
+			.filter(util.isImage)
+			.map(function (fileName) {
 				return dir + '/' + fileName
-
-			else
-				return false
-		})
+			})
 
 
 		function renderPage () {
@@ -147,14 +142,14 @@ module.exports.raw = function (req, res) {
 
 	var files = fs.readdirSync(global.baseURL + '/sheetmusic/' + req.params.name),
 	    images = files
-		    .filter(isImage)
+		    .filter(util.isImage)
 		    .map(function (fileName) {
 			    return '/' + req.params.name + '/' + fileName
 		    }),
 	    thumbsPath = global.projectURL + '/thumbs/sheetmusic',
-	    songThumbsPath = thumbsPath + '/' + req.params.name
+	    songThumbsPath = thumbsPath + '/' + req.params.name,
+	    imagesPath = '/thumbs/sheetmusic'
 
-	console.log(images)
 
 	if (!fs.existsSync(thumbsPath))
 		fs.mkdirSync(thumbsPath)
@@ -171,7 +166,7 @@ module.exports.raw = function (req, res) {
 
 			// TODO: Only convert when original image is larger
 			gm(global.baseURL + '/sheetmusic/' + imagePath)
-				.resize(2200, 2200)
+				.resize(2200, 2200, '>')
 				.noProfile()
 				.write(thumbsPath + '/' + imagePath, function (error) {
 
@@ -183,27 +178,18 @@ module.exports.raw = function (req, res) {
 				})
 		})
 
-		res.render('raw', {
-			page: 'raw',
-			song: {
-				name: req.params.name,
-				images: images.map(function (path) {
-					return '/sheetmusic' + path
-				})
-			}
-		})
+		imagesPath = '/sheetmusic'
 	}
-	else {
 
-		res.render('raw', {
-			page: 'raw',
-			song: {
-				name: req.params.name,
-				images: images.map(function (path) {
-					return '/thumbs/sheetmusic' + path
-				})
-			}
-		})
-	}
+	res.render('raw', {
+		page: 'raw',
+		song: {
+			name: req.params.name,
+			images: images.map(function (path) {
+				return imagesPath + path
+			})
+		},
+		style: req.query.style
+	})
 }
 
