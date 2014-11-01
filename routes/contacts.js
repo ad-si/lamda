@@ -28,7 +28,9 @@ module.exports = function (req, res) {
 
 				res.render('index', {
 					page: 'contacts',
-					contacts: contacts,
+					contacts: contacts.sort(function(previous, current){
+						return previous.name > current.name
+					}),
 					availableKeys: Object.keys(keysCollection),
 					sortedKeys: [
 						'name',
