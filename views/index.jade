@@ -5,19 +5,30 @@ block styles
 
 block content
 
-	p You own #{things.length} things.
+	div(class= view + 'View', )
 
-	br
+		p
+			span You own #{things.length} things worth #{fortune}€.
+			span= ' ('
+			a(href='/things?view=compact') compact
+			span= ' | '
+			a(href='/things') standard
+			span= ')'
 
-	- console.log(things)
+		br
 
-	each thing in things
+		if view === compact
+			each thing in things
+				div
+					span= thing.name
+					br
+					if thing.image
+						a(href='/things/' + thing.image)
+							img(src='/thumbs/things/' + thing.image)
 
-		div
-			span= thing.name
-			br
-			if thing.images
-				each imagePath in thing.images
-					if imagePath
-						a(href='/things/' + imagePath)
-							img(src='/thumbs/things/' + imagePath)
+		else
+			each thing in things
+				div
+					if thing.image
+						a(href='/things/' + thing.image)
+							img(src='/thumbs/things/' + thing.image)
