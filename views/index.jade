@@ -6,19 +6,36 @@ block styles
 block content
 
 	if song
-		p= song.name.replace(/_/g,' ').replace(/-/g, ' - ')
+		- var idName = song.id.replace(/_/g,' ').replace(/-/g, ' - ')
+
+		h2= song.name ? song.name : idName
+
+		br
+
+		dl
+			each value, key in song
+				if key !== 'id' && key !== 'images' && key !== 'name'
+					dt= key[0].toUpperCase() + key.slice(1) + ':'
+					dd= value
+					br
+
 		br
 
 		.images
 			each imagePath in song.images
 				if imagePath
-					a(href='/sheetmusic' + imagePath)
-						img(src='/sheetmusic' + imagePath)
+					.image
+						img(src=imagePath)
+						a(href=imagePath.slice(7)) Raw
+
 
 
 	if songs
-		p You have #{songs.length} songs.
+		a.button(href='/sheetmusic') #{songs.length} Songs
+		a.button(href='/sheetmusic/playlists') Playlists
 		br
+
+
 		table
 			thead
 				th Name

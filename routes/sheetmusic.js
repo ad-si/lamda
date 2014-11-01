@@ -48,7 +48,7 @@ module.exports.songs = function (req, res) {
 
 		function renderPage () {
 
-			if (files.indexOf('index.yaml') === -1) {
+			//if (files.indexOf('index.yaml') === -1) {
 				songs.push({
 					name: dir,
 					images: images
@@ -59,8 +59,9 @@ module.exports.songs = function (req, res) {
 						page: 'sheetmusic',
 						songs: songs
 					})
-			}
+			//}
 
+			/*
 			else
 				fs.readFile(
 					(dirPath + '/index.yaml'),
@@ -83,6 +84,7 @@ module.exports.songs = function (req, res) {
 							})
 					}
 				)
+			*/
 		}
 
 		renderPage()
@@ -91,11 +93,19 @@ module.exports.songs = function (req, res) {
 
 module.exports.song = function (req, res) {
 
-	var files = fs.readdirSync(global.baseURL + '/sheetmusic/' + req.params.name),
-	    images = files.map(function (fileName) {
-		    return getImageUrl(fileName, req.params.name)
-	    })
+	var dirPath = path.join(global.baseURL, 'sheetmusic', req.params.name),
+	    files = fs.readdirSync(dirPath),
+	    images = files
+		    .filter(util.isImage)
+		    .map(function (fileName) {
+			    return path.join(
+				    '/thumbs',
+				    'sheetmusic',
+				    req.params.name, fileName
+			    )
+		    })
 
+	console.log(dirPath)
 
 	function renderPage () {
 
@@ -103,7 +113,7 @@ module.exports.song = function (req, res) {
 			res.render('index', {
 				page: 'sheetmusic',
 				song: {
-					name: req.params.name,
+					id: req.params.name,
 					images: images
 				}
 			})
@@ -118,19 +128,13 @@ module.exports.song = function (req, res) {
 					if (error) throw error
 
 					var jsonData = yaml.safeLoad(fileContent)
-
+					jsonData.id = req.params.name
 					jsonData.images = images
 
-					songs.push(jsonData)
-
-
-					if (songs.length === numberOfDirectories)
-						res.render('index', {
-							page: 'sheetmusic',
-							song: {
-								name: req.params.name
-							}
-						})
+					res.render('index', {
+						page: 'sheetmusic',
+						song: jsonData
+					})
 				}
 			)
 	}
