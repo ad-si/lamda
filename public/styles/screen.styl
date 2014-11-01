@@ -44,9 +44,19 @@ a
 	&:hover
 		color rgb(50,100,200)
 
-button
+button,
+.button
 	cursor pointer
 	outline none
+	padding 0.4em 0.8em
+	border-radius 0.2em
+	margin-right 1em
+	margin-bottom 1em
+	background-color fgQuiet
+	display inline-block
+	color fgMuted
+	&:hover
+		color fgMuted
 
 hr
 	height 1px
@@ -76,7 +86,7 @@ menu
 	width 100%
 	height navBarHeight
 	line-height 30px
-	background-color bg
+	background-color rgba(bg, 0.8)
 	position fixed
 	top 0
 

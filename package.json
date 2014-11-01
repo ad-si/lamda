@@ -7,20 +7,22 @@
     "async": "~0.7.0",
     "body-parser": "~1.0.2",
     "clone": "~0.1.11",
+    "commander": "~2.3.0",
     "compression": "~1.0.1",
     "errorhandler": "~1.0.0",
     "express": "~4.0.0",
     "fakesome": "~0.5.3",
-    "gm": "^1.16.0",
+    "gm": "~1.16.0",
     "jade": "~0.35.0",
     "js-yaml": "~3.0.2",
     "method-override": "~1.0.0",
     "moment": "~2.5.1",
     "morgan": "~1.0.0",
     "nib": "~1.0.2",
-    "sharp": "^0.5.2",
+    "serve-favicon": "^2.1.6",
+    "sharp": "~0.5.2",
     "static-favicon": "~1.0.2",
     "stylus": "~0.38.0",
-    "yaml": "^0.2.3"
+    "yaml": "~0.2.3"
   }
 }

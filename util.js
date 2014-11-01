@@ -31,11 +31,11 @@ util.compileStyl = function (str, path, theme) {
 
 	return stylus(str)
 		.set('filename', path)
-		.set('compress', !devMode)
+		.set('compress', !global.devMode)
 		.use(nib())
 		.import('nib')
-		.import(__dirname + '/public/styles/shared')
-		.import(__dirname + '/public/styles/themes/' + theme)
+		.import(global.projectURL + '/public/styles/shared')
+		.import(global.projectURL + '/public/styles/themes/' + theme)
 }
 
 util.writeKeys = function (keysObject, data) {
