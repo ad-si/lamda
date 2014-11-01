@@ -19,14 +19,23 @@ block content
 					dd= value
 					br
 
+		a.button(href='/sheetmusic/raw/#{song.id}?style=inline').
+			Horizontal View
+		a.button(href='/sheetmusic/raw/#{song.id}?style=wrapped').
+			Vertical View
+
 		br
 
 		.images
 			each imagePath in song.images
 				if imagePath
 					.image
+						- var rawImagePath = imagePath.split('/')
+						- rawImagePath[1] = rawImagePath[2]
+						- rawImagePath[2] = 'songs'
+
 						img(src=imagePath)
-						a(href=imagePath.slice(7)) Raw
+						a(href=rawImagePath.join('/')) Raw
 
 
 
@@ -42,21 +51,16 @@ block content
 				th View
 				th Pages
 			tbody
-
 				each song in songs
 					tr
 						td.name
-							a(href='/sheetmusic/' + song.name)
-								= song.name.replace(/_/gi, ' ')
+							a(href='/sheetmusic/' + song.id)
+								= song.id.replace(/_/gi, ' ')
 						td
-							a(
-							href='/sheetmusic/raw/#{song.name}?style=wrapped'
-							)
+							a(href='/sheetmusic/raw/#{song.id}?style=wrapped')
 								span.oi(data-glyph='resize-height')
 							= ' '
-							a(
-							href='/sheetmusic/raw/#{song.name}?style=inline'
-							)
+							a(href='/sheetmusic/raw/#{song.id}?style=inline')
 								span.oi(data-glyph='resize-width')
 
 

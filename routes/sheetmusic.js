@@ -3,7 +3,9 @@ var fs = require('fs'),
 
     yaml = require('js-yaml'),
     gm = require('gm'),
-    util = require('../../../util')
+    util = require('../../../util'),
+    songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
+    thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
 
 
 function getImageUrl (fileName, name) {
@@ -15,86 +17,11 @@ function getImageUrl (fileName, name) {
 		return false
 }
 
-module.exports.songs = function (req, res) {
-
-	var songs = [],
-	    dirs = fs.readdirSync(global.baseURL + '/sheetmusic'),
-	    numberOfDirectories = dirs.length
-
-
-	dirs.forEach(function (dir, index) {
-
-		var dirPath = global.baseURL + '/sheetmusic/' + dir,
-		    files,
-		    images,
-		    thumbDirectory,
-		    thumbsDirectory
-
-
-		if (fs.lstatSync(dirPath).isDirectory() && dir[0] !== '.')
-			files = fs.readdirSync(dirPath)
-
-		else {
-			numberOfDirectories--
-			return
-		}
-
-		images = files
-			.filter(util.isImage)
-			.map(function (fileName) {
-				return dir + '/' + fileName
-			})
-
-
-		function renderPage () {
-
-			//if (files.indexOf('index.yaml') === -1) {
-				songs.push({
-					name: dir,
-					images: images
-				})
-
-				if (songs.length === numberOfDirectories)
-					res.render('index', {
-						page: 'sheetmusic',
-						songs: songs
-					})
-			//}
-
-			/*
-			else
-				fs.readFile(
-					(dirPath + '/index.yaml'),
-					{encoding: 'utf-8'},
-					function (error, fileContent) {
-
-						if (error) throw error
-
-						var jsonData = yaml.safeLoad(fileContent)
-
-						jsonData.images = images
-
-						songs.push(jsonData)
-
-
-						if (songs.length === numberOfDirectories)
-							res.render('index', {
-								page: 'sheetmusic',
-								songs: songs
-							})
-					}
-				)
-			*/
-		}
-
-		renderPage()
-	})
-}
 
 module.exports.song = function (req, res) {
 
-	var dirPath = path.join(global.baseURL, 'sheetmusic', req.params.name),
-	    files = fs.readdirSync(dirPath),
+	var requestedSongPath = path.join(songsPath, req.params.name),
+	    files = fs.readdirSync(requestedSongPath),
 	    images = files
 		    .filter(util.isImage)
 		    .map(function (fileName) {
@@ -104,8 +31,6 @@ module.exports.song = function (req, res) {
 				    req.params.name, fileName
 			    )
 		    })
-
-	console.log(dirPath)
 
 	function renderPage () {
 
@@ -121,7 +46,7 @@ module.exports.song = function (req, res) {
 
 		else
 			fs.readFile(
-				(dirPath + '/index.yaml'),
+				path.join(requestedSongPath, 'index.yaml'),
 				{encoding: 'utf-8'},
 				function (error, fileContent) {
 
@@ -142,18 +67,91 @@ module.exports.song = function (req, res) {
 	renderPage()
 }
 
+
+module.exports.songs = function (req, res) {
+
+	var songs = [],
+	    songDirs = fs.readdirSync(songsPath),
+	    numberOfDirectories = songDirs.length
+
+
+	songDirs.forEach(function (songDir, index) {
+
+		var dirPath = path.join(songsPath, songDir),
+		    files,
+		    images
+
+
+		if (fs.lstatSync(dirPath).isDirectory() && songDir[0] !== '.')
+			files = fs.readdirSync(dirPath)
+
+		else {
+			numberOfDirectories--
+			return
+		}
+
+		images = files
+			.filter(util.isImage)
+			.map(function (fileName) {
+				return path.join(songDir, fileName)
+			})
+
+
+		function renderPage () {
+
+			//if (files.indexOf('index.yaml') === -1) {
+			songs.push({
+				id: songDir,
+				images: images
+			})
+
+			if (songs.length === numberOfDirectories)
+				res.render('index', {
+					page: 'sheetmusic',
+					songs: songs
+				})
+			//}
+
+			/*
+			 else
+			 fs.readFile(
+			 (dirPath + '/index.yaml'),
+			 {encoding: 'utf-8'},
+			 function (error, fileContent) {
+
+			 if (error) throw error
+
+			 var jsonData = yaml.safeLoad(fileContent)
+
+			 jsonData.images = images
+
+			 songs.push(jsonData)
+
+
+			 if (songs.length === numberOfDirectories)
+			 res.render('index', {
+			 page: 'sheetmusic',
+			 songs: songs
+			 })
+			 }
+			 )
+			 */
+		}
+
+		renderPage()
+	})
+}
+
 module.exports.raw = function (req, res) {
 
-	var files = fs.readdirSync(global.baseURL + '/sheetmusic/' + req.params.name),
+	var files = fs.readdirSync(path.join(songsPath, req.params.name)),
+	    songThumbsPath = path.join(thumbsPath, req.params.name),
+	    imagesPath = '/sheetmusic/songs',
 	    images = files
 		    .filter(util.isImage)
 		    .map(function (fileName) {
-			    return '/' + req.params.name + '/' + fileName
-		    }),
-	    thumbsPath = global.projectURL + '/thumbs/sheetmusic',
-	    songThumbsPath = thumbsPath + '/' + req.params.name,
-	    imagesPath = '/thumbs/sheetmusic'
-
+			    return path.join('/', req.params.name, fileName)
+		    })
 
 	if (!fs.existsSync(thumbsPath))
 		fs.mkdirSync(thumbsPath)
@@ -163,16 +161,15 @@ module.exports.raw = function (req, res) {
 		fs.mkdirSync(songThumbsPath)
 
 
-		images.forEach(function (imagePath, index) {
+		images.forEach(function (imagePath) {
 
 			if (imagePath === false)
 				return
 
-			// TODO: Only convert when original image is larger
-			gm(global.baseURL + '/sheetmusic/' + imagePath)
+			gm(path.join(songsPath, imagePath))
 				.resize(2200, 2200, '>')
 				.noProfile()
-				.write(thumbsPath + '/' + imagePath, function (error) {
+				.write(path.join(thumbsPath, imagePath), function (error) {
 
 					if (error)
 						throw error
@@ -181,16 +178,16 @@ module.exports.raw = function (req, res) {
 						console.log('Converted image: ' + imagePath)
 				})
 		})
-
-		imagesPath = '/sheetmusic'
 	}
+	else
+		imagesPath = '/thumbs/sheetmusic'
 
 	res.render('raw', {
 		page: 'raw',
 		song: {
-			name: req.params.name,
-			images: images.map(function (path) {
-				return imagesPath + path
+			id: req.params.name,
+			images: images.map(function (imgPath) {
+				return path.join(imagesPath + imgPath)
 			})
 		},
 		style: req.query.style

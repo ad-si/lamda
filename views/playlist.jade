@@ -1,0 +1,19 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/sheetmusic/public/index.css')
+
+block content
+	h2 Playlist #{playlist.name}
+
+	table
+		thead
+			tr
+				th Number
+				th Name
+		tbody
+			each song, index in playlist.songs
+				tr
+					td= index + 1
+					td: a(href=song.url)
+						=song.id

@@ -1,0 +1,19 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/sheetmusic/public/index.css')
+
+block content
+	h2 Playlists
+
+	table
+		thead
+			tr
+				th Name
+				th Songs
+		tbody
+			each playlist in playlists
+				tr
+					td: a(href='/sheetmusic/playlist/' + playlist.id)
+						=playlist.name
+					td= playlist.songs.length
