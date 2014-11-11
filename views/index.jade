@@ -8,13 +8,13 @@ block content
 	if song
 		- var idName = song.id.replace(/_/g,' ').replace(/-/g, ' - ')
 
-		h2= song.name ? song.name : idName
+		h2= song.title || song.name  || idName
 
 		br
 
 		dl
 			each value, key in song
-				if key !== 'id' && key !== 'images' && key !== 'name'
+				if key !== 'id' && key !== 'images' && key !== 'name' && key !== 'title'
 					dt= key[0].toUpperCase() + key.slice(1) + ':'
 					dd= value
 					br
