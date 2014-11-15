@@ -1,48 +1,75 @@
 var fs = require('fs'),
-    path = require('path'),
+	path = require('path'),
 
-    yaml = require('js-yaml'),
-    gm = require('gm'),
-    util = require('../../../util'),
-    songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
-    thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
+	yaml = require('js-yaml'),
+	gm = require('gm'),
+	util = require('../../../util'),
+	songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
+	thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
 
 
-function getImageUrl (fileName, name) {
+function getImagesFromFilesForSong(files, songName){
+	return files
+		.filter(util.isImage)
+		.map(function (fileName) {
+			return path.join('/', songName, fileName)
+		})
+}
 
-	if (fileName.search(/.+\.(jpg|png)$/gi) !== -1)
-		return '/' + name + '/' + fileName
+function createThumbnails (songName, images) {
 
-	else
-		return false
+	var songThumbsPath = path.join(thumbsPath, songName)
+
+	if (!fs.existsSync(thumbsPath))
+		fs.mkdirSync(thumbsPath)
+
+	if (!fs.existsSync(songThumbsPath)) {
+
+		fs.mkdirSync(songThumbsPath)
+
+
+		images.forEach(function (imagePath) {
+
+			if (imagePath === false)
+				return
+
+			gm(path.join(songsPath, imagePath))
+				.resize(2200, 2200, '>')
+				.noProfile()
+				.write(path.join(thumbsPath, imagePath), function (error) {
+
+					if (error)
+						throw error
+
+					else
+						console.log('Converted image: ' + imagePath)
+				})
+		})
+
+		return true
+	}
 }
 
 
 module.exports.song = function (req, res) {
 
 	var requestedSongPath = path.join(songsPath, req.params.name),
-	    files = fs.readdirSync(requestedSongPath),
-	    images = files
-		    .filter(util.isImage)
-		    .map(function (fileName) {
-			    return path.join(
-				    '/thumbs',
-				    'sheetmusic',
-				    req.params.name, fileName
-			    )
-		    })
+		files = fs.readdirSync(requestedSongPath),
+		imagesPath = '/sheetmusic/songs',
+		images = getImagesFromFilesForSong(files, req.params.name)
 
 	function renderPage () {
 
-		if (files.indexOf('index.yaml') === -1) {
+		if (files.indexOf('index.yaml') === -1)
 			res.render('index', {
 				page: 'sheetmusic',
 				song: {
 					id: req.params.name,
-					images: images
+					images: images.map(function (imgPath) {
+						return path.join(imagesPath + imgPath)
+					})
 				}
 			})
-		}
 
 		else
 			fs.readFile(
@@ -64,6 +91,10 @@ module.exports.song = function (req, res) {
 			)
 	}
 
+
+	if (!createThumbnails(req.params.name, images))
+		imagesPath = '/thumbs/sheetmusic'
+
 	renderPage()
 }
 
@@ -71,15 +102,15 @@ module.exports.song = function (req, res) {
 module.exports.songs = function (req, res) {
 
 	var songs = [],
-	    songDirs = fs.readdirSync(songsPath),
-	    numberOfDirectories = songDirs.length
+		songDirs = fs.readdirSync(songsPath),
+		numberOfDirectories = songDirs.length
 
 
 	songDirs.forEach(function (songDir, index) {
 
 		var dirPath = path.join(songsPath, songDir),
-		    files,
-		    images
+			files,
+			images
 
 
 		if (fs.lstatSync(dirPath).isDirectory() && songDir[0] !== '.')
@@ -145,41 +176,11 @@ module.exports.songs = function (req, res) {
 module.exports.raw = function (req, res) {
 
 	var files = fs.readdirSync(path.join(songsPath, req.params.name)),
-	    songThumbsPath = path.join(thumbsPath, req.params.name),
-	    imagesPath = '/sheetmusic/songs',
-	    images = files
-		    .filter(util.isImage)
-		    .map(function (fileName) {
-			    return path.join('/', req.params.name, fileName)
-		    })
-
-	if (!fs.existsSync(thumbsPath))
-		fs.mkdirSync(thumbsPath)
-
-	if (!fs.existsSync(songThumbsPath)) {
-
-		fs.mkdirSync(songThumbsPath)
+		imagesPath = '/sheetmusic/songs',
+		images = getImagesFromFilesForSong(files, req.params.name)
 
 
-		images.forEach(function (imagePath) {
-
-			if (imagePath === false)
-				return
-
-			gm(path.join(songsPath, imagePath))
-				.resize(2200, 2200, '>')
-				.noProfile()
-				.write(path.join(thumbsPath, imagePath), function (error) {
-
-					if (error)
-						throw error
-
-					else
-						console.log('Converted image: ' + imagePath)
-				})
-		})
-	}
-	else
+	if (!createThumbnails(req.params.name, images))
 		imagesPath = '/thumbs/sheetmusic'
 
 	res.render('raw', {
@@ -193,4 +194,3 @@ module.exports.raw = function (req, res) {
 		style: req.query.style
 	})
 }
-
