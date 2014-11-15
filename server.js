@@ -1,35 +1,38 @@
 var express = require('express'),
-    errorHandler = require('errorhandler'),
-    favicon = require('serve-favicon'),
-    bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    compress = require('compression'),
-    logger = require('morgan'),
-    nib = require('nib'),
-    stylus = require('stylus'),
-    path = require('path'),
-    yaml = require('js-yaml'),
-    fs = require('fs'),
-    util = require('./util'),
-    app = express(),
+	errorHandler = require('errorhandler'),
+	favicon = require('serve-favicon'),
+	bodyParser = require('body-parser'),
+	methodOverride = require('method-override'),
+	compress = require('compression'),
+	logger = require('morgan'),
+	nib = require('nib'),
+	stylus = require('stylus'),
+	path = require('path'),
+	yaml = require('js-yaml'),
+	fs = require('fs'),
+	util = require('./util'),
+	app = express(),
 
-    api = require('./routes/api'),
-    index = require('./routes/index'),
-    settings = require('./routes/settings'),
-    profile = require('./routes/profile'),
-    appNames = fs.readdirSync('./apps'),
-    apps = {},
-    scripts = [
-	    '/components/jquery/jquery.js',
-	    '/components/mousetrap/mousetrap.js',
-	    '/js/index.js'
-    ],
-    styles = [
-	    '/styles/screen.css'
-    ],
-    title = 'Lamda OS',
-    name,
-    projectPath = __dirname
+	api = require('./routes/api'),
+	index = require('./routes/index'),
+	settings = require('./routes/settings'),
+	profile = require('./routes/profile'),
+	appLoader = require('./modules/appLoader'),
+
+	appNames = fs.readdirSync('./apps'),
+	apps,
+	scripts = [
+		'/components/jquery/jquery.js',
+		'/components/mousetrap/mousetrap.js',
+		'/js/index.js'
+	],
+	styles = [
+		'/styles/screen.css'
+	],
+	title = 'Lamda OS',
+	name,
+	projectPath = __dirname,
+	locals
 
 
 global.baseURL = process.env.LAMDA_HOME || __dirname
@@ -39,62 +42,17 @@ global.config = yaml.safeLoad(
 	fs.readFileSync(path.join(global.baseURL, 'config.yaml'), 'utf-8')
 )
 
-appNames = appNames.filter(function (name) {
+locals = {
+	title: title,
+	scripts: scripts,
+	styles: styles,
+	appNames: appNames,
+	config: global.config
+}
 
-	var appPath = './apps/' + name
+apps = appLoader(app, appNames, locals)
 
-	return fs.lstatSync(appPath).isDirectory() && name !== 'boilerplate'
-})
-
-
-appNames.forEach(function (appName) {
-
-	var appPath = './apps/' + appName,
-	    appModule = require(appPath),
-	    packageContent
-
-
-	if (fs.existsSync(appPath + '/package.yaml')) {
-		packageContent = yaml.safeLoad(
-			fs.readFileSync(path.join(appPath, 'package.yaml'), 'utf-8')
-		)
-	}
-	else if (fs.existsSync(path.join(appPath, 'package.json'))) {
-		packageContent = JSON.parse(
-			fs.readFileSync(path.join(appPath, 'package.json'), 'utf-8')
-		)
-	}
-	else
-		throw new Error('Package file is missing!')
-
-
-	apps[appName] = packageContent
-
-	if (!apps[appName].hasOwnProperty('lamda'))
-		apps[appName].lamda = {}
-
-
-	apps[appName].lamda.module = appModule
-	apps[appName].lamda.path = appPath
-
-	appModule.locals = {
-		title: title,
-		scripts: scripts,
-		styles: styles,
-		appNames: appNames,
-		config: config,
-		page: appName
-	}
-
-	app.use('/' + appName, appModule)
-})
-
-
-app.locals.title = title
-app.locals.scripts = scripts
-app.locals.styles = styles
-app.locals.appNames = appNames
-app.locals.config = config
+app.locals = locals
 
 
 // all environments
@@ -171,7 +129,7 @@ app.use(function (req, res) {
 		res.render('404.jade', {page: 'error404', url: req.url})
 
 	else if (req.accepts('json'))
-		res.send({ error: 'Not found' })
+		res.send({error: 'Not found'})
 
 	else
 		res.type('txt').send('Not found')
