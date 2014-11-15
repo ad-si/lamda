@@ -25,6 +25,47 @@ block content
 			button#loud +
 		#currentQueue.bubble(style="display: none")
 
+		svg#spinner(
+		width='20',
+		height='20',
+		xmlns='http://www.w3.org/2000/svg',
+		xmlns:xlink='http://www.w3.org/1999/xlink'
+		)
+			defs
+				rect#l(
+				x='2',
+				y='-1',
+				rx='1',
+				ry='1',
+				width='8',
+				height='2',
+				fill='#000'
+				)
+
+			g(transform='translate(10, 10)')
+				animatetransform(
+				attributename='transform',
+				calcmode='discrete',
+				type='rotate',
+				values='0;30;60;90;120;150;180;210;240;270;300;330;360',
+				additive='sum',
+				dur='1000ms',
+				repeatdur='indefinite'
+				)
+				use(xlink:href='#l', transform='rotate(0)', opacity='0')
+				use(xlink:href='#l', transform='rotate(30)', opacity='0.08')
+				use(xlink:href='#l', transform='rotate(60)', opacity='0.17')
+				use(xlink:href='#l', transform='rotate(90)', opacity='0.25')
+				use(xlink:href='#l', transform='rotate(120)', opacity='0.33')
+				use(xlink:href='#l', transform='rotate(150)', opacity='0.42')
+				use(xlink:href='#l', transform='rotate(180)', opacity='0.5')
+				use(xlink:href='#l', transform='rotate(210)', opacity='0.58')
+				use(xlink:href='#l', transform='rotate(240)', opacity='0.67')
+				use(xlink:href='#l', transform='rotate(270)', opacity='0.75')
+				use(xlink:href='#l', transform='rotate(300)', opacity='0.83')
+				use(xlink:href='#l', transform='rotate(330)', opacity='0.92')
+
+
 	#menu
 		input#search(type='search', placeholder='search')
 		a#artists Artists
@@ -39,5 +80,5 @@ block content
 
 
 block scripts
-	// TODO: Load shaven.js
-	script(src='/Music/public/index.js')
+	script(src='/assets/music/public/shaven.min.js')
+	script(src='/assets/music/public/index.js')

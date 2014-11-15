@@ -10,7 +10,6 @@ var fs = require('fs'),
 
 app.set('views', __dirname + '/views')
 
-app.get('/', index)
 
 app.get('/api/artists', music.artists)
 app.get('/api/artists/:artistId', music.artist)
@@ -19,5 +18,6 @@ app.get('/api/artists/:artistId/songs', music.songs)
 app.get('/api/songs', music.songs)
 app.get('/api/songs/:songId', music.song)
 
+app.get('*', index)
 
 module.exports = app

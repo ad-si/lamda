@@ -82,7 +82,7 @@ music.artists = function (request, response) {
 				if (error) throw new Error(error)
 
 				if (stats.isDirectory())
-					artists.push(artistDir)
+					artists.push({name: artistDir})
 				else
 					artistsCounter--
 
