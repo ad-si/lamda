@@ -1,83 +1,96 @@
 var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
+
+	util = require('../../../util'),
+
+	musicDir = path.join(global.baseURL, 'music'),
 	music = {}
 
 
-music.index = function (req, res) {
-	res.render('index')
-}
-
 music.song = function (request, response, callback) {
 
-	console.log('song')
-
-	var path = ''
-
-	//console.log(JSON.stringify(request, null, 2))
-	//console.log(request)
-
-	//response.send(music())
-
-	//music(request, response, function (data) {
-	//	response.send(data)
-	//})
-
-	//if(request.params)
-	//	path = '/' + req.params[0]
-
-	//files(path, function (data) {
-	//	callback(data)
-	//})
-}
-
-music.songs = function () {
-
-	console.log('songs')
-
-	var songs = [],
-		artistDirs = fs.readdirSync(global.baseURL + '/Music'),
-		artistCounter = artistDirs.length
-
-
-	artistDirs.forEach(function (artistDir) {
-
-		var filePath = global.baseURL + '/Music/' + artistDir
-
-		fs.readFile(
-			filePath,
-			{encoding: 'utf-8'},
-			function (error, fileContent) {
-
-				if (error) throw error
-
-				var jsonData = yaml.safeLoad(fileContent)
-
-				jsonData.imageSource = '/img/things/' +
-					path.basename(filePath, '.yaml') + '.jpg'
-
-				things.push(jsonData)
-
-				if (things.length === fileCounter) {
-
-					res.render('index', {
-						page: 'things',
-						things: things
-					})
-				}
-			}
-		)
+	response.send({
+		name: request.params.songId
 	})
 }
 
-music.artist = function () {
+music.songs = function (request, response) {
 
-	console.artist('artist')
+	var songs = [],
+		artistId = request.params.artistId
+
+	if (artistId) {
+
+		songs = fs
+			.readdirSync(path.join(musicDir, artistId))
+			.filter(util.isSong)
+
+		response.send({songs: songs})
+	}
+
+	else {
+
+		response.send({songs: []})
+
+		/*
+		 artistDirs.forEach(function (artistDir) {
+
+		 var filePath = path.join(global.baseURL, 'music', artistDir)
+
+		 fs.readFile(
+		 filePath,
+		 {encoding: 'utf-8'},
+		 function (error, fileContent) {
+
+		 if (error) throw error
+
+		 // TODO
+
+		 if (songs.length === artistCounter) {
+
+		 response.render('index', {
+		 page: 'things',
+		 songs: songs
+		 })
+		 }
+		 }
+		 )
+		 })
+		 */
+	}
+
 }
 
-music.artists = function () {
+music.artist = function (request, response) {
 
-	console.artists('artists')
+	response.send({
+		name: request.params.artistId
+	})
+}
+
+music.artists = function (request, response) {
+
+	var artistDirs = fs.readdirSync(musicDir),
+		artistsCounter = artistDirs.length,
+		artists = []
+
+	artistDirs.forEach(function (artistDir) {
+
+		fs.lstat(path.join(musicDir, artistDir), function (error, stats) {
+
+				if (error) throw new Error(error)
+
+				if (stats.isDirectory())
+					artists.push(artistDir)
+				else
+					artistsCounter--
+
+				if (artists.length === artistsCounter)
+					response.send({artists: artists})
+			}
+		)
+	})
 }
 
 module.exports = music
