@@ -9,20 +9,24 @@ block content
 			button#previous
 			button#play.paused
 			button#next
+
 		p#playerInfo Artist - Song Title
+
 		.progress
 			span#time 0:00
 			input(id="progress", type="range", min="0", value="0")
 			span#duration -0:00
+
 		.controls
 			button#queue
 			button#shuffle
 			button#repeat
-			button#share
+
 		.volumeControl
 			button#mute -
 			input#volume(type="range", min="0", max="1", step="0.01")
 			button#loud +
+
 		#currentQueue.bubble(style="display: none")
 
 		svg#spinner(
@@ -39,7 +43,7 @@ block content
 				ry='1',
 				width='8',
 				height='2',
-				fill='#000'
+				fill='white'
 				)
 
 			g(transform='translate(10, 10)')
@@ -65,18 +69,19 @@ block content
 				use(xlink:href='#l', transform='rotate(300)', opacity='0.83')
 				use(xlink:href='#l', transform='rotate(330)', opacity='0.92')
 
-
-	#menu
-		input#search(type='search', placeholder='search')
-		a#artists Artists
-		a#songs Songs
-		a#info Infos
-		a#charts Charts
-		a#playlists Playlists
-	#c2
-	#c3
-	#c4
-	#Bubble.bubble(style='display:none')
+	#columns
+	//
+		#menu
+			input#search(type='search', placeholder='search')
+			a#artists Artists
+			a#songs Songs
+			a#info Infos
+			a#charts Charts
+			a#playlists Playlists
+		#c2
+		#c3
+		#c4
+		#Bubble.bubble(style='display:none')
 
 
 block scripts

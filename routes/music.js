@@ -8,10 +8,16 @@ var fs = require('fs'),
 	music = {}
 
 
-music.song = function (request, response, callback) {
+music.song = function (request, response) {
+
+	var songId = request.params.songId
 
 	response.send({
-		name: request.params.songId
+		id: songId,
+		title: songId,
+		trackArtist: 'John Random',
+		lyrics: 'Foo bar',
+		src: path.join('/music/raw/', request.params.artistId, songId)
 	})
 }
 
@@ -25,6 +31,12 @@ music.songs = function (request, response) {
 		songs = fs
 			.readdirSync(path.join(musicDir, artistId))
 			.filter(util.isSong)
+			.map(function (songId) {
+				return {
+					id: songId,
+					title: songId
+				}
+			})
 
 		response.send({songs: songs})
 	}
@@ -65,6 +77,7 @@ music.songs = function (request, response) {
 music.artist = function (request, response) {
 
 	response.send({
+		id: request.params.artistId,
 		name: request.params.artistId
 	})
 }
@@ -82,7 +95,10 @@ music.artists = function (request, response) {
 				if (error) throw new Error(error)
 
 				if (stats.isDirectory())
-					artists.push({name: artistDir})
+					artists.push({
+						id: artistDir,
+						name: artistDir
+					})
 				else
 					artistsCounter--
 

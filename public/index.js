@@ -1,24 +1,25 @@
 !function (window, document) {
 
-	var baseURL = '',
-		settings = {},
+	var baseURL = '/music',
 		playlist = [],
 		player = new Player(),
-		audio
+		audio,
+		firstRun = true
 
 
 	function toggle (id) {
-		if ($(id).style.display == 'none') {
 
+		if ($(id).style.display === 'none')
 			$(id).style.display = 'block'
-		}
-		else {
+
+		else
 			$(id).style.display = 'none'
-		}
 	}
 
 	function highlight (element) {
-		var links = $('c2').getElementsByTagName('div')
+
+		var links = $('#c2').getElementsByTagName('div')
+
 		for (var i = 0; i < links.length; i++) {
 			links[i].className = 'song'
 		}
@@ -41,7 +42,9 @@
 			var ctx,
 				canvas = document.createElement('canvas'),
 				img = document.createElement('img'),
-				link = $('#favicon').cloneNode(true)
+				$favicon = $('#favicon'),
+				link = $favicon.cloneNode(true)
+
 
 			if (state) {
 				canvas.height = canvas.width = 32
@@ -55,13 +58,17 @@
 
 					link.href = canvas.toDataURL('image/png')
 					link.id = 'faviconPlay'
-					document.head.appendChild(link)
+
+					if(!$('#faviconPlay'))
+						document.head.appendChild(link)
 				}
-				img.src = baseURL + '/img/favicon.png'
+				img.src = '/img/favicon.png'
 			}
 			else if (!state) {
+
 				document.head.removeChild($('#faviconPlay'))
-				$('#favicon').href = baseURL + '/img/favicon.png'
+
+				$favicon.href = baseURL + '/img/favicon.png'
 			}
 			else {
 				throw new Error(
@@ -117,7 +124,7 @@
 
 		function showQueue () {
 
-			toggle('currentQueue')
+			toggle('#currentQueue')
 
 			playlist.forEach(function (song) {
 				shaven(
@@ -129,6 +136,7 @@
 				)
 			})
 		}
+
 
 		this.mute = function () {
 
@@ -188,40 +196,42 @@
 			}, false)
 			audio.volume = 0.5
 
-			shaven(
-				[$('#controls'),
-					['button#previous'],
-					['button#play', {'class': 'paused'}],
-					['button#next'],
-					['span#time', '0:00'],
-					['div',
-						['p#playerInfo', 'Artist - Song'],
-						['input#progress', {type: 'range', min: 0, value: 0}]
-						/*['div#slider.inputBar',
-						 ['div#.progress'],
-						 ['div#.handler']
-						 ],*/
-					],
-					['span#duration', '- 0:00'],
-					['button#queue'],
-					['button#shuffle'],
-					['button#repeat'],
-					['button#share'],
-					['button#mute', '-'],
-					['input#volume', {
-						type: 'range',
-						min: 0,
-						max: 1,
-						step: 0.01
-					}],
-					/*['div#volume.inputBar',
-					 ['div#.progress'],
-					 ['div#.handler']
-					 ],*/
-					['button#loud', '+'],
-					['div#currentQueue.bubble', {style: 'display: none'}]
-				]
-			)
+			/*
+			 shaven(
+			 [$('#controls'),
+			 ['button#previous'],
+			 ['button#play', {'class': 'paused'}],
+			 ['button#next'],
+			 ['span#time', '0:00'],
+			 ['div',
+			 ['p#playerInfo', 'Artist - Song'],
+			 ['input#progress', {type: 'range', min: 0, value: 0}]
+			 ['div#slider.inputBar',
+			 ['div#.progress'],
+			 ['div#.handler']
+			 ],
+			 ],
+			 ['span#duration', '- 0:00'],
+			 ['button#queue'],
+			 ['button#shuffle'],
+			 ['button#repeat'],
+			 ['button#share'],
+			 ['button#mute', '-'],
+			 ['input#volume', {
+			 type: 'range',
+			 min: 0,
+			 max: 1,
+			 step: 0.01
+			 }],
+			 ['div#volume.inputBar',
+			 ['div#.progress'],
+			 ['div#.handler']
+			 ],
+			 ['button#loud', '+'],
+			 ['div#currentQueue.bubble', {style: 'display: none'}]
+			 ]
+			 )
+			 */
 
 			$('#play').addEventListener('click', player.playpause, false)
 
@@ -255,11 +265,6 @@
 			$('#loud').addEventListener('click', function () {
 				player.setVolume(1)
 			}, false)
-
-			$('#share').addEventListener('click', function () {
-				alert(baseURL + $('#playerInfo').innerHTML)
-			})
-
 		}
 	}
 
@@ -334,25 +339,35 @@
 
 			data.artists.forEach(function (artist) {
 
-				var link = shaven(['a', artist.name])[0]
+				var link = shaven(
+					['a', {href: '#'},
+						artist.name
+					]
+				)[0]
+
 
 				link.addEventListener('click', function (e) {
+
 					e.preventDefault()
+
 					highlight(this.parentNode)
 
-					print.songs(artist.slug)
-					print.artist(artist.slug)
+					print.songs(artist.id)
+					print.artist(artist.id)
 
 					history.pushState(
-						{url: artist.slug},
-						artist.slug, baseURL + '/' + artist.slug
+						{url: artist.id},
+						artist.id,
+						baseURL + '/' + artist.id
 					)
 				})
 
 				var container = shaven(
-					['div#.song', {
-						title: artist.name
-					},
+					['div#.song',
+						{
+							title: artist.name
+						},
+
 						[link],
 						['button', '']
 					]
@@ -363,15 +378,17 @@
 		})
 	}
 
-	print.artist = function (slug) {
+	print.artist = function (id) {
 
 		// Portrait
-		ajax('/', {artist: slug}, function (artist) {
+		ajax('/artists/' + id, function (artist) {
 
-			$('#c4').innerHTML = ''
+			var $column4 = $('#c4')
+
+			$column4.innerHTML = ''
 
 			shaven(
-				[$('#c4'),
+				[$column4,
 					['div#artist',
 						['img', {
 							src: 'http://lorempixel.com/80/80/',
@@ -390,53 +407,51 @@
 		})
 	}
 
-	print.songs = function (artistSlug) {
+	print.songs = function (artistId) {
 
-		ajax('/', {artist: artistSlug, songs: true}, function (songs) {
+		ajax('/artists/' + artistId + '/songs', function (data) {
 
 			$('#c3').innerHTML = ''
 
-			songs.forEach(function (song) {
+			data.songs.forEach(function (song) {
 
-				var link = shaven(['a', song.title])
-				var play = shaven(['button#.play'])
-				var add = shaven(['button#.add'])
+				var link = shaven(['a', song.title])[0],
+					play = shaven(['button.play'])[0],
+					add = shaven(['button.add'])[0]
 
 				shaven(
 					[$('#c3'),
-						['div#.song',
+						['div.song',
 							[play],
 							[link]
 						]
 					]
 				)
 
-				/* More Bubble
-				 shaven(
-				 ['div#bubble',
-				 [play],
-				 ['span.popularity'],
-				 ['span.duration'],
-				 ['span.release'],
-				 ['button#more']
-				 ]
-				 )
-				 */
+				shaven(
+					['div#bubble',
+						[play],
+						['span.popularity'],
+						['span.duration'],
+						['span.release'],
+						['button#more']
+					]
+				)
+
 
 				link.addEventListener('click', function (e) {
 					e.preventDefault()
-					print.song(song.slug, artistSlug)
+					print.song(song.id, artistId)
 
 					//Save in history object
-					var url = artistSlug + '/' + song.slug
-					history.pushState({url: url}, song.slug, url)
-
-				}, false)
+					var url = artistId + '/' + song.id
+					history.pushState({url: url}, song.id, url)
+				})
 
 
 				play.addEventListener('click', function () {
 
-					if (song.src != '')
+					if (song.src)
 						audio.src = song.src
 					else {
 						throw new Error(
@@ -446,41 +461,41 @@
 					}
 
 					player.playpause()
-					$('#playerInfo').innerHTML = decodeURI(artistSlug)
-						                             .replace('+', ' ') +
-					                             ' - ' + song.title
-
-
-				}, false)
+					$('#playerInfo')
+						.innerHTML = decodeURI(artistId).replace('+', ' ') +
+					                 ' - ' + song.title
+				})
 
 				add.addEventListener('click', function () {
 					playlist.push(song)
-				}, false)
+				})
 
 			})
 		})
 	}
 
-	print.song = function (songSlug, artistSlug) {
+	print.song = function (songId, artistId) {
 
-		ajax('/', {song: songSlug, artist: artistSlug}, function (song) {
+		ajax('/artists/'+ artistId + '/songs/' + songId, function (song) {
 
-			$('#c4').innerHTML = ''
+			var column4 = $('#c4')
+
+			column4.innerHTML = ''
 
 			shaven(
-				[$('#c4'),
+				[column4,
 					['div#song',
 						['button#playSong', 'Play'],
 						['button#addSong', 'Add'],
 						['button#shareSong', 'Share'],
 						['img', {
 							'src': 'http://lorempixel.com/80/80',
-							'alt': 'Image of' + song.track_artist
+							'alt': 'Image of' + song.trackArtist
 						}
 						],
 						['nav#songNav',
 							['h2#heading', song.title],
-							['p#trackArtist', song.track_artist]
+							['p#trackArtist', song.trackArtist]
 						],
 						['pre#lyrics', song.lyrics]
 					]
@@ -488,6 +503,8 @@
 			)
 
 			$('#playSong').addEventListener('click', function () {
+
+				console.log(song)
 
 				if (song.src != '')
 					audio.src = song.src
@@ -499,14 +516,13 @@
 				}
 
 				player.playpause()
-				$('#playerInfo').innerHTML = decodeURI(artistSlug) +
+				$('#playerInfo').innerHTML = decodeURI(artistId) +
 				                             ' - ' + song.title
-
-			}, false)
+			})
 
 			$('#addSong').addEventListener('click', function () {
 				playlist.push(song)
-			}, false)
+			})
 		})
 
 	}
@@ -523,8 +539,11 @@
 
 	function route (state) {
 
-		// Check if first call
-		if (!$('#logo')) view().index()
+		if (firstRun) {
+			view().index()
+			$('#spinner').style.display = 'none'
+			firstRun = false
+		}
 
 		// History object or URL
 		if (typeof(state) == 'object') {
@@ -549,6 +568,7 @@
 		}
 
 		function fromURL (url) {
+
 			var dirs = url.split('/')
 
 			if (dirs.length == 1 && dirs[0] != '')
@@ -569,45 +589,39 @@
 		return {
 			framework: function () {
 
-				function showSettings () {
-					toggle('settingsBubble')
+				var $columns = $('#columns')
 
+				function showSettings () {
+					toggle('#settingsBubble')
 				}
 
 				shaven(
-					[document.body,
-						['div#wrapper',
-							['nav#nav',
-								['h1#logo', 'Music'],
-								['div#controls'],
-								['button#settings']
-							],
-							['div#c1',
-								['input#search', {
-									type: 'search',
-									placeholder: 'search'
-								}],
-								['button#interprets', 'Interprets'],
-								['button#songs', 'Songs'],
-								['button#info', 'Infos'],
-								['button#charts', 'Charts'],
-								['button#playlists', 'Playlists']
-							],
-							['div#c2'],
-							['div#c3'],
-							['div#c4'],
-							['div#Bubble.bubble', {style: 'display:none'}]
-						]
+					[$columns,
+						['div#menu',
+							['input#search', {
+								type: 'search',
+								placeholder: 'search'
+							}],
+							['a#artists', 'Artists'],
+							['a#songs', 'Songs'],
+							['a#info', 'Infos'],
+							['a#charts', 'Charts'],
+							['a#playlists', 'Playlists']
+						],
+						['div#c2'],
+						['div#c3'],
+						['div#c4'],
+						['div#Bubble.bubble', {style: 'display:none'}]
 					]
 				)
 
 
-				$('#wrapper').addEventListener('click', function () {
-					var bubbles = document.getElementsByClassName('bubble')
+				$columns.addEventListener('click', function () {
 
-					for (var a = 0; a < bubbles.length; a++) {
+					var bubbles = document.getElementsByClassName('bubble'),
+						a
 
-						//console.log(a, bubbles.length)
+					for (a = 0; a < bubbles.length; a++) {
 
 						bubbles[a].style.display = 'none'
 
@@ -628,18 +642,12 @@
 				})
 
 				$('#charts').addEventListener('click', function () {
-					print.songs()
+					//print.songs()
 				})
 
-				$('#interprets').addEventListener('click', function () {
+				$('#artists').addEventListener('click', function () {
 					print.artists()
 				})
-
-				$('#settings').addEventListener('click', function (e) {
-					showSettings()
-					e.stopPropagation()
-				})
-
 			},
 
 			index: function () {
@@ -720,8 +728,6 @@
 
 		history.replaceState({url: path}, path, baseURL + '/' + path)
 
-		console.log(path)
-
 		route(path)
 
 		setShortcuts()
@@ -729,7 +735,6 @@
 		window.addEventListener('popstate', function (event) {
 			if (event.state !== null)
 				route(event.state)
-
 		})
 
 	}()

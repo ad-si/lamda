@@ -1,6 +1,6 @@
 #player
 	border-top 1px solid fgQuiet
-	background-color bg
+	background-color rgba(bg, 0.8)
 	color fgMuted
 	> *
 		display inline-block
@@ -9,32 +9,36 @@
 		background none
 		color inherit
 	#play
-		height: 40px
-		width: 40px
-		margin: 0 5px
-		line-height: 40px
+		border 1px solid fg
+		height 30px
+		line-height 30px
+		width 30px
+		margin 0 5px
 		font-size: 16px
+		border-radius 15px
+		position relative
 		&.playing:before
-			content: "\2759\2759"
-			position: relative
-			bottom: 2px
+			content "\2759\2759"
+			position absolute
+			top -1px
+			left: 9px
 		&.paused:before
-			content: "\25B6"
-			position: relative
-			left: 2px
+			content "\25B6"
+			position absolute
+			top 0
+			left: 8px
 
 	#previous,
 	#next
-		height: 30px
-		line-height: 30px
-		width: 30px
-		border-radius: 15px
-		font-size: 14px
+		border-radius 15px
+		height 30px
+		margin 0 5px
+		width 30px
 		&:before
 			letter-spacing: -5px
 			position: relative
-			right: 2px
 			bottom: 2px
+			right 6px
 
 	#previous:before
 		content: "\25C0\25C0"
