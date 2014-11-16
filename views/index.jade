@@ -1,9 +1,19 @@
 extends ../../../views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/boilerplate/public/index.css')
+	link(rel='stylesheet', href='/assets/Projects/public/index.css')
 
 block content
-	each datum in data
-		div
-			p= datum.title
+	p Total number of commits: #{numberOfCommits}
+	br
+
+	table
+		thead
+			tr
+				th Name
+				th Number of commits
+		tbody
+			each project in projects
+				tr
+					td= project.name
+					td= project.numberOfCommits || ''
