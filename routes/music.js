@@ -8,14 +8,16 @@ var fs = require('fs'),
 	music = {}
 
 
+
+
 music.song = function (request, response) {
 
 	var songId = request.params.songId
 
 	response.send({
 		id: songId,
-		title: songId,
-		trackArtist: 'John Random',
+		title: util.removeFileExtension(songId),
+		trackArtist: request.params.artistId,
 		lyrics: 'Foo bar',
 		src: path.join('/music/raw/', request.params.artistId, songId)
 	})
@@ -34,7 +36,7 @@ music.songs = function (request, response) {
 			.map(function (songId) {
 				return {
 					id: songId,
-					title: songId
+					title: util.removeFileExtension(songId)
 				}
 			})
 

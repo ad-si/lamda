@@ -53,13 +53,13 @@
 
 					ctx.drawImage(this, 0, 0)
 					ctx.font = '900 28px sans-serif'
-					ctx.fillStyle = '#000'
+					ctx.fillStyle = '#FFF'
 					ctx.fillText('\u25B6', 5, 28)
 
 					link.href = canvas.toDataURL('image/png')
 					link.id = 'faviconPlay'
 
-					if(!$('#faviconPlay'))
+					if (!$('#faviconPlay'))
 						document.head.appendChild(link)
 				}
 				img.src = '/img/favicon.png'
@@ -440,11 +440,14 @@
 
 
 				link.addEventListener('click', function (e) {
+
+					var url
+
 					e.preventDefault()
 					print.song(song.id, artistId)
 
 					//Save in history object
-					var url = artistId + '/' + song.id
+					url = baseURL + '/' + artistId + '/' + song.id
 					history.pushState({url: url}, song.id, url)
 				})
 
@@ -476,7 +479,7 @@
 
 	print.song = function (songId, artistId) {
 
-		ajax('/artists/'+ artistId + '/songs/' + songId, function (song) {
+		ajax('/artists/' + artistId + '/songs/' + songId, function (song) {
 
 			var column4 = $('#c4')
 
@@ -485,26 +488,25 @@
 			shaven(
 				[column4,
 					['div#song',
-						['button#playSong', 'Play'],
-						['button#addSong', 'Add'],
-						['button#shareSong', 'Share'],
-						['img', {
-							'src': 'http://lorempixel.com/80/80',
-							'alt': 'Image of' + song.trackArtist
-						}
-						],
 						['nav#songNav',
 							['h2#heading', song.title],
-							['p#trackArtist', song.trackArtist]
+							['p#trackArtist', 'by ' + song.trackArtist]
 						],
-						['pre#lyrics', song.lyrics]
+						['img', {
+							'src': 'http://lorempixel.com/80/80',
+							'alt': 'Image of' + song.trackArtist}
+						],
+						['div.buttons',
+							['button#playSong', 'Play'],
+							['button#addSong', 'Add'],
+							['button#shareSong', 'Share']
+						],
+						['div#lyrics', song.lyrics]
 					]
 				]
 			)
 
 			$('#playSong').addEventListener('click', function () {
-
-				console.log(song)
 
 				if (song.src != '')
 					audio.src = song.src

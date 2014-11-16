@@ -11,7 +11,7 @@ base = rgb(40, 180, 220)
 		border-left 1px solid black
 		overflow-y auto
 		overflow-x hidden
-		width: 20%
+		width: 24%
 
 	#menu
 		border-left none
@@ -67,15 +67,12 @@ base = rgb(40, 180, 220)
 		margin-right 5px
 
 	// Artists, Songs
-	#c2
+	#c2,
+	#c3
 		padding 10px 0 0 0
 		a
 			display inline-block
 			width 100%
-
-
-	#c3
-		padding 10px 0 0 0
 
 	.song
 		position relative
@@ -111,7 +108,7 @@ base = rgb(40, 180, 220)
 
 	// Overview
 	#c4
-		padding 30px
+		padding 1.5em
 		img
 			margin 0 20px 20px 0
 			width 80px
@@ -120,15 +117,17 @@ base = rgb(40, 180, 220)
 			border-radius 3px
 			box-shadow 0 1px 3px rgba(0, 0, 0, 0.6)
 			background image-url('loader.gif') no-repeat center
-		nav
-			display inline-block
-			vertical-align top
+		.buttons
+			margin-bottom 2em
 		button
-			display block
-			float right
+			display inline-block
 			padding 2px 4px
 			border-radius 2px
 			margin 4px
+
+	#songNav
+		margin-bottom 1em
+
 
 	#bio,
 	#lyrics
