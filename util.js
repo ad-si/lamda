@@ -76,5 +76,13 @@ util.isImage = function (fileName) {
 	return fileName.search(/.+\.(jpg|png)$/gi) !== -1
 }
 
+util.isSong = function (fileName) {
+	return fileName.search(/.+\.(mp3|wav|ogg|m4a)$/gi) !== -1
+}
+
+util.removeFileExtension = function (string) {
+	return string.replace(/\.[^/.]+$/, '')
+}
+
 
 module.exports = util

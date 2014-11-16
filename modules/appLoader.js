@@ -3,9 +3,10 @@ var fs = require('fs'),
     yaml = require('js-yaml')
 
 
-module.exports = function (rootApp, appNames, locals) {
+module.exports = function (rootApp, locals) {
 
-	var apps = {}
+	var appNames = fs.readdirSync('./apps'),
+		apps = {}
 
 	appNames = appNames.filter(function (name) {
 

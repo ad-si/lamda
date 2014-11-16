@@ -18,9 +18,7 @@ var express = require('express'),
 	settings = require('./routes/settings'),
 	profile = require('./routes/profile'),
 	appLoader = require('./modules/appLoader'),
-
-	appNames = fs.readdirSync('./apps'),
-	apps,
+	loadedApps,
 	scripts = [
 		'/components/jquery/jquery.js',
 		'/components/mousetrap/mousetrap.js',
@@ -46,13 +44,13 @@ locals = {
 	title: title,
 	scripts: scripts,
 	styles: styles,
-	appNames: appNames,
 	config: global.config
 }
 
-apps = appLoader(app, appNames, locals)
+loadedApps = appLoader(app, locals)
 
 app.locals = locals
+app.locals.appNames = Object.keys(loadedApps)
 
 
 // all environments
@@ -90,19 +88,25 @@ app.get('/' + global.config.owner.username, profile)
  */
 
 
-for (name in apps) {
-	if (apps.hasOwnProperty(name)) {
+for (name in loadedApps) {
+	if (loadedApps.hasOwnProperty(name)) {
 
-		app.use(path.join('/assets', name, 'public'), stylus.middleware({
-			src: path.join(__dirname, apps[name].lamda.path, 'public'),
-			compile: function (string, path) {
-				return util.compileStyl(string, path, global.config.theme)
-			}
-		}))
+
+		var publicDir = path.join('/assets', name, 'public')
 
 		app.use(
-			path.join('/assets', name, 'public'),
-			express.static(path.join(apps[name].lamda.path, 'public'))
+			publicDir,
+			stylus.middleware({
+				src: path.join(loadedApps[name].lamda.path, 'public'),
+				compile: function (string, path) {
+					return util.compileStyl(string, path, global.config.theme)
+				}
+			})
+		)
+
+		app.use(
+			publicDir,
+			express.static(path.join(loadedApps[name].lamda.path, 'public'))
 		)
 	}
 }
