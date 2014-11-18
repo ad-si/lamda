@@ -23,12 +23,12 @@ block content
 					span= thing.name
 					br
 					if thing.image
-						a(href='/things/' + thing.image)
-							img(src='/thumbs/things/' + thing.image)
+						a(href=thing.rawImage)
+							img(src=thing.image)
 
 		else
 			each thing in things
 				div
 					if thing.image
-						a(href='/things/' + thing.image)
-							img(src='/thumbs/things/' + thing.image)
+						a(href=thing.rawImage)
+							img(src=thing.image)

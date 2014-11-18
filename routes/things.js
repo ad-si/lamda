@@ -1,181 +1,286 @@
 var fs = require('fs'),
-    path = require('path'),
+	path = require('path'),
 
-    yaml = require('js-yaml'),
-    gm = require('gm'),
-    util = require('../../../util')
+	yaml = require('js-yaml'),
+	gm = require('gm'),
+	util = require('../../../util'),
 
-
-module.exports = function (req, res) {
-
-	var things = [],
-	    dirs = fs
-		    .readdirSync(global.baseURL + '/things')
-		    .filter(function (dirName) {
-			    return dirName[0] !== '.'
-		    }),
-	    numberOfDirectories = dirs.length,
-	    view = 'standard',
-	    defaultNames = ['front', 'overview', 'index', 'top']
+	thingsDir = path.join(global.baseURL, 'things'),
+	thumbDirectory = path.join(global.projectURL, 'thumbs')
 
 
-	if (req.query.view === 'compact')
-		view = 'compact'
+fs.mkdir(path.join(thumbDirectory, 'things'), function (error) {
 
-	dirs
-		.forEach(function (dir, index) {
-
-			var dirPath = global.baseURL + '/things/' + dir,
-			    files,
-			    images,
-			    mainImage,
-			    thumbDirectory,
-			    thumbsDirectory
+	if (error && error.code !== 'EEXIST')
+		throw new Error(error)
+})
 
 
-			if (fs.lstatSync(dirPath).isDirectory())
-				files = fs.readdirSync(dirPath)
+function callRenderer (res, things, view) {
 
-			else {
-				numberOfDirectories--
+	res.render('index', {
+		page: 'things',
+		things: things.sort(function (a, b) {
+			a = a.dateOfPurchase || 0
+			b = b.dateOfPurchase || 0
+
+			return b - a
+		}),
+		view: view,
+		fortune: things
+			.map(function (element) {
+				return element.price
+			})
+			.reduce(function (previous, current) {
+
+
+				if (previous) {
+					if (typeof previous === 'string')
+						previous = Number(previous.slice(0, -1))
+				}
+				else
+					previous = 0
+
+				if (current) {
+					if (typeof current === 'string')
+						current = Number(current.slice(0, -1))
+				}
+				else
+					current = 0
+
+				current = previous + current
+
+				return current
+			})
+			.toFixed(2)
+	})
+}
+
+
+module.exports = function (req, response) {
+
+	var view = (req.query.view === 'compact') ? 'compact' : 'standard',
+		defaultNames = ['front', 'overview', 'index', 'top'],
+		things = [],
+		thumbsDirectory = path.join(thumbDirectory, 'things', 'dir')
+
+
+	function loadThings (callback) {
+
+		fs.readdir(thingsDir, function (error, thingDirs) {
+
+			var numberOfThings = thingDirs.length
+
+			if (error) {
+				callback(error)
 				return
 			}
 
-			// Use first picture matching a default name or otherwise a random one
-			images = files.filter(util.isImage)
+			thingDirs.forEach(function (thingDir) {
 
-			images.some(function (imageName) {
-				mainImage = dir + '/' + imageName
-
-				return defaultNames.some(function (name) {
-
-					return imageName.search(name) !== -1
-				})
-			})
-
-			// TODO: Use this version as soon as node supports find
-			/*.find(function (fileName) {
-
-			 return defaultNames.find(function (name) {
-
-			 if(fileName.search(name) === -1)
-			 return false
-			 else
-			 return fileName
-			 })
-			 })
-			 */
-
-			thumbDirectory = global.projectURL + '/thumbs'
-			thumbsDirectory = thumbDirectory + '/things/' + dir
+				var thing = {}
 
 
-			function renderPage () {
+				function loadFiles (callback) {
 
-				function callRenderer () {
-					res.render('index', {
-						page: 'things',
-						things: things.sort(function (a, b) {
-							a = a.dateOfPurchase || 0
-							b = b.dateOfPurchase || 0
+					var images = [],
+						indexData
 
-							return b - a
-						}),
-						view: view,
-						fortune: things
-							.map(function (element) {
-								return element.price
-							})
-							.reduce(function (previous, current) {
+					fs.readdir(
+						path.join(thingsDir, thingDir),
+						function (error, files) {
 
+							var numberOfFiles = files.length
 
-								if (previous) {
-									if (typeof previous === 'string')
-										previous = Number(previous.slice(0, -1))
-								}
+							if (error) {
+								console.error(error)
+								return
+							}
+
+							files.forEach(function (file) {
+
+								if (util.isImage(file))
+									images.push(file)
 								else
-									previous = 0
+									numberOfFiles--
 
-								if (current) {
-									if (typeof current === 'string')
-										current = Number(current.slice(0, -1))
+								function checkImagesLoadStatus () {
+									if (images.length === numberOfFiles)
+										callback(null, images, indexData)
 								}
+
+								if (file === 'index.yaml')
+									fs.readFile(
+										path.join(thingsDir, thingDir, 'index.yaml'),
+										{encoding: 'utf-8'},
+										function (error, fileContent) {
+
+											if (error) {
+												console.error(error)
+												return
+											}
+
+											indexData = yaml.safeLoad(fileContent)
+
+											checkImagesLoadStatus()
+										}
+									)
 								else
-									current = 0
+									checkImagesLoadStatus()
 
-								current = previous + current
-
-								return current
 							})
-							.toFixed(2)
-					})
-				}
-
-				if (files.indexOf('index.yaml') === -1) {
-					things.push({
-						name: dir.replace(/_/g, ' '),
-						image: mainImage
-					})
-
-					if (things.length === numberOfDirectories)
-						callRenderer()
-				}
-				else
-					fs.readFile(
-						(dirPath + '/index.yaml'),
-						{encoding: 'utf-8'},
-						function (error, fileContent) {
-
-							if (error) throw error
-
-							var jsonData = yaml.safeLoad(fileContent)
-
-							jsonData.image = mainImage
-
-							things.push(jsonData)
-
-
-							if (things.length === numberOfDirectories)
-								callRenderer()
 						}
 					)
-			}
-
-			// Cache images
-			/*
-			 if (!fs.existsSync(thumbsDirectory)) {
-
-			 if (!fs.existsSync(thumbDirectory + '/things'))
-			 fs.mkdirSync(thumbDirectory + '/things')
-
-			 fs.mkdirSync(thumbsDirectory)
+				}
 
 
-			 images.forEach(function (imageName, index) {
+				if (thingDir[0] === '.') {
+					numberOfThings--
+					return
+				}
 
-			 var imagePath = dir + '/' + imageName
+				loadFiles(function (error, images, indexData) {
 
-			 if (imagePath === false)
-			 return
+					var imagePath = path.join(thingDir, (images[0] || '')),
+						imageThumbnailPath = path.join(
+							'thumbs',
+							'things',
+							imagePath
+						)
 
-			 gm(global.baseURL + '/things/' + imagePath)
-			 .autoOrient()
-			 .resize(200, 200)
-			 .noProfile()
-			 .write(
-			 global.projectURL + '/thumbs/things/' + imagePath,
-			 function (error) {
+					if (error) {
+						callback(error)
+						return
+					}
 
-			 if (error)
-			 throw error
-			 else
-			 console.log('Converted image: ' + imagePath)
-			 })
-			 })
-			 }
-			 */
+					thing = indexData || thing
 
-			renderPage()
-		}
-	)
+					thing.name = thingDir.replace(/_/g, ' ')
+
+
+					fs.exists(imageThumbnailPath, function (exists) {
+
+						if (exists) return
+
+						fs.mkdir(
+							path.join(thumbDirectory, 'things', thingDir),
+							function (error) {
+
+								if (error && error.code !== 'EEXIST') {
+									callback(error)
+									return
+								}
+
+								gm(path.join(thingsDir, imagePath))
+									.resize(200, 200, '>')
+									.noProfile()
+									.write(
+									path.join(global.projectURL, imageThumbnailPath),
+									function (error) {
+
+										if (error) {
+											callback(error)
+											return
+										}
+
+										console.log(
+											'Created thumbnail for', imagePath
+										)
+									}
+								)
+							})
+					})
+
+
+					thing.image = path.join('/', imageThumbnailPath)
+					thing.rawImage = path.join('/things', imagePath)
+					things.push(thing)
+
+					if (things.length === numberOfThings)
+						callback(null, things)
+				})
+			})
+		})
+	}
+
+
+	loadThings(function (error, things) {
+
+		if (error)
+			throw new Error(error)
+		
+		callRenderer(response, things, view)
+	})
+
+
+	/*
+	 dirs
+	 .forEach(function (dir, index) {
+
+	 var dirPath = global.baseURL + '/things/' + dir,
+	 files,
+	 images,
+	 mainImage,
+	 thumbDirectory,
+	 thumbsDirectory
+
+
+	 if (fs.lstatSync(dirPath).isDirectory())
+	 files = fs.readdirSync(dirPath)
+
+	 else {
+	 numberOfDirectories--
+	 return
+	 }
+
+	 // Use first picture matching a default name
+	 // or otherwise a random one
+	 images = files.filter(util.isImage)
+
+	 images.some(function (imageName) {
+	 mainImage = dir + '/' + imageName
+
+	 return defaultNames.some(function (name) {
+
+	 return imageName.search(name) !== -1
+	 })
+	 })
+	 }
+	 )
+	 */
+
+
+	// Cache images
+	/*
+	 if (!fs.existsSync(thumbsDirectory)) {
+
+	 if (!fs.existsSync(thumbDirectory + '/things'))
+	 fs.mkdirSync(thumbDirectory + '/things')
+
+	 fs.mkdirSync(thumbsDirectory)
+
+
+	 images.forEach(function (imageName, index) {
+
+	 var imagePath = dir + '/' + imageName
+
+	 if (imagePath === false)
+	 return
+
+	 gm(global.baseURL + '/things/' + imagePath)
+	 .autoOrient()
+	 .resize(200, 200)
+	 .noProfile()
+	 .write(
+	 global.projectURL + '/thumbs/things/' + imagePath,
+	 function (error) {
+
+	 if (error)
+	 throw error
+	 else
+	 console.log('Converted image: ' + imagePath)
+	 })
+	 })
+	 }
+	 */
 }
