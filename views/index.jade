@@ -9,10 +9,12 @@ block content
 
 		p
 			span You own #{things.length} things worth #{fortune}€.
-			span= ' ('
-			a(href='/things?view=compact') compact
-			span= ' | '
+
+		p
+			span= '('
 			a(href='/things') standard
+			span= ' | '
+			a(href='/things?view=wide') wide
 			span= ')'
 
 		br
