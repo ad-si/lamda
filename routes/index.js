@@ -2,6 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 	nodegit = require('nodegit'),
+	findit = require('findit'),
 
 	projectsDir = path.join(global.baseURL, 'projects')
 
@@ -40,6 +41,55 @@ function getNumberOfCommits (repoDir, callback) {
 	})
 }
 
+function getFavicon (repoDir, callback) {
+
+	var faviconPaths = [
+			'img/favicon.png',
+			'favicon.ico',
+			'images/favicon.png'
+		],
+		faviconPath = false,
+		foundFavicon
+
+
+	function startFindit () {
+
+		var finder = findit(repoDir)
+
+		finder.on('directory', function (dir, stat, stop) {
+			if (path.relative(repoDir, dir).split(path.sep).length > 3){
+				finder.stop()
+				callback()
+			}
+		})
+
+		finder.on('file', function (filePath) {
+			if (path.basename(filePath) === 'favicon.png' ||
+			    path.basename(filePath) === 'favicon.ico') {
+
+				finder.stop()
+				callback(filePath)
+			}
+		})
+
+		finder.on('end', function () {
+			callback()
+		})
+	}
+
+	foundFavicon = faviconPaths.some(function (relFaviconPath) {
+
+		faviconPath = path.join(repoDir, relFaviconPath)
+
+		return fs.existsSync(faviconPath)
+	})
+
+	if (!foundFavicon)
+		startFindit()
+	else
+		callback(faviconPath)
+}
+
 module.exports = function (req, res) {
 
 	var projectDirs = fs.readdirSync(projectsDir),
@@ -49,7 +99,8 @@ module.exports = function (req, res) {
 
 	function render () {
 
-		if (projects.length === projectsCounter)
+		if (projects.length === projectsCounter) {
+
 			res.render('index', {
 				page: 'Projects',
 				projects: projects.reverse(),
@@ -61,6 +112,7 @@ module.exports = function (req, res) {
 						return a + b
 					})
 			})
+		}
 	}
 
 	projectDirs.forEach(function (projectDir) {
@@ -77,22 +129,30 @@ module.exports = function (req, res) {
 				render()
 			}
 			else
-				getNumberOfCommits(
-					absoluteProjectPath,
-					function (error, numberOfCommits) {
+				getFavicon(absoluteProjectPath, function (faviconPath) {
+					console.log(absoluteProjectPath)
+					getNumberOfCommits(
+						absoluteProjectPath,
+						function (error, numberOfCommits) {
 
-						if (error)
-							numberOfCommits = null
+							var project = {
+								id: projectDir,
+								name: projectDir
+							}
 
-						projects.push({
-							id: projectDir,
-							name: projectDir,
-							numberOfCommits: numberOfCommits
-						})
+							project.numberOfCommits = error ? null : numberOfCommits
+							project.faviconPath = faviconPath ?
+							                      path.relative(projectsDir,
+								                      faviconPath) :
+							                      false
 
-						render()
-					}
-				)
+
+							projects.push(project)
+
+							render()
+						}
+					)
+				})
 		})
 	})
 }

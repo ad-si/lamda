@@ -1,5 +1,7 @@
 name: Boilerplate
 version: 0.0.1
 keywords:
-  - boilerplate
-
+  - lamda
+  - git
+dependencies:
+  findit: ^2.0.0

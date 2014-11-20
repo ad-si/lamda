@@ -10,10 +10,18 @@ block content
 	table
 		thead
 			tr
+				th Favicon
 				th Name
 				th Number of commits
+				th Language
+				th Number of files
 		tbody
 			each project in projects
 				tr
+					td.faviconCell
+						if project.faviconPath
+							img.projectFavicon(src=project.faviconPath)
 					td= project.name
 					td= project.numberOfCommits || ''
+					td
+					td
