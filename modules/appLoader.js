@@ -1,6 +1,6 @@
 var fs = require('fs'),
-    path = require('path'),
-    yaml = require('js-yaml')
+	path = require('path'),
+	yaml = require('js-yaml')
 
 
 module.exports = function (rootApp, locals) {
@@ -19,18 +19,16 @@ module.exports = function (rootApp, locals) {
 	appNames.forEach(function (appName) {
 
 		var appPath = path.join(global.projectURL, 'apps', appName),
-		    appModule,
-		    packageContent
+			appModule,
+			packageContent
 
 		try {
 			appModule = require(appPath)
 		}
 		catch (error) {
 			console.error(
-				'While loading the app',
-				'"' + appName + '"',
-				'following error occured:',
-				error
+				'The error', error,
+				'occured While loading the app:', appName
 			)
 			return
 		}
