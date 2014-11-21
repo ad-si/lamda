@@ -10,7 +10,7 @@ block content
 	table
 		thead
 			tr
-				th Favicon
+				th Icon
 				th Name
 				th Number of commits
 				th Language
@@ -19,9 +19,11 @@ block content
 			each project in projects
 				tr
 					td.faviconCell
-						if project.faviconPath
-							img.projectFavicon(src=project.faviconPath)
-					td= project.name
+						img.projectFavicon(
+						src=project.faviconPath,
+						onerror='this.parentNode.removeChild(this)'
+						)
+					td(title=project.path)= project.name
 					td= project.numberOfCommits || ''
 					td
 					td

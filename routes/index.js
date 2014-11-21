@@ -1,9 +1,8 @@
 var fs = require('fs'),
 	path = require('path'),
-	yaml = require('js-yaml'),
 	nodegit = require('nodegit'),
 	findit = require('findit'),
-
+	
 	projectsDir = path.join(global.baseURL, 'projects')
 
 
@@ -41,69 +40,31 @@ function getNumberOfCommits (repoDir, callback) {
 	})
 }
 
-function getFavicon (repoDir, callback) {
 
-	var faviconPaths = [
-			'img/favicon.png',
-			'favicon.ico',
-			'images/favicon.png'
-		],
-		faviconPath = false,
-		foundFavicon
-
-
-	function startFindit () {
-
-		var finder = findit(repoDir)
-
-		finder.on('directory', function (dir, stat, stop) {
-			if (path.relative(repoDir, dir).split(path.sep).length > 3){
-				finder.stop()
-				callback()
-			}
-		})
-
-		finder.on('file', function (filePath) {
-			if (path.basename(filePath) === 'favicon.png' ||
-			    path.basename(filePath) === 'favicon.ico') {
-
-				finder.stop()
-				callback(filePath)
-			}
-		})
-
-		finder.on('end', function () {
-			callback()
-		})
-	}
-
-	foundFavicon = faviconPaths.some(function (relFaviconPath) {
-
-		faviconPath = path.join(repoDir, relFaviconPath)
-
-		return fs.existsSync(faviconPath)
-	})
-
-	if (!foundFavicon)
-		startFindit()
-	else
-		callback(faviconPath)
+try {
+	projectsDir = fs.readlinkSync(path.join(global.baseURL, 'projects'))
+}
+catch (error) {
+	if (error.code !== 'EINVAL')
+		throw new Error(error)
 }
 
 module.exports = function (req, res) {
 
-	var projectDirs = fs.readdirSync(projectsDir),
-		projectsCounter = projectDirs.length,
-		projects = []
+	var projectsCounter = 0,
+		projects = [],
+		traversedTree = false
 
 
 	function render () {
 
-		if (projects.length === projectsCounter) {
+		if (traversedTree && projects.length === projectsCounter) {
 
 			res.render('index', {
 				page: 'Projects',
-				projects: projects.reverse(),
+				projects: projects.sort(function (a, b) {
+					return b.numberOfCommits - a.numberOfCommits
+				}),
 				numberOfCommits: projects
 					.map(function (project) {
 						return project.numberOfCommits
@@ -115,44 +76,90 @@ module.exports = function (req, res) {
 		}
 	}
 
-	projectDirs.forEach(function (projectDir) {
 
-		var absoluteProjectPath = path.join(projectsDir, projectDir)
+	var repoFinder = findit(projectsDir)
+
+	repoFinder.on('directory', function (dirPath, stat, stop) {
+
+		var baseName = path.basename(dirPath),
+			ignoreList = [
+				'node_modules',
+				'bower_components',
+				'components',
+				'plugins',
+				'public',
+				'src',
+				'source',
+				'include',
+				'core',
+				'bin',
+				'lib',
+				'libs',
+				'build',
+				'example',
+				'examples',
+				'trunk',
+				'misc',
+				'js',
+				'jscripts',
+				'scripts',
+				'css',
+				'img',
+				'gems',
+				'thumbs',
+				'cache'
+			],
+			invalidName,
+			repoPath
 
 
-		fs.lstat(absoluteProjectPath, function (error, stats) {
+		ignoreList = ignoreList.concat(global.config.Projects.ignore)
 
-			if (error) throw new Error(error)
+		invalidName = ignoreList.some(function (toIgnore) {
+			return baseName === toIgnore
+		})
 
-			if (!stats.isDirectory()) {
-				projectsCounter--
+		if (invalidName ||
+		    (baseName[0] === '.' && baseName !== '.git')) {
+			stop()
+			return
+		}
+
+
+		if (dirPath.search(/\.git$/) === -1)
+			return
+
+		repoPath = path.dirname(dirPath)
+
+		projectsCounter++
+
+		getNumberOfCommits(repoPath, function (error, numberOfCommits) {
+
+				var relativeReoPath = path.relative(projectsDir, repoPath)
+
+				var project = {
+					id: repoPath,
+					path: repoPath,
+					name: path.basename(relativeReoPath),
+					numberOfCommits: error ? null : numberOfCommits,
+					faviconPath: path.join(relativeReoPath, 'favicon.ico')
+				}
+
+				projects.push(project)
+
 				render()
 			}
-			else
-				getFavicon(absoluteProjectPath, function (faviconPath) {
-					console.log(absoluteProjectPath)
-					getNumberOfCommits(
-						absoluteProjectPath,
-						function (error, numberOfCommits) {
+		)
 
-							var project = {
-								id: projectDir,
-								name: projectDir
-							}
+		stop()
+	})
 
-							project.numberOfCommits = error ? null : numberOfCommits
-							project.faviconPath = faviconPath ?
-							                      path.relative(projectsDir,
-								                      faviconPath) :
-							                      false
+	repoFinder.on('end', function () {
+		traversedTree = true
+		render()
+	})
 
-
-							projects.push(project)
-
-							render()
-						}
-					)
-				})
-		})
+	repoFinder.on('error', function (error) {
+		throw new Error(error)
 	})
 }
