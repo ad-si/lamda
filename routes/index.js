@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	nodegit = require('nodegit'),
 	findit = require('findit'),
-	
+
 	projectsDir = path.join(global.baseURL, 'projects')
 
 
@@ -135,14 +135,15 @@ module.exports = function (req, res) {
 
 		getNumberOfCommits(repoPath, function (error, numberOfCommits) {
 
-				var relativeReoPath = path.relative(projectsDir, repoPath)
+				var relativeRepoPath = path.relative(projectsDir, repoPath)
 
 				var project = {
 					id: repoPath,
 					path: repoPath,
-					name: path.basename(relativeReoPath),
+					link: relativeRepoPath,
+					name: path.basename(relativeRepoPath),
 					numberOfCommits: error ? null : numberOfCommits,
-					faviconPath: path.join(relativeReoPath, 'favicon.ico')
+					faviconPath: path.join(relativeRepoPath, 'favicon.ico')
 				}
 
 				projects.push(project)

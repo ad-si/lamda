@@ -23,7 +23,9 @@ block content
 						src=project.faviconPath,
 						onerror='this.parentNode.removeChild(this)'
 						)
-					td(title=project.path)= project.name
+					td(title=project.path)
+						= project.name + ' '
+						a(href=project.link) ->
 					td= project.numberOfCommits || ''
 					td
 					td
