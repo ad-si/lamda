@@ -5,7 +5,27 @@ var fs = require('fs'),
 
 module.exports = function () {
 
-	var iconPathCache = {}
+	var iconPathCache = {},
+		ignoreList = [
+			'node_modules',
+			'bower_components',
+			'components',
+			'plugins',
+			'bin',
+			'lib',
+			'libs',
+			'build',
+			'trunk',
+			'misc',
+			'js',
+			'jscripts',
+			'scripts',
+			'css',
+			'gems',
+			'thumbs',
+			'cache'
+		]
+
 
 	return function (request, response, next) {
 
@@ -15,7 +35,6 @@ module.exports = function () {
 			absRepoPath,
 			stream,
 			finder,
-			ignoreList,
 			invalidName
 
 
@@ -28,7 +47,13 @@ module.exports = function () {
 					'Content-Type': 'image/svg+xml'
 				})
 
+
 			stream = fs.createReadStream(faviconPath)
+			stream.on('error', function(error){
+				console.error(error)
+				delete iconPathCache[request.url]
+				searchFavicon()
+			})
 			stream.pipe(response)
 		}
 
@@ -40,17 +65,8 @@ module.exports = function () {
 				.send()
 		}
 
+		function searchFavicon(){
 
-		if (request.url.search(/favicon.ico$/) === -1)
-			next()
-
-		else if (iconPathCache[request.url] === false)
-			noFavicon()
-
-		else if (iconPathCache[request.url])
-			sendFavicon(iconPathCache[request.url])
-
-		else {
 			absRepoPath = path.join(
 				global.baseURL, 'projects', path.dirname(request.url)
 			)
@@ -73,26 +89,6 @@ module.exports = function () {
 				sendFavicon(faviconPath)
 
 			else {
-
-				ignoreList = [
-					'node_modules',
-					'bower_components',
-					'components',
-					'plugins',
-					'bin',
-					'lib',
-					'libs',
-					'build',
-					'trunk',
-					'misc',
-					'js',
-					'jscripts',
-					'scripts',
-					'css',
-					'gems',
-					'thumbs',
-					'cache'
-				]
 
 				finder = findit(absRepoPath)
 
@@ -132,5 +128,18 @@ module.exports = function () {
 				})
 			}
 		}
+
+
+		if (request.url.search(/favicon.ico$/) === -1)
+			next()
+
+		else if (iconPathCache[request.url] === false)
+			noFavicon()
+
+		else if (iconPathCache[request.url])
+			sendFavicon(iconPathCache[request.url])
+
+		else
+			searchFavicon()
 	}
 }
