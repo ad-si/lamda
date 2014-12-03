@@ -19,18 +19,17 @@ block content
 
 		br
 
-		if view === compact
+		if view == 'wide'
 			each thing in things
 				div
 					span= thing.name
 					br
 					if thing.image
-						a(href=thing.rawImage)
+						a(href=thing.url)
 							img(src=thing.image)
-
 		else
 			each thing in things
 				div
 					if thing.image
-						a(href=thing.rawImage)
+						a(href=thing.url)
 							img(src=thing.image)

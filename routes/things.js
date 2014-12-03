@@ -227,6 +227,7 @@ module.exports = function (req, response) {
 
 					thing.image = path.join('/', imageThumbnailPath)
 					thing.rawImage = path.join('/things', imagePath)
+					thing.url = path.join('/things', thingDir)
 					things.push(thing)
 
 					if (things.length === numberOfThings)

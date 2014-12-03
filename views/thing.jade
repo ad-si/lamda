@@ -1,0 +1,37 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/things/public/index.css')
+
+block content
+
+	- var idName = thing.id.replace(/_/g,' ').replace(/-/g, ' - ')
+
+	h2= thing.name  || idName
+
+	br
+
+	dl
+	each value, key in thing
+		if key !== 'id' && key !== 'images' && key !== 'name'
+			dt= key[0].toUpperCase() + key.slice(1) + ':'
+
+			if (value instanceof Date)
+				dd= value.toJSON().replace('T',' ').replace('Z','')
+
+			else if typeof value == 'object'
+				dd!= JSON.stringify(value, null, '<br>').replace(/"/g, '').slice(6,-1)
+
+			else
+				dd= value
+
+			br
+
+	br
+
+	if thing.images
+		.images
+			each imagePath in thing.images
+				if imagePath
+					.image
+						img(src=imagePath)
