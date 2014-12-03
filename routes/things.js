@@ -18,6 +18,38 @@ fs.mkdir(path.join(thumbsDirectory, 'things'), function (error) {
 })
 
 
+function getCoverImage (images){
+
+	// Try to load one of the default images,
+	// otherwise choose a random one
+
+	var defaultNames = [
+			'overview',
+			'front',
+			'index',
+			'top'
+		],
+		coverImage = images[0] || null
+
+
+	defaultNames.some(function(name){
+		return images.some(function(image){
+
+			var baseName = path.basename(image, '.png')
+
+			if (baseName === name){
+				coverImage = image
+				return true
+			}
+
+			return false
+		})
+	})
+
+	return coverImage
+}
+
+
 function callRenderer (res, things, view) {
 
 	res.render('index', {
@@ -26,7 +58,7 @@ function callRenderer (res, things, view) {
 			a = a.dateOfPurchase || 0
 			b = b.dateOfPurchase || 0
 
-			return b - a
+			return new Date(b) - new Date(a)
 		}),
 		view: view,
 		fortune: things
@@ -62,7 +94,6 @@ function callRenderer (res, things, view) {
 module.exports = function (req, response) {
 
 	var view = (req.query.view === 'wide') ? 'wide' : 'standard',
-		defaultNames = ['front', 'overview', 'index', 'top'],
 		things = []
 
 
@@ -145,12 +176,17 @@ module.exports = function (req, response) {
 
 				loadFiles(function (error, images, indexData) {
 
-					var imagePath = path.join(thingDir, (images[0] || '')),
-						imageThumbnailPath = path.join(
-							'thumbs',
-							'things',
-							imagePath
-						)
+					var imagePath,
+						imageThumbnailPath,
+						coverImage = getCoverImage(images)
+
+
+					imagePath = path.join(thingDir, coverImage)
+					imageThumbnailPath = path.join(
+						'thumbs',
+						'things',
+						imagePath
+					)
 
 
 					if (error) {
