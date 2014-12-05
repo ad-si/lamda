@@ -2,20 +2,36 @@
 
 ## Schema
 
-Photos must be saved in event directories which are in the corresponding years directories.
+Photos must be saved in one of the following file structures or a combination of them.
+Dates must have the following format: `YYYY-MM-DD`
 
-```
-photos
-├── year
-│   ├── date_event-name
-│   │   ├── photo-01.jpg
-│   │   ├── photo-02.jpg
-│   │   ├── photo-03.jpg
-├── year
-│   ├── date_event-name
-│   │   ├── photo-01.jpg
-│   │   ├── photo-02.jpg
-│   │   ├── photo-03.jpg
-…
-```
-
+- Events only
+		photos
+		├── date_event-name
+		│   ├── photo-01.jpg
+		│   ├── photo-02.jpg
+		…
+- Year directories
+		photos
+		├── year
+		│   ├── date_event-name
+		│   │   ├── photo-01.jpg
+		│   │   ├── photo-02.jpg
+		…
+- Year & month directories
+		photos
+		├── year
+		|   ├── month
+		│   |   ├── date_event-name
+		│   |   │   ├── photo-01.jpg
+		│   |   │   ├── photo-02.jpg
+		…
+- Year, month & day directories
+		photos
+		├── year
+		|   ├── month
+		|   |   ├── day
+		│   |   |   ├── event-name
+		│   |   |   │   ├── photo-01.jpg
+		│   |   |   │   ├── photo-02.jpg
+		…

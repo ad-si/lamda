@@ -11,7 +11,7 @@ block content
 			if year.events
 				each event in year.events
 					div.event
-						p: a= event.slice(11).replace(/[-_]/g, ' ')
-						p.small= event.slice(0,10)
+						p: a(href=event.url)= event.name
+						p.small= event.date
 		br
 		br

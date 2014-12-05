@@ -35,7 +35,13 @@ function getEventsForYear (year) {
 		.then(function (events) {
 			return {
 				year: Number(year),
-				events: events
+				events: events.map(function (event) {
+					return {
+						name: event.slice(11).replace(/[-_]/g, ' '),
+						date: event.slice(0, 10),
+						url: '/photos/events/' + event
+					}
+				})
 			}
 		})
 }
