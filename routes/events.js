@@ -17,23 +17,17 @@ events.period = function (req, res, next) {
 		yearDir = path.join(photosDir, year),
 		month = req.params.month,
 		monthDir = month ? path.join(photosDir, month) : null,
-		day = req.params.day || '',
+		day = req.params.day,
 		dayDir = day ? path.join(photosDir, day) : null
 
 
 	utils
-		.getFiles(yearDir)
-		.then(utils.filterMonths)
-		.then()
-		.then(utils.filterEvents)
-		.then(function (events) {
-			return [utils.createYearObject(year, events)]
-		})
-		.then(function (yearObjects) {
+		.getMonthsForYear(year, photosDir)
+		.then(function (yearObject) {
 
 			res.render('index', {
 				page: 'Photos',
-				years: yearObjects || []
+				years: [yearObject]
 			})
 		})
 		.catch(function (error) {

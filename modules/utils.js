@@ -143,10 +143,10 @@ function getMonthsForYear (year, photosDirectory) {
 				return getEventsForMonth(year, month, photosDirectory)
 			}))
 		})
-		.then(function(months){
+		.then(function (months) {
 			return {
 				year: year,
-				url: yearDirectory,
+				url: '/photos/' + year,
 				months: months
 			}
 		})
