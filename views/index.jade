@@ -4,14 +4,24 @@ block styles
 	link(rel='stylesheet', href='/assets/photos/public/index.css')
 
 block content
-	each year in years
-		div
-			h2: a(href=year.url)= year.year
-			hr
-			if year.months
-				each month in year.months
-					div.month
-						p: a(href=month.url)= month.month
-						//p.small= event.date
-		br
-		br
+	if years
+		each year in years
+			div
+				h2: a(href=year.url)= year.year
+				hr
+				if year.months
+					each month in year.months
+						div.month
+							p: a(href=month.url)= month.month
+							//p.small= event.date
+			br
+			br
+
+	if month
+		h2= month
+		hr
+
+		each event in events
+			div.event
+				p: a(href=event.url)= event.name
+				p.small= event.date

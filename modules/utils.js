@@ -87,7 +87,7 @@ function createPeriodObject (period, events) {
 
 			return {
 				name: name.replace(/[-_]/g, ' '),
-				date: date,
+				date: date.toISOString().slice(0,10),
 				url: util.format(
 					'/photos/%s/%s/%s/%s',
 					date.getFullYear(),
