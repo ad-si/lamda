@@ -6,12 +6,12 @@ block styles
 block content
 	each year in years
 		div
-			h2= year.year
+			h2: a(href=year.url)= year.year
 			hr
-			if year.events
-				each event in year.events
-					div.event
-						p: a(href=event.url)= event.name
-						p.small= event.date
+			if year.months
+				each month in year.months
+					div.month
+						p: a(href=month.url)= month.month
+						//p.small= event.date
 		br
 		br

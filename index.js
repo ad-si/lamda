@@ -10,9 +10,9 @@ var fs = require('fs'),
 app.set('views', __dirname + '/views')
 
 app.get('/', index)
-app.get('/:year', events.year)
-app.get('/:year/:month', events.month)
-app.get('/:year/:month/:day', events.day)
+app.get('/:year', events.period)
+app.get('/:year/:month', events.period)
+app.get('/:year/:month/:day', events.period)
 app.get('/:year/:month/:day/:event', events.event)
 
 module.exports = app

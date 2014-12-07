@@ -3,7 +3,6 @@
 ## Schema
 
 Photos must be saved in one of the following file structures or a combination of them.
-Dates must have the following format: `YYYY-MM-DD`
 
 - Events only
 		photos
@@ -35,3 +34,5 @@ Dates must have the following format: `YYYY-MM-DD`
 		│   |   |   │   ├── photo-01.jpg
 		│   |   |   │   ├── photo-02.jpg
 		…
+
+The date is always the date of the oldest photo in the collection and must have the following format: `YYYY-MM-DD` (e.g. 2014-03-27)

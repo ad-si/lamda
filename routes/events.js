@@ -2,6 +2,8 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 
+	utils = require('../modules/utils'),
+
 	events = {},
 	photosDir = path.join(global.baseURL, 'photos')
 
@@ -9,28 +11,35 @@ var fs = require('fs'),
 require('es6-promise').polyfill()
 
 
-events.year = function (req, res, next) {
+events.period = function (req, res, next) {
 
-	var yearDir = path.join(photosDir, req.params.year)
-
-	res.render('year', {
-		page: 'Year'
-	})
-}
-
-events.month = function (req, res, next) {
-
-	res.render('month', {
-		page: 'Month'
-	})
-}
+	var year = req.params.year,
+		yearDir = path.join(photosDir, year),
+		month = req.params.month,
+		monthDir = month ? path.join(photosDir, month) : null,
+		day = req.params.day || '',
+		dayDir = day ? path.join(photosDir, day) : null
 
 
-events.day = function (req, res, next) {
+	utils
+		.getFiles(yearDir)
+		.then(utils.filterMonths)
+		.then()
+		.then(utils.filterEvents)
+		.then(function (events) {
+			return [utils.createYearObject(year, events)]
+		})
+		.then(function (yearObjects) {
 
-	res.render('day', {
-		page: 'Day'
-	})
+			res.render('index', {
+				page: 'Photos',
+				years: yearObjects || []
+			})
+		})
+		.catch(function (error) {
+			console.error(error)
+			next()
+		})
 }
 
 
