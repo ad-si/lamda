@@ -26,6 +26,7 @@ gift:
   by: Name
   for: String
 id: Id
+importer: Object
 model: String
 name: String
 note: String

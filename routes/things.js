@@ -5,7 +5,7 @@ var fs = require('fs'),
 	gm = require('gm'),
 
 	util = require('../../../util'),
-	imageResizer = require('./imageResizer'),
+	imageResizer = require('./../../../modules/imageResizer'),
 
 	thingsDir = path.join(global.baseURL, 'things'),
 	thumbsDirectory = path.join(global.projectURL, 'thumbs')
@@ -217,7 +217,10 @@ module.exports = function (req, response) {
 									),
 									absThumbnailPath: path.join(
 										global.projectURL, imageThumbnailPath
-									)
+									),
+									callback: function(absThumbnailPath){
+
+									}
 								})
 							}
 						)

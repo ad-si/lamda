@@ -4,9 +4,12 @@ var fs = require('fs'),
 	path = require('path'),
 	things = require('./routes/things'),
 	thing = require('./routes/thing'),
+
+	imageResizer = require('./../../modules/imageResizer'),
 	app = express()
 
 
+//app.use(imageResizer.middleware)
 app.use(express.static(path.join(global.baseURL, 'things')))
 
 app.set('views', __dirname + '/views')
