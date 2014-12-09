@@ -1,5 +1,6 @@
 var fs = require('fs'),
 	path = require('path'),
+	url = require('url'),
 
 	yaml = require('js-yaml'),
 	gm = require('gm'),
@@ -18,7 +19,7 @@ fs.mkdir(path.join(thumbsDirectory, 'things'), function (error) {
 })
 
 
-function getCoverImage (images){
+function getCoverImage (images) {
 
 	// Try to load one of the default images,
 	// otherwise choose a random one
@@ -32,12 +33,12 @@ function getCoverImage (images){
 		coverImage = images[0] || null
 
 
-	defaultNames.some(function(name){
-		return images.some(function(image){
+	defaultNames.some(function (name) {
+		return images.some(function (image) {
 
 			var baseName = path.basename(image, '.png')
 
-			if (baseName === name){
+			if (baseName === name) {
 				coverImage = image
 				return true
 			}
@@ -211,26 +212,35 @@ module.exports = function (req, response) {
 									return
 								}
 
+								//TODO before re-adding:
+								// ImageResizer must allow to add several
+								// callbacks or to add them lazily
+
+								/*
 								imageResizer.addToQueue({
 									absPath: path.join(
 										thingsDir, imagePath
 									),
 									absThumbnailPath: path.join(
 										global.projectURL, imageThumbnailPath
-									),
-									callback: function(absThumbnailPath){
-
-									}
+									)
 								})
+								*/
 							}
 						)
 
 					})
 
 
-					thing.image = path.join('/', imageThumbnailPath)
-					thing.rawImage = path.join('/things', imagePath)
-					thing.url = path.join('/things', thingDir)
+					thing.image = url.format({
+						pathname: '/things/' + imagePath,
+						query: {
+							width: 200,
+							height: 200
+						}
+					})
+					thing.rawImage = '/things/' + imagePath
+					thing.url = '/things/' + thingDir
 					things.push(thing)
 
 					if (things.length === numberOfThings)
