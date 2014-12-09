@@ -1,0 +1,11 @@
+extends ../../../views/layout
+
+block styles
+	link(rel='stylesheet', href='/assets/photos/public/index.css')
+
+block content
+	h2= event.name
+	hr
+
+	each photo in event.photos
+		img.photo(src=photo.url + '?width=300&height=200', alt=photo.name)

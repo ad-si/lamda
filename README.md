@@ -4,13 +4,13 @@
 
 Photos must be saved in one of the following file structures or a combination of them.
 
-- Events only
+- Events only (not yet supported)
 		photos
 		├── date_event-name
 		│   ├── photo-01.jpg
 		│   ├── photo-02.jpg
 		…
-- Year directories
+- Year directories (not yet supported)
 		photos
 		├── year
 		│   ├── date_event-name
@@ -25,7 +25,7 @@ Photos must be saved in one of the following file structures or a combination of
 		│   |   │   ├── photo-01.jpg
 		│   |   │   ├── photo-02.jpg
 		…
-- Year, month & day directories
+- Year, month & day directories (not yet supported)
 		photos
 		├── year
 		|   ├── month

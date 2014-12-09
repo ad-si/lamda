@@ -21,9 +21,6 @@ module.exports = function (req, res, next) {
 			}))
 		})
 		.then(function (years) {
-
-			console.log(years)
-
 			res.render('index', {
 				page: 'Photos',
 				years: years || []

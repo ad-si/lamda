@@ -18,7 +18,10 @@ block content
 			br
 
 	if month
-		h2= month
+		h2
+			a(href=yearUrl)= year
+			| -
+			= month
 		hr
 
 		each event in events

@@ -1,6 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	util = require('util'),
+	helper = require('../../../util'),
 
 	filterMonths,
 	filterDays
@@ -48,6 +49,10 @@ function filterYears (list) {
 	})
 }
 
+function filterImages (list) {
+	return list.filter(helper.isImage)
+}
+
 filterMonths = filterTwoDigitDirs
 filterDays = filterTwoDigitDirs
 
@@ -61,13 +66,14 @@ function filterEvents (files) {
 function getFiles (directory) {
 	return new Promise(function (fulfill, reject) {
 		fs.readdir(directory, function (error, files) {
-			if (error)
-				if (error.code === 'ENOENT') {
-					//console.error(error)
+			if (error) {
+				if (error.code === 'ENOENT')
 					fulfill([])
-				}
 				else
 					reject(error)
+
+				console.log(error)
+			}
 			else
 				fulfill(files)
 		})
@@ -75,8 +81,6 @@ function getFiles (directory) {
 }
 
 function createPeriodObject (period, events) {
-
-	console.log(period, events)
 
 	var periodObject = {
 		url: '/photos/' + period.replace('-', '/'),
@@ -87,7 +91,7 @@ function createPeriodObject (period, events) {
 
 			return {
 				name: name.replace(/[-_]/g, ' '),
-				date: date.toISOString().slice(0,10),
+				date: date.toISOString().slice(0, 10),
 				url: util.format(
 					'/photos/%s/%s/%s/%s',
 					date.getFullYear(),
@@ -109,6 +113,19 @@ function createPeriodObject (period, events) {
 		periodObject.day = getDay(period)
 
 	return periodObject
+}
+
+function getEventDirectory (year, month, day, eventName, photosDirectory) {
+
+	eventName = util.format('%s-%s-%s_%s', year, month, day, eventName)
+
+	return path.join(photosDirectory, year, month, eventName)
+}
+
+function getImagesForEvent (year, month, day, eventName, photosDirectory) {
+	return getFiles(
+		getEventDirectory(year, month, day, eventName, photosDirectory)
+	)
 }
 
 function getEventsForMonth (year, month, photosDirectory) {
@@ -154,11 +171,14 @@ function getMonthsForYear (year, photosDirectory) {
 
 module.exports = {
 	getFiles: getFiles,
+	getEventDirectory: getEventDirectory,
+	getImagesForEvent: getImagesForEvent,
 	getMonthsForYear: getMonthsForYear,
 	getEventsForMonth: getEventsForMonth,
 	filterYears: filterYears,
 	filterMonths: filterMonths,
 	filterDays: filterDays,
 	filterEvents: filterEvents,
+	filterImages: filterImages,
 	createPeriodObject: createPeriodObject
 }

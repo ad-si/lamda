@@ -2,6 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 
+	util = require('util'),
 	utils = require('../modules/utils'),
 
 	events = {},
@@ -29,6 +30,9 @@ events.period = function (req, res, next) {
 			.getEventsForMonth(year, month, photosDirectory)
 			.then(function (monthObject) {
 				monthObject.page = 'Photos'
+				monthObject.year = year
+				monthObject.yearUrl = '/photos/' + year
+
 				res.render('index', monthObject)
 			})
 			.catch(function (error) {
@@ -55,9 +59,38 @@ events.period = function (req, res, next) {
 
 events.event = function (req, res, next) {
 
-	res.render('event', {
-		page: 'Event'
-	})
+	var year = req.params.year,
+		month = req.params.month,
+		day = req.params.day,
+		eventName = req.params.event
+
+
+	utils
+		.getImagesForEvent(year, month, day, eventName, photosDirectory)
+		.then(utils.filterImages)
+		.then(function (photos) {
+			return photos.map(function (photoName) {
+				return {
+					name: photoName,
+					url: path.join(
+						'/photos', year, month, util.format(
+							'%s-%s-%s_%s', year, month, day, eventName
+						), photoName
+					)
+				}
+			})
+		})
+		.then(function (photos) {
+			res.render('event', {
+				page: 'Event',
+				event: {
+					name: eventName,
+					photos: photos
+				}
+			})
+		})
+
+
 }
 
 module.exports = events
