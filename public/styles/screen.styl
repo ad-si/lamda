@@ -97,6 +97,7 @@ menu
 .spacer
 	padding navBarHeight 0 0 0
 
+
 .content
 	min-height 100%
 
@@ -104,13 +105,13 @@ menu
 #navBar
 	z-index 1
 	width 100%
-	height navBarHeight
 	line-height 30px
 	background-color rgba(bg, 0.8)
 	position fixed
 	top 0
 
 	ul
+		display inline-block
 		list-style-type none
 	li
 		display inline-block
@@ -214,3 +215,11 @@ menu
 
 @import './settings'
 @import './_console'
+
+@media (max-width: 800px)
+	.spacer
+		padding (navBarHeight * 2) 0 0
+
+@media (max-width: 600px)
+	.spacer
+		padding (navBarHeight * 3) 0 0 0
