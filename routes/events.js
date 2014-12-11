@@ -70,20 +70,35 @@ events.event = function (req, res, next) {
 		.then(utils.filterImages)
 		.then(function (photos) {
 			return photos.map(function (photoName) {
+
+
 				return {
 					name: photoName,
-					url: path.join(
-						'/photos', year, month, util.format(
-							'%s-%s-%s_%s', year, month, day, eventName
-						), photoName
-					)
+					url: [
+						'/photos', year, month, day, eventName,
+						photoName.replace(/\.(jpg|png)$/i, '') +
+						'?filetype=' +
+						path.extname(photoName).slice(1).toLowerCase()
+					].join('/'),
+					src: [
+						'/photos',
+						year,
+						month,
+						util.format('%s-%s-%s_%s', year, month, day, eventName),
+						photoName
+					].join('/')
 				}
 			})
 		})
 		.then(function (photos) {
 			res.render('event', {
 				page: 'Event',
+				maxWidth: 300,
+				maxHeight: 300,
 				event: {
+					year: year,
+					month: month,
+					day: day,
 					name: eventName,
 					photos: photos
 				}

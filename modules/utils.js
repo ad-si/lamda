@@ -72,7 +72,7 @@ function getFiles (directory) {
 				else
 					reject(error)
 
-				console.log(error)
+				console.error(error)
 			}
 			else
 				fulfill(files)

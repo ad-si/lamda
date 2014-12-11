@@ -4,14 +4,15 @@ var fs = require('fs'),
 	path = require('path'),
 	index = require('./routes/index'),
 	events = require('./routes/events'),
+	photo = require('./routes/photo'),
 
-	// TODO: Move imageResizer to lamda
-	imageResizer = require('../Things/routes/imageResizer')
+	imageResizer = require('../../modules/imageResizer')
 
 	app = express()
 
 
 app.use(imageResizer.middleware('photos'))
+// TODO: Use dedicated subpath for image-loading
 app.use(express.static(path.join(global.baseURL, 'photos')))
 app.set('views', __dirname + '/views')
 
@@ -21,5 +22,6 @@ app.get('/:year', events.period)
 app.get('/:year/:month', events.period)
 app.get('/:year/:month/:day', events.period)
 app.get('/:year/:month/:day/:event', events.event)
+app.get('/:year/:month/:day/:event/:photo', photo)
 
 module.exports = app

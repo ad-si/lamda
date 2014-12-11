@@ -4,8 +4,20 @@ block styles
 	link(rel='stylesheet', href='/assets/photos/public/index.css')
 
 block content
-	h2= event.name
+	h2
+		= event.year + '-' || ''
+		= event.month + '-' || ''
+		= event.day || ''
+		= ' '
+		= event.name
+		|  (
+		= event.photos.length
+		|  photos)
 	hr
 
 	each photo in event.photos
-		img.photo(src=photo.url + '?width=300&height=200', alt=photo.name)
+		a(href=photo.url)
+			img.photo(
+			src=photo.src + '?width=' + maxWidth + '&height=' + maxHeight,
+			alt=photo.name
+			)
