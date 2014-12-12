@@ -3,9 +3,9 @@ var fs = require('fs'),
 	cpus = require('os').cpus(),
 	path = require('path'),
 	url = require('url'),
-	mkdirp = require('mkdirp')
+	mkdirp = require('mkdirp'),
 
-utils = require('../util.js'),
+	utils = require('../util.js'),
 
 	idleQueue = [],
 	workers = []

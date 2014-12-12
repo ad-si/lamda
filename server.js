@@ -91,22 +91,22 @@ app.get('/' + global.config.owner.username, profile)
 for (name in loadedApps) {
 	if (loadedApps.hasOwnProperty(name)) {
 
-
-		var publicDir = path.join('/assets', name, 'public')
-
 		app.use(
-			publicDir,
+			'/assets/' + name + '/public',
 			stylus.middleware({
 				src: path.join(loadedApps[name].lamda.path, 'public'),
 				compile: function (string, path) {
 					return util.compileStyl(string, path, global.config.theme)
 				}
-			})
+			}),
+			express.static(path.join(loadedApps[name].lamda.path, 'public'))
 		)
 
 		app.use(
-			publicDir,
-			express.static(path.join(loadedApps[name].lamda.path, 'public'))
+			'/assets/' + name + '/modules',
+			express.static(
+				path.join(loadedApps[name].lamda.path, 'node_modules')
+			)
 		)
 	}
 }
