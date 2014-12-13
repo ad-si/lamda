@@ -3,7 +3,18 @@ var fs = require('fs'),
 	yaml = require('js-yaml')
 
 
-module.exports = function (req, res) {
+module.exports.one = function(req,res){
+	var bookId = req.params.book,
+		book = {}
+
+	res.render('index', {
+		page: 'Books',
+		book: book
+	})
+}
+
+
+module.exports.all = function (req, res) {
 
 	var books = [],
 	//files = fs.readdirSync(global.baseURL + '/books'),

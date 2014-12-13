@@ -8,6 +8,7 @@ var fs = require('fs'),
 
 app.set('views', __dirname + '/views')
 
-app.get('/', books)
+app.get('/', books.all)
+app.get('/:book', books.one)
 
 module.exports = app
