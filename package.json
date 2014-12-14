@@ -6,7 +6,6 @@
     "books"
   ],
   "dependencies": {
-    "epubjs": "^0.2.3",
-    "jszip": "^2.4.0"
+    "epubjs": "^0.2.3"
   }
 }

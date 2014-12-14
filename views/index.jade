@@ -4,15 +4,23 @@ block styles
 	link(rel='stylesheet', href='/assets/books/public/index.css')
 
 block content
-	if books
-		each book in books
-			div
-				img(src=book.imageSource)
-				p= book.name
-		
-	else if (book)
-		h2 Book
+	#library
+		if books
+			each book in books
+				.book
+					img(src=book.imageSource)
+					p: a(href=book.url)= book.name
+
+		else if book
+			#reader
+				#previous.arrow <
+				#bookContent
+				#next.arrow >
 
 block scripts
-	script(src='/assets/books/modules/epubjs/build/epub.min.js')
-	script(src='/assets/books/public/index.js')
+	if book
+		script(src='/assets/books/modules/epubjs/build/libs/zip.min.js')
+		script(src='/assets/books/modules/epubjs/build/epub.js')
+		script.
+			var bookUrl = '#{book.url}'
+		script(src='/assets/books/public/index.js')
