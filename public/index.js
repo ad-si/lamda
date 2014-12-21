@@ -5,7 +5,8 @@
 	var typeMap = {
 		jeans: 'pants',
 		corduroys: 'pants',
-		trousers: 'pants'
+		trousers: 'pants',
+		boxershorts: 'boxers'
 	}
 
 	function hideSpinner (event) {

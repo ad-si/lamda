@@ -19,7 +19,13 @@ module.exports = function () {
 				response.render('thing', {
 					page: 'thing',
 					thing: {
-						name: request.params.id
+						id: request.params.id,
+						name: request
+							.params
+							.id
+							.replace(/_/g,' ')
+							.replace(/-/g, ' - ')
+						// TODO: Show images in single view
 						//images: images.map(function (imgPath) {
 						//	return path.join(imagesPath + imgPath)
 						//})
