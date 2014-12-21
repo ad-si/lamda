@@ -9,30 +9,49 @@ block content
 
 		p
 			span You own #{things.length} things worth #{fortune}€.
-
-		p
-			span= '('
+			= ' | '
 			a(href='/things') standard
-			span= ' | '
+			span= ' • '
 			a(href='/things?view=wide') wide
-			span= ')'
+
+			br
+			br
+
+			button.filter#all(title='Show all things'): span
+				| All
+			button.filter#t-shirt(title='Show only t-shirts')
+				include ../public/icons/t-shirt.svg
+			button.filter#sweater(title='Show only sweaters')
+				include ../public/icons/sweater.svg
+			button.filter#pants(title='Show only patns')
+				include ../public/icons/pants.svg
+			button.filter#shorts(title='Show only shorts')
+				include ../public/icons/shorts.svg
+
 
 		br
 
-		if view == 'wide'
-			each thing in things
-				div
-					span= thing.name
-					br
-					if thing.image
-						a(href=thing.url)
-							img(src=thing.image)
-		else
-			each thing in things
-				div
-					if thing.image
-						a(href=thing.url)
-							img(src=thing.image)
+		#thingsContainer
+
+			if view == 'wide'
+				each thing in things
+					div
+						span= thing.name
+						br
+						if thing.image
+							a(href=thing.url)
+								img(src=thing.image)
+			else
+				each thing in things
+					div(data-type=thing.type)
+						if thing.image
+							a(href=thing.url)
+								img(src=thing.image)
+
+	script.
+		var things = !{JSON.stringify(things)}
 
 block scripts
+	script(src='/assets/things/modules/shaven/shaven.min.js')
+	//script(src='/assets/things/modules/table-to-json/lib/jquery.tabletojson.js')
 	script(src='/assets/things/public/index.js')

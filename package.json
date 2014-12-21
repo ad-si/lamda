@@ -1,0 +1,12 @@
+{
+  "name": "Things",
+  "version": "0.0.1",
+  "keywords": [
+    "lamda",
+    "things"
+  ],
+  "dependencies": {
+    "shaven": "^0.6.2",
+    "table-to-json": "^0.10.0"
+  }
+}
