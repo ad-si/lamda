@@ -2,6 +2,12 @@
 
 !function () {
 
+	var typeMap = {
+		jeans: 'pants',
+		corduroys: 'pants',
+		trousers: 'pants'
+	}
+
 	function hideSpinner (event) {
 		$(event.target)
 			.closest('a')
@@ -33,9 +39,13 @@
 
 		var filterType = event.delegateTarget.id
 
+
 		things
 			.filter(function (thing) {
-				return (filterType === 'all') || (thing.type === filterType)
+
+				var thingType = typeMap[thing.type] || thing.type
+
+				return (filterType === 'all') || (thingType === filterType)
 			})
 			.forEach(function (thing) {
 
@@ -52,6 +62,5 @@
 					]
 				)
 			})
-
 	})
 }()

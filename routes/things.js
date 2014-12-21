@@ -56,10 +56,10 @@ function callRenderer (res, things, view) {
 	res.render('index', {
 		page: 'things',
 		things: things.sort(function (a, b) {
-			a = a.dateOfPurchase || 0
-			b = b.dateOfPurchase || 0
+			a = new Date(a.dateOfPurchase) || 0
+			b = new Date(b.dateOfPurchase) || 0
 
-			return new Date(b) - new Date(a)
+			return b - a
 		}),
 		view: view,
 		fortune: things
@@ -68,24 +68,19 @@ function callRenderer (res, things, view) {
 			})
 			.reduce(function (previous, current) {
 
+				if (typeof previous === 'string')
+					previous = Number(previous.slice(0, -1))
 
-				if (previous) {
-					if (typeof previous === 'string')
-						previous = Number(previous.slice(0, -1))
-				}
-				else
-					previous = 0
+				previous = previous || 0
 
-				if (current) {
-					if (typeof current === 'string')
-						current = Number(current.slice(0, -1))
-				}
-				else
-					current = 0
 
-				current = previous + current
+				if (typeof current === 'string')
+					current = Number(current.slice(0, -1))
 
-				return current
+				current = current || 0
+
+
+				return previous + current
 			})
 			.toFixed(2)
 	})
@@ -217,15 +212,15 @@ module.exports = function (req, response) {
 								// callbacks or to add them lazily
 
 								/*
-								imageResizer.addToQueue({
-									absPath: path.join(
-										thingsDir, imagePath
-									),
-									absThumbnailPath: path.join(
-										global.projectURL, imageThumbnailPath
-									)
-								})
-								*/
+								 imageResizer.addToQueue({
+								 absPath: path.join(
+								 thingsDir, imagePath
+								 ),
+								 absThumbnailPath: path.join(
+								 global.projectURL, imageThumbnailPath
+								 )
+								 })
+								 */
 							}
 						)
 
