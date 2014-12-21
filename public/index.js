@@ -6,7 +6,12 @@
 		jeans: 'pants',
 		corduroys: 'pants',
 		trousers: 'pants',
-		boxershorts: 'boxers'
+		boxershorts: 'boxers',
+		'boxer shorts': 'boxers',
+		pocketknife: 'tool',
+		'pocket knife': 'tool',
+		multimeter: 'tool',
+		'digital caliper': 'tool'
 	}
 
 	function hideSpinner (event) {

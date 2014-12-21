@@ -7,29 +7,25 @@ block content
 
 	div(class= view + 'View', )
 
-		p
-			span You own #{things.length} things worth #{fortune}€.
-			= ' | '
-			a(href='/things') standard
-			span= ' • '
-			a(href='/things?view=wide') wide
-
-			br
-			br
-
-			button.filter#all(title='Show all things'): span
+		button.filter#all(title='Show all things'): span
 				| All
-			button.filter#t-shirt(title='Show only t-shirts')
-				include ../public/icons/t-shirt.svg
-			button.filter#sweater(title='Show only sweaters')
-				include ../public/icons/sweater.svg
-			button.filter#pants(title='Show only patns')
-				include ../public/icons/pants.svg
-			button.filter#shorts(title='Show only shorts')
-				include ../public/icons/shorts.svg
-			button.filter#boxers(title='Show only boxer shorts')
-				include ../public/icons/boxers.svg
+		button.filter#t-shirt(title='Show only t-shirts')
+			include ../public/icons/t-shirt.svg
+		button.filter#sweater(title='Show only sweaters')
+			include ../public/icons/sweater.svg
+		button.filter#pants(title='Show only patns')
+			include ../public/icons/pants.svg
+		button.filter#shorts(title='Show only shorts')
+			include ../public/icons/shorts.svg
+		button.filter#boxers(title='Show only boxer shorts')
+			include ../public/icons/boxers.svg
+		button.filter#tool(title='Show only tools')
+			include ../public/icons/tool.svg
 
+		a.button(href='/things') standard
+		a.button(href='/things?view=wide') wide
+
+		p#descriptionHeadline You own #{things.length} things worth #{fortune}€.
 
 		br
 
