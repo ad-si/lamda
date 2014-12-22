@@ -6,9 +6,8 @@ block styles
 block content
 
 	if song
-		- var idName = song.id.replace(/_/g,' ').replace(/-/g, ' - ')
 
-		h2= song.title || song.name  || idName
+		h2= song.title || song.name
 
 		br
 
@@ -27,15 +26,11 @@ block content
 		br
 
 		.images
-			each imagePath in song.images
-				if imagePath
+			each image in song.images
+				if image
 					.image
-						- var rawImagePath = imagePath.split('/')
-						- rawImagePath[1] = rawImagePath[2]
-						- rawImagePath[2] = 'songs'
-
-						img(src=imagePath)
-						a(href=rawImagePath.join('/')) Raw
+						img(src=image.thumbPath)
+						a(href=image.path) Raw
 
 
 
@@ -66,8 +61,8 @@ block content
 
 						td.pages
 							if song.images
-								each imagePath, index in song.images
-									if imagePath
-										a.badge(href='/sheetmusic/' + imagePath)
+								each image, index in song.images
+									if image
+										a.badge(href=image.path)
 											= (index + 1)
 										= ' '

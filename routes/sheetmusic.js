@@ -8,11 +8,18 @@ var fs = require('fs'),
 	thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
 
 
-function getImagesFromFilesForSong(files, songName){
+function getImagesFromFilesForSong (files, songName) {
 	return files
 		.filter(util.isImage)
 		.map(function (fileName) {
-			return path.join('/', songName, fileName)
+
+			var path = '/sheetmusic/' + songName + '/' + fileName,
+				thumbPath = '/thumbs' + path
+
+			return {
+				path: path,
+				thumbPath: thumbPath
+			}
 		})
 }
 
@@ -53,10 +60,12 @@ function createThumbnails (songName, images) {
 
 module.exports.song = function (req, res) {
 
-	var requestedSongPath = path.join(songsPath, req.params.name),
+	var songId = req.params.name,
+		requestedSongPath = path.join(songsPath, songId),
 		files = fs.readdirSync(requestedSongPath),
 		imagesPath = '/sheetmusic/songs',
-		images = getImagesFromFilesForSong(files, req.params.name)
+		images = getImagesFromFilesForSong(files, songId)
+
 
 	function renderPage () {
 
@@ -64,10 +73,9 @@ module.exports.song = function (req, res) {
 			res.render('index', {
 				page: 'sheetmusic',
 				song: {
-					id: req.params.name,
-					images: images.map(function (imgPath) {
-						return path.join(imagesPath + imgPath)
-					})
+					id: songId,
+					name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
+					images: images
 				}
 			})
 
@@ -92,8 +100,9 @@ module.exports.song = function (req, res) {
 	}
 
 
-	if (!createThumbnails(req.params.name, images))
-		imagesPath = '/thumbs/sheetmusic'
+	// TODO: Repair check if thumbnail exists
+	// if (!createThumbnails(req.params.name, images))
+	//      imagesPath = '/thumbs/sheetmusic'
 
 	renderPage()
 }
@@ -180,16 +189,15 @@ module.exports.raw = function (req, res) {
 		images = getImagesFromFilesForSong(files, req.params.name)
 
 
-	if (!createThumbnails(req.params.name, images))
-		imagesPath = '/thumbs/sheetmusic'
+	// TODO: Repair check if thumbnail exists
+	// if (!createThumbnails(req.params.name, images))
+	//	imagesPath = '/thumbs/sheetmusic'
 
 	res.render('raw', {
 		page: 'raw',
 		song: {
 			id: req.params.name,
-			images: images.map(function (imgPath) {
-				return path.join(imagesPath + imgPath)
-			})
+			images: images
 		},
 		style: req.query.style
 	})

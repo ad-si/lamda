@@ -23,7 +23,7 @@ head
 		}
 
 		img {
-			border-color: rgb(255,100,0);
+			border-color: rgb(255, 100, 0);
 			border-style: solid;
 			padding: 2px;
 		}
@@ -49,6 +49,6 @@ head
 		}
 
 body(class=style)
-	each imagePath in song.images
-		if imagePath
-			img(src=imagePath)
+	each image in song.images
+		if image
+				img(src=(image.thumbPath || image.path))
