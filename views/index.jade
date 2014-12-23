@@ -11,9 +11,11 @@ block content
 
 		br
 
+		- var invalidProps = ['id', 'images', 'name', 'title', 'lilypondFiles']
+
 		dl
 			each value, key in song
-				if key !== 'id' && key !== 'images' && key !== 'name' && key !== 'title'
+				if invalidProps.indexOf(key) === -1
 					dt= key[0].toUpperCase() + key.slice(1) + ':'
 					dd= value
 					br
@@ -25,12 +27,27 @@ block content
 
 		br
 
-		.images
-			each image in song.images
-				if image
-					.image
-						img(src=image.thumbnailPath)
-						a(href=image.path) Raw
+		if song.images && song.images.length != 0
+			.images
+				h3 Images
+				br
+				each image in song.images
+					if image
+						.image
+							img(src=image.thumbnailPath)
+							br
+							a(href=image.path) Raw
+
+		if song.lilypondFiles && song.lilypondFiles.length != 0
+			.lilypondFiles
+				h3 LilyPond Files
+				br
+				each file in song.lilypondFiles
+					if file
+						.image
+							img(src=file.path + '?resolution=10')
+							br
+							a(href=file.path) Raw
 
 
 

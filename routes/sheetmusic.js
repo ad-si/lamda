@@ -33,6 +33,23 @@ function getImagesFromFilesForSong (files, songName) {
 		})
 }
 
+
+function getLilypondFilesObjects (files, songName) {
+
+	return files
+		.filter(util.isLilypondFile)
+		.map(function (fileName) {
+
+			var filePath = '/sheetmusic/' + songName + '/' + fileName,
+				lilypondObject = {
+					path: filePath,
+					absPath: path.join(songsPath, songName, fileName)
+				}
+
+			return lilypondObject
+		})
+}
+
 function createThumbnail (songName, image) {
 
 	var songThumbsPath = path.join(thumbsPath, songName)
@@ -54,7 +71,8 @@ module.exports.song = function (req, res) {
 	var songId = req.params.name,
 		requestedSongPath = path.join(songsPath, songId),
 		files = fs.readdirSync(requestedSongPath),
-		images = getImagesFromFilesForSong(files, songId)
+		images = getImagesFromFilesForSong(files, songId),
+		lilypondFiles = getLilypondFilesObjects(files, songId)
 
 
 	if (files.indexOf('index.yaml') === -1)
@@ -63,7 +81,8 @@ module.exports.song = function (req, res) {
 			song: {
 				id: songId,
 				name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
-				images: images
+				images: images,
+				lilypondFiles: lilypondFiles
 			}
 		})
 
@@ -76,8 +95,10 @@ module.exports.song = function (req, res) {
 				if (error) throw error
 
 				var jsonData = yaml.safeLoad(fileContent)
+
 				jsonData.id = req.params.name
 				jsonData.images = images
+				jsonData.lilypondFiles = lilypondFiles
 
 				res.render('index', {
 					page: 'sheetmusic',
