@@ -1,0 +1,11 @@
+{
+  "name": "Sheetmusic",
+  "version": "0.1.0",
+  "keywords": [
+    "lamda",
+    "sheetmusic"
+  ],
+  "dependencies": {
+    "lilyware": "^0.3.0"
+  }
+}

@@ -47,7 +47,15 @@ block content
 						.image
 							img(src=file.path + '?resolution=10')
 							br
-							a(href=file.path) Raw
+							a(href=file.path) PNG
+							= ' | '
+							a(href=file.path + '?format=svg') SVG
+							= ' | '
+							a(href=file.path + '?format=pdf') PDF
+							= ' | '
+							a(href=file.path + '?format=ps') PS
+							= ' | '
+							a(href=file.path + '?format=midi') MIDI
 
 
 
