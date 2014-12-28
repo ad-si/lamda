@@ -40,15 +40,15 @@ head
 			max-height: 100%;
 			max-width: 100%;
 			vertical-align: top;
-			border-width: 0 1px 1px 0;
+			border-right-width: 1px;
 		}
 
 		.wrapped img {
 			max-width: 100%;
-			border-width: 0 0 1px 0;
+			border-bottom-width: 1px;
 		}
 
 body(class=style)
 	each image in song.images
 		if image
-				img(src=(image.thumbnailPath || image.path))
+			img(src=(image.thumbnailPath || image.path))
