@@ -72,6 +72,14 @@ util.formatData = function (data) {
 	return data
 }
 
+util.isLilypondFile = function (fileName){
+	return fileName.search(/.+\.(ly)$/gi) !== -1
+}
+
+util.isBook = function (fileName) {
+	return fileName.search(/.+\.(epub)$/gi) !== -1
+}
+
 util.isImage = function (fileName) {
 	return fileName.search(/.+\.(jpg|png)$/gi) !== -1
 }
