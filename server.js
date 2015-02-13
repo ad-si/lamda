@@ -1,7 +1,6 @@
 var express = require('express'),
 	errorHandler = require('errorhandler'),
 	favicon = require('serve-favicon'),
-	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
 	compress = require('compression'),
 	logger = require('morgan'),
@@ -62,7 +61,6 @@ app.set('view engine', 'jade')
 app.use(favicon(path.normalize('public/img/favicon.png')))
 app.use(logger('dev'))
 app.use(compress())
-app.use(bodyParser())
 app.use(methodOverride())
 
 
