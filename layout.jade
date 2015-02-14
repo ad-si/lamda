@@ -14,7 +14,7 @@ html
 		// + ' | ' + title
 		link#favicon(rel='icon', href='/img/favicon.png', type='image/png')
 		each style in styles
-			link(rel='stylesheet', href=style)
+			link(id=style.id, rel='stylesheet', href=style.path)
 		block styles
 
 	body
