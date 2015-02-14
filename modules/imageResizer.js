@@ -40,19 +40,24 @@ function workOffQueue (worker, firstImage, callback) {
 
 	function convert (image) {
 
-		var width = image.width || 200,
-			height = image.height || 200,
+		var width = image.width || image.maxWidth || 200,
+			height = image.height || image.maxHeight || 200,
 			pathDirectories
 
 
-		pathDirectories = image.absThumbnailPath.split('/');
+		pathDirectories = image.absThumbnailPath.split('/')
 		pathDirectories.pop()
 
 		mkdirp(path.normalize(pathDirectories.join('/')), function (error) {
 			if (error)
 				console.error(error)
 
-			// TODO: Handle when thumbnail already exists
+			// TODO: Just try to create file and handle error
+			if (fs.existsSync(image.absThumbnailPath)) {
+				callback()
+				return
+			}
+
 			// TODO: Use streams to directly stream the response
 			gm(image.absPath)
 				.autoOrient()
