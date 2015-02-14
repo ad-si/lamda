@@ -24,7 +24,10 @@ var express = require('express'),
 		'/js/index.js'
 	],
 	styles = [
-		'/styles/screen.css'
+		{
+			path: '/styles/themes/dark.css',
+			id: 'themeLink'
+		}
 	],
 	title = 'Lamda OS',
 	name,

@@ -4,6 +4,10 @@
 		$('#console').toggle()
 	})
 
+	$('select#theme').on('change', function () {
+		$('#themeLink').attr('href', '/styles/themes/' + this.value +'.css')
+	})
+
 	/*files.addEvenetListener('click', function(event){
 		event.preventDefault()
 

@@ -34,8 +34,6 @@ util.compileStyl = function (str, path, theme) {
 		.set('compress', !global.devMode)
 		.use(nib())
 		.import('nib')
-		.import(global.projectURL + '/public/styles/shared')
-		.import(global.projectURL + '/public/styles/themes/' + theme)
 }
 
 util.writeKeys = function (keysObject, data) {
