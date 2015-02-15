@@ -1,0 +1,22 @@
+{
+  "name": "projects",
+  "version": "0.1.0",
+  "description": "Display all git projects in your projects directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://adius@bitbucket.org/lamdaos/projects.git"
+  },
+  "keywords": [
+    "project"
+  ],
+  "author": "Adrian Sieber",
+  "license": "MIT",
+  "dependencies": {
+    "findit": "^2.0.0",
+    "nodegit": "^0.2.7"
+  }
+}
