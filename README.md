@@ -15,6 +15,14 @@ careInstructions:
   - Ironing, Iron at low temperature, Iron at medium temperature, Iron at high temperature, Do not iron
   - Cleaning, Dry clean (Hydrocarbon solvent only (HCS)), Gentle cleaning with hydrocarbon solvents, Very gentle cleaning with hydrocarbon solvents, Dryclean, tetrachloroethylene (PCE) only, Gentle cleaning with PCE, Very gentle cleaning with PCE, Do not dry clean
   - Professional wet cleaning, Gentle wet cleaning, Very gentle wet cleaning, Professional wet cleaning is not allowed
+
+  - Do not use fabric softener
+  - Use mild detergent only
+  - Wash with like colors
+  - Wash and iron inside out
+  - Remove promptly after wash
+  - Wash before use
+  - Wash separately
 color: Color
 ean: Ean
 fabric: String
@@ -27,6 +35,7 @@ gift:
   for: String
 id: Id
 importer: Object
+location: Location  # Current location of the thing
 model: String
 name: String
 note: String
