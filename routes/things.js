@@ -6,7 +6,7 @@ var fs = require('fs'),
 	gm = require('gm'),
 
 	util = require('../../../util'),
-	imageResizer = require('./../../../modules/imageResizer'),
+	imageResizer = require('../../../modules/imageResizer'),
 
 	thingsDir = path.join(global.baseURL, 'things'),
 	thumbsDirectory = path.join(global.projectURL, 'thumbs')
@@ -56,8 +56,12 @@ function callRenderer (res, things, view) {
 	res.render('index', {
 		page: 'things',
 		things: things.sort(function (a, b) {
-			a = new Date(a.dateOfPurchase) || 0
-			b = new Date(b.dateOfPurchase) || 0
+
+			var dateA = (a.dateOfPurchase === 'Date') ? 0 : a.dateOfPurchase,
+				dateB = (b.dateOfPurchase === 'Date') ? 0 : b.dateOfPurchase
+
+			a = new Date(dateA || 0)
+			b = new Date(dateB || 0)
 
 			return b - a
 		}),
