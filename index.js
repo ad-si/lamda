@@ -5,7 +5,7 @@ var fs = require('fs'),
 	things = require('./routes/things'),
 	thing = require('./routes/thing'),
 
-	imageResizer = require('./../../modules/imageResizer'),
+	imageResizer = require('../../modules/imageResizer'),
 	app = express()
 
 
@@ -15,6 +15,6 @@ app.use(express.static(path.join(global.baseURL, 'things')))
 app.set('views', path.join(__dirname, 'views'))
 
 app.get('/', things)
-app.get('/:id', thing())
+app.get('/:id', thing)
 
 module.exports = app
