@@ -8,24 +8,16 @@ var fs = require('fs'),
 
 function getNumberOfCommits (repoDir, callback) {
 
-	nodegit.Repo.open(repoDir, function (error, repo) {
+	nodegit
+		.Repository
+		.open(repoDir)
+		.then(function (repo) {
+			return repo.getMasterCommit()
+		})
+		.then(function (firstCommitOnMaster) {
 
-		if (error) {
-			callback(error)
-			return
-		}
-
-		repo.getMaster(function (error, branch) {
-
-			var history,
+			var history = firstCommitOnMaster.history(),
 				numberOfCommits = 0
-
-			if (error) {
-				callback(error)
-				return
-			}
-
-			history = branch.history()
 
 			history.on('commit', function () {
 				numberOfCommits++
@@ -37,7 +29,6 @@ function getNumberOfCommits (repoDir, callback) {
 
 			history.start()
 		})
-	})
 }
 
 
@@ -113,6 +104,7 @@ module.exports = function (req, res) {
 			repoPath
 
 
+		// TODO: Also ignore paths and not just root directories
 		ignoreList = ignoreList.concat(global.config.Projects.ignore)
 
 		invalidName = ignoreList.some(function (toIgnore) {
