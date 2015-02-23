@@ -29,10 +29,13 @@ function getNumberOfCommits (repoDir, callback) {
 
 			history.start()
 		})
+		.catch(function (error) {
+			callback(error)
+		})
 }
 
-
 try {
+	// Resolve projects directory if symbolic link
 	projectsDir = fs.readlinkSync(path.join(global.baseURL, 'projects'))
 }
 catch (error) {
@@ -67,16 +70,17 @@ module.exports = function (req, res) {
 		}
 	}
 
-
 	var repoFinder = findit(projectsDir)
 
 	repoFinder.on('directory', function (dirPath, stat, stop) {
 
 		var baseName = path.basename(dirPath),
+			relativeDirName = dirPath.slice(projectsDir.length + 1),
 			ignoreList = [
 				'node_modules',
 				'bower_components',
 				'components',
+				'classes',
 				'plugins',
 				'public',
 				'src',
@@ -89,6 +93,7 @@ module.exports = function (req, res) {
 				'build',
 				'example',
 				'examples',
+				'samples',
 				'trunk',
 				'misc',
 				'js',
@@ -98,28 +103,35 @@ module.exports = function (req, res) {
 				'img',
 				'gems',
 				'thumbs',
-				'cache'
+				'cache',
+				'javadoc',
+				'contents'
 			],
 			invalidName,
 			repoPath
 
 
-		// TODO: Also ignore paths and not just root directories
+		if (relativeDirName.split(path.sep).length > 3) {
+			return stop()
+		}
+
 		ignoreList = ignoreList.concat(global.config.Projects.ignore)
 
 		invalidName = ignoreList.some(function (toIgnore) {
-			return baseName === toIgnore
+			if (toIgnore.search('/') === -1) {
+				return baseName.toLowerCase() === toIgnore.toLowerCase()
+			}
+			else {
+				return relativeDirName.toLowerCase() === toIgnore.toLowerCase()
+			}
 		})
 
-		if (invalidName ||
-		    (baseName[0] === '.' && baseName !== '.git')) {
-			stop()
-			return
-		}
-
+		if (invalidName || (baseName[0] === '.' && baseName !== '.git'))
+			return stop()
 
 		if (dirPath.search(/\.git$/) === -1)
 			return
+
 
 		repoPath = path.dirname(dirPath)
 
@@ -127,16 +139,20 @@ module.exports = function (req, res) {
 
 		getNumberOfCommits(repoPath, function (error, numberOfCommits) {
 
-				var relativeRepoPath = path.relative(projectsDir, repoPath)
-
-				var project = {
-					id: repoPath,
-					path: repoPath,
-					link: relativeRepoPath,
-					name: path.basename(relativeRepoPath),
-					numberOfCommits: error ? null : numberOfCommits,
-					faviconPath: path.join(relativeRepoPath, 'favicon.ico')
+				if (error){
+					projectsCounter--
+					console.error(repoPath, error)
 				}
+
+				var relativeRepoPath = path.relative(projectsDir, repoPath),
+					project = {
+						id: repoPath,
+						path: repoPath,
+						link: relativeRepoPath,
+						name: path.basename(relativeRepoPath),
+						numberOfCommits: error ? null : numberOfCommits,
+						faviconPath: path.join(relativeRepoPath, 'favicon.ico')
+					}
 
 				projects.push(project)
 
