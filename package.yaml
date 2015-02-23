@@ -1,7 +1,0 @@
-name: Boilerplate
-version: 0.0.1
-keywords:
-  - lamda
-  - git
-dependencies:
-  findit: ^2.0.0
