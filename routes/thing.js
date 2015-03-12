@@ -1,13 +1,15 @@
 var path = require('path'),
 	fs = require('fs'),
 	yaml = require('js-yaml'),
-	thingsPath = path.join(global.baseURL, 'things')
+	thingsPath = path.join(global.baseURL, 'things'),
+	utils = require('../../../utils')
 
 
 module.exports = function (request, response) {
 
 	var requestedThingPath = path.join(thingsPath, request.params.id),
-		files = fs.readdirSync(requestedThingPath)
+		files = fs.readdirSync(requestedThingPath),
+		images = files.filter(utils.isImage)
 
 	function renderPage () {
 
@@ -20,11 +22,10 @@ module.exports = function (request, response) {
 						.params
 						.id
 						.replace(/_/g, ' ')
-						.replace(/-/g, ' - ')
-					// TODO: Show images in single view
-					//images: images.map(function (imgPath) {
-					//	return path.join(imagesPath + imgPath)
-					//})
+						.replace(/-/g, ' - '),
+					images: images.map(function (imgPath) {
+						return path.join(requestedThingPath, imgPath)
+					})
 				}
 			})
 
@@ -34,11 +35,13 @@ module.exports = function (request, response) {
 				{encoding: 'utf-8'},
 				function (error, fileContent) {
 
+					var jsonData
+
 					if (error) throw error
 
-					var jsonData = yaml.safeLoad(fileContent)
+					jsonData = yaml.safeLoad(fileContent)
 					jsonData.id = request.params.id
-					//jsonData.images = images
+					jsonData.images = images
 
 					response.render('thing', {
 						page: 'thing',

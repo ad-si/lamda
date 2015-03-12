@@ -5,7 +5,7 @@ var fs = require('fs'),
 	yaml = require('js-yaml'),
 	gm = require('gm'),
 
-	util = require('../../../util'),
+	utils = require('../../../utils'),
 	imageResizer = require('../../../modules/imageResizer'),
 
 	thingsDir = path.join(global.baseURL, 'things'),
@@ -155,7 +155,7 @@ module.exports = function (req, response) {
 										}
 									)
 								}
-								else if (util.isImage(file))
+								else if (utils.isImage(file))
 									images.push(file)
 
 								else
