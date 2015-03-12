@@ -4,6 +4,7 @@
 
 	var typeMap = {
 		jeans: 'pants',
+		chino: 'pants',
 		corduroys: 'pants',
 		trousers: 'pants',
 		boxershorts: 'boxers',
