@@ -23,9 +23,14 @@ careInstructions:
   - Remove promptly after wash
   - Wash before use
   - Wash separately
+  - Do not iron on the badge
+
 color: Color
 ean: Ean
-fabric: String
+fabric:
+  cotton: 0..1
+  polyamide: 0..1
+  …
 features:
   first: String
   second: String
