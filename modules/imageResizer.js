@@ -5,7 +5,7 @@ var fs = require('fs'),
 	url = require('url'),
 	mkdirp = require('mkdirp'),
 
-	utils = require('../util.js'),
+	utils = require('../utils.js'),
 
 	idleQueue = [],
 	workers = []

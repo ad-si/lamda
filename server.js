@@ -9,7 +9,7 @@ var express = require('express'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 	fs = require('fs'),
-	util = require('./util'),
+	utils = require('./utils'),
 	app = express(),
 
 	api = require('./routes/api'),
@@ -97,7 +97,11 @@ for (name in loadedApps) {
 			stylus.middleware({
 				src: path.join(loadedApps[name].lamda.path, 'public'),
 				compile: function (string, path) {
-					return util.compileStyl(string, path, global.config.theme)
+					return utils.compileStyl(
+						string,
+						path,
+						global.config.theme
+					)
 				}
 			}),
 			express.static(path.join(loadedApps[name].lamda.path, 'public'))
@@ -115,7 +119,7 @@ for (name in loadedApps) {
 app.use(stylus.middleware({
 	src: 'public',
 	compile: function (string, path) {
-		return util.compileStyl(string, path, global.config.theme)
+		return utils.compileStyl(string, path, global.config.theme)
 	}
 }))
 

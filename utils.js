@@ -1,7 +1,7 @@
 var countries = require('./public/js/countries.json'),
-    nib = require('nib'),
-    stylus = require('stylus'),
-    util = {}
+	nib = require('nib'),
+	stylus = require('stylus'),
+	utils = {}
 
 
 function getFromArray (array, key, value) {
@@ -10,7 +10,7 @@ function getFromArray (array, key, value) {
 
 	array.some(function (element) {
 		if (element[key] == value) {
-			soughtElement = element
+			soughtElement = element || ''
 			return true
 		}
 	})
@@ -19,15 +19,23 @@ function getFromArray (array, key, value) {
 }
 
 function capitalize (string) {
-	return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
+	if (typeof string === 'string')
+		return string
+			       .charAt(0)
+			       .toUpperCase() +
+		       string
+			       .substring(1)
+			       .toLowerCase()
+	else
+		return string
 }
 
 
-util.getFromArray = getFromArray
+utils.getFromArray = getFromArray
 
-util.capitalize = capitalize
+utils.capitalize = capitalize
 
-util.compileStyl = function (str, path, theme) {
+utils.compileStyl = function (str, path, theme) {
 
 	return stylus(str)
 		.set('filename', path)
@@ -36,29 +44,34 @@ util.compileStyl = function (str, path, theme) {
 		.import('nib')
 }
 
-util.writeKeys = function (keysObject, data) {
+utils.writeKeys = function (keysObject, data) {
 
 	for (var key in data)
 		if (data.hasOwnProperty(key))
 			keysObject[key] = true
 }
 
-util.formatData = function (data) {
+utils.formatData = function (data) {
 
 	data.gender = data.gender || ''
 
 
 	function formatAddress (addr) {
 
+		var countryEntry = getFromArray(
+			countries,
+			'name',
+			capitalize(addr.country)
+		)
+
 		if (addr.country) {
 
 			if (addr.country.length === 2)
 				addr.countryCode = addr.country
 			else
-				addr.countryCode =
-				getFromArray(countries, 'name', capitalize(addr.country))
+				addr.countryCode = countryEntry ? countryEntry
 					.cca2
-					.toLowerCase()
+					.toLowerCase() : ''
 		}
 
 		return addr
@@ -70,25 +83,25 @@ util.formatData = function (data) {
 	return data
 }
 
-util.isLilypondFile = function (fileName){
+utils.isLilypondFile = function (fileName) {
 	return fileName.search(/.+\.(ly)$/gi) !== -1
 }
 
-util.isBook = function (fileName) {
+utils.isBook = function (fileName) {
 	return fileName.search(/.+\.(epub)$/gi) !== -1
 }
 
-util.isImage = function (fileName) {
+utils.isImage = function (fileName) {
 	return fileName.search(/.+\.(jpg|png)$/gi) !== -1
 }
 
-util.isSong = function (fileName) {
+utils.isSong = function (fileName) {
 	return fileName.search(/.+\.(mp3|wav|ogg|m4a)$/gi) !== -1
 }
 
-util.removeFileExtension = function (string) {
+utils.removeFileExtension = function (string) {
 	return string.replace(/\.[^/.]+$/, '')
 }
 
 
-module.exports = util
+module.exports = utils
