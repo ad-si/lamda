@@ -4,32 +4,33 @@ block styles
 	link(rel='stylesheet', href='/assets/things/public/index.css')
 
 block content
-
 	h2= thing.name
-
-	br
+	hr
 
 	dl
-	each value, key in thing
-		if key !== 'id' && key !== 'images' && key !== 'name'
-			dt= key[0].toUpperCase() + key.slice(1) + ':'
+		each value, key in thing
+			if key !== 'id' && key !== 'images' && key !== 'name'
+				dt= String(key)[0].toUpperCase() + key.slice(1) + ':'
 
-			if (value instanceof Date)
-				dd= value.toJSON().replace('T',' ').replace('Z','')
+				if (value instanceof Date)
+					dd= value.toJSON().replace('T',' ').replace('Z','')
 
-			else if typeof value == 'object'
-				dd!= JSON.stringify(value, null, '<br>').replace(/"/g, '').slice(6,-1)
+				else if typeof value == 'object'
+					dd!= JSON.stringify(value, null, '<br>').replace(/"/g, '').slice(6,-1)
 
-			else
-				dd= value
+				else
+					dd= value
 
-			br
+				br
 
-	br
+	hr
 
 	if thing.images
 		.images
 			each imagePath in thing.images
 				if imagePath
-					.image
-						img(src=imagePath)
+					a(href=imagePath): img(
+						src=imagePath
+						alt='Photo of ' + thing.name
+						title='Photo of ' + thing.name
+					)
