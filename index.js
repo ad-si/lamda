@@ -3,14 +3,11 @@ var fs = require('fs'),
 	stylus = require('stylus'),
 	path = require('path'),
 	tasks = require('./routes/tasks'),
-	bodyParser = require('body-parser'),
 	errorHandler = require('errorhandler'),
 	app = express()
 
 
 app.set('views', __dirname + '/views')
-
-app.use(bodyParser())
 
 app.get('/', tasks)
 app.get('/:list', tasks)
