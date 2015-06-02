@@ -3,7 +3,7 @@ var fs = require('fs'),
 
 	yaml = require('js-yaml'),
 
-	util = require('../../../util'),
+	utils = require('../../../utils'),
 	imageResizer = require('../../../modules/imageResizer'),
 
 	songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
@@ -13,7 +13,7 @@ var fs = require('fs'),
 function getImagesFromFilesForSong (files, songName) {
 
 	return files
-		.filter(util.isImage)
+		.filter(utils.isImage)
 		.map(function (fileName) {
 
 			var imagePath = '/sheetmusic/' + songName + '/' + fileName,
@@ -37,7 +37,7 @@ function getImagesFromFilesForSong (files, songName) {
 function getLilypondFilesObjects (files, songName) {
 
 	return files
-		.filter(util.isLilypondFile)
+		.filter(utils.isLilypondFile)
 		.map(function (fileName) {
 
 			var filePath = '/sheetmusic/' + songName + '/' + fileName,
@@ -131,7 +131,7 @@ module.exports.songs = function (req, res) {
 		}
 
 		images = files
-			.filter(util.isImage)
+			.filter(utils.isImage)
 			.map(function (fileName) {
 				return path.join(songDir, fileName)
 			})
