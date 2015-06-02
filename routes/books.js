@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 
-	util = require('../../../util')
+	utils = require('../../../utils')
 
 
 function getFiles (directory) {
@@ -42,7 +42,7 @@ module.exports.all = function (req, res) {
 	getFiles(path.join(global.baseURL, 'books'))
 		.then(function (files) {
 			return files
-				.filter(util.isBook)
+				.filter(utils.isBook)
 				.map(function (book) {
 
 					var name = book.replace(/\.\w+$/gi, '')
