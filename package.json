@@ -22,7 +22,7 @@
     "morgan": "^1.5.1",
     "nib": "^1.0.2",
     "serve-favicon": "^2.1.6",
-    "sharp": "^0.9.1",
+    "sharp": "^0.10.0",
     "static-favicon": "^2.0.0-alpha",
     "stylus": "^0.50.0",
     "temp": "^0.8.1"
