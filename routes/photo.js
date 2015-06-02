@@ -20,21 +20,18 @@ module.exports = function (request, response, next) {
 			      photoName
 		      ].join('/') + '.' + urlObject.query.filetype
 
-	/*gm(src)
+	gm(path.join(global.baseURL, src))
 		.identify(function (error, data) {
 			if (error)
 				console.log(error)
 
-			console.log(data)
+			response.render('photo', {
+				page: 'Photo',
+				photo: {
+					name: request.params.photo,
+					src: src,
+					exif: JSON.stringify(data, null, 2)
+				}
+			})
 		})
-		*/
-
-	response.render('photo', {
-		page: 'Photo',
-		photo: {
-			name: request.params.photo,
-			src: src,
-			exif: {}
-		}
-	})
 }
