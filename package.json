@@ -26,5 +26,23 @@
     "static-favicon": "^2.0.0-alpha",
     "stylus": "^0.50.0",
     "temp": "^0.8.1"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "bin": {
+    "lamda": "bin/cli.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda.git"
+  },
+  "keywords": [
+    "web os"
+  ],
+  "author": "Adrian Sieber",
+  "license": "All rights reserved",
+  "homepage": "https://bitbucket.org/lamdaos/lamda#readme"
 }
