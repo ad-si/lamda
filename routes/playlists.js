@@ -2,8 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 
 	yaml = require('js-yaml'),
-	gm = require('gm'),
-	util = require('../../../util')
+	gm = require('gm')
 
 
 module.exports.all = function (req, res) {
