@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 
-	util = require('../../../util'),
+	utils = require('../../../utils'),
 
 	musicDir = path.join(global.baseURL, 'music'),
 	music = {}
@@ -16,7 +16,7 @@ music.song = function (request, response) {
 
 	response.send({
 		id: songId,
-		title: util.removeFileExtension(songId),
+		title: utils.removeFileExtension(songId),
 		trackArtist: request.params.artistId,
 		lyrics: 'Foo bar',
 		src: path.join('/music/raw/', request.params.artistId, songId)
@@ -32,11 +32,11 @@ music.songs = function (request, response) {
 
 		songs = fs
 			.readdirSync(path.join(musicDir, artistId))
-			.filter(util.isSong)
+			.filter(utils.isSong)
 			.map(function (songId) {
 				return {
 					id: songId,
-					title: util.removeFileExtension(songId)
+					title: utils.removeFileExtension(songId)
 				}
 			})
 
