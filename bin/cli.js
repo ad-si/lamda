@@ -5,7 +5,7 @@ var program = require('commander'),
 
 program
 	.version(packageFile.version)
-	.option('-h, --home <path>', 'Set home folder')
+	.option('--home <path>', 'Set home folder')
 
 program.parse(process.argv)
 
