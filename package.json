@@ -1,0 +1,13 @@
+{
+  "name": "Files",
+  "version": "0.0.1",
+  "lamda": {
+    "view": "./music.jade",
+    "styles": [
+      "/music.styl"
+    ],
+    "scripts": [
+      "/music.js"
+    ]
+  }
+}
