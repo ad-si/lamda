@@ -23,9 +23,7 @@ module.exports = function (request, response) {
 						.id
 						.replace(/_/g, ' ')
 						.replace(/-/g, ' - '),
-					images: images.map(function (imgPath) {
-						return path.join(requestedThingPath, imgPath)
-					})
+					images: images
 				}
 			})
 
