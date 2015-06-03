@@ -9,18 +9,33 @@ block content
 
 		button.filter#all(title='Show all things'): span
 				| All
+
 		button.filter#t-shirt(title='Show only t-shirts')
 			include ../public/icons/t-shirt.svg
+
 		button.filter#sweater(title='Show only sweaters')
 			include ../public/icons/sweater.svg
-		button.filter#pants(title='Show only patns')
+
+		button.filter#button-up(title='Show only button-ups')
+			include ../public/icons/button-up.svg
+
+		button.filter#pants(title='Show only pants')
 			include ../public/icons/pants.svg
+
 		button.filter#shorts(title='Show only shorts')
 			include ../public/icons/shorts.svg
+
 		button.filter#boxers(title='Show only boxer shorts')
 			include ../public/icons/boxers.svg
+
+		button.filter#belt(title='Show only belts')
+			include ../public/icons/belt.svg
+
 		button.filter#tool(title='Show only tools')
 			include ../public/icons/tool.svg
+
+		button.filter#cable(title='Show only cables')
+			include ../public/icons/cable.svg
 
 		a.button(href='/things') standard
 		a.button(href='/things?view=wide') wide
