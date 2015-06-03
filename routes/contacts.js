@@ -1,7 +1,8 @@
 var fs = require('fs'),
+	path = require('path'),
 	yaml = require('js-yaml'),
-	util = require('../../../util'),
-	contactsPath = global.baseURL + '/contacts'
+	utils = require('../../../utils'),
+	contactsPath = path.join(global.baseURL, 'contacts')
 
 
 module.exports = function (req, res) {
@@ -13,37 +14,41 @@ module.exports = function (req, res) {
 
 	files.forEach(function (file) {
 
-		fs.readFile(contactsPath + '/' + file, {encoding: 'utf-8'}, function (error, fileContent) {
+		fs.readFile(
+			path.join(contactsPath, file),
+			{encoding: 'utf-8'},
+			function (error, fileContent) {
 
-			if (error) throw error
+				if (error)
+					throw error
 
-			var jsonContactData = yaml.safeLoad(fileContent)
+				var jsonContactData = yaml.safeLoad(fileContent)
 
-			util.writeKeys(keysCollection, jsonContactData)
+				utils.writeKeys(keysCollection, jsonContactData)
 
-			contacts.push(util.formatData(jsonContactData))
+				contacts.push(utils.formatData(jsonContactData))
 
 
-			if (contacts.length === files.length) {
+				if (contacts.length === files.length) {
 
-				res.render('index', {
-					page: 'contacts',
-					contacts: contacts,
-					availableKeys: Object.keys(keysCollection),
-					sortedKeys: [
-						'name',
-						'nickname',
-						'gender',
-						'birthday',
-						'email',
-						'mobile',
-						'website',
-						'facebook',
-						'address'
-					]
-				})
-			}
+					res.render('index', {
+						page: 'contacts',
+						contacts: contacts,
+						availableKeys: Object.keys(keysCollection),
+						sortedKeys: [
+							'name',
+							'nickname',
+							'gender',
+							'birthday',
+							'email',
+							'mobile',
+							'website',
+							'facebook',
+							'address'
+						]
+					})
+				}
 
-		})
+			})
 	})
 }
