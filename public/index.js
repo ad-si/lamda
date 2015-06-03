@@ -12,7 +12,16 @@
 		pocketknife: 'tool',
 		'pocket knife': 'tool',
 		multimeter: 'tool',
-		'digital caliper': 'tool'
+		'digital caliper': 'tool',
+		belt: 'belt',
+		'button up': 'button-up',
+		'button-up': 'button-up',
+		'wire': 'cable',
+		'hdmi wire': 'cable',
+		'hdmi-wire': 'cable',
+		'cable': 'cable',
+		'power cord': 'cable',
+		'power-cord': 'cable'
 	}
 
 	function hideSpinner (event) {
