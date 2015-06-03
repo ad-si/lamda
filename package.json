@@ -44,5 +44,19 @@
   ],
   "author": "Adrian Sieber",
   "license": "All rights reserved",
-  "homepage": "https://bitbucket.org/lamdaos/lamda#readme"
+  "homepage": "https://bitbucket.org/lamdaos/lamda#readme",
+  "optionalDependencies": {
+    "Books": "git+https://bitbucket.org/lamdaos/books.git",
+    "Contacts": "git+https://bitbucket.org/lamdaos/contacts.git",
+    "Events": "git+https://bitbucket.org/lamdaos/events.git",
+    "Files": "git+https://bitbucket.org/lamdaos/files.git",
+    "Movies": "git+https://bitbucket.org/lamdaos/movies.git",
+    "Music": "git+https://bitbucket.org/lamdaos/music.git",
+    "News": "git+https://bitbucket.org/lamdaos/news.git",
+    "Sheetmusic": "git+https://bitbucket.org/lamdaos/sheetmusic.git",
+    "Tasks": "git+https://bitbucket.org/lamdaos/tasks.git",
+    "Things": "git+https://bitbucket.org/lamdaos/things.git",
+    "photos": "git+https://bitbucket.org/lamdaos/photos.git",
+    "projects": "git+https://bitbucket.org/lamdaos/projects.git"
+  }
 }
