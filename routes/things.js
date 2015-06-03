@@ -180,15 +180,6 @@ module.exports = function (req, response) {
 						imageThumbnailPath,
 						coverImage = getCoverImage(images)
 
-
-					imagePath = path.join(thingDir, coverImage)
-					imageThumbnailPath = path.join(
-						'thumbs',
-						'things',
-						imagePath
-					)
-
-
 					if (error) {
 						callback(error)
 						return
@@ -198,47 +189,58 @@ module.exports = function (req, response) {
 
 					thing.name = thingDir.replace(/_/g, ' ')
 
-					fs.exists(imageThumbnailPath, function (exists) {
 
-						if (exists) return
-
-						fs.mkdir(
-							path.join(thumbsDirectory, 'things', thingDir),
-							function (error) {
-
-								if (error && error.code !== 'EEXIST') {
-									console.error(error)
-									return
-								}
-
-								//TODO before re-adding:
-								// ImageResizer must allow to add several
-								// callbacks or to add them lazily
-
-								/*
-								 imageResizer.addToQueue({
-								 absPath: path.join(
-								 thingsDir, imagePath
-								 ),
-								 absThumbnailPath: path.join(
-								 global.projectURL, imageThumbnailPath
-								 )
-								 })
-								 */
-							}
+					if (coverImage) {
+						imagePath = path.join(thingDir, coverImage)
+						imageThumbnailPath = path.join(
+							'thumbs',
+							'things',
+							imagePath
 						)
 
-					})
+						fs.exists(imageThumbnailPath, function (exists) {
+
+							if (exists) return
+
+							fs.mkdir(
+								path.join(thumbsDirectory, 'things', thingDir),
+								function (error) {
+
+									if (error && error.code !== 'EEXIST') {
+										console.error(error)
+										return
+									}
+
+									//TODO before re-adding:
+									// ImageResizer must allow to add several
+									// callbacks or to add them lazily
+
+									/*
+									 imageResizer.addToQueue({
+									 absPath: path.join(
+									 thingsDir, imagePath
+									 ),
+									 absThumbnailPath: path.join(
+									 global.projectURL, imageThumbnailPath
+									 )
+									 })
+									 */
+								}
+							)
+
+						})
 
 
-					thing.image = url.format({
-						pathname: '/things/' + imagePath,
-						query: {
-							width: 200,
-							height: 200
-						}
-					})
-					thing.rawImage = '/things/' + imagePath
+						thing.image = url.format({
+							pathname: '/things/' + imagePath,
+							query: {
+								width: 200,
+								height: 200
+							}
+						})
+						thing.rawImage = '/things/' + imagePath
+					}
+
 					thing.url = '/things/' + thingDir
 					things.push(thing)
 
