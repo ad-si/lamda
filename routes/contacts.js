@@ -1,7 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
-	utils = require('../../../utils'),
+	formatContact = require('./formatContact'),
 	contactsPath = path.join(global.baseURL, 'contacts')
 
 
@@ -24,9 +24,13 @@ module.exports = function (req, res) {
 
 				var jsonContactData = yaml.safeLoad(fileContent)
 
-				utils.writeKeys(keysCollection, jsonContactData)
+				Object
+				.keys(jsonContactData)
+				.forEach(function (key) {
+					keysCollection[key] = true
+				})
 
-				contacts.push(utils.formatData(jsonContactData))
+				contacts.push(formatContact(jsonContactData))
 
 
 				if (contacts.length === files.length) {
