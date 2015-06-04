@@ -1,9 +1,11 @@
 var fs = require('fs'),
 	path = require('path'),
-	yaml = require('js-yaml'),
+	yaml = require('js-yaml')
 
-	utils = require('../../../utils')
 
+function isBook (fileName) {
+	return fileName.search(/.+\.(epub)$/gi) !== -1
+}
 
 function getFiles (directory) {
 	return new Promise(function (fulfill, reject) {
@@ -42,7 +44,7 @@ module.exports.all = function (req, res) {
 	getFiles(path.join(global.baseURL, 'books'))
 		.then(function (files) {
 			return files
-				.filter(utils.isBook)
+				.filter(isBook)
 				.map(function (book) {
 
 					var name = book.replace(/\.\w+$/gi, '')
