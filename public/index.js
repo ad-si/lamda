@@ -24,10 +24,8 @@
 		'power-cord': 'cable'
 	}
 
-	function hideSpinner (event) {
-		$(event.target)
-			.closest('a')
-			.css('background-image', 'none')
+	function hideSpinner (element) {
+		element.parentElement.style.backgroundImage = 'none'
 	}
 
 	function checkCompletion () {
@@ -45,38 +43,51 @@
 		})
 	}
 
-	$('img')
-		.one('load', hideSpinner)
-		.each(checkCompletion)
+	Array.prototype.slice
+		.call(document.querySelectorAll('img'))
+		.forEach(function(image){
+			image.addEventListener(
+				'load',
+				function(event){
+					hideSpinner(event.target)
+				}
+			)
 
-	$('.filter').click(function (event) {
+			if (image.complete)
+				hideSpinner(image)
+		})
 
-		$('#thingsContainer').empty()
+	document
+		.querySelector('.filter')
+		.addEventListener('click', function (event) {
 
-		var filterType = event.delegateTarget.id
+			document
+				.querySelector('#thingsContainer')
+				.innerHTML = ''
 
+			var filterType = event.delegateTarget.id
 
-		things
-			.filter(function (thing) {
+			things
+				.filter(function (thing) {
 
-				var thingType = typeMap[thing.type] || thing.type
+					var thingType = typeMap[thing.type] || thing.type
 
-				return (filterType === 'all') || (thingType === filterType)
-			})
-			.forEach(function (thing) {
+					return (filterType === 'all') || (thingType === filterType)
+				})
+				.forEach(function (thing) {
 
-				shaven(
-					[$('#thingsContainer')[0],
-						['div',
-							['a', {href: thing.url},
-								['img',
-									{src: thing.image},
-									hideSpinnerOnLoad
+					shaven(
+						[document.querySelector('#thingsContainer'),
+							['div',
+								['a', {href: thing.url},
+									['img',
+										{src: thing.image},
+										hideSpinnerOnLoad
+									]
 								]
 							]
 						]
-					]
-				)
-			})
+					)
+				})
 	})
 }()
