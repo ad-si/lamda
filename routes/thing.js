@@ -1,8 +1,9 @@
 var path = require('path'),
 	fs = require('fs'),
 	yaml = require('js-yaml'),
-	thingsPath = path.join(global.baseURL, 'things'),
-	utils = require('../../../utils')
+	isImage = require('is-image'),
+
+	thingsPath = path.join(global.baseURL, 'things')
 
 
 module.exports = function (request, response) {

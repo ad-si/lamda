@@ -6,6 +6,7 @@
     "things"
   ],
   "dependencies": {
+    "is-image": "^1.0.1",
     "shaven": "^0.6.2",
     "table-to-json": "^0.10.0"
   }

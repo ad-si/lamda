@@ -4,8 +4,8 @@ var fs = require('fs'),
 
 	yaml = require('js-yaml'),
 	gm = require('gm'),
+	isImage = require('is-image'),
 
-	utils = require('../../../utils'),
 	imageResizer = require('../../../modules/imageResizer'),
 
 	thingsDir = path.join(global.baseURL, 'things'),
