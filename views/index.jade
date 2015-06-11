@@ -47,7 +47,7 @@ block content
 		#thingsContainer
 
 			if view == 'wide'
-				each thing in things
+				for thing in things
 					div
 						span= thing.name
 						br
@@ -55,11 +55,16 @@ block content
 							a(href=thing.url)
 								img(src=thing.image)
 			else
-				each thing in things
+				for thing in things
 					div(data-type=thing.type)
+						
 						if thing.image
 							a(href=thing.url)
 								img(src=thing.image)
+						else
+							a.placeholder(href=thing.url)
+								include ../public/icons/thing.svg
+							
 
 	script.
 		var things = !{JSON.stringify(things)}
