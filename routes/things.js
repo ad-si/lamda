@@ -24,13 +24,17 @@ function getCoverImage (images) {
 	// Try to load one of the default images,
 	// otherwise choose a random one
 
-	var defaultNames = [
+	var defaultNames,
+		coverImage
+
+	images = images || []
+	defaultNames = [
 			'overview',
 			'front',
 			'index',
 			'top'
-		],
-		coverImage = images[0] || null
+		]
+	coverImage = images[0] || null
 
 
 	defaultNames.some(function (name) {
@@ -53,20 +57,10 @@ function getCoverImage (images) {
 
 function callRenderer (res, things, view) {
 
-	res.render('index', {
-		page: 'things',
-		things: things.sort(function (a, b) {
+	var fortune
 
-			var dateA = (a.dateOfPurchase === 'Date') ? 0 : a.dateOfPurchase,
-				dateB = (b.dateOfPurchase === 'Date') ? 0 : b.dateOfPurchase
-
-			a = new Date(dateA || 0)
-			b = new Date(dateB || 0)
-
-			return b - a
-		}),
-		view: view,
-		fortune: things
+	if (things) {
+		fortune = things
 			.map(function (element) {
 				return element.price
 			})
@@ -87,6 +81,24 @@ function callRenderer (res, things, view) {
 				return previous + current
 			})
 			.toFixed(2)
+	}
+
+	things = things || []
+
+	res.render('index', {
+		page: 'things',
+		things: things.sort(function (a, b) {
+
+			var dateA = (a.dateOfPurchase === 'Date') ? 0 : a.dateOfPurchase,
+				dateB = (b.dateOfPurchase === 'Date') ? 0 : b.dateOfPurchase
+
+			a = new Date(dateA || 0)
+			b = new Date(dateB || 0)
+
+			return b - a
+		}),
+		view: view,
+		fortune: fortune
 	})
 }
 
@@ -122,12 +134,12 @@ module.exports = function (req, response) {
 						path.join(thingsDir, thingDir),
 						function (error, files) {
 
-							var numberOfFiles = files.length
+							var numberOfFiles
 
-							if (error) {
-								console.error(error)
-								return
-							}
+							if (error || !files)
+								return callback(error)
+
+							numberOfFiles = files.length
 
 							files.forEach(function (file) {
 
@@ -155,7 +167,7 @@ module.exports = function (req, response) {
 										}
 									)
 								}
-								else if (utils.isImage(file))
+								else if (isImage(file))
 									images.push(file)
 
 								else
@@ -181,8 +193,14 @@ module.exports = function (req, response) {
 						coverImage = getCoverImage(images)
 
 					if (error) {
-						callback(error)
-						return
+						if (error.code === 'ENOTDIR') {
+							numberOfThings--
+							return
+						}
+						else {
+							callback(error)
+							return
+						}
 					}
 
 					thing = indexData || thing
@@ -255,8 +273,8 @@ module.exports = function (req, response) {
 	loadThings(function (error, things) {
 
 		if (error)
-			throw new Error(error)
-
-		callRenderer(response, things, view)
+			console.error(error.stack)
+		else
+			callRenderer(response, things, view)
 	})
 }
