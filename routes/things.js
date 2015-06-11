@@ -6,7 +6,7 @@ var fs = require('fs'),
 	gm = require('gm'),
 	isImage = require('is-image'),
 
-	imageResizer = require('../../../modules/imageResizer'),
+	imageResizer = require('image-resizer'),
 
 	thingsDir = path.join(global.baseURL, 'things'),
 	thumbsDirectory = path.join(global.projectURL, 'thumbs')

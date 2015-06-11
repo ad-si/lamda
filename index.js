@@ -2,10 +2,11 @@ var fs = require('fs'),
 	express = require('express'),
 	stylus = require('stylus'),
 	path = require('path'),
+	imageResizer = require('image-resizer'),
+
 	things = require('./routes/things'),
 	thing = require('./routes/thing'),
 
-	imageResizer = require('../../modules/imageResizer'),
 	app = express()
 
 
