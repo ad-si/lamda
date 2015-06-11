@@ -9,7 +9,7 @@ function getFromArray (array, key, value) {
 	var soughtElement = null
 
 	array.some(function (element) {
-		if (element[key] == value) {
+		if (element[key] === value) {
 			soughtElement = element || ''
 			return true
 		}
