@@ -23,8 +23,6 @@ module.exports.events = function (request, response) {
 	if(request.params)
 		path = '/' + request.params[0]
 
-	//console.log(events())
-
 	response.send(events())
 }
 
