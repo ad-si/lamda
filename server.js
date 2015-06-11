@@ -61,7 +61,7 @@ app.locals.appNames = Object.keys(loadedApps)
 // All environments
 app.set('port', process.env.PORT || 2000)
 
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'node_modules', 'lamda-views'))
 app.set('view engine', 'jade')
 
 app.use(favicon(path.normalize('public/img/favicon.png')))
