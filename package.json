@@ -1,0 +1,14 @@
+{
+  "name": "lamda-views",
+  "version": "0.0.0",
+  "description": "Views for LamdaOS",
+  "main": "layout.jade",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "keywords": [
+    "lamda"
+  ],
+  "author": "Adrian Sieber",
+  "license": "MIT"
+}
