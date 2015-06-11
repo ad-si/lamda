@@ -10,7 +10,7 @@ module.exports = function (request, response) {
 
 	var requestedThingPath = path.join(thingsPath, request.params.id),
 		files = fs.readdirSync(requestedThingPath),
-		images = files.filter(utils.isImage)
+		images = files.filter(isImage)
 
 	function renderPage () {
 
