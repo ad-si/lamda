@@ -33,6 +33,11 @@ var express = require('express'),
 	locals
 
 
+
+try {
+	fs.mkdirSync('thumbs')
+} catch (error) {}
+
 global.baseURL = process.env.LAMDA_HOME || __dirname
 global.projectURL = projectPath
 global.devMode = app.get('env') === 'development'
