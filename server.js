@@ -53,7 +53,7 @@ app.locals = locals
 app.locals.appNames = Object.keys(loadedApps)
 
 
-// all environments
+// All environments
 app.set('port', process.env.PORT || 2000)
 
 app.set('views', path.join(__dirname, 'views'))
