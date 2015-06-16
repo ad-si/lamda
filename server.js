@@ -38,12 +38,25 @@ try {
 	fs.mkdirSync('thumbs')
 } catch (error) {}
 
+
 global.baseURL = process.env.LAMDA_HOME || __dirname
 global.projectURL = projectPath
 global.devMode = app.get('env') === 'development'
-global.config = yaml.safeLoad(
-	fs.readFileSync(path.join(global.baseURL, 'config.yaml'), 'utf-8')
-)
+global.config = {
+	owner: {}
+}
+
+try {
+	global.config = yaml.safeLoad(
+		fs.readFileSync(
+			path.join(global.baseURL, 'config.yaml'),
+			'utf-8'
+		)
+	)
+}
+catch (error) {
+	console.error(error.stack)
+}
 
 locals = {
 	title: title,
@@ -76,7 +89,9 @@ app.set('baseURL', process.env.baseURL || __dirname + '/home')
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
-app.get('/' + global.config.owner.username, profile)
+
+if (global.config.owner.username)
+	app.get('/' + global.config.owner.username, profile)
 
 
 // TODO: API
