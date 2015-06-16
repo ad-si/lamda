@@ -11,4 +11,9 @@
     "lamda-views": "file:../lamda-views",
     "stylus": "^0.51.1"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/lamdaos/movies"
+  }
 }
