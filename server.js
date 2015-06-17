@@ -39,7 +39,7 @@ try {
 } catch (error) {}
 
 
-global.baseURL = process.env.LAMDA_HOME || __dirname
+global.baseURL = process.env.LAMDA_HOME || '~'
 global.projectURL = projectPath
 global.devMode = app.get('env') === 'development'
 global.config = {
