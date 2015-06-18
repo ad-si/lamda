@@ -8,8 +8,10 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "express": "^4.12.4",
+    "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "stylus": "^0.51.1"
+    "lamda-views": "file:../lamda-views",
+    "stylus": "^0.51.1",
     "world-countries": "^1.7.3"
   }
 }
