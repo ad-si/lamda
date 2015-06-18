@@ -1,3 +1,7 @@
+countries = require('world-countries')
+capitalize = require('capitalize')
+
+
 function getFromArray (array, key, value) {
 
 	var soughtElement = null

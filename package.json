@@ -6,8 +6,10 @@
     "contacts"
   ],
   "dependencies": {
+    "capitalize": "^1.0.0",
     "express": "^4.12.4",
     "js-yaml": "^3.3.1",
     "stylus": "^0.51.1"
+    "world-countries": "^1.7.3"
   }
 }
