@@ -21,6 +21,13 @@ module.exports = function (data) {
 
 	data.gender = data.gender || ''
 
+	if (data.birthday)
+		data.age = String(
+			new Date(new Date() - data.birthday)
+				.toISOString()
+				.substr(0,4) - 1970
+		)
+
 
 	function formatAddress (addr) {
 

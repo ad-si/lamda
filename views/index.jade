@@ -37,10 +37,7 @@ block content
 										= value
 
 								else if key === 'birthday'
-									=value.toISOString().substr(0,10)
-									|  (
-									=new Date(new Date - value).toISOString().substr(0,4) - 1970
-									| )
+									| #{value.toISOString().substr(0,10)} (#{contact.age})
 
 								else if key === 'address'
 									span.country(class=value.countryCode, title=value.country)
