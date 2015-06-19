@@ -6,6 +6,21 @@
     "books"
   ],
   "dependencies": {
-    "epubjs": "^0.2.3"
-  }
+    "epubjs": "^0.2.3",
+    "express": "^4.12.4",
+    "js-yaml": "^3.3.1",
+    "lamda-views": "file:../lamda-views",
+    "stylus": "^0.51.1"
+  },
+  "description": "All your ebooks in one place",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/books.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "All rights reserved",
+  "homepage": "https://bitbucket.org/lamdaos/books#readme"
 }
