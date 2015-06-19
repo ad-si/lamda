@@ -5,7 +5,7 @@ block styles
 
 block content
 	#library
-		if books
+		if books && books.length > 0
 			each book in books
 				.book
 					img(src=book.imageSource)
@@ -16,6 +16,9 @@ block content
 				#previous.arrow <
 				#bookContent
 				#next.arrow >
+
+		else
+			p There are currently no books in your library
 
 block scripts
 	if book
