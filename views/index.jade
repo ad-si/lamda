@@ -12,11 +12,20 @@ block content
 					p: a(href=book.url)= book.name
 
 		else if book
-			#reader
-				#previous.arrow <
-				#bookContent
-				#next.arrow >
-
+			if book.type == 'epub'
+				#reader
+					#previous.arrow <
+					#bookContent
+					#next.arrow >
+			
+			else if book.type == 'pdf'
+					object(
+						data=book.url
+						type='application/pdf'
+					)
+						p.
+							The PDF can not be displayed.
+							Download it from <a href='/#{book.url}'>here<\a>
 		else
 			p There are currently no books in your library
 
