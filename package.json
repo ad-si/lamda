@@ -5,6 +5,12 @@
     "photos"
   ],
   "dependencies": {
-    "es6-promise": "^2.0.0"
+    "es6-promise": "^2.0.0",
+    "express": "^4.12.4",
+    "gm": "^1.18.1",
+    "image-resizer": "file:../image-resizer",
+    "is-image": "^1.0.1",
+    "js-yaml": "^3.3.1",
+    "stylus": "^0.51.1"
   }
 }
