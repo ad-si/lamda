@@ -5,7 +5,16 @@
     "lamda",
     "sheetmusic"
   ],
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "lilyware": "^0.3.0"
+    "express": "^4.12.4",
+    "gm": "^1.18.1",
+    "is-image": "^1.0.1",
+    "js-yaml": "^3.3.1",
+    "lilyware": "^0.3.0",
+    "string.prototype.endswith": "^0.2.0",
+    "stylus": "^0.51.1"
   }
 }
