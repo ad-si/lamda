@@ -29,6 +29,7 @@
   "homepage": "https://bitbucket.org/lamdaos/files#readme",
   "dependencies": {
     "express": "^4.12.4",
+    "jade": "^1.11.0",
     "lamda-views": "file:../lamda-views",
     "stylus": "^0.51.1"
   }
