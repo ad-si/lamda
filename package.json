@@ -5,5 +5,12 @@
     "lamda",
     "calendar",
     "timeline"
-  ]
+  ],
+  "dependencies": {
+    "clone": "^1.0.2",
+    "express": "^4.12.4",
+    "jade": "^1.11.0",
+    "moment": "^2.10.3",
+    "stylus": "^0.51.1"
+  }
 }
