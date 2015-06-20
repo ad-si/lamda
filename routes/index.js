@@ -39,7 +39,10 @@ try {
 	projectsDir = fs.readlinkSync(path.join(global.baseURL, 'projects'))
 }
 catch (error) {
-	if (error.code !== 'EINVAL')
+	if (error.code === 'ENOENT')
+		console.error('ERROR: Projects directory does not exist!')
+
+	else if (error.code !== 'EINVAL')
 		throw new Error(error)
 }
 
@@ -69,6 +72,9 @@ module.exports = function (req, res) {
 			})
 		}
 	}
+
+	if (!projectsDir)
+		return false
 
 	var repoFinder = findit(projectsDir)
 
@@ -115,7 +121,8 @@ module.exports = function (req, res) {
 			return stop()
 		}
 
-		ignoreList = ignoreList.concat(global.config.Projects.ignore)
+		if (global.config.Projects && global.config.Projects.ignore)
+			ignoreList = ignoreList.concat(global.config.Projects.ignore)
 
 		invalidName = ignoreList.some(function (toIgnore) {
 			if (toIgnore.search('/') === -1) {
