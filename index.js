@@ -14,7 +14,7 @@ var fs = require('fs'),
 app.use(imageResizer.middleware('photos'))
 // TODO: Use dedicated subpath for image-loading
 app.use(express.static(path.join(global.baseURL, 'photos')))
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, 'views'))
 
 
 app.get('/', index)
