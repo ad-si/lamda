@@ -1,4 +1,5 @@
 #files
+	font-size 0.85em
 	#columns
 		display flex
 		flex-direction row
@@ -6,7 +7,7 @@
 		> div
 			flex 1 1 auto
 			overflow scroll
-			border-right 1px solid bgQuiet
+			border-right 1px solid rgba(127, 127, 127, 0.2)
 			padding 1em 0 1em 1em
 			ul
 				list-style none
@@ -20,9 +21,10 @@
 					height 0.8em
 					margin-right 0.4em
 				&.active
-					background-color rgba(fg, 0.1)
+					background-color rgba(127, 127, 127, 0.2)
 
 		div:first-of-type
 			flex-basis 200px
+
 		div:last-of-type
 			border-right none
