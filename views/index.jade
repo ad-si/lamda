@@ -4,8 +4,12 @@ block styles
 	link(rel='stylesheet', href='/assets/news/public/index.css')
 
 block content
-	each article in articles
-		div
-			h2!= article.title
-			p!= article.summary
-		hr
+	if articles
+		for article in articles
+			div
+				h2!= article.title
+				p!= article.summary
+			hr
+	
+	else
+		p There are currently no articles available.

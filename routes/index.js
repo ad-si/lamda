@@ -20,48 +20,60 @@ module.exports = function (req, res) {
 
 	var FeedParser = require('feedparser'),
 	    request = require('request'),
-	    url = global.config.News.url,
-	    feedReq = request(url),
+	    url = global.config.News ? global.config.News.url : null,
 	    feedparser = new FeedParser(),
-	    articles = []
+	    articles = [],
+    	feedReq
+
 
 	//crawler.queue(url)
 
+	if (url) {
 
-	feedReq.on('error', function (error) {
-		throw new Error(error)
-	})
+		feedReq = request(url)
 
-	feedReq.on('response', function (res) {
-
-		var stream = this
-
-		if (res.statusCode != 200)
-			return this.emit('error', new Error('Bad status code'))
-
-		stream.pipe(feedparser)
-	})
-
-
-	feedparser.on('error', function (error) {
-		throw new Error(error)
-	})
-
-	feedparser.on('readable', function () {
-		// This is where the action is!
-		var stream = this,
-		    meta = this.meta,
-		    item
-
-		while (item = stream.read()) {
-			articles.push(item)
-		}
-	})
-
-	feedparser.on('end', function () {
-		res.render('index', {
-			page: 'news',
-			articles: articles
+		feedReq.on('error', function (error) {
+			throw new Error(error)
 		})
-	})
+
+		feedReq.on('response', function (res) {
+
+			var stream = this
+
+			if (res.statusCode != 200)
+				return this.emit('error', new Error('Bad status code'))
+
+			stream.pipe(feedparser)
+		})
+
+
+		feedparser.on('error', function (error) {
+			throw new Error(error)
+		})
+
+		feedparser.on('readable', function () {
+			// This is where the action is!
+			var stream = this,
+				meta = this.meta,
+				item
+
+			while (item = stream.read()) {
+				articles.push(item)
+			}
+		})
+
+
+
+		feedparser.on('end', function () {
+			res.render('index', {
+				page: 'news',
+				articles: articles
+			})
+		})
+	}
+	else {
+		res.render('index', {
+			page: 'news'
+		})
+	}
 }
