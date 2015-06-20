@@ -25,4 +25,11 @@ app.get('/playlist/:id', playlists.one)
 app.get('/:name', sheetmusic.song)
 app.get('/raw/:name', sheetmusic.raw)
 
-module.exports = app
+
+if (!module.parent) {
+	app.listen(3000)
+	console.log('Express started on port 3000')
+}
+else {
+	module.exports = app
+}
