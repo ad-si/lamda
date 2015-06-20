@@ -1,10 +1,11 @@
 var fs = require('fs'),
 	path = require('path'),
-	yaml = require('js-yaml')
+	yaml = require('js-yaml'),
+	booksPath = path.join(global.baseURL, 'books')
 
 
 function isBook (fileName) {
-	return fileName.search(/.+\.(epub)$/gi) !== -1
+	return fileName.search(/.+\.(epub|pdf)$/gi) !== -1
 }
 
 function getFiles (directory) {
@@ -26,11 +27,34 @@ function getFiles (directory) {
 
 
 module.exports.one = function (req, res) {
+
 	var bookId = req.params.book,
 		book = {
 			name: bookId,
-			url: bookId + '.epub'
+			type: 'epub',
+			stats: null
 		}
+
+	book.url = bookId + '.' + book.type
+	book.path = path.join(booksPath, book.url)
+
+	try {
+		book.stats = fs.statSync(book.path)
+	}
+	catch (epubError){
+
+		try {
+			book.type = 'pdf'
+			book.url = book.url.replace('epub', book.type)
+			book.path = book.path.replace('epub', book.type)
+			book.stats = fs.statSync(book.path)
+		}
+		catch (pdfError) {
+			console.error(pdfError.stack)
+		}
+	}
+
+	console.log(book);
 
 	res.render('index', {
 		page: 'Books',
@@ -41,7 +65,7 @@ module.exports.one = function (req, res) {
 
 module.exports.all = function (req, res) {
 
-	getFiles(path.join(global.baseURL, 'books'))
+	getFiles(booksPath)
 		.then(function (files) {
 			return files
 				.filter(isBook)
@@ -60,5 +84,8 @@ module.exports.all = function (req, res) {
 				page: 'Books',
 				books: books
 			})
+		})
+		.catch(function(error){
+			console.error(error.stack)
 		})
 }
