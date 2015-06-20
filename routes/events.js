@@ -2,9 +2,6 @@ var fs = require('fs'),
 	moment = require('moment'),
 	clone = require('clone'),
 
-	files = require('../../../api/files'),
-	events = require('../../../api/events')
-
 
 function splitEvents(events, startDate, endDate) {
 
