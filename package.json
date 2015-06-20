@@ -1,5 +1,5 @@
 {
-  "name": "News",
+  "name": "news",
   "version": "0.0.1",
   "keywords": [
     "news"
@@ -12,5 +12,17 @@
     "js-yaml": "^3.3.1",
     "request": "^2.34.0",
     "stylus": "^0.51.1"
-  }
+  },
+  "description": "All your news",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/news.git"
+  },
+  "author": "Adrian Sieber",
+  "homepage": "https://bitbucket.org/lamdaos/news#readme"
 }
