@@ -25,6 +25,7 @@
     "explorer"
   ],
   "author": "Adrian Sieber",
+  "license": "LicenseRef-license",
   "homepage": "https://bitbucket.org/lamdaos/files#readme",
   "dependencies": {
     "express": "^4.12.4",
