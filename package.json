@@ -24,5 +24,6 @@
     "url": "git+ssh://git@bitbucket.org/lamdaos/news.git"
   },
   "author": "Adrian Sieber",
+  "license": "LicenseRef-license",
   "homepage": "https://bitbucket.org/lamdaos/news#readme"
 }
