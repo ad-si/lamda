@@ -1,5 +1,5 @@
 {
-  "name": "Files",
+  "name": "files",
   "version": "0.0.1",
   "lamda": {
     "view": "./music.jade",
@@ -9,5 +9,26 @@
     "scripts": [
       "/music.js"
     ]
+  },
+  "description": "Display all your files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/files.git"
+  },
+  "keywords": [
+    "files",
+    "finder",
+    "explorer"
+  ],
+  "author": "Adrian Sieber",
+  "homepage": "https://bitbucket.org/lamdaos/files#readme",
+  "dependencies": {
+    "express": "^4.12.4",
+    "lamda-views": "file:../lamda-views",
+    "stylus": "^0.51.1"
   }
 }
