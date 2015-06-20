@@ -16,7 +16,12 @@
   "author": "Adrian Sieber",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.12.4",
     "findit": "^2.0.0",
-    "nodegit": "^0.2.7"
+    "jade": "^1.10.0",
+    "js-yaml": "^3.3.1",
+    "lamda-views": "file:../lamda-views",
+    "nodegit": "^0.2.7",
+    "stylus": "^0.51.1"
   }
 }
