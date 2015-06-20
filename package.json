@@ -15,6 +15,7 @@
     "url": "git+ssh://git@bitbucket.org/lamdaos/music.git"
   },
   "author": "Adrian Sieber",
+  "license": "LicenseRef-license",
   "homepage": "https://bitbucket.org/lamdaos/music#readme",
   "dependencies": {
     "express": "^4.12.4",
