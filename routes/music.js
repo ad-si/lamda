@@ -2,12 +2,17 @@ var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
 
-	utils = require('../../../utils'),
-
 	musicDir = path.join(global.baseURL, 'music'),
 	music = {}
 
 
+function removeFileExtension (string) {
+	return string.replace(/\.[^/.]+$/, '')
+}
+
+function isSong (fileName) {
+	return fileName.search(/.+\.(mp3|wav|ogg|m4a)$/gi) !== -1
+}
 
 
 music.song = function (request, response) {
@@ -16,7 +21,7 @@ music.song = function (request, response) {
 
 	response.send({
 		id: songId,
-		title: utils.removeFileExtension(songId),
+		title: removeFileExtension(songId),
 		trackArtist: request.params.artistId,
 		lyrics: 'Foo bar',
 		src: path.join('/music/raw/', request.params.artistId, songId)
@@ -32,11 +37,11 @@ music.songs = function (request, response) {
 
 		songs = fs
 			.readdirSync(path.join(musicDir, artistId))
-			.filter(utils.isSong)
+			.filter(isSong)
 			.map(function (songId) {
 				return {
 					id: songId,
-					title: utils.removeFileExtension(songId)
+					title: removeFileExtension(songId)
 				}
 			})
 
