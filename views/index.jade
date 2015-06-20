@@ -1,4 +1,4 @@
-extends ../../../views/layout
+extends ../node_modules/lamda-views/layout
 
 block styles
 	link(rel='stylesheet', href='/assets/photos/public/index.css')
@@ -16,7 +16,9 @@ block content
 							//p.small= event.date
 			br
 			br
-
+	else
+		p No photos available
+		
 	if month
 		h2
 			a(href=yearUrl)= year
