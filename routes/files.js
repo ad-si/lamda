@@ -1,8 +1,7 @@
 var fs = require('fs'),
 
-	pathToJson = require('../../../api/pathToJson'),
-	fsToJson = require('../../../api/fsToJson')
-//files = require('../api/files'),
+	pathToJson = require('../modules/pathToJson'),
+	fsToJson = require('../modules/fsToJson')
 
 
 module.exports = function (req, res) {
