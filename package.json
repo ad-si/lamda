@@ -10,6 +10,7 @@
     "feedparser": "~0.16.6",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
+    "lamda-views": "file:../lamda-views",
     "request": "^2.34.0",
     "stylus": "^0.51.1"
   },
