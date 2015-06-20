@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "^4.12.4",
     "gm": "^1.18.1",
+    "image-resizer": "file:../image-resizer",
     "is-image": "^1.0.1",
     "jade": "^1.10.0",
     "js-yaml": "^3.3.1",
