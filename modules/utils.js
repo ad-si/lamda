@@ -1,7 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	util = require('util'),
-	helper = require('../../../utils'),
+	isImage = require('is-image'),
 
 	filterMonths,
 	filterDays

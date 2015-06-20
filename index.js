@@ -6,7 +6,7 @@ var fs = require('fs'),
 	events = require('./routes/events'),
 	photo = require('./routes/photo'),
 
-	imageResizer = require('../../modules/imageResizer')
+	imageResizer = require('image-resizer')
 
 	app = express()
 
