@@ -11,6 +11,7 @@
     "image-resizer": "file:../image-resizer",
     "is-image": "^1.0.1",
     "js-yaml": "^3.3.1",
+    "lamda-views": "file:../lamda-views",
     "stylus": "^0.51.1"
   }
 }
