@@ -1,10 +1,11 @@
+require('string.prototype.endswith')
+
 var fs = require('fs'),
 	path = require('path'),
 
 	yaml = require('js-yaml'),
-
-	utils = require('../../../utils'),
-	imageResizer = require('../../../modules/imageResizer'),
+	imageResizer = require('image-resizer'),
+	isImage = require('is-image'),
 
 	songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
 	thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
@@ -13,7 +14,7 @@ var fs = require('fs'),
 function getImagesFromFilesForSong (files, songName) {
 
 	return files
-		.filter(utils.isImage)
+		.filter(isImage)
 		.map(function (fileName) {
 
 			var imagePath = '/sheetmusic/' + songName + '/' + fileName,
@@ -37,7 +38,9 @@ function getImagesFromFilesForSong (files, songName) {
 function getLilypondFilesObjects (files, songName) {
 
 	return files
-		.filter(utils.isLilypondFile)
+		.filter(function(file){
+			return file.endsWith('ly')
+		})
 		.map(function (fileName) {
 
 			var filePath = '/sheetmusic/' + songName + '/' + fileName,
@@ -131,7 +134,7 @@ module.exports.songs = function (req, res) {
 		}
 
 		images = files
-			.filter(utils.isImage)
+			.filter(isImage)
 			.map(function (fileName) {
 				return path.join(songDir, fileName)
 			})
