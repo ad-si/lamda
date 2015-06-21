@@ -6,6 +6,7 @@
     "things"
   ],
   "dependencies": {
+    "array.from": "^0.2.0",
     "express": "^4.12.4",
     "gm": "^1.18.1",
     "image-resizer": "file:../image-resizer",

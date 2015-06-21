@@ -57,37 +57,40 @@
 				hideSpinner(image)
 		})
 
-	document
-		.querySelector('.filter')
-		.addEventListener('click', function (event) {
+	Array
+		.from(document.querySelectorAll('.filter'))
+		.forEach(function (element) {
 
-			document
-				.querySelector('#thingsContainer')
-				.innerHTML = ''
+			element.addEventListener('click', function (event) {
+				document
+					.querySelector('#thingsContainer')
+					.innerHTML = ''
 
-			var filterType = event.delegateTarget.id
+				var filterType = this.id
 
-			things
-				.filter(function (thing) {
+				things
+					.filter(function (thing) {
 
-					var thingType = typeMap[thing.type] || thing.type
+						var thingType = typeMap[thing.type] || thing.type
 
-					return (filterType === 'all') || (thingType === filterType)
-				})
-				.forEach(function (thing) {
+						return (filterType === 'all') ||
+							(thingType === filterType)
+					})
+					.forEach(function (thing) {
 
-					shaven(
-						[document.querySelector('#thingsContainer'),
-							['div',
-								['a', {href: thing.url},
-									['img',
-										{src: thing.image},
-										hideSpinnerOnLoad
+						shaven(
+							[document.querySelector('#thingsContainer'),
+								['div',
+									['a', {href: thing.url},
+										['img',
+											{src: thing.image},
+											hideSpinnerOnLoad
+										]
 									]
 								]
 							]
-						]
-					)
-				})
+						)
+					})
+		})
 	})
 }()
