@@ -8,9 +8,14 @@ var path = require('path'),
 
 module.exports = function (request, response) {
 
-	var requestedThingPath = path.join(thingsPath, request.params.id),
-		files = fs.readdirSync(requestedThingPath),
-		images = files.filter(isImage)
+	var requestedThingPath,
+		files,
+		images
+
+
+	requestedThingPath = path.join(thingsPath, request.params.id)
+	files = fs.readdirSync(requestedThingPath)
+	images = files.filter(isImage)
 
 	function renderPage () {
 
