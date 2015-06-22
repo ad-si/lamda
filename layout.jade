@@ -55,9 +55,9 @@ html
 			.content(id=page)
 				block content
 
-	include partials/console
+		include partials/console
 
-	each link in scripts
-		script(src=link)
+		each link in scripts
+			script(src=link)
 
-	block scripts
+		block scripts
