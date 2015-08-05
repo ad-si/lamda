@@ -128,10 +128,11 @@ module.exports = function (req, response) {
 				function loadFiles (callback) {
 
 					var images = [],
-						indexData
+						indexData = {},
+						absoluteThingDir = path.join(thingsDir, thingDir)
 
 					fs.readdir(
-						path.join(thingsDir, thingDir),
+						absoluteThingDir,
 						function (error, files) {
 
 							var numberOfFiles
@@ -148,23 +149,34 @@ module.exports = function (req, response) {
 										callback(null, images, indexData)
 								}
 
+								function processYamlFile (error, fileContent) {
+
+									if (error) {
+										console.error(error.stack)
+										return
+									}
+
+									numberOfFiles--
+
+									try {
+										indexData = yaml.safeLoad(fileContent)
+									}
+									catch (error) {
+										console.error(
+											'An error occured while parsing ' +
+											path.join(absoluteThingDir, file) + ':'
+										)
+										console.error(error)
+									}
+
+									checkImagesLoadStatus()
+								}
+
 								if (file === 'index.yaml') {
 									fs.readFile(
 										path.join(thingsDir, thingDir, 'index.yaml'),
 										{encoding: 'utf-8'},
-										function (error, fileContent) {
-
-											if (error) {
-												console.error(error)
-												return
-											}
-
-											numberOfFiles--
-
-											indexData = yaml.safeLoad(fileContent)
-
-											checkImagesLoadStatus()
-										}
+										processYamlFile
 									)
 								}
 								else if (isImage(file))
