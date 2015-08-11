@@ -73,7 +73,11 @@ function callRenderer (res, things, view) {
 
 
 				if (typeof current === 'string')
-					current = Number(current.slice(0, -1))
+					current = Number(
+						current
+							.slice(0, -1)
+							.replace('~', '')
+					)
 
 				current = current || 0
 
