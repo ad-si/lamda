@@ -12,6 +12,7 @@
     "image-resizer": "file:../image-resizer",
     "is-image": "^1.0.1",
     "jade": "^1.10.0",
+    "javascript-styleguide": "^0.1.1",
     "js-yaml": "^3.3.1",
     "shaven": "^0.6.2",
     "stylus": "^0.51.1",
