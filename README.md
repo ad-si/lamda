@@ -4,6 +4,7 @@
 
 ```
 asin: Asin
+amount: String # Amount of content
 brand: String
 dateOfPurchase: Date
 description: String
@@ -78,6 +79,7 @@ gift:
 id: Id
 importer: Object
 location: Location  # Current location of the thing
+material: String or List of Strings
 model: String
 name: String
 note: String
@@ -90,7 +92,7 @@ producedAt: Date
 size: Size
 type: String
 urls: Urls
-weight: Weight
+weight: Weight # Including container
 ```
 
 Laundry symbols: [wikipedia.org/wiki/Laundry_symbol](http://en.wikipedia.org/wiki/Laundry_symbol)
