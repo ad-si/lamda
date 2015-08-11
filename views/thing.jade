@@ -13,9 +13,12 @@ block content
 				dt= String(key)[0].toUpperCase() + key.slice(1) + ':'
 
 				if key == 'urls'
+					if !Array.isArray(value)
+						- value = [value]
 					for url in value
 						dd: a(href=value)= value
 						br
+						
 
 				else if (value instanceof Date)
 					dd= value.toJSON().replace('T',' ').replace('Z','')
