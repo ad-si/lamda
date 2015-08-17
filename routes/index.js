@@ -1,6 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
-	yaml = require('js-yaml')
+	yaml = require('js-yaml'),
+	betterPath = require('better-path')
 
 function isMovie (fileName) {
 	return fileName.search(/.+\.(webm|mp4|m4v|mkv)$/gi) !== -1
@@ -29,10 +30,7 @@ module.exports = function (req, res) {
 				.filter(isMovie)
 				.map(function (fileName) {
 					return {
-						title: path.basename(
-							fileName,
-							path.extname(fileName)
-						),
+						title: betterPath(fileName).baseName(),
 						absolutePath: path.join(absoluteEntryPath, fileName),
 						link: entry + '/' + fileName,
 						type: 'video/x-matroska'
@@ -41,7 +39,7 @@ module.exports = function (req, res) {
 		}
 		else if (isMovie(entry))
 			movieObjects = [{
-				title: entry,
+				title: betterPath(entry).baseName(),
 				absolutePath: absoluteEntryPath,
 				link: entry
 			}]
