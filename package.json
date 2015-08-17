@@ -3,5 +3,17 @@
   "version": "0.0.1",
   "keywords": [
     "boilerplate"
-  ]
+  ],
+  "dependencies": {
+    "express": "^4.12.4",
+    "jade": "^1.11.0",
+    "js-yaml": "^3.3.1",
+    "lamda-views": "file:../lamda-views",
+    "stylus": "^0.51.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/lamdaos/movies"
+  }
 }
