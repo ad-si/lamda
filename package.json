@@ -5,5 +5,14 @@
     "lamda",
     "tasks",
     "todo"
-  ]
+  ],
+  "dependencies": {
+    "async": "^1.4.0",
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.2",
+    "jade": "^1.11.0",
+    "js-yaml": "^3.3.1",
+    "stylus": "^0.52.0",
+    "tasks": "0.0.3"
+  }
 }
