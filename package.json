@@ -12,6 +12,7 @@
     "express": "^4.13.2",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
+    "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
     "stylus": "^0.52.0",
     "tasks": "0.0.3"
   }
