@@ -52,10 +52,12 @@ function getList(fileName, callback) {
 
 			var completedTasks = [],
 				uncompletedTasks = [],
-				numberOfCompletedTasks = 0
+				numberOfCompletedTasks = 0,
+				listData
 
 			if (fileContent !== '')
-				var listData = yaml.safeLoad(fileContent)//,{schema: 'FAILSAFE_SCHEMA'})
+				listData = yaml.safeLoad(fileContent)
+				//,{schema: 'FAILSAFE_SCHEMA'})
 
 			listData.id = fileName.slice(0, -5)
 
@@ -104,53 +106,67 @@ module.exports = function (req, res, next) {
 	//TODO: Set default list in config.yaml
 	var paramList = req.params.list || 'inbox',
 		lists = [],
-		files = fs.readdirSync(listPath),
 		writeBackPath = '',
 		writeBackData,
-		mustWriteBack = false
+		mustWriteBack = false,
+		files
 
+	try {
+		files = fs.readdirSync(listPath)
+	}
+	catch (error) {
+		if (error) {
+			if (error.code !== 'ENOENT')
+				throw error
+			else
+				res.render('index', {
+					page: 'tasks'
+				})
+		}
+		else {
+			async.each(
+				files,
+				function (fileName, done) {
 
-	async.each(
-		files,
-		function (fileName, done) {
+					getList(fileName, function (listData) {
 
-			getList(fileName, function (listData) {
+						if (req.method === 'POST' &&
+							paramList === getFileName(fileName)) {
 
-				if (req.method === 'POST' &&
-					paramList === getFileName(fileName)) {
+							mustWriteBack = true
 
-					mustWriteBack = true
+							listData.tasks.unshift({
+								title: req.body.title,
+								created_at: new Date
+							})
 
-					listData.tasks.unshift({
-						title: req.body.title,
-						created_at: new Date
+							writeBackPath = path.join(listPath, fileName)
+							writeBackData = listData
+						}
+
+						lists.push(listData)
+
+						done()
+					})
+				},
+				function (error) {
+
+					if (error) throw error
+
+					lists.sort(alphabeticallyBy('id', 'ascending'))
+
+					res.on('finish', function () {
+						if (mustWriteBack)
+							writeBackList(writeBackPath, writeBackData)
 					})
 
-					writeBackPath = path.join(listPath, fileName)
-					writeBackData = listData
+					res.render('index', {
+						page: 'tasks',
+						lists: lists,
+						currentList: paramList
+					})
 				}
-
-				lists.push(listData)
-
-				done()
-			})
-		},
-		function (error) {
-
-			if (error) throw error
-
-			lists.sort(alphabeticallyBy('id', 'ascending'))
-
-			res.on('finish', function () {
-				if (mustWriteBack)
-					writeBackList(writeBackPath, writeBackData)
-			})
-
-			res.render('index', {
-				page: 'tasks',
-				lists: lists,
-				currentList: paramList
-			})
+			)
 		}
-	)
+	}
 }

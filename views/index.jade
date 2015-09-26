@@ -1,34 +1,59 @@
-extends ../../../views/layout
+extends ../node_modules/lamda-views/layout
 
 block styles
 	link(rel='stylesheet', href='/assets/tasks/public/index.css')
 
 block content
-	div
-		aside
-			ul
+
+	if lists
+		.interface
+			aside
+				ul
+					each list in lists
+						li
+							a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
+								= list.name + ' '
+								if list.tasks
+									span.number
+										= list.numberOfCompletedTasks + '/' + list.tasks.length
+
+			article
 				each list in lists
-					li
-						a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
-							= list.name + ' '
-							if list.tasks
-								span.number
-									= list.numberOfCompletedTasks + '/' + list.tasks.length
-		article
-			each list in lists
-				if list.id === currentList
-					if list.tasks
-						ul
-							form(action='#', method='post')
-								li(class='addNewTask')
-									input(type='text', name='title', placeholder='Add a new task …')
-							each task in list.tasks
-								- var className = (task.completed_at) ? 'completed' : ''
-								li(class=className)
-									= task.title
-									span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
-					else
-						p Well done! Nothing left to do!
+					if list.id === currentList
+						if list.tasks
+							ul
+								form(action='#', method='post')
+									li(class='addNewTask')
+										input(type='text', name='title', placeholder='Add a new task …')
+								each task in list.tasks
+									- var className = (task.completed_at) ? 'completed' : ''
+									li(class=className)
+										= task.title
+										span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
+						else
+							p Well done! Nothing left to do!
+
+	else
+		.getting-started
+			p
+				| You do not have any lists yet.
+				br
+				| In order to get started
+				| create a tasks directory in your home directory
+				| and add a yaml file for each list.
+
+			p Each yaml file must be structured like this:
+
+			pre: code
+				| name: Name of the list
+				| tasks:
+				|   -
+				|     created_at: 2015-01-01T12:00Z
+				|     title: Task 1
+				|   -
+				|     created_at: 2015-01-01T13:00Z
+				|     title: Task 2
+
 
 
 block scripts
