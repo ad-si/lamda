@@ -13,5 +13,18 @@
     "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
     "moment": "^2.10.3",
     "stylus": "^0.51.1"
-  }
+  },
+  "devDependencies": {
+    "fakesome": "^0.5.5",
+    "moment": "^2.10.6"
+  },
+  "description": "Events app for λOS",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/events.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "All rights reserved",
+  "homepage": "https://bitbucket.org/lamdaos/events"
 }
