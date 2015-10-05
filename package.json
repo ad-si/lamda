@@ -10,6 +10,7 @@
     "clone": "^1.0.2",
     "express": "^4.12.4",
     "jade": "^1.11.0",
+    "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
     "moment": "^2.10.3",
     "stylus": "^0.51.1"
   }
