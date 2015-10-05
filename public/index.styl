@@ -1,31 +1,51 @@
 #events
 	padding 1em 0 0 0
+
 	ul
+		font-size: 0.75em
 		li
-			display block
+			background-color rgba(black, 0.2)
+			display flex
 			list-style none
-			background-color rgba(bg, 0.2)
 			margin-bottom 2px
+
 			div
 				line-height 26px
 				height 26px
 				display inline-block
+
 	.today
 		box-shadow 0 0 1px 1px #cd5c5c
+
 	.date
-		min-width 80px
-		width 10%
 		padding 0 0.5em
-		vertical-align middle
-		border-right 1px solid fgMuted
+		border-right 1px solid rgba(127, 127, 127, 0.2)
+		flex-basis auto
+		flex-grow 0
+
 	.day
-		width 90%
-		position relative
-		vertical-align middle
+		flex-grow 1
+		display flex
+
 	.event
-		position absolute
-		background-color bgQuiet
-		padding 0 0.5em
-		margin-right 1px
+		white-space nowrap
+		background-color rgba(127, 127, 127, 0.2)
 		overflow hidden
-		box-shadow 2px 0 2px -1px bg
+		flex-basis 0
+		padding-left 4px
+		padding-right 0
+
+		&:not(:last-child)
+			background-color rgba(127, 127, 127, 0.2)
+			// background-image linear-gradient(
+			// 	to left,
+			// 	transparent 3px,
+			// 	rgba(127, 127, 127, 0.2) 3px
+			// )
+
+		&:hover
+			overflow visible
+
+	.empty
+		background-color transparent !important
+		background-image none !important

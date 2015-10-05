@@ -8,8 +8,9 @@ block content
 		//-JSON.stringify(days, null, 2)
 		each day in days
 			li(class= day.today ? 'today' : '')
-				div.date= day.date.substr(0,10)
+				div.date= day.date.toISOString().substr(0,10)
 				div.day
 					each event in day.events
-						div.event(style=event.style)= event.title + ' '
-						// LATEST TODO: position left
+						div.event(style=event.style, class=(event.empty ? 'empty' : ''))
+							if event.title
+								span= event.title + ' '

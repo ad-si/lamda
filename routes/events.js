@@ -1,6 +1,8 @@
 var fs = require('fs'),
 	moment = require('moment'),
-	clone = require('clone')
+	clone = require('clone'),
+
+	events = require('../test/events')
 
 
 function splitEvents(events, startDate, endDate) {
@@ -9,11 +11,12 @@ function splitEvents(events, startDate, endDate) {
 
 	events.forEach(function (event) {
 		// In range
-		if ((event.start > startDate || event.end > startDate) &&
-			event.start < endDate) {
+		if ((event.startDate > startDate || event.endDate > startDate) &&
+			event.startDate < endDate) {
 
 			// Start and end not on same day
-			var diffDays = moment(event.start).diff(moment(event.end), 'days')
+			var diffDays = moment(event.startDate)
+				.diff(moment(event.endDate), 'days')
 
 			if (diffDays) {
 
@@ -50,17 +53,15 @@ function mapEventsToDays(events, startDate, endDate) {
 	for (i = 0; i < endDate.diff(startDate, 'days'); i++) {
 		!function () {
 
-			var date = startDate.clone().add('days', i).toJSON(),
+			var date = startDate.clone().add('days', i),
 				day = {
-					date: date,
+					date: date.clone().toDate(),
 					events: events.filter(function (event) {
-						return moment(event.start)
-							.toJSON()
-							.substr(0, 10) === date.substr(0, 10)
+						return moment(event.startDate).isSame(date, 'day')
 					})
 				}
 
-			if (moment().toJSON().substr(0, 10) === date.substr(0, 10))
+			if (moment().isSame(date, 'day'))
 				day.today = true
 
 			days.push(day)
@@ -76,19 +77,20 @@ function addStyleInformation(events) {
 
 	events.forEach(function (event) {
 
-		var style = {
-				left: minutesDiff / minutesPerDay * 100 + '%',
-				width: duration / minutesPerDay * 100 + '%'
-			},
+		var style,
 			minutesDiff,
 			duration
 
-		minutesDiff = moment(event.start)
-			.diff(moment(event.start)
-			.startOf('day'), 'minutes')
 
-		duration = moment(event.end)
-			.diff(moment(event.start), 'minutes'),
+		minutesDiff = moment(event.startDate)
+			.diff(
+				moment(event.startDate).startOf('day'),
+				'minutes'
+			)
+
+		style = {
+			'flex-grow': event.duration
+		}
 
 
 		event.style = JSON.stringify(style)
@@ -100,6 +102,33 @@ function addStyleInformation(events) {
 	return events
 }
 
+function addEmptyEvents (events) {
+
+	var timeFrame = {
+			startMoment: moment(events[0].startDate).startOf('day'),
+			endMoment: moment(events[0].endDate).endOf('day')
+		},
+		newEvents = []
+
+	events.forEach(function (event) {
+
+		if (timeFrame.startMoment.isBefore(event.startDate)) {
+			newEvents.push({
+				empty: true,
+				startDate: timeFrame.startMoment.toDate(),
+				endDate: event.startDate,
+				duration: moment(event.startDate)
+					.diff(timeFrame.startMoment, 'minutes')
+			})
+
+			newEvents.push(event)
+
+			timeFrame.startMoment = moment(event.endDate)
+		}
+	})
+
+	return newEvents
+}
 
 module.exports = function (req, res) {
 
@@ -108,29 +137,52 @@ module.exports = function (req, res) {
 		futureDays = 50,
 		processedEvents,
 		startDate,
-		endDate
+		endDate,
+		listOfEvents = events(),
+		renderDays
 
+	listOfEvents = listOfEvents
+		.map(function (event) {
+
+			event.endDate = moment(event.startDate)
+				.add(event.duration, 'minutes')
+				.toDate()
+
+			return event
+		})
+		.sort(function (previous, current) {
+			return previous.startDate - current.startDate
+		})
+
+
+	listOfEvents = addEmptyEvents(listOfEvents)
 
 	startDate = now
 		.clone()
-		.subtract('days', pastDays),
+		.subtract(pastDays, 'days'),
 
 	endDate = startDate
 		.clone()
-		.add('days', pastDays + futureDays),
+		.add(pastDays + futureDays, 'days'),
 
 	processedEvents = splitEvents(
-		addStyleInformation(events()),
+		addStyleInformation(listOfEvents),
 		startDate,
 		endDate
 	)
 
+	console.log(processedEvents);
+
+	renderDays = mapEventsToDays(
+		processedEvents,
+		startDate,
+		endDate
+	)
+
+	console.log(renderDays)
+
 	res.render('index', {
 		page: 'events',
-		days: mapEventsToDays(
-			processedEvents,
-			startDate,
-			endDate
-		)
+		days: renderDays
 	})
 }
