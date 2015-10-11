@@ -1,11 +1,13 @@
 var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
+	fastmatter = require('fastmatter'),
+	objectAssign = require('object-assign'),
 	booksPath = path.join(global.baseURL, 'books')
 
 
 function isBook (fileName) {
-	return fileName.search(/.+\.(epub|pdf)$/gi) !== -1
+	return /.+\.(epub|pdf|md)$/gi.test(fileName)
 }
 
 function getFiles (directory) {
@@ -16,8 +18,6 @@ function getFiles (directory) {
 					fulfill([])
 				else
 					reject(error)
-
-				console.error(error)
 			}
 			else
 				fulfill(files)
@@ -41,7 +41,7 @@ module.exports.one = function (req, res) {
 	try {
 		book.stats = fs.statSync(book.path)
 	}
-	catch (epubError){
+	catch (epubError) {
 
 		try {
 			book.type = 'pdf'
@@ -54,8 +54,6 @@ module.exports.one = function (req, res) {
 		}
 	}
 
-	console.log(book);
-
 	res.render('index', {
 		page: 'Books',
 		book: book
@@ -64,6 +62,28 @@ module.exports.one = function (req, res) {
 
 
 module.exports.all = function (req, res) {
+
+	function getAttributePromise (book) {
+
+		return new Promise(function (fulfill, reject) {
+
+			if (/\.md$/i.test(book.fileName)) {
+				var bookStream = fs.createReadStream(book.filePath)
+
+				bookStream.pipe(fastmatter.stream(function (attributes) {
+					objectAssign(book, attributes)
+					fulfill(book)
+				}))
+
+				bookStream.on('error', function (error) {
+					reject(error)
+				})
+			}
+			else {
+				fulfill(book)
+			}
+		})
+	}
 
 	getFiles(booksPath)
 		.then(function (files) {
@@ -74,18 +94,42 @@ module.exports.all = function (req, res) {
 					var name = book.replace(/\.\w+$/gi, '')
 
 					return {
-						name: name,
-						url: '/books/' + name
+						title: name,
+						basename: name,
+						url: '/books/' + name,
+						fileName: book,
+						filePath: path.join(booksPath, book)
 					}
 				})
 		})
 		.then(function (books) {
+			return Promise.all(books.map(getAttributePromise))
+		})
+		.then(function (books) {
+			books.forEach(function (book) {
+
+				var baseUrl = 'http://covers.openlibrary.org/b/'
+
+				if (book.isbn) {
+					book.imageSource = baseUrl + 'isbn/' + book.isbn + '-M.jpg'
+				}
+				else if (book.olid) {
+					book.imageSource = baseUrl + 'olid/' + book.olid + '-M.jpg'
+				}
+				else {
+					book.imageSource = ''
+				}
+			})
+
+			console.log(
+				require('util').inspect(books, { depth: null })
+			);
 			res.render('index', {
 				page: 'Books',
 				books: books
 			})
 		})
-		.catch(function(error){
+		.catch(function (error) {
 			console.error(error.stack)
 		})
 }

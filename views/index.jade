@@ -6,10 +6,13 @@ block styles
 block content
 	#library
 		if books && books.length > 0
+
+			p Your library contains #{books.length} books
+
 			each book in books
 				.book
 					img(src=book.imageSource)
-					p: a(href=book.url)= book.name
+					p: a(href=book.url)= book.title
 
 		else if book
 			if book.type == 'epub'

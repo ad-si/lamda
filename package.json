@@ -8,9 +8,12 @@
   "dependencies": {
     "epubjs": "^0.2.3",
     "express": "^4.12.4",
+    "fastmatter": "^1.1.0",
+    "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
-    "js-yaml": "^3.3.1",
+    "js-yaml": "^3.4.3",
     "lamda-views": "file:../lamda-views",
+    "object-assign": "^4.0.1",
     "stylus": "^0.51.1"
   },
   "description": "All your ebooks in one place",
