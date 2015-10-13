@@ -4,33 +4,37 @@ block styles
 	link(rel='stylesheet', href='/assets/books/public/index.css')
 
 block content
-	#library
-		if books && books.length > 0
-
-			p Your library contains #{books.length} books
-
+	if books && books.length > 0
+		p#state Your library contains
+			em  #{books.length} books
+		
+		#library
 			each book in books
 				.book
-					img(src=book.imageSource)
+					.cover
+						.description
+							p.author= book.author
+							p.title= book.title
+						img(src=book.imageSource)
 					p: a(href=book.url)= book.title
 
-		else if book
-			if book.type == 'epub'
-				#reader
-					#previous.arrow <
-					#bookContent
-					#next.arrow >
-			
-			else if book.type == 'pdf'
-					object(
-						data=book.url
-						type='application/pdf'
-					)
-						p.
-							The PDF can not be displayed.
-							Download it from <a href='/#{book.url}'>here<\a>
-		else
-			p There are currently no books in your library
+	else if book
+		if book.type == 'epub'
+			#reader
+				#previous.arrow <
+				#bookContent
+				#next.arrow >
+
+		else if book.type == 'pdf'
+				object(
+					data=book.url
+					type='application/pdf'
+				)
+					p.
+						The PDF can not be displayed.
+						Download it from <a href='/#{book.url}'>here<\a>
+	else
+		p There are currently no books in your library
 
 block scripts
 	if book

@@ -1,17 +1,50 @@
+minCoverHeight = 13em
+
 #Books
+	padding 2em
+
+	#state
+		margin-bottom 1em
+
 	#library
-		padding 2em
 		.book
 			vertical-align top
 			display inline-block
-			background-color rgba(127, 127, 127, 0.2)
-			padding 1em
-			margin 0 1em 1em 0
+			margin 0 2em 2em 0
 			width 10em
 			min-height 15em
+
+		.cover
+			position relative
+			box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.4)
+			margin-bottom 1em
+
+			.description
+				font-family serif
+				background-color rgb(200, 200, 200)
+				padding 1em
+				width 100%
+				min-height minCoverHeight
+				position absolute
+				top 0
+				left 0
+				text-align center
+
+			.author
+				font-size 0.8em
+				color rgb(100, 100 100)
+				padding-bottom 0.8em
+				font-style italic
+
+			.title
+				color rgb(50, 50 50)
+
 			img
 				width 100%
-				margin-bottom 1em
+				min-height minCoverHeight
+				margin-bottom -3px
+				position relative
+
 
 	#reader
 		position absolute
