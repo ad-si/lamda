@@ -45,6 +45,14 @@ function getCoverImageUrl (book) {
 	}
 }
 
+function setDefaults (book) {
+	book = book || {}
+	book.author = book.author || ''
+	book.title = book.title || ''
+
+	return book
+}
+
 
 module.exports.one = function (req, res) {
 
@@ -144,6 +152,7 @@ module.exports.all = function (req, res) {
 		.then(function (books) {
 
 			books.forEach(getCoverImageUrl)
+			books = books.map(setDefaults)
 
 			res.render('index', {
 				page: 'Books',
