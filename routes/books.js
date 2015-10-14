@@ -3,6 +3,7 @@ var fs = require('fs'),
 	yaml = require('js-yaml'),
 	fastmatter = require('fastmatter'),
 	objectAssign = require('object-assign'),
+	epubMetadata = require('epub-metadata'),
 	booksPath = path.join(global.baseURL, 'books')
 
 
@@ -23,6 +24,24 @@ function getFiles (directory) {
 				fulfill(files)
 		})
 	})
+}
+
+function getCoverImageUrl (book) {
+
+	var baseUrl = 'http://covers.openlibrary.org/b/'
+
+	if (!book) {
+		return
+	}
+	if (book.isbn) {
+		book.imageSource = baseUrl + 'isbn/' + book.isbn + '-M.jpg'
+	}
+	else if (book.olid) {
+		book.imageSource = baseUrl + 'olid/' + book.olid + '-M.jpg'
+	}
+	else {
+		book.imageSource = ''
+	}
 }
 
 
@@ -67,7 +86,7 @@ module.exports.all = function (req, res) {
 
 		return new Promise(function (fulfill, reject) {
 
-			if (/\.md$/i.test(book.fileName)) {
+			if (book.type === 'md') {
 				var bookStream = fs.createReadStream(book.filePath)
 
 				bookStream.pipe(fastmatter.stream(function (attributes) {
@@ -78,6 +97,12 @@ module.exports.all = function (req, res) {
 				bookStream.on('error', function (error) {
 					reject(error)
 				})
+			}
+			else if (book.type === 'epub') {
+				epubMetadata(book.filePath)
+					.then(function (metadata) {
+						fulfill(metadata)
+					})
 			}
 			else {
 				fulfill(book)
@@ -91,12 +116,14 @@ module.exports.all = function (req, res) {
 				.filter(isBook)
 				.map(function (book) {
 
-					var name = book.replace(/\.\w+$/gi, '')
+					var fileEnding = path.extname(book),
+						baseName = path.basename(book, fileEnding)
 
 					return {
-						title: name,
-						basename: name,
-						url: '/books/' + name,
+						title: baseName,
+						basename: baseName,
+						type: fileEnding.substr(1),
+						url: '/books/' + baseName,
 						fileName: book,
 						filePath: path.join(booksPath, book)
 					}
@@ -106,24 +133,9 @@ module.exports.all = function (req, res) {
 			return Promise.all(books.map(getAttributePromise))
 		})
 		.then(function (books) {
-			books.forEach(function (book) {
 
-				var baseUrl = 'http://covers.openlibrary.org/b/'
+			books.forEach(getCoverImageUrl)
 
-				if (book.isbn) {
-					book.imageSource = baseUrl + 'isbn/' + book.isbn + '-M.jpg'
-				}
-				else if (book.olid) {
-					book.imageSource = baseUrl + 'olid/' + book.olid + '-M.jpg'
-				}
-				else {
-					book.imageSource = ''
-				}
-			})
-
-			console.log(
-				require('util').inspect(books, { depth: null })
-			);
 			res.render('index', {
 				page: 'Books',
 				books: books
