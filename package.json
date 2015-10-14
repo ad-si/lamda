@@ -8,6 +8,7 @@
   "dependencies": {
     "epub-metadata": "^0.1.0",
     "epubjs": "^0.2.11",
+    "exif2": "0.0.1",
     "express": "^4.12.4",
     "fastmatter": "^1.1.0",
     "fs-promise": "^0.3.1",

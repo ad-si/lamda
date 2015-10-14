@@ -4,6 +4,7 @@ var fs = require('fs'),
 	fastmatter = require('fastmatter'),
 	objectAssign = require('object-assign'),
 	epubMetadata = require('epub-metadata'),
+	exif = require('exif2'),
 	booksPath = path.join(global.baseURL, 'books')
 
 
@@ -103,6 +104,14 @@ module.exports.all = function (req, res) {
 					.then(function (metadata) {
 						fulfill(metadata)
 					})
+			}
+			else if (book.type === 'pdf') {
+				exif(book.filePath, function (error, exifData) {
+					console.log(
+						require('util').inspect(exifData, {depth: null})
+					)
+					fulfill(exifData)
+				})
 			}
 			else {
 				fulfill(book)
