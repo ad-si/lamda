@@ -58,7 +58,7 @@ module.exports = function (rootApp, locals) {
 		appNames
 
 	if (!fs.existsSync('apps'))
-		appDirectories = Object.keys(packageData.devDependencies)
+		appDirectories = Object.keys(packageData.optionalDependencies)
 		.map(function (name) {
 			return path.join('node_modules', name)
 		})
