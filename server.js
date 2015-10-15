@@ -1,13 +1,16 @@
-var express = require('express'),
+var fs = require('fs'),
+	path = require('path'),
+
+	osenv = require('osenv'),
+	express = require('express'),
 	errorHandler = require('errorhandler'),
 	favicon = require('serve-favicon'),
 	methodOverride = require('method-override'),
 	compress = require('compression'),
 	logger = require('morgan'),
 	stylus = require('stylus'),
-	path = require('path'),
 	yaml = require('js-yaml'),
-	fs = require('fs'),
+
 	utils = require('./utils'),
 	app = express(),
 
@@ -39,7 +42,7 @@ try {
 } catch (error) {}
 
 
-global.baseURL = process.env.LAMDA_HOME || '~'
+global.baseURL = process.env.LAMDA_HOME || osenv.home()
 global.projectURL = projectPath
 global.devMode = app.get('env') === 'development'
 global.config = {
