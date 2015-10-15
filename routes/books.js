@@ -5,6 +5,7 @@ var fs = require('fs'),
 	objectAssign = require('object-assign'),
 	epubMetadata = require('epub-metadata'),
 	exif = require('exif2'),
+	JsZip = require('jszip'),
 	booksPath = path.join(global.baseURL, 'books')
 
 
@@ -34,7 +35,10 @@ function getCoverImageUrl (book) {
 	if (!book) {
 		return
 	}
-	if (book.isbn) {
+	else if (book.type === 'epub') {
+		book.imageSource = '/books/' + book.fileName + '/' + book.coverPath
+	}
+	else if (book.isbn) {
 		book.imageSource = baseUrl + 'isbn/' + book.isbn + '-M.jpg'
 	}
 	else if (book.olid) {
@@ -48,9 +52,33 @@ function getCoverImageUrl (book) {
 function setDefaults (book) {
 	book = book || {}
 	book.author = book.author || ''
-	book.title = book.title || ''
+	book.title = book.title|| ''
 
 	return book
+}
+
+
+module.exports.cover = function (request, response) {
+
+	var imageFile = '',
+		filePath = path.join(booksPath, request.params.book + '.epub'),
+		epubFile
+
+	fs.readFile(filePath, function (error, fileContent) {
+		if (error)
+			throw error
+
+		epubFile = new JsZip(fileContent)
+		imageFile = epubFile.file(request.params[0]).asNodeBuffer()
+
+		fs.writeFileSync(
+			'/Users/adrian/Desktop/test.jpg',
+			imageFile
+		)
+
+		response.set('Content-Type', 'image/jpeg')
+		response.send(imageFile)
+	})
 }
 
 
@@ -110,15 +138,14 @@ module.exports.all = function (req, res) {
 			else if (book.type === 'epub') {
 				epubMetadata(book.filePath)
 					.then(function (metadata) {
-						fulfill(metadata)
+						objectAssign(book, metadata)
+						fulfill(book)
 					})
 			}
 			else if (book.type === 'pdf') {
 				exif(book.filePath, function (error, exifData) {
-					console.log(
-						require('util').inspect(exifData, {depth: null})
-					)
-					fulfill(exifData)
+					objectAssign(book, exifData)
+					fulfill(book)
 				})
 			}
 			else {
@@ -140,7 +167,7 @@ module.exports.all = function (req, res) {
 						title: baseName,
 						basename: baseName,
 						type: fileEnding.substr(1),
-						url: '/books/' + baseName,
+						url: '/books/' + encodeURIComponent(baseName),
 						fileName: book,
 						filePath: path.join(booksPath, book)
 					}
@@ -152,7 +179,13 @@ module.exports.all = function (req, res) {
 		.then(function (books) {
 
 			books.forEach(getCoverImageUrl)
-			books = books.map(setDefaults)
+			books = books
+				.map(setDefaults)
+				.sort(function (a, b) {
+					return (a.title > b.title) ?
+						1 :
+						(a.title < b.title) ? -1 : 0
+				})
 
 			res.render('index', {
 				page: 'Books',

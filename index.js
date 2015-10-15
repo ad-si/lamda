@@ -14,5 +14,6 @@ app.set('views', __dirname + '/views')
 
 app.get('/', books.all)
 app.get('/:book', books.one)
+app.get('/:book.epub/*', books.cover)
 
 module.exports = app
