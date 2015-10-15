@@ -1,7 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
-	yaml = require('js-yaml')
-
+	yaml = require('js-yaml'),
+	packageData = require('../package.json')
 
 
 function getPackageContent (appPath) {
@@ -14,12 +14,7 @@ function getPackageContent (appPath) {
 		)
 	}
 	else if (fs.existsSync(path.join(appPath, 'package.json'))) {
-		return JSON.parse(
-			fs.readFileSync(
-				path.join(appPath, 'package.json'),
-				'utf-8'
-			)
-		)
+		return require(path.join(appPath, 'package.json'))
 	}
 	else
 		throw new Error('Package file is missing!')
@@ -63,20 +58,7 @@ module.exports = function (rootApp, locals) {
 		appNames
 
 	if (!fs.existsSync('apps'))
-		appDirectories = [
-			'books',
-			'contacts',
-			'events',
-			'files',
-			'movies',
-			'music',
-			'news',
-			'sheetmusic',
-			'tasks',
-			'things',
-			'photos',
-			'projects'
-		]
+		appDirectories = Object.keys(packageData.devDependencies)
 		.map(function (name) {
 			return path.join('node_modules', name)
 		})
