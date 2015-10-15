@@ -6,7 +6,7 @@ block styles
 block content
 	if books && books.length > 0
 		p#state Your library contains
-			em  #{books.length} books
+			em  #{books.length} book#{books.length == 1 ? '' : 's'}
 		
 		#library
 			each book in books
