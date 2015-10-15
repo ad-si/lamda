@@ -25,11 +25,11 @@
 				book.nextPage()
 			})
 
-		book
-			.getMetadata()
-			.then(function (meta) {
-				console.log(meta)
-			})
+		// book
+		// 	.getMetadata()
+		// 	.then(function (meta) {
+		// 		console.log(meta)
+		// 	})
 	}
 	else {
 
