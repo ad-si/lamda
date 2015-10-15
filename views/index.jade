@@ -10,13 +10,13 @@ block content
 		
 		#library
 			each book in books
-				.book
+				a.book(href=book.url, title=book.author + '\n' + book.title)
 					.cover
 						.description
 							p.author= book.author
 							p.title= book.title
 						img(src=book.imageSource)
-					p: a(href=book.url)= book.title
+					p= book.title
 
 	else if book
 		if book.type == 'epub'
