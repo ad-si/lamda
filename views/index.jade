@@ -41,5 +41,5 @@ block scripts
 		script(src='/assets/books/modules/epubjs/build/libs/zip.min.js')
 		script(src='/assets/books/modules/epubjs/build/epub.js')
 		script.
-			var bookUrl = '#{book.url}'
+			var bookUrl = '#{book.url.replace("\'", "\\\'")}'
 		script(src='/assets/books/public/index.js')
