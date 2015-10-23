@@ -21,7 +21,15 @@
 		'hdmi-wire': 'cable',
 		'cable': 'cable',
 		'power cord': 'cable',
-		'power-cord': 'cable'
+		'power-cord': 'cable',
+
+		boots: 'shoes',
+		chucks: 'shoes',
+		"flip-flops": 'shoes',
+		"flip flops": 'shoes',
+		sneakers: 'shoes',
+		'ski-boots': 'shoes',
+		'ski boots': 'shoes'
 	}
 
 	function hideSpinner (element) {
