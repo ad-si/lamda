@@ -9,11 +9,12 @@
     "array.from": "^0.2.0",
     "express": "^4.12.4",
     "gm": "^1.18.1",
-    "image-resizer": "file:../image-resizer",
+    "image-resizer": "https://github.com/adius/image-resizer",
     "is-image": "^1.0.1",
     "jade": "^1.10.0",
     "javascript-styleguide": "^0.1.1",
     "js-yaml": "^3.3.1",
+    "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
     "shaven": "^0.6.2",
     "stylus": "^0.51.1",
     "table-to-json": "^0.10.0"
