@@ -23,6 +23,8 @@ careInstructions:
     - Tumble drying (low temperature)
     - Tumble drying (normal)
     - Do not tumble dry
+    - Tumble dry inside out
+
 
   - Drying
     - Line dry
@@ -62,6 +64,13 @@ careInstructions:
   - Wash before use
   - Wash separately
   - Do not iron on the badge
+  - Iron inside out
+  - Do not iron motif
+  - Wash with fasteners closed
+  - Wash with velcro closed
+
+
+
 
 color: Color
 ean: Ean
