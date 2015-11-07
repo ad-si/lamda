@@ -1,9 +1,12 @@
-var fs = require('fs'),
-	yaml = require('js-yaml'),
-	path = require('path'),
-	async = require('async'),
+'use strict'
 
-	listPath = baseURL + '/tasks'
+const path = require('path')
+
+const fsp = require('fs-promise')
+const yaml = require('js-yaml')
+const evlReduce = require('eventlang-reduce')
+
+const tasksPath = baseURL + '/tasks'
 
 
 function getFileName(string) {
@@ -101,72 +104,41 @@ function writeBackList(filePath, listData) {
 }
 
 
-module.exports = function (req, res, next) {
+module.exports = function (request, response) {
 
-	//TODO: Set default list in config.yaml
-	var paramList = req.params.list || 'inbox',
-		lists = [],
-		writeBackPath = '',
-		writeBackData,
-		mustWriteBack = false,
-		files
-
-	try {
-		files = fs.readdirSync(listPath)
-	}
-	catch (error) {
-		if (error) {
-			if (error.code !== 'ENOENT')
-				throw error
-			else
-				res.render('index', {
-					page: 'tasks'
-				})
-		}
-		else {
-			async.each(
-				files,
-				function (fileName, done) {
-
-					getList(fileName, function (listData) {
-
-						if (req.method === 'POST' &&
-							paramList === getFileName(fileName)) {
-
-							mustWriteBack = true
-
-							listData.tasks.unshift({
-								title: req.body.title,
-								created_at: new Date
-							})
-
-							writeBackPath = path.join(listPath, fileName)
-							writeBackData = listData
-						}
-
-						lists.push(listData)
-
-						done()
-					})
-				},
-				function (error) {
-
-					if (error) throw error
-
-					lists.sort(alphabeticallyBy('id', 'ascending'))
-
-					res.on('finish', function () {
-						if (mustWriteBack)
-							writeBackList(writeBackPath, writeBackData)
-					})
-
-					res.render('index', {
-						page: 'tasks',
-						lists: lists,
-						currentList: paramList
-					})
-				}
+	fsp
+		.readdir(tasksPath)
+		.then(filePaths => Promise
+			.all(filePaths.map(filePath => fsp.readFile(
+				path.join(tasksPath, filePath),
+				'utf8'
+			)))
+		)
+		.then(files => {
+			let taskEventPromises = files.map(
+				fileContent => yaml.safeLoad(fileContent)
 			)
-		}
-	}
+			return Promise.all(taskEventPromises)
+		})
+		.then(eventTasks => {
+			return eventTasks.map(eventTask => {
+				let reducedObject = {}
+
+				for (let timestamp in eventTask)
+					Object.assign(reducedObject, eventTask[timestamp])
+
+				reducedObject.creationDate = new Date(
+					Object.keys(eventTask).sort()[0]
+				)
+
+				return reducedObject
+			})
+		})
+		.then(tasks => {
+			response.render('index', {
+				page: 'tasks',
+				tasks: tasks
+			})
+		})
+		.catch(error => console.error(error.stack))
 }

@@ -9,7 +9,7 @@ block content
 		.interface
 			aside
 				ul
-					each list in lists
+					for list in lists
 						li
 							a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
 								= list.name + ' '
@@ -18,20 +18,31 @@ block content
 										= list.numberOfCompletedTasks + '/' + list.tasks.length
 
 			article
-				each list in lists
+				for list in lists
 					if list.id === currentList
 						if list.tasks
 							ul
 								form(action='#', method='post')
 									li(class='addNewTask')
 										input(type='text', name='title', placeholder='Add a new task …')
-								each task in list.tasks
+								for task in list.tasks
 									- var className = (task.completed_at) ? 'completed' : ''
 									li(class=className)
 										= task.title
 										span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
 						else
 							p Well done! Nothing left to do!
+
+	if tasks
+		article
+			ul
+				form(action='#', method='post')
+					li(class='addNewTask')
+						input(type='text', name='title', placeholder='Add a new task …')
+				for task in tasks
+					li(class=(task.completed ? 'completed' : ''))
+						= task.title
+						span.createdAt= ' ' + task.creationDate.toISOString().substr(0,10)
 
 	else
 		.getting-started

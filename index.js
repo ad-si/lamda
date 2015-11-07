@@ -10,8 +10,7 @@ var fs = require('fs'),
 app.set('views', __dirname + '/views')
 
 app.get('/', tasks)
-app.get('/:list', tasks)
-app.post('/:list', tasks)
+app.get('/:taskView', tasks)
 
 
 if (devMode)
