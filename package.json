@@ -25,6 +25,7 @@
     "url": "git+ssh://git@bitbucket.org/lamdaos/events.git"
   },
   "author": "Adrian Sieber",
-  "license": "All rights reserved",
+  "license": "UNLICENSED",
+  "private": "true",
   "homepage": "https://bitbucket.org/lamdaos/events"
 }
