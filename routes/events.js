@@ -1,188 +1,49 @@
-var fs = require('fs'),
-	moment = require('moment'),
-	clone = require('clone'),
+'use strict'
 
-	events = require('../test/events')
+let fsp = require('fs-promise')
+let path = require('path')
+let moment = require('moment')
+let clone = require('clone')
+let userHome = require('user-home')
 
-
-function splitEvents(events, startDate, endDate) {
-
-	var i
-
-	events.forEach(function (event) {
-		// In range
-		if ((event.startDate > startDate || event.endDate > startDate) &&
-			event.startDate < endDate) {
-
-			// Start and end not on same day
-			var diffDays = moment(event.startDate)
-				.diff(moment(event.endDate), 'days')
-
-			if (diffDays) {
-
-				for (i = 0; i < diffDays; i++) {
-					!function () {
-
-						var eventClone = clone(event)
-
-						if (i !== 0)
-							eventClone.start = moment(eventClone.start)
-								.add('days', i)
-								.hour(0)
-								.minute(0)
-
-						eventClone.end = moment(eventClone.start)
-							.hour(24)
-							.minute(0)
-
-						events.push(eventClone)
-					}()
-				}
-			}
-		}
-	})
-
-	return events
-}
-
-function mapEventsToDays(events, startDate, endDate) {
-
-	var days = [],
-		i
-
-	for (i = 0; i < endDate.diff(startDate, 'days'); i++) {
-		!function () {
-
-			var date = startDate.clone().add('days', i),
-				day = {
-					date: date.clone().toDate(),
-					events: events.filter(function (event) {
-						return moment(event.startDate).isSame(date, 'day')
-					})
-				}
-
-			if (moment().isSame(date, 'day'))
-				day.today = true
-
-			days.push(day)
-		}()
-	}
-
-	return days
-}
-
-function addStyleInformation(events) {
-
-	var minutesPerDay = 1440
-
-	events.forEach(function (event) {
-
-		var style,
-			minutesDiff,
-			duration
+let loadEvents = require('../modules/loadEvents')
+let processEvents = require('../modules/processEvents')
+let mapEventsToDays = require('../modules/mapEventsToDays')
 
 
-		minutesDiff = moment(event.startDate)
-			.diff(
-				moment(event.startDate).startOf('day'),
-				'minutes'
+module.exports = function (request, response, done) {
+
+	let now = moment()
+	let pastDays = 10
+	let futureDays = 50
+	let eventPromises = loadEvents(path.join(userHome, 'Events'))
+	let startDate = now
+		.clone()
+		.subtract(pastDays, 'days')
+	let endDate = startDate
+		.clone()
+		.add(pastDays + futureDays, 'days')
+
+	eventPromises
+		.then(events => {
+			let processedEvents = processEvents(
+				events,
+				startDate,
+				endDate
 			)
 
-		style = {
-			'flex-grow': event.duration
-		}
+			let renderDays = mapEventsToDays(
+				processedEvents,
+				startDate,
+				endDate
+			)
 
-
-		event.style = JSON.stringify(style)
-			.replace(/"/g, '')
-			.replace(/,/g, ';')
-			.replace(/^\{(.*)\}$/g, '$1')
-	})
-
-	return events
-}
-
-function addEmptyEvents (events) {
-
-	var timeFrame = {
-			startMoment: moment(events[0].startDate).startOf('day'),
-			endMoment: moment(events[0].endDate).endOf('day')
-		},
-		newEvents = []
-
-	events.forEach(function (event) {
-
-		if (timeFrame.startMoment.isBefore(event.startDate)) {
-			newEvents.push({
-				empty: true,
-				startDate: timeFrame.startMoment.toDate(),
-				endDate: event.startDate,
-				duration: moment(event.startDate)
-					.diff(timeFrame.startMoment, 'minutes')
+			response.render('index', {
+				page: 'events',
+				days: renderDays
 			})
-
-			newEvents.push(event)
-
-			timeFrame.startMoment = moment(event.endDate)
-		}
-	})
-
-	return newEvents
-}
-
-module.exports = function (req, res) {
-
-	var now = moment(),
-		pastDays = 10,
-		futureDays = 50,
-		processedEvents,
-		startDate,
-		endDate,
-		listOfEvents = events(),
-		renderDays
-
-	listOfEvents = listOfEvents
-		.map(function (event) {
-
-			event.endDate = moment(event.startDate)
-				.add(event.duration, 'minutes')
-				.toDate()
-
-			return event
 		})
-		.sort(function (previous, current) {
-			return previous.startDate - current.startDate
+		.catch(error => {
+			done(error)
 		})
-
-
-	listOfEvents = addEmptyEvents(listOfEvents)
-
-	startDate = now
-		.clone()
-		.subtract(pastDays, 'days'),
-
-	endDate = startDate
-		.clone()
-		.add(pastDays + futureDays, 'days'),
-
-	processedEvents = splitEvents(
-		addStyleInformation(listOfEvents),
-		startDate,
-		endDate
-	)
-
-	console.log(processedEvents);
-
-	renderDays = mapEventsToDays(
-		processedEvents,
-		startDate,
-		endDate
-	)
-
-	console.log(renderDays)
-
-	res.render('index', {
-		page: 'events',
-		days: renderDays
-	})
 }

@@ -9,17 +9,24 @@
   "dependencies": {
     "clone": "^1.0.2",
     "express": "^4.12.4",
+    "fs-promise": "^0.3.1",
+    "hour": "^0.1.1",
     "jade": "^1.11.0",
     "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
     "moment": "^2.10.3",
-    "stylus": "^0.51.1"
+    "stylus": "^0.51.1",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "fakesome": "^0.5.5",
-    "moment": "^2.10.6"
+    "ava": "^0.8.0",
+    "moment": "^2.10.6",
+    "unexpected": "^10.4.0"
+  },
+  "scripts": {
+    "test": "ava"
   },
   "description": "Events app for λOS",
-  "main": "index.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/events.git"

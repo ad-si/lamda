@@ -1,5 +1,6 @@
-var fakesome = require('fakesome'),
-	moment = require('moment')
+'use strict'
+
+let moment = require('moment')
 
 
 function getStartDate() {
@@ -38,17 +39,17 @@ module.exports = function () {
 	return [
 		{
 			title: 'First Event',
-			startDate: moment().subtract(10, 'hours').toDate(),
+			startDate: moment().hours(5).toDate(),
 			duration: 37
 		},
 		{
 			title: 'Second Event',
-			startDate: moment().subtract(8, 'hours').toDate(),
+			startDate: moment().hours(8).toDate(),
 			duration: 95
 		},
 		{
 			title: 'Third Event',
-			startDate: moment().subtract(2.3, 'hours').toDate(),
+			startDate: moment().hours(12).toDate(),
 			duration: 60
 		}
 	]

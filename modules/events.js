@@ -1,7 +1,4 @@
-var fakesome = require('fakesome')
-
-
-function getStartDate() {
+function getStartDate () {
 
 	var rangeStart = new Date(),
 		rangeEnd = new Date(),
@@ -14,7 +11,7 @@ function getStartDate() {
 	return fakesome.date(rangeStart, rangeEnd)
 }
 
-function getEndDate(startDate) {
+function getEndDate (startDate) {
 
 	var hourOffset = startDate.getHours() + fakesome.integer(1, 5)
 
