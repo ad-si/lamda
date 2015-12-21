@@ -7,7 +7,7 @@ var fs = require('fs'),
 
 module.exports.all = function (req, res) {
 
-	var playlistsPath = path.join(global.baseURL, 'sheetmusic', 'playlists'),
+	var playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists'),
 		playlistDirs = fs.readdirSync(playlistsPath),
 		playlists = []
 
@@ -44,7 +44,10 @@ module.exports.all = function (req, res) {
 module.exports.one = function (req, res) {
 
 	var playlistPath = path.join(
-			global.baseURL, 'sheetmusic', 'playlists', req.params.id
+			global.basePath,
+			'sheetmusic',
+			'playlists',
+			req.params.id
 		),
 		playlistData = yaml.safeLoad(
 			fs.readFileSync(
@@ -56,7 +59,7 @@ module.exports.one = function (req, res) {
 	playlistData.songs = playlistData.songs.map(function (songId) {
 		return {
 			id: songId,
-			url: path.join('/sheetmusic', songId)
+			url: global.baseURL + '/' + songId
 		}
 	})
 

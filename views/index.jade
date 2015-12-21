@@ -1,7 +1,7 @@
 extends ../node_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/sheetmusic/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 
@@ -20,9 +20,9 @@ block content
 					dd= value
 					br
 
-		a.button(href='/sheetmusic/raw/#{song.id}?style=inline').
+		a.button(href='#{baseURL}/raw/#{song.id}?style=inline').
 			Horizontal View
-		a.button(href='/sheetmusic/raw/#{song.id}?style=wrapped').
+		a.button(href='#{baseURL}/raw/#{song.id}?style=wrapped').
 			Vertical View
 
 		br
@@ -60,10 +60,9 @@ block content
 
 
 	if songs
-		a.button(href='/sheetmusic') #{songs.length} Songs
-		a.button(href='/sheetmusic/playlists') Playlists
+		a.button(href='') #{songs.length} Songs
+		a.button(href='playlists') Playlists
 		br
-
 
 		table
 			thead
@@ -74,13 +73,13 @@ block content
 				each song in songs
 					tr
 						td.name
-							a(href='/sheetmusic/' + song.id)
+							a(href='' + song.id)
 								= song.id.replace(/_/gi, ' ')
 						td
-							a(href='/sheetmusic/raw/#{song.id}?style=wrapped')
+							a(href='#{baseURL}/raw/#{song.id}?style=wrapped')
 								span.oi(data-glyph='resize-height')
 							= ' '
-							a(href='/sheetmusic/raw/#{song.id}?style=inline')
+							a(href='#{baseURL}/raw/#{song.id}?style=inline')
 								span.oi(data-glyph='resize-width')
 
 

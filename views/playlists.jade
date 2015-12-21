@@ -1,7 +1,7 @@
 extends ../node_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/sheetmusic/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 	h2 Playlists
@@ -14,6 +14,6 @@ block content
 		tbody
 			each playlist in playlists
 				tr
-					td: a(href='/sheetmusic/playlist/' + playlist.id)
+					td: a(href='#{baseURL}/playlist/' + playlist.id)
 						=playlist.name
 					td= playlist.songs.length

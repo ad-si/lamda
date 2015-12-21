@@ -1,54 +1,15 @@
-doctype html
-head
-	title #{song.name} | Raw
+extends ../node_modules/lamda-views/minimal
+
+block head
 	- viewport = ['width=device-width']
 	- viewport[1] = 'initial-scale=1'
 	- viewport[2] = 'minimum-scale=1'
 	- viewport[3] = 'maximum-scale=10'
 	meta(name='viewport', content=viewport.join())
-	style.
-		* {
-			border: 0;
-			padding: 0;
-			margin: 0;
-			box-sizing: border-box;
-		}
+	link(rel='stylesheet' href='#{baseURL}/styles/raw.css')
 
-		html {
-			height: 100%;
-		}
-
-		body {
-			height: 100%;
-		}
-
-		img {
-			border-color: rgb(255, 100, 0);
-			border-style: solid;
-			padding: 2px;
-		}
-
-		img:last-of-type {
-			border: none;
-		}
-
-		.inline {
-			white-space: nowrap;
-		}
-
-		.inline img {
-			max-height: 100%;
-			max-width: 100%;
-			vertical-align: top;
-			border-right-width: 1px;
-		}
-
-		.wrapped img {
-			max-width: 100%;
-			border-bottom-width: 1px;
-		}
-
-body(class=style)
-	each image in song.images
-		if image
-			img(src=(image.thumbnailPath || image.path))
+block body
+	div(class=style)
+		for image in song.images
+			if image
+				img(src=(image.thumbnailPath || image.path))

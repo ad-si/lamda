@@ -1,24 +1,32 @@
-var fs = require('fs'),
-	path = require('path'),
+'use strict'
 
-	express = require('express'),
-	stylus = require('stylus'),
-	lilyware = require('lilyware'),
+const fs = require('fs')
+const path = require('path')
 
-	sheetmusic = require('./routes/sheetmusic'),
-	playlists = require('./routes/playlists'),
+const express = require('express')
+const serveFavicon = require('serve-favicon')
+const stylus = require('stylus')
+const userHome = require('user-home')
+const lilyware = require('lilyware')
 
-	app = express(),
-	basePath = path.join(global.baseURL, 'sheetmusic', 'songs')
+const sheetmusic = require('./routes/sheetmusic')
+const playlists = require('./routes/playlists')
 
+const app = express()
 
-app.use(lilyware(basePath))
-app.use(express.static(basePath))
+global.basePath = global.basePath || userHome
+global.baseURL = global.baseURL || ''
+const songsPath = path.join(global.basePath, 'sheetmusic', 'songs')
+
 if (!module.parent) {
 	app.use(serveFavicon(
 		path.join(__dirname, 'public', 'images', 'favicon.ico')
 	))
+	app.use(express.static('public'))
 }
+
+app.use(lilyware(songsPath))
+app.use(express.static(songsPath))
 
 app.set('views', __dirname + '/views')
 
@@ -30,11 +38,11 @@ app.get('/playlist/:id', playlists.one)
 app.get('/:name', sheetmusic.song)
 app.get('/raw/:name', sheetmusic.raw)
 
+module.exports = app
 
 if (!module.parent) {
+	app.set('view engine', 'jade')
+	var port = 3000
 	app.listen(3000)
-	console.log('Express started on port 3000')
-}
-else {
-	module.exports = app
+	console.log('App listens on http://localhost:' + port)
 }

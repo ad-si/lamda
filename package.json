@@ -7,7 +7,7 @@
     "sheetmusic"
   ],
   "scripts": {
-    "start": "node index.js"
+    "start": "stylus public/styles && node index.js"
   },
   "dependencies": {
     "express": "^4.12.4",
@@ -19,8 +19,8 @@
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git#v0.1.1",
     "lilyware": "^0.3.0",
     "serve-favicon": "^2.3.0",
-    "string.prototype.endswith": "^0.2.0",
-    "stylus": "^0.51.1"
+    "stylus": "^0.51.1",
+    "user-home": "^2.0.0"
   },
   "main": "index.js",
   "devDependencies": {},

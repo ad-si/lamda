@@ -1,15 +1,25 @@
-require('string.prototype.endswith')
+'use strict'
 
-var fs = require('fs'),
-	path = require('path'),
+const fs = require('fs')
+const path = require('path')
 
-	yaml = require('js-yaml'),
-	imageResizer = require('image-resizer'),
-	isImage = require('is-image'),
+const yaml = require('js-yaml')
+const imageResizer = require('image-resizer')
+const isImage = require('is-image')
+const userHome = require('user-home')
 
-	songsPath = path.join(global.baseURL, 'sheetmusic', 'songs'),
-	thumbsPath = path.join(global.projectURL, 'thumbs', 'sheetmusic')
 
+let songsPath = path.join(
+	global.baseURL || userHome,
+	'sheetmusic',
+	'songs'
+)
+
+let thumbsPath = global.projectURL ?
+	path.join(global.projectURL, 'thumbs', 'sheetmusic') :
+	path.join(path.resolve(__dirname, '..'), 'public', 'thumbs')
+
+let baseURL = ''
 
 function getImagesFromFilesForSong (files, songName) {
 
@@ -17,8 +27,8 @@ function getImagesFromFilesForSong (files, songName) {
 		.filter(isImage)
 		.map(function (fileName) {
 
-			var imagePath = '/sheetmusic/' + songName + '/' + fileName,
-				thumbnailPath = '/thumbs' + imagePath,
+			var imagePath = baseURL + '/' + songName + '/' + fileName,
+				thumbnailPath = baseURL + '/thumbs' + imagePath,
 				image = {
 					path: imagePath,
 					thumbnailPath: thumbnailPath,
@@ -34,12 +44,11 @@ function getImagesFromFilesForSong (files, songName) {
 		})
 }
 
-
 function getLilypondFilesObjects (files, songName) {
 
 	return files
 		.filter(function(file){
-			return file.endsWith('ly')
+			return file.endsWith('.ly')
 		})
 		.map(function (fileName) {
 
@@ -75,19 +84,25 @@ module.exports.song = function (req, res) {
 		requestedSongPath = path.join(songsPath, songId),
 		files = fs.readdirSync(requestedSongPath),
 		images = getImagesFromFilesForSong(files, songId),
-		lilypondFiles = getLilypondFilesObjects(files, songId)
+		lilypondFiles = getLilypondFilesObjects(files, songId),
+		renderObject = {
+			page: 'sheetmusic',
+			baseURL
+		}
 
 
 	if (files.indexOf('index.yaml') === -1)
-		res.render('index', {
-			page: 'sheetmusic',
-			song: {
-				id: songId,
-				name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
-				images: images,
-				lilypondFiles: lilypondFiles
+		res.render('index', Object.assign(
+			renderObject,
+			{
+				song: {
+					id: songId,
+					name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
+					images: images,
+					lilypondFiles: lilypondFiles
+				}
 			}
-		})
+		))
 
 	else
 		fs.readFile(
@@ -103,10 +118,14 @@ module.exports.song = function (req, res) {
 				jsonData.images = images
 				jsonData.lilypondFiles = lilypondFiles
 
-				res.render('index', {
-					page: 'sheetmusic',
-					song: jsonData
-				})
+				res.render('index', Object.assign(
+					renderObject,
+					{
+						page: 'sheetmusic',
+						baseURL,
+						song: jsonData
+					}
+				))
 			}
 		)
 }
@@ -160,13 +179,13 @@ module.exports.songs = function (req, res) {
 
 module.exports.raw = function (req, res) {
 
-	var songId = req.params.name,
-		files = fs.readdirSync(path.join(songsPath, songId)),
-		images = getImagesFromFilesForSong(files, songId)
-
+	let songId = req.params.name
+	let files = fs.readdirSync(path.join(songsPath, songId))
+	let images = getImagesFromFilesForSong(files, songId)
 
 	res.render('raw', {
 		page: 'raw',
+		baseURL,
 		song: {
 			id: songId,
 			images: images
