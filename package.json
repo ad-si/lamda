@@ -18,6 +18,7 @@
     "js-yaml": "^3.3.1",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git#v0.1.1",
     "lilyware": "^0.3.0",
+    "serve-favicon": "^2.3.0",
     "string.prototype.endswith": "^0.2.0",
     "stylus": "^0.51.1"
   },

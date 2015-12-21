@@ -14,6 +14,11 @@ var fs = require('fs'),
 
 app.use(lilyware(basePath))
 app.use(express.static(basePath))
+if (!module.parent) {
+	app.use(serveFavicon(
+		path.join(__dirname, 'public', 'images', 'favicon.ico')
+	))
+}
 
 app.set('views', __dirname + '/views')
 
