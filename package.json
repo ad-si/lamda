@@ -1,5 +1,6 @@
 {
   "name": "sheetmusic",
+  "description": "Sheetmusic app for LamdaOS",
   "version": "0.1.0",
   "keywords": [
     "lamda",
@@ -19,5 +20,15 @@
     "lilyware": "^0.3.0",
     "string.prototype.endswith": "^0.2.0",
     "stylus": "^0.51.1"
-  }
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/lamdaos/sheetmusic.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
+  "homepage": "https://bitbucket.org/lamdaos/sheetmusic#readme"
 }
