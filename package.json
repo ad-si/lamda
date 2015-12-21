@@ -11,11 +11,11 @@
   "dependencies": {
     "express": "^4.12.4",
     "gm": "^1.18.1",
-    "image-resizer": "file:../image-resizer",
+    "image-resizer": "git+https://github.com/adius/image-resizer.git",
     "is-image": "^1.0.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "file:../lamda-views",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git#v0.1.1",
     "lilyware": "^0.3.0",
     "string.prototype.endswith": "^0.2.0",
     "stylus": "^0.51.1"
