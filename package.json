@@ -4,7 +4,7 @@
   "description": "Views for LamdaOS",
   "main": "layout.jade",
   "scripts": {
-    "test": "mocha test"
+    "test": "jade --hierarchy --out build ."
   },
   "keywords": [
     "lamda"
@@ -12,7 +12,9 @@
   "author": "Adrian Sieber",
   "license": "MIT",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "jade": "^1.11.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/lamda-views.git"
