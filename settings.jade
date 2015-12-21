@@ -1,22 +1,23 @@
 extends layout
 
 block content
-	each value, key in availableSettings
+	if availableSettings
+		for value, key in availableSettings
 
-		label= key.substr(0,1).toUpperCase() + key.substr(1) + ': '
+			label= key.substr(0,1).toUpperCase() + key.substr(1) + ': '
 
-		if Array.isArray(value)
-			select#theme
-				each option in value
-					if settings[key] === option
-						option('selected')=  option
-					else
-						option=  option
+			if Array.isArray(value)
+				select#theme
+					for option in value
+						if settings[key] === option
+							option('selected')=  option
+						else
+							option=  option
 
-		else if typeof value === typeof settings[key]
-			input(type='text', value=settings[key])
+			else if typeof value === typeof settings[key]
+				input(type='text', value=settings[key])
 
-		else
-			input(type='text', value='Provided incorrect value!', readonly)
+			else
+				input(type='text', value='Provided incorrect value!', readonly)
 
-		br
+			br
