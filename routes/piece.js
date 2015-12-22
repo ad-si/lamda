@@ -45,7 +45,7 @@ module.exports = function (songsPath, thumbsPath) {
 
 
 		if (files.indexOf('index.yaml') === -1)
-			res.render('index', Object.assign(
+			res.render('piece', Object.assign(
 				renderObject,
 				{
 					song: {
@@ -71,7 +71,7 @@ module.exports = function (songsPath, thumbsPath) {
 					jsonData.images = images
 					jsonData.lilypondFiles = lilypondFiles
 
-					res.render('index', Object.assign(
+					res.render('piece', Object.assign(
 						renderObject,
 						{
 							page: 'sheetmusic',

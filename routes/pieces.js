@@ -50,7 +50,7 @@ module.exports = function (songsPath, thumbsPath) {
 				})
 
 				if (songs.length === numberOfDirectories)
-					res.render('index', {
+					res.render('pieces', {
 						page: 'sheetmusic',
 						songs: songs
 					})
