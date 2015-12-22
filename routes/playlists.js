@@ -1,11 +1,12 @@
-var fs = require('fs'),
-	path = require('path'),
+'use strict'
 
-	yaml = require('js-yaml'),
-	gm = require('gm')
+let fs = require('fs')
+let path = require('path')
+
+let yaml = require('js-yaml')
 
 
-module.exports.all = function (req, res) {
+module.exports = function (req, res) {
 
 	var playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists'),
 		playlistDirs = fs.readdirSync(playlistsPath),
@@ -38,33 +39,5 @@ module.exports.all = function (req, res) {
 	res.render('playlists', {
 		page: 'playlists',
 		playlists: playlists
-	})
-}
-
-module.exports.one = function (req, res) {
-
-	var playlistPath = path.join(
-			global.basePath,
-			'sheetmusic',
-			'playlists',
-			req.params.id
-		),
-		playlistData = yaml.safeLoad(
-			fs.readFileSync(
-				path.join(playlistPath, 'index.yaml'),
-				'utf-8'
-			)
-		)
-
-	playlistData.songs = playlistData.songs.map(function (songId) {
-		return {
-			id: songId,
-			url: global.baseURL + '/' + songId
-		}
-	})
-
-	res.render('playlist', {
-		page: 'playlist',
-		playlist: playlistData
 	})
 }

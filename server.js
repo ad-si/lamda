@@ -10,6 +10,7 @@ const userHome = require('user-home')
 const lilyware = require('lilyware')
 
 const sheetmusic = require('./routes/sheetmusic')
+const playlist = require('./routes/playlist')
 const playlists = require('./routes/playlists')
 
 const app = express()
@@ -32,8 +33,8 @@ app.set('views', __dirname + '/views')
 
 app.get('/', sheetmusic.songs)
 
-app.get('/playlists', playlists.all)
-app.get('/playlist/:id', playlists.one)
+app.get('/playlists', playlists)
+app.get('/playlist/:id', playlist)
 
 app.get('/:name', sheetmusic.song)
 app.get('/raw/:name', sheetmusic.raw)
