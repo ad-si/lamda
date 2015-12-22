@@ -6,7 +6,6 @@ block styles
 block content
 
 	if song
-
 		h2= song.title || song.name
 
 		br
@@ -20,9 +19,9 @@ block content
 					dd= value
 					br
 
-		a.button(href='#{baseURL}/raw/#{song.id}?style=inline').
+		a.button(href='#{baseURL}/#{song.id}/raw?style=inline').
 			Horizontal View
-		a.button(href='#{baseURL}/raw/#{song.id}?style=wrapped').
+		a.button(href='#{baseURL}/#{song.id}/raw?style=wrapped').
 			Vertical View
 
 		br
@@ -76,10 +75,10 @@ block content
 							a(href='' + song.id)
 								= song.id.replace(/_/gi, ' ')
 						td
-							a(href='#{baseURL}/raw/#{song.id}?style=wrapped')
+							a(href='#{baseURL}/#{song.id}/raw?style=wrapped')
 								span.oi(data-glyph='resize-height')
 							= ' '
-							a(href='#{baseURL}/raw/#{song.id}?style=inline')
+							a(href='#{baseURL}/raw/#{song.id}/raw?style=inline')
 								span.oi(data-glyph='resize-width')
 
 

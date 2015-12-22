@@ -38,7 +38,7 @@ app.set('views', __dirname + '/views')
 
 app.get('/', pieces(songsPath, thumbsPath))
 app.get('/:name', piece(songsPath, thumbsPath))
-app.get('/raw/:name', raw(songsPath, thumbsPath))
+app.get('/:name/raw', raw(songsPath, thumbsPath))
 
 app.get('/playlists', playlists)
 app.get('/playlist/:id', playlist)
