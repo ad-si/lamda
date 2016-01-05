@@ -1,0 +1,11 @@
+{
+  "name": "lamda-styles",
+  "version": "0.1.0",
+  "description": "Styles for Lamda",
+  "main": "screen.styl",
+  "keywords": [
+    "lamda"
+  ],
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED"
+}
