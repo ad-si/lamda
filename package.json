@@ -7,5 +7,15 @@
     "lamda"
   ],
   "author": "Adrian Sieber",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "open-iconic": "^1.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda-styles.git"
+  },
+  "homepage": "https://bitbucket.org/lamdaos/lamda-styles#readme"
 }
