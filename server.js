@@ -28,7 +28,18 @@ if (!module.parent) {
 	app.use(serveFavicon(
 		path.join(__dirname, 'public', 'images', 'favicon.ico')
 	))
+	app.use(
+		stylus.middleware({
+			src: path.join(__dirname, 'node_modules/lamda-styles/themes'),
+			dest: path.join(__dirname, 'public/styles'),
+			compress: app.get('env') !== 'development'
+		})
+	)
 	app.use(express.static('public'))
+	app.locals.styles = [{
+		path: '/styles/dark.css',
+		id: 'themeLink'
+	}]
 }
 
 app.use(lilyware(songsPath))

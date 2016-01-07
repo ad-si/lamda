@@ -7,7 +7,6 @@
     "sheetmusic"
   ],
   "scripts": {
-    "start": "stylus public/styles && node server.js",
     "test": "node --require './server.js' --eval 'console.log(\"OK\")'"
   },
   "dependencies": {
@@ -17,6 +16,7 @@
     "is-image": "^1.0.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git#v0.1.1",
     "lilyware": "^0.3.0",
     "serve-favicon": "^2.3.0",
