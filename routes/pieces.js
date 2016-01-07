@@ -8,7 +8,7 @@ const imageResizer = require('image-resizer')
 const isImage = require('is-image')
 const userHome = require('user-home')
 
-let baseURL = ''
+const baseURL = ''
 
 
 module.exports = function (songsPath, thumbsPath) {

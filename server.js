@@ -46,8 +46,8 @@ app.get('/playlist/:id', playlist)
 module.exports = app
 
 if (!module.parent) {
+	const port = 3000
 	app.set('view engine', 'jade')
-	var port = 3000
-	app.listen(3000)
+	app.listen(port)
 	console.log('App listens on http://localhost:' + port)
 }

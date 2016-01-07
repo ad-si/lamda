@@ -1,9 +1,9 @@
 'use strict'
 
-let fs = require('fs')
-let path = require('path')
+const fs = require('fs')
+const path = require('path')
 
-let yaml = require('js-yaml')
+const yaml = require('js-yaml')
 
 
 module.exports = function (req, res) {

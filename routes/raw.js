@@ -10,9 +10,9 @@ module.exports = function (songsPath, thumbsPath){
 
 	return function (req, res) {
 
-		let songId = req.params.name
-		let files = fs.readdirSync(path.join(songsPath, songId))
-		let images = getPieceImages(files, songId, songsPath, thumbsPath)
+		const songId = req.params.name
+		const files = fs.readdirSync(path.join(songsPath, songId))
+		const images = getPieceImages(files, songId, songsPath, thumbsPath)
 
 		res.render('raw', {
 			page: 'raw',
