@@ -6,30 +6,28 @@ const path = require('path')
 const yaml = require('js-yaml')
 
 
-module.exports = function (req, res) {
+module.exports = function (playlistsPath) {
 
-	var playlistPath = path.join(
-			global.basePath,
-			'sheetmusic',
-			'playlists',
-			req.params.id
-		),
-		playlistData = yaml.safeLoad(
+	return function (req, res) {
+
+		const playlistPath = path.join(playlistsPath, req.params.id)
+		const playlistData = yaml.safeLoad(
 			fs.readFileSync(
 				path.join(playlistPath, 'index.yaml'),
 				'utf-8'
 			)
 		)
 
-	playlistData.songs = playlistData.songs.map(function (songId) {
-		return {
-			id: songId,
-			url: global.baseURL + '/' + songId
-		}
-	})
+		playlistData.songs = playlistData.songs.map(function (songId) {
+			return {
+				id: songId,
+				url: global.baseURL + '/' + songId
+			}
+		})
 
-	res.render('playlist', {
-		page: 'playlist',
-		playlist: playlistData
-	})
+		res.render('playlist', {
+			page: 'playlist',
+			playlist: playlistData
+		})
+	}
 }

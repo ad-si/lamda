@@ -7,8 +7,6 @@ const yaml = require('js-yaml')
 
 const getPieceImages = require('../modules/getPieceImages')
 
-let baseURL = ''
-
 
 function getLilypondFilesObjects (files, songName) {
 
@@ -18,11 +16,11 @@ function getLilypondFilesObjects (files, songName) {
 		})
 		.map(function (fileName) {
 
-			var filePath = '/sheetmusic/' + songName + '/' + fileName,
-				lilypondObject = {
-					path: filePath,
-					absPath: path.join(songsPath, songName, fileName)
-				}
+			const filePath = '/sheetmusic/' + songName + '/' + fileName
+			const lilypondObject = {
+				path: filePath,
+				absPath: path.join(songsPath, songName, fileName)
+			}
 
 			return lilypondObject
 		})
@@ -33,52 +31,40 @@ module.exports = function (songsPath, thumbsPath) {
 
 	return function (req, res) {
 
-		var songId = req.params.name,
-			requestedSongPath = path.join(songsPath, songId),
-			files = fs.readdirSync(requestedSongPath),
-			images = getPieceImages(files, songId, songsPath, thumbsPath),
-			lilypondFiles = getLilypondFilesObjects(files, songId),
-			renderObject = {
-				page: 'sheetmusic',
-				baseURL
+		const songId = req.params.name
+		const requestedSongPath = path.join(songsPath, songId)
+		const files = fs.readdirSync(requestedSongPath)
+		const images = getPieceImages(files, songId, songsPath, thumbsPath)
+		const lilypondFiles = getLilypondFilesObjects(files, songId)
+		const renderObject = {
+			page: 'sheetmusic',
+			baseURL: global.baseURL,
+			song: {
+				id: songId,
+				name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
+				images: images,
+				lilypondFiles: lilypondFiles
 			}
+		}
 
 
 		if (files.indexOf('index.yaml') === -1)
-			res.render('piece', Object.assign(
-				renderObject,
-				{
-					song: {
-						id: songId,
-						name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),
-						images: images,
-						lilypondFiles: lilypondFiles
-					}
-				}
-			))
+			res.render('piece', renderObject)
 
 		else
 			fs.readFile(
 				path.join(requestedSongPath, 'index.yaml'),
-				{encoding: 'utf-8'},
+				'utf-8',
 				function (error, fileContent) {
 
 					if (error) throw error
 
-					var jsonData = yaml.safeLoad(fileContent)
+					renderObject.song = Object.assign(
+						renderObject.song,
+						yaml.safeLoad(fileContent)
+					)
 
-					jsonData.id = req.params.name
-					jsonData.images = images
-					jsonData.lilypondFiles = lilypondFiles
-
-					res.render('piece', Object.assign(
-						renderObject,
-						{
-							page: 'sheetmusic',
-							baseURL,
-							song: jsonData
-						}
-					))
+					res.render('piece',renderObject)
 				}
 			)
 	}

@@ -6,38 +6,33 @@ const path = require('path')
 const yaml = require('js-yaml')
 
 
-module.exports = function (req, res) {
+module.exports = function (playlistsPath) {
 
-	var playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists'),
-		playlistDirs = fs.readdirSync(playlistsPath),
-		playlists = []
+	return function (req, res) {
 
+		const playlistDirs = fs.readdirSync(playlistsPath)
+		const playlists = []
 
-	playlistDirs.forEach(function (playlistDir) {
+		playlistDirs.forEach(function (playlistDir) {
+			try {
+				const playlistData = yaml.safeLoad(fs.readFileSync(
+					path.join(playlistsPath, playlistDir, 'index.yaml'),
+					'utf-8'
+				))
 
-		var playlistData
+				playlistData.id = playlistDir
 
-		try {
-			playlistData = yaml.safeLoad(fs.readFileSync(
-				path.join(playlistsPath, playlistDir, 'index.yaml'),
-				'utf-8'
-			))
-		}
-		catch (error) {
+				playlists.push(playlistData)
+			}
+			catch (error) {
+				if (error.code !== 'ENOTDIR')
+					console.error(error)
+			}
+		})
 
-			if (error.code !== 'ENOTDIR')
-				console.error(error)
-
-			return
-		}
-
-		playlistData.id = playlistDir
-
-		playlists.push(playlistData)
-	})
-
-	res.render('playlists', {
-		page: 'playlists',
-		playlists: playlists
-	})
+		res.render('playlists', {
+			page: 'playlists',
+			playlists: playlists
+		})
+	}
 }

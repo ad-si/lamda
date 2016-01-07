@@ -18,16 +18,23 @@ const playlists = require('./routes/playlists')
 const app = express()
 
 global.basePath = global.basePath || userHome
-global.baseURL = global.baseURL || ''
+global.baseURL = '/sheetmusic'
 const songsPath = path.join(global.basePath, 'sheetmusic', 'songs')
+const playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists')
 const thumbsPath = global.projectURL ?
 	path.join(global.projectURL, 'thumbs', 'sheetmusic') :
 	path.join(__dirname, 'public', 'thumbs')
 
+
 if (!module.parent) {
-	app.use(serveFavicon(
-		path.join(__dirname, 'public', 'images', 'favicon.ico')
-	))
+	const fontsPath = path.join(
+		__dirname,
+		'node_modules/lamda-styles/build/font/fonts'
+	)
+	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
+
+	global.baseURL = ''
+	app.use(serveFavicon(faviconPath))
 	app.use(
 		stylus.middleware({
 			src: path.join(__dirname, 'node_modules/lamda-styles/themes'),
@@ -35,6 +42,7 @@ if (!module.parent) {
 			compress: app.get('env') !== 'development'
 		})
 	)
+	app.use('/fonts', express.static(fontsPath))
 	app.use(express.static('public'))
 	app.locals.styles = [{
 		path: '/styles/dark.css',
@@ -45,14 +53,15 @@ if (!module.parent) {
 app.use(lilyware(songsPath))
 app.use(express.static(songsPath))
 
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, 'views'))
 
 app.get('/', pieces(songsPath, thumbsPath))
+
+app.get('/playlists', playlists(playlistsPath))
+app.get('/playlist/:id', playlist(playlistsPath))
+
 app.get('/:name', piece(songsPath, thumbsPath))
 app.get('/:name/raw', raw(songsPath, thumbsPath))
-
-app.get('/playlists', playlists)
-app.get('/playlist/:id', playlist)
 
 module.exports = app
 
