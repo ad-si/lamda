@@ -1,8 +1,10 @@
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 
 const isImage = require('is-image')
-const imageResizer = require('image-resizer')
+const imageResizer = require('image-resizer-middleware')
 
 
 function createThumbnail (songName, image, thumbsPath) {
@@ -26,17 +28,17 @@ module.exports = function (files, songName, songsPath, thumbsPath) {
 	return files
 		.filter(isImage)
 		.map(function (fileName) {
+			const imageURL = `${global.baseURL}/${songName}/${fileName}`
+			const maxWidth = 2000
+			const maxHeight = 2000
 
-			var imagePath = baseURL + '/' + songName + '/' + fileName,
-				thumbnailPath = baseURL + '/thumbs' + imagePath,
-				image = {
-					path: imagePath,
-					thumbnailPath: thumbnailPath,
-					absPath: path.join(songsPath, songName, fileName),
-					absThumbnailPath: path.join(thumbsPath, songName, fileName),
-					maxWidth: 2000,
-					maxHeight: 2000
-				}
+			const image = {
+				path: imageURL,
+				thumbnailPath: imageURL +
+					`?maximum-size=${maxWidth}x${maxHeight}`,
+				absPath: path.join(songsPath, songName, fileName),
+				absThumbnailPath: path.join(thumbsPath, songName, fileName)
+			}
 
 			createThumbnail(songName, image, thumbsPath)
 

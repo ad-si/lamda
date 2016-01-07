@@ -13,7 +13,7 @@
   "dependencies": {
     "express": "^4.12.4",
     "gm": "^1.18.1",
-    "image-resizer": "git+https://github.com/adius/image-resizer.git",
+    "image-resizer-middleware": "v0.3.0",
     "is-image": "^1.0.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
