@@ -1,7 +1,9 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
-	packageData = require('../package.json')
+'use strict'
+
+const fs = require('fs')
+const path = require('path')
+const yaml = require('js-yaml')
+const packageData = require('../package.json')
 
 
 function getPackageContent (appPath) {
@@ -23,7 +25,7 @@ function getPackageContent (appPath) {
 
 function addAppToAppMap (appMap, appPath, rootApp, locals) {
 
-	var appPath = path.join(global.projectURL, appPath),
+	var appPath = path.join(global.projectPath, appPath),
 		appName = path.basename(appPath),
 		appModule
 
@@ -59,9 +61,9 @@ module.exports = function (rootApp, locals) {
 
 	if (!fs.existsSync('apps'))
 		appDirectories = Object.keys(packageData.optionalDependencies)
-		.map(function (name) {
-			return path.join('node_modules', name)
-		})
+			.map(function (name) {
+				return path.join('node_modules', name)
+			})
 	else
 		appDirectories = fs
 			.readdirSync('./apps')
@@ -74,7 +76,8 @@ module.exports = function (rootApp, locals) {
 			return fs.statSync(appPath).isDirectory() &&
 				path.basename(appPath) !== 'boilerplate'
 		})
-		.reduce(function (map, appPath) {
-			return addAppToAppMap(map, appPath, rootApp, locals)
-		}, {})
+		.reduce(
+			(map, appPath) => addAppToAppMap(map, appPath, rootApp, locals),
+			{}
+		)
 }
