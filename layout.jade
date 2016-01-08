@@ -22,22 +22,22 @@ block body
 				a(href='/', class=(page === 'home') ? 'active' : '') λ
 			else
 				a(href='/')= page[0].toUpperCase() + page.slice(1)
-			
-			if appNames
-				.links
-					ul
-						for name in appNames
-							- var path = '/' + name.toLowerCase()
-							- var active = page === name.toLowerCase() ? ' active' : ''
-							- var className = name.toLowerCase() + active
 
-							li(class=className)
-								a(href=path, title=name)
-									span(
-									class= name.toLowerCase() + 'Icon oi',
-									data-glyph, aria-hidden='true'
-									)
-									span.text= name
+		if appNames
+			.links
+				ul
+					for name in appNames
+						- var path = '/' + name.toLowerCase()
+						- var active = page === name.toLowerCase() ? ' active' : ''
+						- var className = name.toLowerCase() + active
+
+						li(class=className)
+							a(href=path, title=name)
+								span(
+								class= name.toLowerCase() + 'Icon oi',
+								data-glyph, aria-hidden='true'
+								)
+								span.text= name
 
 		if isMounted
 			.right
