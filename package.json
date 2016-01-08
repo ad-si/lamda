@@ -13,7 +13,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "postinstall": "mkdir -p build && (cp -r ./node_modules/open-iconic/font ./build/font || cp -r ../node_modules/open-iconic/font ./build/font)"
+    "postinstall": "mkdir -p build && (cp -r ./node_modules/open-iconic/font ./build/font || cp -r ../open-iconic/font ./build/font)"
   },
   "repository": {
     "type": "git",
