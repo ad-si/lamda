@@ -12,7 +12,9 @@
     "open-iconic": "^1.1.1"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+    "postinstall": "mkdir -p build && cp -r ./node_modules/open-iconic/font ./build/font"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/lamda-styles.git"
