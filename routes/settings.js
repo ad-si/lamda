@@ -1,6 +1,7 @@
-var fs = require('fs'),
+'use strict'
 
-	yaml = require('js-yaml')
+const fs = require('fs')
+const yaml = require('js-yaml')
 
 
 module.exports = function (request, response) {
