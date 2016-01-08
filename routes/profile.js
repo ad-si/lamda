@@ -4,8 +4,6 @@ var fs = require('fs'),
 
 module.exports = function (request, response) {
 
-	console.log('test')
-
 	var availableFields = {
 		theme: ['light', 'dark'],
 		baseURL: '',
