@@ -36,25 +36,26 @@ var fs = require('fs'),
 	locals
 
 
-
 try {
 	fs.mkdirSync('thumbs')
-} catch (error) {}
+}
+catch (error) {}
 
 
-global.baseURL = process.env.LAMDA_HOME || osenv.home()
-global.projectURL = projectPath
+global.basePath = process.env.LAMDA_HOME || osenv.home()
+global.baseURL = ''
+global.projectPath = projectPath
 global.devMode = app.get('env') === 'development'
 global.config = {
 	owner: {}
 }
 
 try {
-	global.config = yaml.safeLoad(
-		fs.readFileSync(
-			path.join(global.baseURL, 'config.yaml'),
-			'utf-8'
-		)
+	Object.assign(
+		global.config,
+		yaml.safeLoad(fs.readFileSync(
+			path.join(global.basePath, 'config.yaml')
+		))
 	)
 }
 catch (error) {
@@ -65,7 +66,8 @@ locals = {
 	title: title,
 	scripts: scripts,
 	styles: styles,
-	config: global.config
+	config: global.config,
+	isMounted: true,
 }
 
 loadedApps = appLoader(app, locals)
@@ -86,7 +88,7 @@ app.use(compress())
 app.use(methodOverride())
 
 
-app.set('baseURL', process.env.baseURL || __dirname + '/home')
+app.set('basePath', process.env.basePath || __dirname + '/home')
 
 
 // Native Apps
@@ -118,11 +120,7 @@ for (name in loadedApps) {
 			stylus.middleware({
 				src: path.join(loadedApps[name].lamda.path, 'public'),
 				compile: function (string, path) {
-					return utils.compileStyl(
-						string,
-						path,
-						global.config.theme
-					)
+					return utils.compileStyl(string, path, global.config)
 				}
 			}),
 			express.static(path.join(loadedApps[name].lamda.path, 'public'))
@@ -140,7 +138,7 @@ for (name in loadedApps) {
 app.use(stylus.middleware({
 	src: 'public',
 	compile: function (string, path) {
-		return utils.compileStyl(string, path, global.config.theme)
+		return utils.compileStyl(string, path, global.config)
 	}
 }))
 
@@ -166,5 +164,7 @@ app.use(function (req, res) {
 })
 
 app.listen(app.get('port'), function () {
-	console.log('Express server listening on port ' + app.get('port'))
+	console.log(
+		'Express server listening on http://localhost:' + app.get('port')
+	)
 })

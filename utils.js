@@ -20,12 +20,8 @@ function getFromArray (array, key, value) {
 
 function capitalize (string) {
 	if (typeof string === 'string')
-		return string
-			       .charAt(0)
-			       .toUpperCase() +
-		       string
-			       .substring(1)
-			       .toLowerCase()
+		return string.charAt(0).toUpperCase() +
+			string.substring(1).toLowerCase()
 	else
 		return string
 }
@@ -35,11 +31,13 @@ utils.getFromArray = getFromArray
 
 utils.capitalize = capitalize
 
-utils.compileStyl = function (str, path, theme) {
+utils.compileStyl = function (str, path, config) {
 
 	return stylus(str)
 		.set('filename', path)
 		.set('compress', !global.devMode)
+		.define('theme', config.theme)
+		.define('rotation', config.rotation)
 		.use(nib())
 		.import('nib')
 }
