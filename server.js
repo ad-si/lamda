@@ -35,20 +35,22 @@ if (!module.parent) {
 
 	global.baseURL = ''
 	app.use(serveFavicon(faviconPath))
-	app.use(
-		stylus.middleware({
-			src: path.join(__dirname, 'node_modules/lamda-styles/themes'),
-			dest: path.join(__dirname, 'public/styles'),
-			compress: app.get('env') !== 'development'
-		})
-	)
 	app.use('/fonts', express.static(fontsPath))
-	app.use(express.static('public'))
 	app.locals.styles = [{
 		path: '/styles/dark.css',
 		id: 'themeLink'
 	}]
 }
+
+app.use(
+	stylus.middleware({
+		src: path.join(__dirname, 'node_modules/lamda-styles/themes'),
+		dest: path.join(__dirname, 'public/styles'),
+		debug: true,
+		compress: app.get('env') !== 'development'
+	})
+)
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(lilyware(songsPath))
 app.use(express.static(songsPath))
