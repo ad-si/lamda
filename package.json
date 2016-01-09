@@ -1,5 +1,6 @@
 {
-  "name": "Things",
+  "name": "things",
+  "description": "All your things in one place",
   "version": "0.0.1",
   "keywords": [
     "lamda",
@@ -8,16 +9,28 @@
   "dependencies": {
     "array.from": "^0.2.0",
     "express": "^4.12.4",
+    "fs-promise": "^0.3.1",
     "gm": "^1.18.1",
-    "image-resizer": "https://github.com/adius/image-resizer",
+    "image-resizer-middleware": "^0.3.0",
     "is-image": "^1.0.1",
     "jade": "^1.10.0",
     "javascript-styleguide": "^0.1.1",
     "js-yaml": "^3.3.1",
-    "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
+    "lamda-views": "git+https://adius@bitbucket.org/lamdaos/lamda-views.git",
     "serve-favicon": "^2.3.0",
     "shaven": "^0.6.2",
     "stylus": "^0.51.1",
-    "table-to-json": "^0.10.0"
-  }
+    "table-to-json": "^0.10.0",
+    "user-home": "^2.0.0"
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/things.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/lamdaos/things#readme"
 }
