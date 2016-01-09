@@ -1,22 +1,27 @@
-var fs = require('fs'),
-	path = require('path'),
-	url = require('url'),
+'use strict'
 
-	yaml = require('js-yaml'),
-	gm = require('gm'),
-	isImage = require('is-image'),
+const fs = require('fs')
+const path = require('path')
+const url = require('url')
 
-	imageResizer = require('image-resizer'),
+const fsp = require('fs-promise')
+const yaml = require('js-yaml')
+const gm = require('gm')
+const isImage = require('is-image')
 
-	thingsDir = path.join(global.baseURL, 'things'),
-	thumbsDirectory = path.join(global.projectURL, 'thumbs')
+const imageResizer = require('image-resizer-middleware')
+
+const thingsDir = path.join(global.basePath, 'things')
+const thumbsDirectory = path.resolve(__dirname, '../public/thumbs')
 
 
-fs.mkdir(path.join(thumbsDirectory, 'things'), function (error) {
-
+try {
+	fs.mkdirSync(thumbsDirectory)
+}
+catch (error) {
 	if (error && error.code !== 'EEXIST')
-		throw new Error(error)
-})
+		throw error
+}
 
 
 function getCoverImage (images) {
@@ -109,188 +114,83 @@ function callRenderer (res, things, view) {
 
 module.exports = function (req, response) {
 
-	var view = (req.query.view === 'wide') ? 'wide' : 'standard',
-		things = []
+	let view = (req.query.view === 'wide') ? 'wide' : 'standard'
 
-
-	function loadThings (callback) {
-
-		fs.readdir(thingsDir, function (error, thingDirs) {
-
-			var numberOfThings = thingDirs.length
-
-			if (error) {
-				callback(error)
-				return
-			}
-
-			thingDirs.forEach(function (thingDir) {
-
-				var thing = {}
-
-
-				function loadFiles (callback) {
-
-					var images = [],
-						indexData = {},
-						absoluteThingDir = path.join(thingsDir, thingDir)
-
-					fs.readdir(
-						absoluteThingDir,
-						function (error, files) {
-
-							var numberOfFiles
-
-							if (error || !files)
-								return callback(error)
-
-							numberOfFiles = files.length
-
-							files.forEach(function (file) {
-
-								function checkImagesLoadStatus () {
-									if (images.length === numberOfFiles)
-										callback(null, images, indexData)
-								}
-
-								function processYamlFile (error, fileContent) {
-
-									if (error) {
-										console.error(error.stack)
-										return
-									}
-
-									numberOfFiles--
-
-									try {
-										indexData = yaml.safeLoad(fileContent)
-									}
-									catch (error) {
-										console.error(
-											'An error occured while parsing ' +
-											path.join(absoluteThingDir, file) + ':'
-										)
-										console.error(error)
-									}
-
-									checkImagesLoadStatus()
-								}
-
-								if (file === 'index.yaml') {
-									fs.readFile(
-										path.join(thingsDir, thingDir, 'index.yaml'),
-										{encoding: 'utf-8'},
-										processYamlFile
-									)
-								}
-								else if (isImage(file))
-									images.push(file)
-
-								else
-									numberOfFiles--
-
-
-								checkImagesLoadStatus()
-							})
-						}
-					)
-				}
-
-
-				if (thingDir[0] === '.') {
-					numberOfThings--
-					return
-				}
-
-				loadFiles(function (error, images, indexData) {
-
-					var imagePath,
-						imageThumbnailPath,
-						coverImage = getCoverImage(images)
-
-					if (error) {
-						if (error.code === 'ENOTDIR') {
-							numberOfThings--
-							return
-						}
-						else {
-							callback(error)
-							return
-						}
+	return fsp
+		.readdir(thingsDir)
+		.then(thingDirs => {
+			return thingDirs
+				.filter(thingDir => !thingDir.startsWith('.'))
+				.map(function (thingDir) {
+					let thing = {
+						images: [],
+						directory: thingDir,
 					}
+					let indexData = {}
+					let absoluteThingDir = path.join(thingsDir, thingDir)
 
-					thing = indexData || thing
-
-					thing.name = thingDir.replace(/_/g, ' ')
-
-
-					if (coverImage) {
-						imagePath = path.join(thingDir, coverImage)
-						imageThumbnailPath = path.join(
-							'thumbs',
-							'things',
-							imagePath
-						)
-
-						fs.exists(imageThumbnailPath, function (exists) {
-
-							if (exists) return
-
-							fs.mkdir(
-								path.join(thumbsDirectory, 'things', thingDir),
-								function (error) {
-
-									if (error && error.code !== 'EEXIST') {
-										console.error(error)
-										return
-									}
-
-									//TODO before re-adding:
-									// ImageResizer must allow to add several
-									// callbacks or to add them lazily
-
-									/*
-									 imageResizer.addToQueue({
-									 absPath: path.join(
-									 thingsDir, imagePath
-									 ),
-									 absThumbnailPath: path.join(
-									 global.projectURL, imageThumbnailPath
-									 )
-									 })
-									 */
-								}
-							)
-
+					return fsp
+						.readdir(absoluteThingDir)
+						.then(files => {
+							thing.files = files
+							return thing
 						})
-
-
-						thing.image = url.format({
-							pathname: '/things/' + imagePath,
-							query: {
-								width: 200,
-								height: 200
-							}
-						})
-						thing.rawImage = '/things/' + imagePath
-					}
-
-					thing.url = '/things/' + thingDir
-					things.push(thing)
-
-					if (things.length === numberOfThings)
-						callback(null, things)
 				})
+		})
+		.then(thingPromises => {
+			return Promise.all(thingPromises)
+		})
+		.then(function (things) {
+
+			return things.map(function (thing) {
+				thing.images = thing.files.filter(isImage)
+
+				if (thing.files.indexOf('index.yaml') > 0) {
+					return fsp
+						.readFile(
+							path.join(thingsDir, thing.directory, 'index.yaml')
+						)
+						.then(fileContent => {
+							let thingData = yaml.safeLoad(fileContent)
+							return Object.assign(thing, thingData)
+						})
+				}
+				else {
+					return Promise.resolve(thing)
+				}
 			})
 		})
-	}
+		.then(thingPromises => {
+			return Promise.all(thingPromises)
+		})
+		.then(things => {
+			return things.map(thing => {
+				let coverImage = getCoverImage(thing.images)
 
+				if (coverImage)  {
+					thing.imagePath = path.join(thing.directory, coverImage)
+					thing.imageThumbnailPath = path.join(
+						thumbsDirectory, thing.imagePath)
+					thing.image = url.format({
+						pathname: global.baseURL + thing.imagePath,
+						query: {
+							'max-width': 200,
+							'max-height': 200,
+						}
+					})
+					thing.rawImage = '/things/' + thing.imagePath
+				}
 
-	loadThings(function (error, things) {
+				thing.name = thing.directory.replace(/_/g, ' ')
+				thing.url = '/things/' + thing.directory
 
-		if (error)
-			console.error(error.stack)
-		else
+				return thing
+			})
+		})
+		.then(things => {
 			callRenderer(response, things, view)
-	})
+		})
+		.catch(error => {
+			console.error(error.stack)
+		})
 }
