@@ -6,7 +6,6 @@ module.exports = function (request, response) {
 
 	var availableFields = {
 		theme: ['light', 'dark'],
-		baseURL: '',
 		owner: {}
 	}
 

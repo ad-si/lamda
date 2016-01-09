@@ -43,7 +43,6 @@ catch (error) {}
 
 
 global.basePath = process.env.LAMDA_HOME || osenv.home()
-global.baseURL = ''
 global.projectPath = projectPath
 global.devMode = app.get('env') === 'development'
 global.config = {
