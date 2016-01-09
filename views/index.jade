@@ -1,12 +1,12 @@
 extends ../node_modules/lamda-views/layout
 
 block scripts
-	script(src='/assets/things/modules/array.from/array-from.js')
-	script(src='/assets/things/modules/shaven/shaven.js')
-	script(src='/assets/things/public/index.js')
+	script(src='#{baseURL}/node_modules/array.from/array-from.js')
+	script(src='#{baseURL}/node_modules/shaven/shaven.js')
+	script(src='#{baseURL}/scripts/index.js')
 
 block styles
-	link(rel='stylesheet', href='/assets/things/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 
@@ -68,14 +68,13 @@ block content
 			else
 				for thing in things
 					div(data-type=thing.type)
-						
+
 						if thing.image
 							a(href=thing.url)
 								img(src=thing.image)
 						else
 							a.placeholder(href=thing.url)
 								include ../public/icons/thing.svg
-							
 
 	script.
 		var things = !{JSON.stringify(things)}
