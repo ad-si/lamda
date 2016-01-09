@@ -3,7 +3,7 @@ var path = require('path'),
 	yaml = require('js-yaml'),
 	isImage = require('is-image'),
 
-	thingsPath = path.join(global.baseURL, 'things')
+	thingsPath = path.join(global.basePath, 'things')
 
 
 module.exports = function (request, response) {
