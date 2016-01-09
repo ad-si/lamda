@@ -24,6 +24,7 @@ const playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists')
 const thumbsPath = global.projectURL ?
 	path.join(global.projectURL, 'thumbs', 'sheetmusic') :
 	path.join(__dirname, 'public', 'thumbs')
+const isDevMode = app.get('env') === 'development'
 
 
 if (!module.parent) {
@@ -40,16 +41,19 @@ if (!module.parent) {
 		path: '/styles/dark.css',
 		id: 'themeLink'
 	}]
+	app.use(stylus.middleware({
+		src: path.join(__dirname,'node_modules/lamda-styles/themes'),
+		dest: path.join(__dirname, 'public/styles'),
+		debug: isDevMode,
+		compress: !isDevMode,
+	}))
 }
 
-app.use(
-	stylus.middleware({
-		src: path.join(__dirname, 'node_modules/lamda-styles/themes'),
-		dest: path.join(__dirname, 'public/styles'),
-		debug: true,
-		compress: app.get('env') !== 'development'
-	})
-)
+app.use(stylus.middleware({
+	src: path.join(__dirname, 'public/styles'),
+	debug: isDevMode,
+	compress: !isDevMode,
+}))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(lilyware(songsPath))
