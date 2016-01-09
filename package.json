@@ -16,6 +16,7 @@
     "jade": "^1.10.0",
     "javascript-styleguide": "^0.1.1",
     "js-yaml": "^3.3.1",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles/commits/130ffe6",
     "lamda-views": "git+https://adius@bitbucket.org/lamdaos/lamda-views.git",
     "serve-favicon": "^2.3.0",
     "shaven": "^0.6.2",
