@@ -25,9 +25,10 @@ const thumbsPath = global.projectURL ?
 	path.join(global.projectURL, 'thumbs', 'sheetmusic') :
 	path.join(__dirname, 'public', 'thumbs')
 const isDevMode = app.get('env') === 'development'
+const isMounted = Boolean(module.parent)
 
 
-if (!module.parent) {
+if (!isMounted) {
 	const fontsPath = path.join(
 		__dirname,
 		'node_modules/lamda-styles/build/font/fonts'
@@ -71,7 +72,7 @@ app.get('/:name/raw', raw(songsPath, thumbsPath))
 
 module.exports = app
 
-if (!module.parent) {
+if (!isMounted) {
 	const port = 3000
 	app.set('view engine', 'jade')
 	app.listen(port)
