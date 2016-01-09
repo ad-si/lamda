@@ -5,12 +5,12 @@ const path = require('path')
 
 const express = require('express')
 const stylus = require('stylus')
-// const imageResizer = require('image-resizer-middleware')
+const imageResizer = require('image-resizer-middleware')
 const serveFavicon = require('serve-favicon')
 const userHome = require('user-home')
 
 global.basePath = global.basePath || userHome
-global.projectPath = global.projectPath || userHome
+global.projectPath = global.projectPath || path.join(userHome, 'things')
 global.baseURL = '/things'
 const thingsPath = path.join(global.basePath, 'things')
 const publicPath = path.join(__dirname, 'public')
@@ -51,7 +51,10 @@ app.use(stylus.middleware({
 }))
 app.use(express.static(publicPath))
 
-// app.use(imageResizer.middleware('things'))
+app.use(imageResizer.getMiddleware({
+	basePath: global.projectPath,
+	thumbnailsPath: path.join(publicPath, 'thumbnails')
+}))
 app.use(express.static(thingsPath))
 app.use('/node_modules', express.static(modulesPath))
 
