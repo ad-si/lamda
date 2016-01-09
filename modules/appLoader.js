@@ -23,26 +23,28 @@ function getPackageContent (appPath) {
 }
 
 
-function addAppToAppMap (appMap, appPath, rootApp, locals) {
+function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 
-	var appPath = path.join(global.projectPath, appPath),
-		appName = path.basename(appPath),
-		appModule
+	const absoluteAppPath = path.join(global.projectPath, appPath)
+	const appName = path.basename(appPath)
 
 	try {
-		appModule = require(appPath)
+		const appModule = require(absoluteAppPath)
 
-		appMap[appName] = getPackageContent(appPath)
+		appMap[appName] = getPackageContent(absoluteAppPath)
 
 		if (!appMap[appName].hasOwnProperty('lamda'))
 			appMap[appName].lamda = {}
 
 		appMap[appName].lamda.module = appModule
-		appMap[appName].lamda.path = appPath
+		appMap[appName].lamda.path = absoluteAppPath
 
-		appModule.locals = locals
+		Object.assign(appModule.locals, locals)
 		appModule.locals.page = appName
-
+		appModule.locals.baseURL = '/' + appName
+		appModule.locals.appNames = appPaths.map(
+			appPath => path.basename(appPath)
+		)
 		rootApp.use('/' + appName, appModule)
 	}
 	catch (error) {
@@ -77,7 +79,14 @@ module.exports = function (rootApp, locals) {
 				path.basename(appPath) !== 'boilerplate'
 		})
 		.reduce(
-			(map, appPath) => addAppToAppMap(map, appPath, rootApp, locals),
-			{}
-		)
+			(map, appPath, index, appPaths) =>
+				addAppToAppMap(
+					map,
+					appPath,
+					rootApp,
+					locals,
+					appPaths
+				),
+		{}
+	)
 }
