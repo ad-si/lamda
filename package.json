@@ -15,7 +15,7 @@
     "gm": "^1.16.0",
     "jade": "^1.11.0",
     "js-yaml": "^3.2.7",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views/commits/3913a79",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "method-override": "^2.3.1",
     "mkdirp": "^0.5.0",
     "moment": "^2.5.1",
