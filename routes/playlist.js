@@ -6,7 +6,7 @@ const path = require('path')
 const yaml = require('js-yaml')
 
 
-module.exports = function (playlistsPath) {
+module.exports = function (playlistsPath, baseURL) {
 
 	return function (req, res) {
 
@@ -21,7 +21,7 @@ module.exports = function (playlistsPath) {
 		playlistData.songs = playlistData.songs.map(function (songId) {
 			return {
 				id: songId,
-				url: global.baseURL + '/' + songId
+				url: baseURL + '/' + songId
 			}
 		})
 

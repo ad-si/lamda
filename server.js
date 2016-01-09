@@ -18,7 +18,8 @@ const playlists = require('./routes/playlists')
 const app = express()
 
 global.basePath = global.basePath || userHome
-global.baseURL = '/sheetmusic'
+app.locals.baseURL = '/sheetmusic'
+
 const songsPath = path.join(global.basePath, 'sheetmusic', 'songs')
 const playlistsPath = path.join(global.basePath, 'sheetmusic', 'playlists')
 const thumbsPath = global.projectURL ?
@@ -29,13 +30,13 @@ const isMounted = Boolean(module.parent)
 
 
 if (!isMounted) {
+	app.locals.baseURL = ''
 	const fontsPath = path.join(
 		__dirname,
 		'node_modules/lamda-styles/build/font/fonts'
 	)
 	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
 
-	global.baseURL = ''
 	app.use(serveFavicon(faviconPath))
 	app.use('/fonts', express.static(fontsPath))
 	app.locals.styles = [{
@@ -65,10 +66,10 @@ app.set('views', path.join(__dirname, 'views'))
 app.get('/', pieces(songsPath, thumbsPath))
 
 app.get('/playlists', playlists(playlistsPath))
-app.get('/playlist/:id', playlist(playlistsPath))
+app.get('/playlist/:id', playlist(playlistsPath, app.locals.baseURL))
 
-app.get('/:name', piece(songsPath, thumbsPath))
-app.get('/:name/raw', raw(songsPath, thumbsPath))
+app.get('/:name', piece(songsPath, thumbsPath, app.locals.baseURL))
+app.get('/:name/raw', raw(songsPath, thumbsPath, app.locals.baseURL))
 
 module.exports = app
 

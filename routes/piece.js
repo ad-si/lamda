@@ -27,18 +27,20 @@ function getLilypondFilesObjects (files, songName) {
 }
 
 
-module.exports = function (songsPath, thumbsPath) {
+module.exports = function (songsPath, thumbsPath, baseURL) {
 
 	return function (req, res) {
 
 		const songId = req.params.name
 		const requestedSongPath = path.join(songsPath, songId)
 		const files = fs.readdirSync(requestedSongPath)
-		const images = getPieceImages(files, songId, songsPath, thumbsPath)
+		const images = getPieceImages(
+			files, songId, songsPath, thumbsPath, baseURL
+		)
 		const lilypondFiles = getLilypondFilesObjects(files, songId)
 		const renderObject = {
 			page: 'sheetmusic',
-			baseURL: global.baseURL,
+			baseURL,
 			song: {
 				id: songId,
 				name: songId.replace(/_/g, ' ').replace(/-/g, ' - '),

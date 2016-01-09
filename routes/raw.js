@@ -6,13 +6,15 @@ const path = require('path')
 const getPieceImages = require('../modules/getPieceImages')
 
 
-module.exports = function (songsPath, thumbsPath){
+module.exports = function (songsPath, thumbsPath, baseURL){
 
 	return function (req, res) {
 
 		const songId = req.params.name
 		const files = fs.readdirSync(path.join(songsPath, songId))
-		const images = getPieceImages(files, songId, songsPath, thumbsPath)
+		const images = getPieceImages(
+			files, songId, songsPath, thumbsPath, baseURL
+		)
 
 		res.render('raw', {
 			page: 'raw',

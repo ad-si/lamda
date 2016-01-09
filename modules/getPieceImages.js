@@ -23,12 +23,12 @@ function createThumbnail (songName, image, thumbsPath) {
 }
 
 
-module.exports = function (files, songName, songsPath, thumbsPath) {
+module.exports = function (files, songName, songsPath, thumbsPath, baseURL) {
 
 	return files
 		.filter(isImage)
 		.map(function (fileName) {
-			const imageURL = `${global.baseURL}/${songName}/${fileName}`
+			const imageURL = `${baseURL}/${songName}/${fileName}`
 			const maxWidth = 2000
 			const maxHeight = 2000
 
