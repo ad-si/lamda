@@ -1,7 +1,7 @@
 extends ../node_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/things/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 	h2= thing.name
@@ -18,7 +18,7 @@ block content
 					for url in value
 						dd: a(href=value)= value
 						br
-						
+
 
 				else if (value instanceof Date)
 					dd= value.toJSON().replace('T',' ').replace('Z','')

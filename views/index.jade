@@ -48,8 +48,8 @@ block content
 		button.filter#cable(title='Show only cables')
 			include ../public/icons/cable.svg
 
-		a.button(href='/things') standard
-		a.button(href='/things?view=wide') wide
+		a.button(href='#{baseURL}') standard
+		a.button(href='#{baseURL}?view=wide') wide
 
 		p#descriptionHeadline You own #{things.length} things worth #{fortune}€.
 

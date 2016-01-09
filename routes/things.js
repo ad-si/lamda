@@ -12,11 +12,11 @@ const isImage = require('is-image')
 const imageResizer = require('image-resizer-middleware')
 
 const thingsDir = path.join(global.basePath, 'things')
-const thumbsDirectory = path.resolve(__dirname, '../public/thumbs')
+const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
 
 
 try {
-	fs.mkdirSync(thumbsDirectory)
+	fs.mkdirSync(thumbnailsDirectory)
 }
 catch (error) {
 	if (error && error.code !== 'EEXIST')
@@ -170,9 +170,9 @@ module.exports = function (req, response) {
 				if (coverImage)  {
 					thing.imagePath = path.join(thing.directory, coverImage)
 					thing.imageThumbnailPath = path.join(
-						thumbsDirectory, thing.imagePath)
+						thumbnailsDirectory, thing.imagePath)
 					thing.image = url.format({
-						pathname: global.baseURL + thing.imagePath,
+						pathname: global.baseURL + '/' + thing.imagePath,
 						query: {
 							'max-width': 200,
 							'max-height': 200,
