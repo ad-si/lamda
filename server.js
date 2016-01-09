@@ -1,19 +1,26 @@
-var fs = require('fs'),
-	express = require('express'),
-	stylus = require('stylus'),
-	path = require('path'),
-	imageResizer = require('image-resizer'),
+'use strict'
 
-	things = require('./routes/things'),
-	thing = require('./routes/thing'),
+const fs = require('fs')
+const path = require('path')
 
-	app = express()
+const express = require('express')
+const stylus = require('stylus')
+// const imageResizer = require('image-resizer-middleware')
+const serveFavicon = require('serve-favicon')
+const userHome = require('user-home')
+
+global.basePath = global.basePath || userHome
+global.projectPath = global.projectPath || userHome
+global.baseURL = '/things'
+
+const things = require('./routes/things')
+const thing = require('./routes/thing')
+
+const app = express()
 const isMounted = Boolean(module.parent)
 const isDevMode = app.get('env') === 'development'
 
 
-app.use(imageResizer.middleware('things'))
-app.use(express.static(path.join(global.baseURL, 'things')))
 if (!isMounted) {
 	global.baseURL = ''
 
@@ -31,6 +38,9 @@ if (!isMounted) {
 		compress: !isDevMode,
 	}))
 }
+
+// app.use(imageResizer.middleware('things'))
+app.use(express.static(path.join(global.basePath, 'things')))
 
 app.set('views', path.join(__dirname, 'views'))
 
