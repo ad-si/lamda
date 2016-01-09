@@ -24,7 +24,7 @@
     "table-to-json": "^0.10.0",
     "user-home": "^2.0.0"
   },
-  "main": "index.js",
+  "main": "server.js",
   "devDependencies": {},
   "scripts": {},
   "repository": {
