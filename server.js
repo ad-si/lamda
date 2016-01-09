@@ -10,7 +10,7 @@ const serveFavicon = require('serve-favicon')
 const userHome = require('user-home')
 
 global.basePath = global.basePath || userHome
-global.projectPath = global.projectPath || path.join(userHome, 'things')
+global.projectPath = global.projectPath || __dirname
 global.baseURL = '/things'
 const thingsPath = path.join(global.basePath, 'things')
 const publicPath = path.join(__dirname, 'public')
@@ -52,7 +52,7 @@ app.use(stylus.middleware({
 app.use(express.static(publicPath))
 
 app.use(imageResizer.getMiddleware({
-	basePath: global.projectPath,
+	basePath: thingsPath,
 	thumbnailsPath: path.join(publicPath, 'thumbnails')
 }))
 app.use(express.static(thingsPath))
