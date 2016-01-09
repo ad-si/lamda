@@ -111,29 +111,6 @@ if (global.config.owner.username)
  */
 
 
-for (name in loadedApps) {
-	if (loadedApps.hasOwnProperty(name)) {
-
-		app.use(
-			'/assets/' + name + '/public',
-			stylus.middleware({
-				src: path.join(loadedApps[name].lamda.path, 'public'),
-				compile: function (string, path) {
-					return utils.compileStyl(string, path, global.config)
-				}
-			}),
-			express.static(path.join(loadedApps[name].lamda.path, 'public'))
-		)
-
-		app.use(
-			'/assets/' + name + '/modules',
-			express.static(
-				path.join(loadedApps[name].lamda.path, 'node_modules')
-			)
-		)
-	}
-}
-
 app.use(stylus.middleware({
 	src: 'public',
 	compile: function (string, path) {
@@ -142,7 +119,6 @@ app.use(stylus.middleware({
 }))
 
 app.use(express.static('public'))
-app.use('/thumbs', express.static('thumbs'))
 
 
 if (global.devMode)
