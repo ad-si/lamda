@@ -11,7 +11,6 @@ const userHome = require('user-home')
 
 global.basePath = global.basePath || userHome
 global.projectPath = global.projectPath || __dirname
-global.baseURL = '/things'
 const thingsPath = path.join(global.basePath, 'things')
 const publicPath = path.join(__dirname, 'public')
 const viewsPath =  path.join(__dirname, 'views')
@@ -22,12 +21,13 @@ const things = require('./routes/things')
 const thing = require('./routes/thing')
 
 const app = express()
+app.locals.baseURL = '/things'
 const isMounted = Boolean(module.parent)
 const isDevMode = app.get('env') === 'development'
 
 
 if (!isMounted) {
-	global.baseURL = ''
+	app.locals.baseURL = ''
 
 	const faviconPath = path.join(publicPath, 'images/favicon.ico')
 	app.use(serveFavicon(faviconPath))
@@ -58,9 +58,9 @@ app.use(imageResizer.getMiddleware({
 app.use(express.static(thingsPath))
 app.use('/node_modules', express.static(modulesPath))
 
-app.set('views',viewsPath)
+app.set('views', viewsPath)
 
-app.get('/', things)
+app.get('/', things(app.locals.baseURL))
 app.get('/:id', thing)
 
 module.exports = app

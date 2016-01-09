@@ -112,7 +112,7 @@ function callRenderer (res, things, view) {
 }
 
 
-module.exports = function (req, response) {
+module.exports = function (baseURL) {return function (req, response) {
 
 	let view = (req.query.view === 'wide') ? 'wide' : 'standard'
 
@@ -172,7 +172,7 @@ module.exports = function (req, response) {
 					thing.imageThumbnailPath = path.join(
 						thumbnailsDirectory, thing.imagePath)
 					thing.image = url.format({
-						pathname: global.baseURL + '/' + thing.imagePath,
+						pathname: baseURL + '/' + thing.imagePath,
 						query: {
 							'max-width': 200,
 							'max-height': 200,
@@ -193,4 +193,4 @@ module.exports = function (req, response) {
 		.catch(error => {
 			console.error(error.stack)
 		})
-}
+}}
