@@ -15,6 +15,7 @@
     "javascript-styleguide": "^0.1.1",
     "js-yaml": "^3.3.1",
     "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
+    "serve-favicon": "^2.3.0",
     "shaven": "^0.6.2",
     "stylus": "^0.51.1",
     "table-to-json": "^0.10.0"
