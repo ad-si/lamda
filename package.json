@@ -7,7 +7,8 @@
     "sheetmusic"
   ],
   "scripts": {
-    "test": "node --require './server.js' --eval 'console.log(\"OK\")'"
+    "test": "node --require './server.js' --eval 'console.log(\"OK\")'",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "dependencies": {
     "express": "^4.12.4",
@@ -21,6 +22,7 @@
     "lilyware": "^0.3.0",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
+    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "main": "server.js",

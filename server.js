@@ -31,10 +31,8 @@ const isMounted = Boolean(module.parent)
 
 if (!isMounted) {
 	app.locals.baseURL = ''
-	const fontsPath = path.join(
-		__dirname,
-		'node_modules/lamda-styles/build/font/fonts'
-	)
+	const fontsPath = path.join(__dirname,
+		'linked_modules/lamda-styles/linked_modules/font/fonts')
 	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
 
 	app.use(serveFavicon(faviconPath))
@@ -44,7 +42,7 @@ if (!isMounted) {
 		id: 'themeLink'
 	}]
 	app.use(stylus.middleware({
-		src: path.join(__dirname,'node_modules/lamda-styles/themes'),
+		src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
 		dest: path.join(__dirname, 'public/styles'),
 		debug: isDevMode,
 		compress: !isDevMode,
