@@ -9,11 +9,12 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "dependencies": {
-    "open-iconic": "^1.1.1"
+    "open-iconic": "^1.1.1",
+    "symlink-modules": "^0.2.0"
   },
   "devDependencies": {},
   "scripts": {
-    "postinstall": "cp -r $(find . ./node_modules .. ../.. ../../.. ../../../.. ../../../../.. -type d -name open-iconic -maxdepth 1 | head -n 1) ./build"
+    "postinstall": "symlink-modules open-iconic"
   },
   "repository": {
     "type": "git",
