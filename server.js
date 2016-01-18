@@ -5,7 +5,6 @@ var fs = require('fs'),
 	express = require('express'),
 	errorHandler = require('errorhandler'),
 	favicon = require('serve-favicon'),
-	methodOverride = require('method-override'),
 	compress = require('compression'),
 	logger = require('morgan'),
 	stylus = require('stylus'),
@@ -26,7 +25,7 @@ var fs = require('fs'),
 	],
 	styles = [
 		{
-			path: '/styles/themes/dark.css',
+			path: '/styles/dark.css',
 			id: 'themeLink'
 		}
 	],
@@ -34,12 +33,6 @@ var fs = require('fs'),
 	name,
 	projectPath = __dirname,
 	locals
-
-
-try {
-	fs.mkdirSync('thumbs')
-}
-catch (error) {}
 
 
 global.basePath = process.env.LAMDA_HOME || osenv.home()
@@ -61,6 +54,33 @@ catch (error) {
 	console.error(error.stack)
 }
 
+// All environments
+app.set('port', process.env.PORT || 2000)
+
+app.set('views', path.join(__dirname, 'linked_modules/lamda-views'))
+app.set('view engine', 'jade')
+
+app.use(favicon(path.normalize('public/img/favicon.png')))
+app.use(logger('dev'))
+app.use(compress())
+
+// app.set('basePath', process.env.basePath || __dirname + '/home')
+
+app.use(stylus.middleware({
+	src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
+	dest: path.join(__dirname, 'public/styles'),
+	debug: global.devMode,
+	compress: !global.devMode,
+}))
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(
+	__dirname,
+	'linked_modules/lamda-styles/linked_modules/open-iconic/font'
+)))
+
+
+// Loaded Apps
 locals = {
 	title: title,
 	scripts: scripts,
@@ -73,21 +93,6 @@ loadedApps = appLoader(app, locals)
 
 app.locals = locals
 app.locals.appNames = Object.keys(loadedApps)
-
-
-// All environments
-app.set('port', process.env.PORT || 2000)
-
-app.set('views', path.join(__dirname, 'node_modules', 'lamda-views'))
-app.set('view engine', 'jade')
-
-app.use(favicon(path.normalize('public/img/favicon.png')))
-app.use(logger('dev'))
-app.use(compress())
-app.use(methodOverride())
-
-
-app.set('basePath', process.env.basePath || __dirname + '/home')
 
 
 // Native Apps
@@ -109,16 +114,6 @@ if (global.config.owner.username)
  //app.get('/api/music/:artist', api.music.artist)
  //app.get('/api/music/:artist/:song', api.music.song)
  */
-
-
-app.use(stylus.middleware({
-	src: 'public',
-	compile: function (string, path) {
-		return utils.compileStyl(string, path, global.config)
-	}
-}))
-
-app.use(express.static('public'))
 
 
 if (global.devMode)

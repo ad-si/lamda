@@ -15,6 +15,7 @@
     "gm": "^1.16.0",
     "jade": "^1.11.0",
     "js-yaml": "^3.2.7",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "method-override": "^2.3.1",
     "mkdirp": "^0.5.0",
@@ -25,11 +26,13 @@
     "serve-favicon": "^2.1.6",
     "sharp": "^0.11.3",
     "static-favicon": "^2.0.0-alpha",
-    "stylus": "^0.50.0",
+    "stylus": "^0.53.0",
+    "symlink-modules": "^0.2.0",
     "temp": "^0.8.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "main": "server.js",
   "bin": {
