@@ -12,9 +12,12 @@
     "fs-promise": "^0.3.1",
     "hour": "^0.1.1",
     "jade": "^1.11.0",
-    "lamda-views": "git@bitbucket.org:lamdaos/lamda-views.git",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "moment": "^2.10.3",
+    "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
+    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
@@ -23,7 +26,8 @@
     "unexpected": "^10.4.0"
   },
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "description": "Events app for λOS",
   "main": "server.js",
