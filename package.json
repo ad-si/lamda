@@ -8,6 +8,7 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "express": "^4.12.4",
+    "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",

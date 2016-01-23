@@ -17,7 +17,6 @@ block content
 			each contact in contacts
 				tr(class= contact['gender'])
 					each key in sortedKeys
-						- console.log(key, value)
 						if key === 'gender'
 							// DO nothing
 						else if Object.keys(contact).indexOf(key) !== -1
