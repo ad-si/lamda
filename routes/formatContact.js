@@ -2,12 +2,12 @@ countries = require('world-countries')
 capitalize = require('capitalize')
 
 
-function getFromArray (array, key, value) {
+function getCountryCode (countryName) {
 
 	var soughtElement = null
 
-	array.some(function (element) {
-		if (element[key] == value) {
+	countries.some(function (element) {
+		if (element.name.common.toLowerCase() === countryName.toLowerCase()) {
 			soughtElement = element || ''
 			return true
 		}
@@ -31,11 +31,7 @@ module.exports = function (data) {
 
 	function formatAddress (addr) {
 
-		var countryEntry = getFromArray(
-			countries,
-			'name',
-			capitalize(addr.country)
-		)
+		var countryEntry = getCountryCode(addr.country)
 
 		if (addr.country) {
 

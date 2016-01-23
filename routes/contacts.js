@@ -1,8 +1,13 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
-	formatContact = require('./formatContact'),
-	contactsPath = path.join(global.baseURL, 'contacts')
+const fs = require('fs')
+const path = require('path')
+
+const yaml = require('js-yaml')
+const userHome = require('user-home')
+
+const formatContact = require('./formatContact')
+
+global.basePath = global.basePath || userHome
+const contactsPath = path.join(global.basePath, 'contacts')
 
 
 module.exports = function (req, res) {
@@ -38,7 +43,7 @@ module.exports = function (req, res) {
 
 					if (contacts.length === contactFiles.length) {
 
-						res.render('index', {
+						res.render('contacts', {
 							page: 'contacts',
 							contacts: contacts.sort(function(previous, current){
 								return previous.name > current.name

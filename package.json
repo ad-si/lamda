@@ -10,8 +10,25 @@
     "express": "^4.12.4",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "file:../lamda-views",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
+    "user-home": "^2.0.0",
     "world-countries": "^1.7.3"
-  }
+  },
+  "scripts": {
+    "postinstall": "symlink-modules lamda-styles lamda-views",
+    "start": "node server.js"
+  },
+  "description": "## Template for YAML file",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/lamdaos/contacts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/lamdaos/contacts#readme"
 }
