@@ -14,47 +14,48 @@ block content
 						if key !== 'gender'
 							th= key.toUpperCase()
 		tbody
-			each contact in contacts
-				tr(class= contact['gender'])
-					each key in sortedKeys
-						if key === 'gender'
-							// DO nothing
-						else if Object.keys(contact).indexOf(key) !== -1
-							- var value = contact[key]
-							- var title = (typeof value == 'string') ? value : null
-							td(
-							class = key
-							title = title
-							)
-								if key === 'website'
-									// TODO: Take care of https
-									a(href=value, target='_blank')
-										= value ? value.replace(/https?:\/\//, '') : ''
+			for contact in contacts
+				if contact
+					tr(class= contact['gender'])
+						for key in sortedKeys
+							if key === 'gender'
+								// DO nothing
+							else if Object.keys(contact).indexOf(key) !== -1
+								- var value = contact[key]
+								- var title = (typeof value == 'string') ? value : null
+								td(
+								class = key
+								title = title
+								)
+									if key === 'website'
+										// TODO: Take care of https
+										a(href=value, target='_blank')
+											= value ? value.replace(/https?:\/\//, '') : ''
 
-								else if key === 'facebook'
-									a(href='https://facebook.com/' + value, , target='_blank')
-										= value
+									else if key === 'facebook'
+										a(href='https://facebook.com/' + value, , target='_blank')
+											= value
 
-								else if key === 'email'
-									- var provider = value.split('@')[1].split('.')
-									- provider.pop()
-									a(href='mailto:' + value, target='_blank', class=provider.join('.'))
-										= value
+									else if key === 'email'
+										- var provider = value.split('@')[1].split('.')
+										- provider.pop()
+										a(href='mailto:' + value, target='_blank', class=provider.join('.'))
+											= value
 
-								else if key === 'birthday'
-									| #{value.toISOString().substr(0,10)} (#{contact.age})
+									else if key === 'birthday'
+										| #{value.toISOString().substr(0,10)} (#{contact.age})
 
-								else if key === 'address' && value
-									span.country(class=value.countryCode, title=value.country)
-										= value.country + ', '
-									span
-										= value.zip ? value.zip + ' ' : ''
-										= value.city ? value.city + ', ' : ''
-										= value.street ? value.street + ' ' : ''
-										= value.number ? value.number + ' ' : ''
-										= value.addition ? contact[key].addition : ''
+									else if key === 'address' && value
+										span.country(class=value.countryCode, title=value.country)
+											= value.country + ', '
+										span
+											= value.zip ? value.zip + ' ' : ''
+											= value.city ? value.city + ', ' : ''
+											= value.street ? value.street + ' ' : ''
+											= value.number ? value.number + ' ' : ''
+											= value.addition ? contact[key].addition : ''
 
-								else
-									=contact[key]
-						else
-							td
+									else
+										=contact[key]
+							else
+								td

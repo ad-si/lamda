@@ -29,16 +29,17 @@ module.exports = (request, response) => {
 		.then(contactFiles => contactFiles
 			.map(contactFile => yaml.safeLoad(contactFile))
 			.map(contactData => {
-				Object
-					.keys(contactData)
-					.forEach(key => keys.add(key))
+				if (contactData) {
+					Object
+						.keys(contactData)
+						.forEach(key => keys.add(key))
 
-				return formatContact(contactData)
+					return formatContact(contactData)
+				}
 			})
-			.sort((previous, current) =>{
-				if (previous.name && current.name)
+			.sort((previous, current) => {
+				if (previous && current && previous.name && current.name)
 					return previous.name.localeCompare(current.name)
-				return 0
 			})
 		)
 		.then(sortedContacts => {
