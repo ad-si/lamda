@@ -35,9 +35,11 @@ module.exports = (request, response) => {
 
 				return formatContact(contactData)
 			})
-			.sort((previous, current) =>
-				previous.name.localeCompare(current.name)
-			)
+			.sort((previous, current) =>{
+				if (previous.name && current.name)
+					return previous.name.localeCompare(current.name)
+				return 0
+			})
 		)
 		.then(sortedContacts => {
 			response.render(

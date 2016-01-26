@@ -4,10 +4,16 @@ capitalize = require('capitalize')
 
 function getCountryCode (countryName) {
 
+	if (typeof countryName !== 'string') {
+		return
+	}
+
 	var soughtElement = null
 
-	countries.some(function (element) {
-		if (element.name.common.toLowerCase() === countryName.toLowerCase()) {
+	countries.some(element => {
+		if (element.name &&
+			element.name.common &&
+			element.name.common.toLowerCase() === countryName.toLowerCase()) {
 			soughtElement = element || ''
 			return true
 		}
@@ -21,12 +27,20 @@ module.exports = function (data) {
 
 	data.gender = data.gender || ''
 
-	if (data.birthday)
+	if (data.email && typeof data.email !== 'string')
+		data.email = data.email.value
+
+	if (!data.name)
+		data.name = data.firstname + ' ' + data.lastname
+
+	if (data.birthday) {
+		data.birthday = new Date(data.birthday)
 		data.age = String(
 			new Date(new Date() - data.birthday)
 				.toISOString()
 				.substr(0,4) - 1970
 		)
+	}
 
 
 	function formatAddress (addr) {
