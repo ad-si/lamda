@@ -32,9 +32,10 @@ block content
 											small= '(' + nickname + ')'
 
 									else if key === 'website'
-										// TODO: Take care of https
-										a(href=value, target='_blank')
-											= value ? value.replace(/https?:\/\//, '') : ''
+										- value = value.replace(/https?:\/\//, '')
+										- value = value.replace(/www\./, '')
+										a(href='http://' + value, target='_blank')
+											= value
 
 									else if key === 'facebook'
 										a(href='https://facebook.com/' + value, , target='_blank')
