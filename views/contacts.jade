@@ -39,7 +39,11 @@ block content
 									else if key === 'email'
 										- var provider = value.split('@')[1].split('.')
 										- provider.pop()
-										a(href='mailto:' + value, target='_blank', class=provider.join('.'))
+										a(
+											href="mailto:#{value}"
+											target='_blank'
+											class="provider #{provider.join('.')}"
+										)
 											= value
 
 									else if key === 'birthday'
