@@ -51,8 +51,6 @@ module.exports = (request, response) => {
 					availableKeys: Array.from(keys),
 					sortedKeys: [
 						'name',
-						'nickname',
-						'gender',
 						'birthday',
 						'email',
 						'mobile',

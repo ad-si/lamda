@@ -16,18 +16,22 @@ block content
 		tbody
 			for contact in contacts
 				if contact
-					tr(class= contact['gender'])
+					tr(class = contact['gender'])
 						for key in sortedKeys
-							if key === 'gender'
-								// DO nothing
-							else if Object.keys(contact).indexOf(key) !== -1
+							if Object.keys(contact).indexOf(key) !== -1
 								- var value = contact[key]
 								- var title = (typeof value == 'string') ? value : null
 								td(
-								class = key
-								title = title
+									class = key
+									title = title
 								)
-									if key === 'website'
+									if key === 'name'
+										- var nickname = contact['nickname']
+										= value + ' '
+										if nickname
+											small= '(' + nickname + ')'
+
+									else if key === 'website'
 										// TODO: Take care of https
 										a(href=value, target='_blank')
 											= value ? value.replace(/https?:\/\//, '') : ''
@@ -37,14 +41,16 @@ block content
 											= value
 
 									else if key === 'email'
-										- var provider = value.split('@')[1].split('.')
-										- provider.pop()
-										a(
-											href="mailto:#{value}"
-											target='_blank'
-											class="provider #{provider.join('.')}"
-										)
-											= value
+										if value && typeof value === 'string'
+											- var provider = value.split('@')[1].split('.')
+
+											- Array.isArray(provider) ? provider.pop() : ''
+											a(
+												href="mailto:#{value}"
+												target='_blank'
+												class="provider #{provider.join('.')}"
+											)
+												= value
 
 									else if key === 'birthday'
 										| #{value.toISOString().substr(0,10)} (#{contact.age})
