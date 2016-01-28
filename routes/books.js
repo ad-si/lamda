@@ -9,7 +9,6 @@ const JsZip = require('jszip')
 const userHome = require('user-home')
 
 global.basePath = global.basePath || userHome
-global.baseURL = global.baseURL || ''
 
 const booksPath = path.join(global.basePath, 'books')
 
@@ -33,7 +32,7 @@ function getFiles (directory) {
 	})
 }
 
-function getCoverImageUrl (book) {
+function getCoverImageUrl (book, baseURL) {
 
 	var openlibraryBaseUrl = 'http://covers.openlibrary.org/b'
 
@@ -41,8 +40,7 @@ function getCoverImageUrl (book) {
 		return
 	}
 	else if (book.type === 'epub') {
-		book.imageSource = global.baseURL + '/' +
-			book.fileName + '/' + book.coverPath
+		book.imageSource = baseURL + '/' + book.fileName + '/' + book.coverPath
 	}
 	else if (book.isbn) {
 		book.imageSource = openlibraryBaseUrl + '/isbn/' + book.isbn + '-M.jpg'
@@ -183,8 +181,9 @@ module.exports.all = function (req, res) {
 			return Promise.all(books.map(getAttributePromise))
 		})
 		.then(function (books) {
-
-			books.forEach(getCoverImageUrl)
+			books.forEach(
+				(book) => getCoverImageUrl(book, req.app.locals.baseURL)
+			)
 			books = books
 				.map(setDefaults)
 				.sort(function (a, b) {
