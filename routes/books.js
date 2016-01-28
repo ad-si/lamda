@@ -5,8 +5,9 @@ var fs = require('fs'),
 	objectAssign = require('object-assign'),
 	epubMetadata = require('epub-metadata'),
 	exif = require('exif2'),
-	JsZip = require('jszip'),
-	booksPath = path.join(global.baseURL, 'books')
+	JsZip = require('jszip')
+
+const booksPath = path.join(global.basePath, 'books')
 
 
 function isBook (fileName) {
