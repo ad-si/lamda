@@ -20,7 +20,7 @@
     "stylus": "^0.51.1"
   },
   "description": "All your ebooks in one place",
-  "main": "index.js",
+  "main": "server.js",
   "devDependencies": {},
   "scripts": {},
   "repository": {
