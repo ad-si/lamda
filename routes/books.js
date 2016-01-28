@@ -1,11 +1,11 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
-	fastmatter = require('fastmatter'),
-	objectAssign = require('object-assign'),
-	epubMetadata = require('epub-metadata'),
-	exif = require('exif2'),
-	JsZip = require('jszip')
+const fs = require('fs')
+const path = require('path')
+const yaml = require('js-yaml')
+const fastmatter = require('fastmatter')
+const objectAssign = require('object-assign')
+const epubMetadata = require('epub-metadata')
+const exif = require('exif2')
+const JsZip = require('jszip')
 
 const booksPath = path.join(global.basePath, 'books')
 

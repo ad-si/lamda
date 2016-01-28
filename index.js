@@ -1,16 +1,18 @@
-var fs = require('fs'),
-	express = require('express'),
-	stylus = require('stylus'),
-	path = require('path'),
+const fs = require('fs')
+const path = require('path')
 
-	books = require('./routes/books'),
+const express = require('express')
+const stylus = require('stylus')
+const userHome = require('user-home')
 
-	app = express()
+const books = require('./routes/books')
+const app = express()
 
+global.basePath = global.basePath || userHome
 
-app.use(express.static(path.join(global.baseURL, 'books')))
+app.use(express.static(path.join(global.basePath, 'books')))
 
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, 'views'))
 
 app.get('/', books.all)
 app.get('/:book', books.one)

@@ -17,7 +17,8 @@
     "jszip": "^2.5.0",
     "lamda-views": "file:../lamda-views",
     "object-assign": "^4.0.1",
-    "stylus": "^0.51.1"
+    "stylus": "^0.51.1",
+    "user-home": "^2.0.0"
   },
   "description": "All your ebooks in one place",
   "main": "server.js",
