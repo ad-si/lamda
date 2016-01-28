@@ -6,7 +6,13 @@ var fs = require('fs'),
 	faviconServer = require('./routes/faviconServer'),
 	app = express()
 
+const serveFavicon = require('serve-favicon')
 
+const isMounted = Boolean(module.parent)
+if (!isMounted) {
+	app.locals.baseURL = ''
+	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
+}
 app.use(faviconServer())
 app.use(express.static(path.join(global.baseURL, 'projects')))
 

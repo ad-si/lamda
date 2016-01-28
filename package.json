@@ -23,5 +23,6 @@
     "lamda-views": "file:../lamda-views",
     "nodegit": "^0.2.7",
     "stylus": "^0.51.1"
-  }
+    "serve-favicon": "^2.3.0",
+  },
 }
