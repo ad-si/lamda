@@ -2,7 +2,7 @@
   "name": "projects",
   "version": "0.1.0",
   "description": "Display all git projects in your projects directory",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
