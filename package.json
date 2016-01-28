@@ -15,15 +15,21 @@
     "jade": "^1.11.0",
     "js-yaml": "^3.4.3",
     "jszip": "^2.5.0",
-    "lamda-views": "file:../lamda-views",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "object-assign": "^4.0.1",
+    "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
     "user-home": "^2.0.0"
   },
   "description": "All your ebooks in one place",
   "main": "server.js",
-  "devDependencies": {},
-  "scripts": {},
+  "devDependencies": {
+    "morgan": "^1.6.1"
+  },
+  "scripts": {
+    "postinstall": "symlink-modules lamda-styles lamda-views epubjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/books.git"

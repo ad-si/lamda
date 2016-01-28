@@ -6,6 +6,10 @@ const objectAssign = require('object-assign')
 const epubMetadata = require('epub-metadata')
 const exif = require('exif2')
 const JsZip = require('jszip')
+const userHome = require('user-home')
+
+global.basePath = global.basePath || userHome
+global.baseURL = global.baseURL || ''
 
 const booksPath = path.join(global.basePath, 'books')
 
@@ -31,19 +35,20 @@ function getFiles (directory) {
 
 function getCoverImageUrl (book) {
 
-	var baseUrl = 'http://covers.openlibrary.org/b/'
+	var openlibraryBaseUrl = 'http://covers.openlibrary.org/b'
 
 	if (!book) {
 		return
 	}
 	else if (book.type === 'epub') {
-		book.imageSource = '/books/' + book.fileName + '/' + book.coverPath
+		book.imageSource = global.baseURL + '/' +
+			book.fileName + '/' + book.coverPath
 	}
 	else if (book.isbn) {
-		book.imageSource = baseUrl + 'isbn/' + book.isbn + '-M.jpg'
+		book.imageSource = openlibraryBaseUrl + '/isbn/' + book.isbn + '-M.jpg'
 	}
 	else if (book.olid) {
-		book.imageSource = baseUrl + 'olid/' + book.olid + '-M.jpg'
+		book.imageSource = openlibraryBaseUrl + '/olid/' + book.olid + '-M.jpg'
 	}
 	else {
 		book.imageSource = ''
