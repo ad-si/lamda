@@ -68,7 +68,9 @@ module.exports = function () {
 		function searchFavicon(){
 
 			absRepoPath = path.join(
-				global.baseURL, 'projects', path.dirname(request.url)
+				global.basePath,
+				'projects',
+				path.dirname(request.url)
 			)
 
 			faviconPaths = [

@@ -4,25 +4,33 @@
   "description": "Display all git projects in your projects directory",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "repository": {
     "type": "git",
-    "url": "https://adius@bitbucket.org/lamdaos/projects.git"
+    "url": "git+https://adius@bitbucket.org/lamdaos/projects.git"
   },
   "keywords": [
+    "lamda",
     "project"
   ],
   "author": "Adrian Sieber",
-  "license": "MIT",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
     "express": "^4.12.4",
     "findit": "^2.0.0",
     "jade": "^1.10.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "file:../lamda-views",
-    "nodegit": "^0.2.7",
-    "stylus": "^0.51.1"
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "nodegit": "^0.9.0",
     "serve-favicon": "^2.3.0",
+    "stylus": "^0.53.0",
+    "user-home": "^2.0.0"
   },
+  "homepage": "https://bitbucket.org/lamdaos/projects#readme",
+  "devDependencies": {}
 }

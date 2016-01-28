@@ -1,9 +1,12 @@
 var fs = require('fs'),
 	path = require('path'),
 	nodegit = require('nodegit'),
-	findit = require('findit'),
+	findit = require('findit')
 
-	projectsDir = path.join(global.baseURL, 'projects')
+const userHome = require('user-home')
+global.basePath = global.basePath || userHome
+global.config = global.config || {}
+const projectsDir = path.join(global.basePath, 'projects')
 
 
 function getNumberOfCommits (repoDir, callback) {
@@ -36,7 +39,7 @@ function getNumberOfCommits (repoDir, callback) {
 
 try {
 	// Resolve projects directory if symbolic link
-	projectsDir = fs.readlinkSync(path.join(global.baseURL, 'projects'))
+	projectsDir = fs.readlinkSync(path.join(global.basePath, 'projects'))
 }
 catch (error) {
 	if (error.code === 'ENOENT')

@@ -1,7 +1,7 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/Projects/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/screen.css')
 
 block content
 	p Total number of commits: #{numberOfCommits}
