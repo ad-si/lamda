@@ -3,19 +3,20 @@ const path = require('path')
 
 const express = require('express')
 const stylus = require('stylus')
-const userHome = require('user-home')
 
-const books = require('./routes/books')
+const setupRouting = require('./modules/setupRouting')
+
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const isMounted = Boolean(module.parent)
+const runsStandalone = !Boolean(module.parent)
 
-global.basePath = global.basePath || userHome
 
-if (!isMounted) {
+if (runsStandalone) {
 	const morgan = require('morgan')
 	app.use(morgan('dev', {skip: (request, repsonse) => !isDevMode}))
 
+	const userHome = require('user-home')
+	app.locals.basePath = userHome
 	app.locals.baseURL = ''
 
 	const serveFavicon = require('serve-favicon')
@@ -24,7 +25,7 @@ if (!isMounted) {
 
 	app.locals.styles = [{
 		path: '/styles/dark.css',
-		id: 'themeLink'
+		id: 'themeLink',
 	}]
 	app.use(stylus.middleware({
 		src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
@@ -32,30 +33,20 @@ if (!isMounted) {
 		debug: isDevMode,
 		compress: !isDevMode,
 	}))
-}
 
-app.use(stylus.middleware({
-	src: path.join(__dirname, 'public/styles'),
-	debug: isDevMode,
-	compress: !isDevMode,
-}))
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(global.basePath, 'books')))
-app.use('/linked_modules', express.static(
-	path.join(__dirname, 'linked_modules'))
-)
+	setupRouting(app)
 
-app.set('views', path.join(__dirname, 'views'))
-
-app.get('/', books.all)
-app.get('/:book', books.one)
-app.get('/:book.epub/*', books.cover)
-
-module.exports = app
-
-if (!isMounted) {
 	const port = 3000
 	app.set('view engine', 'jade')
 	app.listen(port)
 	console.log('App listens on http://localhost:' + port)
+}
+else {
+	module.exports = (locals) => {
+		app.locals = locals
+		setupRouting(app)
+		return app
+	}
+
+	module.exports.isCallback = true
 }

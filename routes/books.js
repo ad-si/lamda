@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 const yaml = require('js-yaml')
@@ -7,10 +9,6 @@ const epubMetadata = require('epub-metadata')
 const exif = require('exif2')
 const JsZip = require('jszip')
 const userHome = require('user-home')
-
-global.basePath = global.basePath || userHome
-
-const booksPath = path.join(global.basePath, 'books')
 
 
 function isBook (fileName) {
@@ -64,9 +62,10 @@ function setDefaults (book) {
 
 module.exports.cover = function (request, response) {
 
-	var imageFile = '',
-		filePath = path.join(booksPath, request.params.book + '.epub'),
-		epubFile
+	const booksPath = path.join(request.app.locals.basePath, 'books')
+	const filePath = path.join(booksPath, request.params.book + '.epub')
+	let imageFile = ''
+	let epubFile
 
 	fs.readFile(filePath, function (error, fileContent) {
 		if (error)
@@ -88,6 +87,7 @@ module.exports.cover = function (request, response) {
 
 module.exports.one = function (req, res) {
 
+	const booksPath = path.join(req.app.locals.basePath, 'books')
 	var bookId = req.params.book,
 		book = {
 			name: bookId,
@@ -122,6 +122,9 @@ module.exports.one = function (req, res) {
 
 
 module.exports.all = function (req, res) {
+
+	const booksPath = path.join(req.app.locals.basePath, 'books')
+
 
 	function getAttributePromise (book) {
 
