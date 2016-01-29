@@ -86,7 +86,6 @@ module.exports.cover = function (request, response) {
 
 
 module.exports.one = function (req, res) {
-
 	const booksPath = path.join(req.app.locals.basePath, 'books')
 	var bookId = req.params.book,
 		book = {
@@ -114,8 +113,8 @@ module.exports.one = function (req, res) {
 		}
 	}
 
-	res.render('index', {
-		page: 'Books',
+	res.render('book', {
+		page: 'Book',
 		book: book
 	})
 }
@@ -174,7 +173,8 @@ module.exports.all = function (req, res) {
 						title: baseName,
 						basename: baseName,
 						type: fileEnding.substr(1),
-						url: '/books/' + encodeURIComponent(baseName),
+						url: req.app.locals.baseURL + '/' +
+							encodeURIComponent(baseName),
 						fileName: book,
 						filePath: path.join(booksPath, book)
 					}
@@ -195,7 +195,7 @@ module.exports.all = function (req, res) {
 						(a.title < b.title) ? -1 : 0
 				})
 
-			res.render('index', {
+			res.render('books', {
 				page: 'Books',
 				books: books
 			})

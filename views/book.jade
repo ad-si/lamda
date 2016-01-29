@@ -1,0 +1,28 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+	link(rel='stylesheet', href='#{baseURL}/styles/screen.css')
+
+block content
+	if book.type == 'epub'
+		#reader
+			#previous.arrow <
+			#bookContent
+			#next.arrow >
+
+	else if book.type == 'pdf'
+			object(
+				data=book.url
+				type='application/pdf'
+			)
+				p.
+					The PDF can not be displayed.
+					Download it from <a href='#{book.url}'>here<\a>
+
+block scripts
+	if book
+		script(src='#{baseURL}/linked_modules/epubjs/build/libs/zip.min.js')
+		script(src='#{baseURL}/linked_modules/epubjs/build/epub.js')
+		script.
+			var bookUrl = '#{book.url.replace("\'", "\\\'")}'
+		script(src='#{baseURL}/scripts/index.js')
