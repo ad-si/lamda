@@ -35,7 +35,7 @@ utils.compileStyl = function (str, path, config) {
 
 	return stylus(str)
 		.set('filename', path)
-		.set('compress', !global.devMode)
+		.set('compress', !devMode)
 		.define('theme', config.theme)
 		.define('rotation', config.rotation)
 		.use(nib())

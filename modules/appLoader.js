@@ -25,11 +25,14 @@ function getPackageContent (appPath) {
 
 function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 
-	const absoluteAppPath = path.join(global.projectPath, appPath)
+	const absoluteAppPath = path.join(locals.projectPath, appPath)
 	const appName = path.basename(appPath)
 
 	try {
-		const appModule = require(absoluteAppPath)
+		let appModule = require(absoluteAppPath)
+
+		if (appModule.isCallback)
+			appModule = appModule(locals)
 
 		appMap[appName] = getPackageContent(absoluteAppPath)
 

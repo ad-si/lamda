@@ -13,7 +13,7 @@ module.exports = function (request, response) {
 
 	response.render('settings', {
 		page: 'settings',
-		settings: global.config,
+		settings: request.app.locals.config,
 		availableSettings: availableSettings
 	})
 }

@@ -11,8 +11,7 @@ module.exports = function (request, response) {
 
 	response.render('profile', {
 		page: 'profile',
-		owner: global.config.owner,
+		owner: request.app.locals.config.owner,
 		availableFields: availableFields
 	})
-
 }

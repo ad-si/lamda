@@ -31,22 +31,21 @@ var fs = require('fs'),
 	],
 	title = 'Lamda OS',
 	name,
-	projectPath = __dirname,
 	locals
 
 
-global.basePath = process.env.LAMDA_HOME || osenv.home()
-global.projectPath = projectPath
-global.devMode = app.get('env') === 'development'
-global.config = {
+const basePath = process.env.LAMDA_HOME || osenv.home()
+const projectPath = __dirname
+const devMode = app.get('env') === 'development'
+const config = {
 	owner: {}
 }
 
 try {
 	Object.assign(
-		global.config,
+		config,
 		yaml.safeLoad(fs.readFileSync(
-			path.join(global.basePath, 'config.yaml')
+			path.join(basePath, 'config.yaml')
 		))
 	)
 }
@@ -64,13 +63,11 @@ app.use(favicon(path.normalize('public/img/favicon.png')))
 app.use(logger('dev'))
 app.use(compress())
 
-// app.set('basePath', process.env.basePath || __dirname + '/home')
-
 app.use(stylus.middleware({
 	src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
 	dest: path.join(__dirname, 'public/styles'),
-	debug: global.devMode,
-	compress: !global.devMode,
+	debug: devMode,
+	compress: !devMode,
 }))
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -80,27 +77,24 @@ app.use(express.static(path.join(
 )))
 
 
-// Loaded Apps
 locals = {
 	title: title,
 	scripts: scripts,
 	styles: styles,
-	config: global.config,
+	config: config,
 	isMounted: true,
+	basePath,
+	projectPath
 }
-
-loadedApps = appLoader(app, locals)
-
 app.locals = locals
-app.locals.appNames = Object.keys(loadedApps)
-
+loadedApps = appLoader(app, locals)
 
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
 
-if (global.config.owner.username)
-	app.get('/' + global.config.owner.username, profile)
+if (config.owner.username)
+	app.get('/' + config.owner.username, profile)
 
 
 // TODO: API
@@ -116,7 +110,7 @@ if (global.config.owner.username)
  */
 
 
-if (global.devMode)
+if (devMode)
 	app.use(errorHandler())
 
 app.use(function (req, res) {
