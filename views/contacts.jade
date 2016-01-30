@@ -43,6 +43,9 @@ block content
 										a(href='http://' + value, target='_blank')
 											= value
 
+									else if key === 'mobile'
+										a(href='tel:' + value)= value
+
 									else if key === 'facebook'
 										a(href='https://facebook.com/' + value, , target='_blank')
 											= value
