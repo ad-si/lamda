@@ -6,12 +6,10 @@ const userHome = require('user-home')
 
 const formatContact = require('./formatContact')
 
-global.basePath = global.basePath || userHome
-const contactsPath = path.join(global.basePath, 'contacts')
-
 
 module.exports = (request, response) => {
 
+	const contactsPath = path.join(request.app.locals.basePath, 'contacts')
 	const keys = new Set()
 	const encoding = 'utf-8'
 	const yamlRegex = /\.yaml$/i
