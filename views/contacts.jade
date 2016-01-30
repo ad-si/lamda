@@ -7,7 +7,7 @@ block styles
 block content
 	p You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
 	br
-	if errors
+	if errors.length > 0
 		.errors
 			for error in errors
 				.alert-danger= error.message
