@@ -3,6 +3,8 @@ const path = require('path')
 
 const yaml = require('js-yaml')
 const userHome = require('user-home')
+const capitalize = require('capitalize')
+
 
 const formatContact = require('./formatContact')
 
@@ -13,6 +15,7 @@ module.exports = (request, response) => {
 	const keys = new Set()
 	const encoding = 'utf-8'
 	const yamlRegex = /\.yaml$/i
+	const errors = []
 
 	fsp
 		.readdir(contactsPath)
@@ -30,11 +33,15 @@ module.exports = (request, response) => {
 		.then(fileObjects => fileObjects
 			.map(fileObject => {
 				try {
-					return yaml.safeLoad(fileObject.fileContent)
+					return yaml.safeLoad(fileObject.fileContent, {
+							filename: fileObject.fileName
+						}
+					)
 				}
 				catch (error) {
-					console.error(`Error in ${fileObject.fileName}:`)
-					console.error(error.stack)
+					error.message = capitalize(error.message)
+					errors.push(error)
+					console.error(error.message)
 					return null
 				}
 			})
@@ -62,6 +69,7 @@ module.exports = (request, response) => {
 				{
 					page: 'contacts',
 					contacts: sortedContacts,
+					errors,
 					availableKeys: Array.from(keys),
 					numberOfMale,
 					percentageOfMale: Math.trunc(
