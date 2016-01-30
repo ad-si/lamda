@@ -6,7 +6,7 @@
     "movies",
     "lamda"
   ],
-  "main": "index.js",
+  "main": "server.js",
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
