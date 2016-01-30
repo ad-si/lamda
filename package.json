@@ -1,9 +1,20 @@
 {
-  "name": "Movies",
+  "name": "movies",
   "version": "0.0.1",
+  "description": "Display all your movies in a grid or table",
   "keywords": [
-    "boilerplate"
+    "movies",
+    "lamda"
   ],
+  "main": "index.js",
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/lamdaos/movies.git"
+  },
+  "homepage": "https://bitbucket.org/lamdaos/movies#readme",
   "dependencies": {
     "better-path": "^0.2.0",
     "express": "^4.12.4",
@@ -12,9 +23,8 @@
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "stylus": "^0.51.1"
   },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://bitbucket.org/lamdaos/movies"
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
