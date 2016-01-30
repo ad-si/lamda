@@ -29,7 +29,8 @@
     "type": "git",
     "url": "git+https://bitbucket.org/lamdaos/contacts.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": true,
   "homepage": "https://bitbucket.org/lamdaos/contacts#readme"
 }
