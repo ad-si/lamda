@@ -5,8 +5,6 @@ block styles
 	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
-	- var numberOfMale = contacts.filter(a => a.gender === 'male').length
-	- var percentageOfMale = Math.trunc(numberOfMale/contacts.length * 100)
 	p You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
 	br
 	table

@@ -1,6 +1,7 @@
 {
   "name": "contacts",
   "version": "0.1.0",
+  "description": "## Template for YAML file",
   "keywords": [
     "lamda",
     "contacts"
@@ -10,7 +11,7 @@
     "express": "^4.12.4",
     "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
-    "js-yaml": "^3.3.1",
+    "js-yaml": "^3.5.2",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "serve-favicon": "^2.3.0",
@@ -22,7 +23,6 @@
     "postinstall": "symlink-modules lamda-styles lamda-views",
     "start": "node server.js"
   },
-  "description": "## Template for YAML file",
   "main": "server.js",
   "devDependencies": {},
   "repository": {

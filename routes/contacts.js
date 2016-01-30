@@ -18,14 +18,26 @@ module.exports = (request, response) => {
 		.readdir(contactsPath)
 		.then(fileNames => fileNames
 			.filter(fileName => yamlRegex.test(fileName))
-			.map(fileName => fsp.readFile(
-				path.join(contactsPath, fileName),
-				encoding
-			))
+			.map(fileName => fsp
+				.readFile(path.join(contactsPath, fileName), encoding)
+				.then(fileContent => ({
+					fileName: fileName,
+					fileContent: fileContent,
+				}))
+			)
 		)
 		.then(contactFilePromises => Promise.all(contactFilePromises))
-		.then(contactFiles => contactFiles
-			.map(contactFile => yaml.safeLoad(contactFile))
+		.then(fileObjects => fileObjects
+			.map(fileObject => {
+				try {
+					return yaml.safeLoad(fileObject.fileContent)
+				}
+				catch (error) {
+					console.error(`Error in ${fileObject.fileName}:`)
+					console.error(error.stack)
+					return null
+				}
+			})
 			.map(contactData => {
 				if (contactData) {
 					Object
@@ -41,12 +53,20 @@ module.exports = (request, response) => {
 			})
 		)
 		.then(sortedContacts => {
+			const numberOfMale = sortedContacts
+				.filter(a => a && a.gender === 'male')
+				.length
+
 			response.render(
 				'contacts',
 				{
 					page: 'contacts',
 					contacts: sortedContacts,
 					availableKeys: Array.from(keys),
+					numberOfMale,
+					percentageOfMale: Math.trunc(
+						numberOfMale/sortedContacts.length * 100
+					),
 					sortedKeys: [
 						'name',
 						'birthday',
@@ -59,4 +79,5 @@ module.exports = (request, response) => {
 				}
 			)
 		})
+		.catch(error => console.error(error.stack))
 }
