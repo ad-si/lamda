@@ -33,6 +33,13 @@ module.exports = function (data) {
 	if (!data.name)
 		data.name = data.firstname + ' ' + data.lastname
 
+	if (typeof data.phone === 'number')
+		data.phone = '+' + data.phone
+	if (typeof data.mobile === 'number')
+		data.mobile = '+' + data.mobile
+	if (typeof data.fax === 'number')
+		data.fax = '+' + data.fax
+
 	if (data.birthday) {
 		data.birthday = new Date(data.birthday)
 		data.age = String(
