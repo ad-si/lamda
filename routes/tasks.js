@@ -6,24 +6,22 @@ const fsp = require('fs-promise')
 const yaml = require('js-yaml')
 const evlReduce = require('eventlang-reduce')
 
-const tasksPath = baseURL + '/tasks'
 
-
-function getFileName(string) {
+function getFileName (string) {
 
 	var offset = -path.extname(string).length || undefined
 
 	return string.slice(0, offset)
 }
 
-function byCompletion(a, b) {
+function byCompletion (a, b) {
 	if (a.hasOwnProperty('completed_at'))
 		return Number(!b.hasOwnProperty('completed_at'))
 
 	return -1
 }
 
-function alphabeticallyBy(attribute, order) {
+function alphabeticallyBy (attribute, order) {
 
 	var factor
 
@@ -44,7 +42,7 @@ function alphabeticallyBy(attribute, order) {
 	}
 }
 
-function getList(fileName, callback) {
+function getList (fileName, callback) {
 
 	fs.readFile(
 		(listPath + '/' + fileName),
@@ -91,7 +89,7 @@ function getList(fileName, callback) {
 }
 
 
-function writeBackList(filePath, listData) {
+function writeBackList (filePath, listData) {
 
 	listData.tasks.sort(alphabeticallyBy('created_at', 'descending'))
 
@@ -105,6 +103,8 @@ function writeBackList(filePath, listData) {
 
 
 module.exports = function (request, response) {
+
+	const tasksPath = path.join(request.app.locals.basePath, 'tasks')
 
 	fsp
 		.readdir(tasksPath)

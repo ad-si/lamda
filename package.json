@@ -10,7 +10,8 @@
   "author": "Adrian Sieber",
   "main": "getWunderlistTasks.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "dependencies": {
     "async": "^1.4.0",
@@ -20,9 +21,13 @@
     "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "git+ssh://git@bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "morgan": "^1.6.1",
+    "serve-favicon": "^2.3.0",
     "stylus": "^0.52.0",
-    "tasks": "0.0.3"
+    "tasks": "0.0.3",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {},
   "repository": {

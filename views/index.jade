@@ -1,7 +1,7 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/tasks/public/index.css')
+	link(rel='stylesheet', href='/styles/index.css')
 
 block content
 
@@ -11,7 +11,10 @@ block content
 				ul
 					for list in lists
 						li
-							a(href='/tasks/' + list.id, class= (list.id === currentList) ? 'active' : '')
+							a(
+								href='#{baseURL}/' + list.id
+								class= (list.id === currentList) ? 'active' : ''
+							)
 								= list.name + ' '
 								if list.tasks
 									span.number
@@ -68,4 +71,4 @@ block content
 
 
 block scripts
-	script(src='/js/index.js')
+	script(src='/scripts/index.js')
