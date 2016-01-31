@@ -1,6 +1,6 @@
 !function (window, document) {
 
-	var baseURL = '/music',
+	var baseURL = '', //TODO: use app.locals.baseURL
 		playlist = [],
 		player = new Player(),
 		audio,

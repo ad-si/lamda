@@ -1,25 +1,78 @@
-var fs = require('fs'),
-	express = require('express'),
-	stylus = require('stylus'),
-	path = require('path'),
+const fs = require('fs')
+const path = require('path')
 
-	index = require('./routes/index'),
-	music = require('./routes/music'),
-	app = express()
+const express = require('express')
+const stylus = require('stylus')
+const errorHandler = require('errorhandler')
+
+const index = require('./routes/index')
+const music = require('./routes/music')
+const app = express()
+const isDevMode = app.get('env') === 'development'
+const runsStandalone = !Boolean(module.parent)
+const projectDirectory = __dirname
+const publicDirectory = path.join(projectDirectory, 'public')
+const stylesDirectory = path.join(publicDirectory, 'styles')
 
 
-app.use('/raw', express.static(path.join(global.baseURL, 'music')))
+function setupRouting () {
+	app.use(stylus.middleware({
+		src: stylesDirectory,
+		debug: isDevMode,
+		compress: !isDevMode,
+	}))
+	app.use(express.static(publicDirectory))
 
-app.set('views', __dirname + '/views')
+	app.use('/raw', express.static(path.join(app.locals.basePath, 'music')))
+
+	app.set('views', path.join(projectDirectory, 'views'))
+
+	app.get('/api/artists', music.artists)
+	app.get('/api/artists/:artistId', music.artist)
+	app.get('/api/artists/:artistId/songs', music.songs)
+	app.get('/api/artists/:artistId/songs/:songId', music.song)
+
+	app.get('/api/songs', music.songs)
+
+	app.get('*', index)
+}
 
 
-app.get('/api/artists', music.artists)
-app.get('/api/artists/:artistId', music.artist)
-app.get('/api/artists/:artistId/songs', music.songs)
-app.get('/api/artists/:artistId/songs/:songId', music.song)
+if (runsStandalone) {
+	const morgan = require('morgan')
+	app.use(morgan('dev', {skip: (request, repsonse) => !isDevMode}))
 
-app.get('/api/songs', music.songs)
+	const userHome = require('user-home')
+	app.locals.basePath = userHome
+	app.locals.baseURL = ''
 
-app.get('*', index)
+	app.locals.styles = [{
+		path: '/styles/dark.css',
+		id: 'themeLink',
+	}]
+	app.use(stylus.middleware({
+		src: path.join(projectDirectory, 'linked_modules/lamda-styles/themes'),
+		dest: stylesDirectory,
+		debug: isDevMode,
+		compress: !isDevMode,
+	}))
 
-module.exports = app
+	setupRouting()
+
+	if (isDevMode)
+		app.use(errorHandler())
+
+	const port = 3000
+	app.set('view engine', 'jade')
+	app.listen(port)
+	console.log('App listens on http://localhost:' + port)
+}
+else {
+	module.exports = (locals) => {
+		app.locals = locals
+		setupRouting()
+		return app
+	}
+
+	module.exports.isCallback = true
+}

@@ -1,7 +1,7 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/music/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 	#player
@@ -85,5 +85,5 @@ block content
 
 
 block scripts
-	script(src='/assets/music/public/shaven.min.js')
-	script(src='/assets/music/public/index.js')
+	script(src='#{baseURL}/scripts/shaven.min.js')
+	script(src='#{baseURL}/scripts/index.js')

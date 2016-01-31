@@ -1,9 +1,10 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
+'use strict'
 
-	musicDir = path.join(global.baseURL, 'music'),
-	music = {}
+const fs = require('fs')
+const path = require('path')
+const yaml = require('js-yaml')
+
+const music = {}
 
 
 function removeFileExtension (string) {
@@ -17,7 +18,8 @@ function isSong (fileName) {
 
 music.song = function (request, response) {
 
-	var songId = request.params.songId
+	const musicDir = path.join(request.app.locals.basePath, 'music')
+	const songId = request.params.songId
 
 	response.send({
 		id: songId,
@@ -30,8 +32,10 @@ music.song = function (request, response) {
 
 music.songs = function (request, response) {
 
-	var songs = [],
-		artistId = request.params.artistId
+	const musicDir = path.join(request.app.locals.basePath, 'music')
+
+	const artistId = request.params.artistId
+	let songs = []
 
 	if (artistId) {
 
@@ -91,9 +95,10 @@ music.artist = function (request, response) {
 
 music.artists = function (request, response) {
 
-	var artistDirs = fs.readdirSync(musicDir),
-		artistsCounter = artistDirs.length,
-		artists = []
+	const musicDir = path.join(request.app.locals.basePath, 'music')
+	const artistDirs = fs.readdirSync(musicDir)
+	const artists = []
+	let artistsCounter = artistDirs.length
 
 	artistDirs.forEach(function (artistDir) {
 
@@ -108,6 +113,8 @@ music.artists = function (request, response) {
 					})
 				else
 					artistsCounter--
+
+				console.log(artists.length, artistsCounter)
 
 				if (artists.length === artistsCounter)
 					response.send({artists: artists})
