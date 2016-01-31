@@ -17,15 +17,19 @@
   "homepage": "https://bitbucket.org/lamdaos/movies#readme",
   "dependencies": {
     "better-path": "^0.2.0",
-    "express": "^4.12.4",
+    "express": "^4.13.4",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "stylus": "^0.51.1"
+    "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0",
+    "stylus": "^0.51.1",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   }
 }

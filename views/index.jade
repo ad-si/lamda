@@ -1,10 +1,13 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/movies/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
-	ul
-		for movie in movies
-			li: a(href = movie.link)
-				= movie.title
+	if movies && movies.length > 0
+		ul
+			for movie in movies
+				li: a(href = movie.link)
+					= movie.title
+	else
+		p There are no movies in your movies directory

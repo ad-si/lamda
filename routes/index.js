@@ -1,3 +1,5 @@
+'use strict'
+
 var fs = require('fs'),
 	path = require('path'),
 	yaml = require('js-yaml'),
@@ -9,17 +11,16 @@ function isMovie (fileName) {
 
 module.exports = function (req, res) {
 
-	var movies = [],
-		rootEntries = fs.readdirSync(
-			path.join(global.baseURL, 'movies')
-		),
-		numberOfRootEntries = rootEntries.length
+	const movies = []
+	const moviesPath = path.join(req.app.locals.basePath, 'movies')
+	const rootEntries = fs.readdirSync(moviesPath)
+	let numberOfRootEntries = rootEntries.length
 
 
 	rootEntries.forEach(function (entry, index) {
 
 		var absoluteEntryPath = path.join(
-				global.baseURL,
+				req.app.locals.basePath,
 				'movies',
 				entry
 			),
