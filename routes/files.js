@@ -1,7 +1,7 @@
-var fs = require('fs'),
+const fs = require('fs')
 
-	pathToJson = require('../modules/pathToJson'),
-	fsToJson = require('../modules/fsToJson')
+const pathToJson = require('../modules/pathToJson')
+const fsToJson = require('../modules/fsToJson')
 
 
 module.exports = function (req, res) {
@@ -68,8 +68,8 @@ module.exports = function (req, res) {
 	res.render('index', {
 		page: 'files',
 		columns: buildColumns(
-			pathToJson(global.baseURL, pathParam),
-			pathToJson(global.baseURL, pathParam).children
+			pathToJson(req.app.locals.basePath, pathParam),
+			pathToJson(req.app.locals.basePath, pathParam).children
 		)
 	})
 }

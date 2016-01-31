@@ -1,7 +1,7 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/files/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 	div#columns
@@ -12,7 +12,7 @@ block content
 						if(column.entries.length)
 							each file in column.entries
 								li(class=(file === column.active) ? 'active' : '')
-									a(href='/files' + column.path + '/' + file)
+									a(href='#{baseURL}' + column.path + '/' + file)
 										span
 										= file
 						else
