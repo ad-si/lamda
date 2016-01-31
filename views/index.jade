@@ -1,7 +1,7 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/styles/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 
@@ -71,4 +71,4 @@ block content
 
 
 block scripts
-	script(src='/scripts/index.js')
+	script(src='#{baseURL}/scripts/index.js')
