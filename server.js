@@ -69,5 +69,3 @@ else {
 
 	module.exports.isCallback = true
 }
-
-module.exports = app
