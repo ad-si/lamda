@@ -46,6 +46,10 @@ if (runsStandalone) {
 	app.locals.basePath = userHome
 	app.locals.baseURL = ''
 
+	const serveFavicon = require('serve-favicon')
+	const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
+	app.use(serveFavicon(faviconPath))
+
 	app.locals.styles = [{
 		path: '/styles/dark.css',
 		id: 'themeLink',
