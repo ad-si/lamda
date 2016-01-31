@@ -13,3 +13,5 @@ app.set('views', __dirname + '/views')
 app.get('/', index)
 
 module.exports = app
+	const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
+	app.use(serveFavicon(faviconPath))
