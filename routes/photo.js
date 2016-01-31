@@ -5,6 +5,7 @@ var fs = require('fs'),
 
 	gm = require('gm')
 
+
 module.exports = function (request, response, next) {
 
 	var year = request.params.year,
@@ -15,10 +16,14 @@ module.exports = function (request, response, next) {
 
 		imagePath = path.join(year, month, day, eventName, photoName),
 		urlObject = url.parse(request.url, true),
-		src = ['/photos', year, month,
-			      util.format('%s-%s-%s_%s', year, month, day, eventName),
-			      photoName
-		      ].join('/') + '.' + urlObject.query.filetype
+		src = [
+			request.app.locals.basePath,
+			year,
+			month,
+			util.format('%s-%s-%s_%s', year, month, day, eventName),
+			photoName
+		].join('/') +
+		'.' + urlObject.query.filetype
 
 	gm(path.join(global.baseURL, src))
 		.identify(function (error, data) {

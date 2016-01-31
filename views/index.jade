@@ -1,11 +1,11 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/photos/public/index.css')
+	link(rel='stylesheet', href='/styles/index.css')
 
 block content
-	if years
-		each year in years
+	if years && years.length > 0
+		for year in years
 			div
 				h2: a(href=year.url)= year.year
 				hr
@@ -14,11 +14,9 @@ block content
 						div.month
 							p: a(href=month.url)= month.month
 							//p.small= event.date
-			br
-			br
 	else
 		p No photos available
-		
+
 	if month
 		h2
 			a(href=yearUrl)= year

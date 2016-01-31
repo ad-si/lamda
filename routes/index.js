@@ -1,33 +1,27 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
+const fs = require('fs')
+const path = require('path')
 
-	utils = require('../modules/utils'),
+const yaml = require('js-yaml')
 
-	photosDir = path.join(global.baseURL, 'photos')
-
-
-require('es6-promise').polyfill()
+const utils = require('../modules/utils')
 
 
 module.exports = function (req, res, next) {
 
+	const photosDir = path.join(req.app.locals.basePath, 'photos')
+
 	utils
 		.getFiles(photosDir)
 		.then(utils.filterYears)
-		.then(function (years) {
-			return Promise.all(years.map(function(year){
-				return utils.getMonthsForYear(year, photosDir)
-			}))
-		})
-		.then(function (years) {
+		.then(years => Promise.all(
+			years.map(year =>
+				utils.getMonthsForYear(year, photosDir, req.app.locals.baseURL))
+		))
+		.then(years => {
 			res.render('index', {
 				page: 'Photos',
 				years: years || []
 			})
 		})
-		.catch(function (error) {
-			console.error(error)
-			next()
-		})
+		.catch(next)
 }

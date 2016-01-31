@@ -8,10 +8,29 @@
     "es6-promise": "^2.0.0",
     "express": "^4.12.4",
     "gm": "^1.18.1",
-    "image-resizer": "file:../image-resizer",
+    "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
+    "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "file:../lamda-views",
-    "stylus": "^0.51.1"
-  }
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "serve-favicon": "^2.3.0",
+    "stylus": "^0.53.0",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "description": "## Schema",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/lamdaos/photos.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/lamdaos/photos#readme"
 }

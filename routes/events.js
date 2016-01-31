@@ -1,18 +1,17 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
+const fs = require('fs')
+const path = require('path')
+const util = require('util')
 
-	util = require('util'),
-	utils = require('../modules/utils'),
+const yaml = require('js-yaml')
 
-	events = {},
-	photosDirectory = path.join(global.baseURL, 'photos')
+const utils = require('../modules/utils')
 
-
-require('es6-promise').polyfill()
+const events = {}
 
 
 events.period = function (req, res, next) {
+
+	const photosDirectory = path.join(req.app.locals.basePath, 'photos')
 
 	var year = req.params.year,
 		yearDir = path.join(photosDirectory, year),
@@ -27,11 +26,16 @@ events.period = function (req, res, next) {
 	}
 	else if (month) {
 		utils
-			.getEventsForMonth(year, month, photosDirectory)
+			.getEventsForMonth(
+				year,
+				month,
+				photosDirectory,
+				req.app.locals.baseURL
+			)
 			.then(function (monthObject) {
 				monthObject.page = 'Photos'
 				monthObject.year = year
-				monthObject.yearUrl = '/photos/' + year
+				monthObject.yearUrl = req.app.locals.baseURL + '/' + year
 
 				res.render('index', monthObject)
 			})
@@ -42,7 +46,7 @@ events.period = function (req, res, next) {
 	}
 	else
 		utils
-			.getMonthsForYear(year, photosDirectory)
+			.getMonthsForYear(year, photosDirectory, req.app.locals.baseURL)
 			.then(function (yearObject) {
 
 				res.render('index', {
@@ -59,11 +63,11 @@ events.period = function (req, res, next) {
 
 events.event = function (req, res, next) {
 
+	const photosDirectory = path.join(req.app.locals.basePath, 'photos')
 	var year = req.params.year,
 		month = req.params.month,
 		day = req.params.day,
 		eventName = req.params.event
-
 
 	utils
 		.getImagesForEvent(year, month, day, eventName, photosDirectory)
@@ -71,17 +75,20 @@ events.event = function (req, res, next) {
 		.then(function (photos) {
 			return photos.map(function (photoName) {
 
-
 				return {
 					name: photoName,
 					url: [
-						'/photos', year, month, day, eventName,
+						req.app.locals.baseURL,
+						year,
+						month,
+						day,
+						eventName,
 						photoName.replace(/\.(jpg|png)$/i, '') +
 						'?filetype=' +
 						path.extname(photoName).slice(1).toLowerCase()
 					].join('/'),
 					src: [
-						'/photos',
+						req.app.locals.baseURL,
 						year,
 						month,
 						util.format('%s-%s-%s_%s', year, month, day, eventName),
