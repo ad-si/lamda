@@ -78,15 +78,16 @@ app.use(express.static(path.join(
 
 
 locals = {
+	isMounted: true,
+	runsStandalone: false,
 	title: title,
 	scripts: scripts,
 	styles: styles,
 	config: config,
-	isMounted: true,
-	basePath,
-	projectPath
+	basePath: basePath,
+	projectPath: projectPath,
 }
-app.locals = locals
+app.locals = Object.assign({}, locals)
 loadedApps = appLoader(app, locals)
 
 // Native Apps

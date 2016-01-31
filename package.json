@@ -14,7 +14,7 @@
     "findit": "^2.0.0",
     "gm": "^1.16.0",
     "jade": "^1.11.0",
-    "js-yaml": "^3.2.7",
+    "js-yaml": "^3.5.2",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "method-override": "^2.3.1",

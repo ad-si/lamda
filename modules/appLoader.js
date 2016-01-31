@@ -27,13 +27,14 @@ function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 
 	const absoluteAppPath = path.join(locals.projectPath, appPath)
 	const appName = path.basename(appPath)
+	const localsClone = Object.assign({}, locals)
 
 	try {
 		let appModule = require(absoluteAppPath)
 
-		if (appModule.isCallback)
-			appModule = appModule(locals)
-
+		if (appModule.isCallback) {
+			appModule = appModule(localsClone)
+		}
 		appMap[appName] = getPackageContent(absoluteAppPath)
 
 		if (!appMap[appName].hasOwnProperty('lamda'))
@@ -42,12 +43,13 @@ function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 		appMap[appName].lamda.module = appModule
 		appMap[appName].lamda.path = absoluteAppPath
 
-		Object.assign(appModule.locals, locals)
+		Object.assign(appModule.locals, localsClone)
 		appModule.locals.page = appName
 		appModule.locals.baseURL = '/' + appName
-		appModule.locals.appNames = appPaths.map(
+		appModule.locals.appNames = rootApp.locals.appNames = appPaths.map(
 			appPath => path.basename(appPath)
 		)
+
 		rootApp.use('/' + appName, appModule)
 	}
 	catch (error) {
