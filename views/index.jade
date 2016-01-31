@@ -1,7 +1,7 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='/assets/news/public/index.css')
+	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
 	if articles
@@ -10,6 +10,6 @@ block content
 				h2!= article.title
 				p!= article.summary
 			hr
-	
+
 	else
 		p There are currently no articles available.

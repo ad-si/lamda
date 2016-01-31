@@ -20,7 +20,9 @@ module.exports = function (req, res) {
 
 	var FeedParser = require('feedparser'),
 	    request = require('request'),
-	    url = global.config.News ? global.config.News.url : null,
+	    url = req.app.locals.news ?
+            req.app.locals.news.url :
+            'http://feeds.feedblitz.com/gizmag',
 	    feedparser = new FeedParser(),
 	    articles = [],
     	feedReq

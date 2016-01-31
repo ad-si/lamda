@@ -1,7 +1,9 @@
 {
   "name": "news",
   "version": "0.0.1",
+  "description": "All your news",
   "keywords": [
+    "lamda",
     "news"
   ],
   "dependencies": {
@@ -10,21 +12,27 @@
     "feedparser": "~0.16.6",
     "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-views": "file:../lamda-views",
+    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
+    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "morgan": "^1.6.1",
     "request": "^2.34.0",
-    "stylus": "^0.51.1"
+    "serve-favicon": "^2.3.0",
+    "stylus": "^0.53.0",
+    "user-home": "^2.0.0"
   },
-  "description": "All your news",
-  "main": "index.js",
+  "main": "server.js",
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/news.git"
   },
   "author": "Adrian Sieber",
-  "license": "LicenseRef-license",
+  "license": "UNLICENSED",
+  "private": "true",
   "homepage": "https://bitbucket.org/lamdaos/news#readme"
 }
