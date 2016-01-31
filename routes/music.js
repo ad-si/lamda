@@ -26,7 +26,12 @@ music.song = function (request, response) {
 		title: removeFileExtension(songId),
 		trackArtist: request.params.artistId,
 		lyrics: 'Foo bar',
-		src: path.join('/music/raw/', request.params.artistId, songId)
+		src: [
+			request.app.locals.baseURL,
+			'raw',
+			request.params.artistId,
+			songId
+		].join('/')
 	})
 }
 

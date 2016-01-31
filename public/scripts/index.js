@@ -1,10 +1,9 @@
 !function (window, document) {
 
-	var baseURL = '', //TODO: use app.locals.baseURL
-		playlist = [],
-		player = new Player(),
-		audio,
-		firstRun = true
+	var playlist = []
+	var player = new Player()
+	var audio
+	var firstRun = true
 
 
 	function toggle (id) {
@@ -44,6 +43,7 @@
 				img = document.createElement('img'),
 				$favicon = $('#favicon'),
 				link = $favicon.cloneNode(true)
+			var faviconURL = baseURL + '/images/favicon.ico'
 
 
 			if (state) {
@@ -62,13 +62,13 @@
 					if (!$('#faviconPlay'))
 						document.head.appendChild(link)
 				}
-				img.src = '/img/favicon.png'
+				img.src = faviconURL
 			}
 			else if (!state) {
 
 				document.head.removeChild($('#faviconPlay'))
 
-				$favicon.href = baseURL + '/img/favicon.png'
+				$favicon.href = faviconURL
 			}
 			else {
 				throw new Error(
@@ -81,13 +81,13 @@
 			if (state == 'playing') {
 				audio.play()
 				$('#play').className = 'playing'
-				setFavicon(true)
+				// setFavicon(true)
 
 			}
 			else if (state == 'paused') {
 				audio.pause()
 				$('#play').className = 'paused'
-				setFavicon(false)
+				// setFavicon(false)
 
 			}
 			else {
@@ -190,7 +190,7 @@
 			audio.addEventListener('timeupdate', playerUpdater, false)
 			audio.addEventListener('ended', function () {
 				$('#play').className = 'paused'
-				setFavicon(false)
+				// setFavicon(false)
 				audio.currentTime = 0
 				playerUpdater()
 			}, false)
@@ -270,7 +270,7 @@
 
 	function ajax (url, param, func) {
 
-		var base = '/music/api',
+		var base = baseURL + '/api',
 			x = new XMLHttpRequest(),
 			$spinner = $('#spinner'),
 			path = base + url,
@@ -333,7 +333,7 @@
 		$('#c4').innerHTML = ''
 
 
-		ajax('/artists', function (data) {
+		ajax(baseURL +'/artists', function (data) {
 
 			$('#c2').innerHTML = ''
 
@@ -381,7 +381,7 @@
 	print.artist = function (id) {
 
 		// Portrait
-		ajax('/artists/' + id, function (artist) {
+		ajax(baseURL + '/artists/' + id, function (artist) {
 
 			var $column4 = $('#c4')
 
@@ -409,7 +409,7 @@
 
 	print.songs = function (artistId) {
 
-		ajax('/artists/' + artistId + '/songs', function (data) {
+		ajax(baseURL + '/artists/' + artistId + '/songs', function (data) {
 
 			$('#c3').innerHTML = ''
 
@@ -479,7 +479,7 @@
 
 	print.song = function (songId, artistId) {
 
-		ajax('/artists/' + artistId + '/songs/' + songId, function (song) {
+		ajax(baseURL + '/artists/' + artistId + '/songs/' + songId, function (song) {
 
 			var column4 = $('#c4')
 
@@ -508,7 +508,7 @@
 
 			$('#playSong').addEventListener('click', function () {
 
-				if (song.src != '')
+				if (song.src !== '')
 					audio.src = song.src
 				else {
 					throw new Error(
