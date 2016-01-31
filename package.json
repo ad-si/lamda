@@ -8,7 +8,7 @@
     "todo"
   ],
   "author": "Adrian Sieber",
-  "main": "getWunderlistTasks.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "postinstall": "symlink-modules lamda-styles lamda-views"
