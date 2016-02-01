@@ -11,7 +11,7 @@ module.exports = function (events, startDate, endDate) {
 
 	events = addEmptyEvents(events)
 	events = addStyleInformation(events)
-	events = splitEvents(events, startDate, endDate)
+	// events = splitEvents(events, startDate, endDate)
 
 	return events
 }

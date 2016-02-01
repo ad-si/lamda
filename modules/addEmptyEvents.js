@@ -21,18 +21,21 @@ module.exports = function (events) {
 
 		event.startDate = startDate
 		event.endDate = endDate
+		event.minutes = moment(endDate).diff(startDate, 'minutes')
 
-		if (!timeFrame)
+		if (!timeFrame) {
 			timeFrame = {
-				startMoment: moment(startDate).startOf('day'),
-				endMoment: moment(endDate).endOf('day'),
+				startMoment: moment.utc(startDate).startOf('day'),
+				endMoment: moment.utc(endDate).endOf('day'),
 			}
-		else if (timeFrame.startMoment.isBefore(startDate)) {
+		}
+
+		if (timeFrame.startMoment.isBefore(startDate)) {
 			newEvents.push({
 				empty: true,
 				startDate: timeFrame.startMoment.toDate(),
 				endDate: startDate,
-				duration: moment(startDate)
+				minutes: moment(startDate)
 					.diff(timeFrame.startMoment, 'minutes')
 			})
 
@@ -43,7 +46,7 @@ module.exports = function (events) {
 					empty: true,
 					startDate: endDate,
 					endDate: timeFrame.endMoment.toDate(),
-					duration: moment(timeFrame.endMoment)
+					minutes: moment(timeFrame.endMoment)
 						.diff(endDate, 'minutes')
 				})
 

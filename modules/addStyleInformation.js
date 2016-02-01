@@ -5,12 +5,10 @@ let moment = require('moment')
 module.exports = function (events) {
 
 	events.forEach(function (event) {
-		let minutesDiff = moment(event.startDate).diff(
-			moment(event.startDate).startOf('day'),
-			'minutes'
-		)
-		let style = {
-			'flex-grow': event.duration || minutesDiff
+		const minutesDiff = moment(event.startDate)
+			.diff(moment(event.startDate).startOf('day'), 'minutes')
+		const style = {
+			'flex-grow': event.minutes || minutesDiff
 		}
 
 		event.style = JSON.stringify(style)
