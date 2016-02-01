@@ -7,7 +7,10 @@ module.exports = function (events) {
 	let newEvents = []
 	let timeFrame
 
-	events.forEach(function (event, index) {
+	events.forEach((event, index) => {
+		if (!event)
+			return
+
 		let startDate = (event.time.type === 'moment') ?
 			event.time.lowerLimit :
 			(event.time.type === 'period') ?
