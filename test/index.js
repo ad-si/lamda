@@ -13,6 +13,6 @@ let events = []
 runTest.only('Processing of events', (test) => {
 	return loadEvents(path.join(__dirname, 'events'))
 		.then(files => {
-			console.log(processEvents(files))
+			processEvents(files)
 		})
 })
