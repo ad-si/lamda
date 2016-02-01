@@ -18,7 +18,9 @@ module.exports = function (eventsPath) {
 					.readFile(absoluteFilePath)
 					.then(fileContent => {
 						try {
-							const jsonEvent = yaml.safeLoad(fileContent)
+							const jsonEvent = yaml.safeLoad(fileContent, {
+								filename: filePath
+							})
 							jsonEvent.time = new Hour(
 								filePath.replace(/\.ya?ml$/i, '')
 							)
