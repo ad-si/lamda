@@ -19,9 +19,10 @@ module.exports = (eventsPath) => {
 					.readFile(absoluteFilePath)
 					.then(fileContent => {
 						try {
-							const jsonEvent = yaml.safeLoad(fileContent, {
-								filename: filePath
-							})
+							const jsonEvent = yaml.safeLoad(
+								fileContent,
+								{filename: filePath}
+							)
 							jsonEvent.time = new Hour(
 								filePath.replace(yamlRegex, '')
 							)
@@ -36,4 +37,5 @@ module.exports = (eventsPath) => {
 		.then(filePromises => {
 			return Promise.all(filePromises)
 		})
+		.catch(error => console.error(error.stack))
 }

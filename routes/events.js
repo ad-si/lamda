@@ -7,6 +7,7 @@ const clone = require('clone')
 const userHome = require('user-home')
 
 const loadEvents = require('../modules/loadEvents')
+const loadBirthdays = require('../modules/loadBirthdays')
 const processEvents = require('../modules/processEvents')
 const mapEventsToDays = require('../modules/mapEventsToDays')
 
@@ -26,6 +27,12 @@ module.exports = (request, response, done) => {
 		.add(pastDays + futureDays, 'days')
 
 	loadEvents(eventsDirectory)
+		.then((events) => loadBirthdays()
+			.then(contacts => {
+				events = events.concat(contacts)
+				return events
+			})
+		)
 		.then(events => {
 			// Add lower limit to periods to unify interface of event objects
 			events = events
