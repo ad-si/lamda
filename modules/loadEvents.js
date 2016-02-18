@@ -1,15 +1,16 @@
 'use strict'
 
-let path = require('path')
-let fsp = require('fs-promise')
-let yaml = require('js-yaml')
-let Hour = require('hour').default
+const path = require('path')
+const fsp = require('fs-promise')
+const yaml = require('js-yaml')
+const Hour = require('hour').default
+const yamlRegex = /\.ya?ml$/i
 
-module.exports = function (eventsPath) {
+module.exports = (eventsPath) => {
 	return fsp
 		.readdir(eventsPath)
 		.then(filePaths => {
-			return filePaths.filter(filePath => /.*\.ya?ml$/i.test(filePath))
+			return filePaths.filter(filePath => yamlRegex.test(filePath))
 		})
 		.then(filteredPaths => {
 			return filteredPaths.map(filePath => {
@@ -22,7 +23,7 @@ module.exports = function (eventsPath) {
 								filename: filePath
 							})
 							jsonEvent.time = new Hour(
-								filePath.replace(/\.ya?ml$/i, '')
+								filePath.replace(yamlRegex, '')
 							)
 							return jsonEvent
 						}

@@ -1,10 +1,10 @@
 'use strict'
 
-let moment = require('moment')
-let addEndDate = require('./addEndDate')
-let addEmptyEvents = require('./addEmptyEvents')
-let splitEvents = require('./splitEvents')
-let addStyleInformation = require('./addStyleInformation')
+const moment = require('moment')
+const addEndDate = require('./addEndDate')
+const addEmptyEvents = require('./addEmptyEvents')
+const splitEvents = require('./splitEvents')
+const addStyleInformation = require('./addStyleInformation')
 
 
 module.exports = function (events, startDate, endDate) {

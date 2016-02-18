@@ -1,38 +1,45 @@
 'use strict'
 
-let fsp = require('fs-promise')
-let path = require('path')
-let moment = require('moment')
-let clone = require('clone')
-let userHome = require('user-home')
+const fsp = require('fs-promise')
+const path = require('path')
+const moment = require('moment')
+const clone = require('clone')
+const userHome = require('user-home')
 
-let loadEvents = require('../modules/loadEvents')
-let processEvents = require('../modules/processEvents')
-let mapEventsToDays = require('../modules/mapEventsToDays')
+const loadEvents = require('../modules/loadEvents')
+const processEvents = require('../modules/processEvents')
+const mapEventsToDays = require('../modules/mapEventsToDays')
+
+const eventsDirectory = path.join(userHome, 'Events')
 
 
-module.exports = function (request, response, done) {
+module.exports = (request, response, done) => {
 
-	let now = moment()
-	let pastDays = 10
-	let futureDays = 50
-	let eventPromises = loadEvents(path.join(userHome, 'Events'))
-	let startDate = now
+	const now = moment()
+	const pastDays = 10
+	const futureDays = 50
+	const eventPromises = loadEvents(eventsDirectory)
+	const startDate = now
 		.clone()
 		.subtract(pastDays, 'days')
-	let endDate = startDate
+	const endDate = startDate
 		.clone()
 		.add(pastDays + futureDays, 'days')
 
 	eventPromises
 		.then(events => {
-			let processedEvents = processEvents(
+			events = events.sort((eventA, eventB) =>
+				eventA.time.toObject().start.lowerLimit -
+				eventB.time.toObject().start.lowerLimit
+			)
+
+			const processedEvents = processEvents(
 				events,
 				startDate,
 				endDate
 			)
 
-			let renderDays = mapEventsToDays(
+			const renderDays = mapEventsToDays(
 				processedEvents,
 				startDate,
 				endDate

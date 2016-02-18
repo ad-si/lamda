@@ -1,22 +1,22 @@
 'use strict'
 
-let moment = require('moment')
+const moment = require('moment')
 
-module.exports = function (events) {
+module.exports = (events) => {
 
-	let newEvents = []
+	const newEvents = []
 	let timeFrame
 
 	events.forEach((event, index) => {
 		if (!event)
 			return
 
-		let startDate = (event.time.type === 'moment') ?
+		const startDate = (event.time.type === 'moment') ?
 			event.time.lowerLimit :
 			(event.time.type === 'period') ?
 				event.time.start.lowerLimit :
 				null
-		let endDate = (event.time.type === 'moment') ?
+		const endDate = (event.time.type === 'moment') ?
 			event.time.upperLimit :
 			(event.time.type === 'period') ?
 				event.time.end.upperLimit :
