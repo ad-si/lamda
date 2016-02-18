@@ -53,14 +53,16 @@ module.exports = (events) => {
 					})
 				}
 
-			if (timeFrame.startMoment.isBefore(event.startDate)) {
-				newEvents.push({
-					empty: true,
-					startDate: timeFrame.startMoment.toDate(),
-					endDate: event.startDate,
-					minutes: moment(event.startDate)
-						.diff(timeFrame.startMoment, 'minutes')
-				})
+			if (timeFrame.startMoment.isSameOrBefore(event.startDate)) {
+				if (timeFrame.startMoment.isBefore(event.startDate)) {
+					newEvents.push({
+						empty: true,
+						startDate: timeFrame.startMoment.toDate(),
+						endDate: event.startDate,
+						minutes: moment(event.startDate)
+							.diff(timeFrame.startMoment, 'minutes')
+					})
+				}
 
 				newEvents.push(event)
 
