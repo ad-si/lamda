@@ -18,7 +18,6 @@ module.exports = (request, response, done) => {
 	const now = moment()
 	const pastDays = 10
 	const futureDays = 50
-	const eventPromises = loadEvents(eventsDirectory)
 	const startDate = now
 		.clone()
 		.subtract(pastDays, 'days')
@@ -26,11 +25,20 @@ module.exports = (request, response, done) => {
 		.clone()
 		.add(pastDays + futureDays, 'days')
 
-	eventPromises
+	loadEvents(eventsDirectory)
 		.then(events => {
+			// Add lower limit to periods to unify interface of event objects
+			events = events
+				.map(event => {
+					if (event.time.type === 'period') {
+						event.time.lowerLimit = event.time
+							.toObject().start.lowerLimit
+					}
+					return event
+				})
+
 			events = events.sort((eventA, eventB) =>
-				eventA.time.toObject().start.lowerLimit -
-				eventB.time.toObject().start.lowerLimit
+				eventA.time.lowerLimit - eventB.time.lowerLimit
 			)
 
 			const processedEvents = processEvents(
