@@ -4,7 +4,6 @@
 	ul
 		font-size: 0.75em
 		li
-			background-color rgba(black, 0.2)
 			display flex
 			list-style none
 			margin-bottom 2px
@@ -14,16 +13,27 @@
 				height 26px
 				display inline-block
 
-	.today
-		box-shadow 0 0 1px 1px #cd5c5c
+	.today .date
+		background-color rgba(200,80,60, 0.2)
+
+	.monday
+		margin-top 0.8em
 
 	.date
-		padding 0 0.5em
-		border-right 1px solid rgba(127, 127, 127, 0.2)
+		background-color rgba(black, 0.2)
+		padding 0 0 0 0.5em
+		margin-right 2px
 		flex-basis auto
 		flex-grow 0
+		span:last-of-type
+			display inline-block
+			width 1.2em
+			padding-right 0.4em
+			text-align right
+			opacity 0.5
 
 	.day
+		background-color rgba(black, 0.2)
 		flex-grow 1
 		display flex
 

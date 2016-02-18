@@ -5,11 +5,17 @@ block styles
 
 block content
 	ul
-		each day in days
-			li(class= day.today ? 'today' : '')
-				div.date= day.date.toISOString().substr(0,10)
-				div.day
-					each event in day.events
-						div.event(style=event.style, class=(event.empty ? 'empty' : ''))
+		for day in days
+			- var classes = []
+			- if (day.today) classes.push('today')
+			- if (day.date.getDay() === 1) classes.push('monday')
+			li(class= classes.join())
+				.date
+					span= day.date.toISOString().substr(0,10)
+					= ' '
+					span= day.date.toDateString().substr(0,1)
+				.day
+					for event in day.events
+						.event(style=event.style, class=(event.empty ? 'empty' : ''))
 							if event.title
 								span= event.title + ' '
