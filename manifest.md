@@ -2,55 +2,84 @@
 
 ## Structure
 
-OS must satisfy 3 needs:
+Operating system must handle data.
 
-- Storage
+- Storing
 - Logging
 - Viewing
+- Grouping
+- Accessing
+- Providing
 
-Or same concept, but different names
+Or same concept, but with focus on aspects of data:
 
-- Spatial (still looking for a better word)
-- Temporal
-- Relational
+- Spatial - Order of data on the storage medium
+- Temporal - Change of data over time
+- Informational - Information contained in the data
+- Relational - Relation to other data
+- Accessibility - Rights to access data
+- Reachability - Existence of infrastructure to reach data
 
 
 Until now:
 
-- (Nodes)
-- (Files)
-- Directories
+- Nodes
+	- Files
+	- Directories
 - Apps
-  - Databses
+	- Databses
+
+Usage:
+Files must be added to apps which store the data in their own databases.
+In order to retrieve the data user has to export data from apps
+(which might not always be possible)
 
 
 Better:
 
+- Data containers
+	- Data
+	- Metadata
+- Filters (aka queries, aka views)
+- Apps
 
-Because files are too low level:
+Usage:
+User defines via filters which data apps can access.
+Apps operate always on the file system data
+=> Apps can be switched without problems
+=> No need to export data and user always stays in control
 
-- No more overlap of id and name
-- No more file extensions
+
+
+=> The filesystem is the API
+=> Apps get a filtered subset of users data
+	=> Full control of what apps are able to access
+	=> No closed databases
+
+This is better, because files are too low level,
+which causes following problems:
+
+- Overlap of id and name
+- File extensions
 - Directories try to improve things but are actually just namespaces
 - No difference between data and program
-
-- Documents
-- Filters (Aka queries)
-- Views
+- No difference between text and binary
+- No system level meta data
 
 The file system is actually just a list of files (with the notion of namespaces)
 
-Documents:
-- Set of udf (universal data format) entities
-  - Directory containing a main.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, ...)
+Data Containers:
+- Set of UDCs (Universal Data Container) entities
+	- Directory containing a main.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, …)
 - No name (Name is UUID)
 - No order
 - No hierarchy
 - But creation time stamp! (Times stamps are also great IDs => no more overlap of id and name)
-- Links between documents which can't break like file-paths
+	=> Enables links between documents which can't break (unlike file-paths)
 
 
-Every app is actually just a (text) editor -> modifies content of files
+Every app is actually just a (text) editor.
+It modifies and views content of files.
 
 
 Like browsers solves common problems
@@ -65,7 +94,8 @@ That's why operating systems exist in the first place: To solve common problems
 - Rights management
 - ...
 
-How about solving another (more high level) common problem: Information management
+How about solving another (more high level) common problem:
+Information management
 
 ...or make databases a OS level feature like file systems
 
@@ -73,21 +103,26 @@ How about solving another (more high level) common problem: Information manageme
 Versioning/History is a First class Citizen:
 
 - Documents Link to pre-/successor
-- everytime a file is opened, a clone is generated
+- Everytime a file is opened, a clone is generated
 - Maybe make files even immutable
 
 
 ## Window Management
 
-There should only be one kind of window / pane / tab and only.
-At the moment:
+- There should only be one kind of window / pane / tab.
+- Should be a system level feature
+
+
+Current situation:
 
 Imagine you want to edit 2 files with vim:
 
-1. Two iTerm windows
-1. Two iTerm Tabs
-1. Two iTerm Panes
+1. Two terminal windows
+1. Two terminal Tabs
+1. Two terminal Panes
+1. Two tmux sessions
 1. Two tmux windows
+1. Two tmux panes
 1. Two vim tabs
 1. Two vim buffers
 1. Two processes
