@@ -10,16 +10,16 @@ block content
 			- if (day.today) classes.push('today')
 			- if (day.date.getDay() === 1) classes.push('monday')
 			li(class= classes.join())
-				if day.today
-					- var hoursInMinutes = new Date().getUTCHours() * 60
-					- var minutes =  + hoursInMinutes + new Date().getUTCMinutes()
-					// TODO: Automatically update position with fronted javascript
-					.cursor(style='left:' + (minutes / 14.40 + '%'))
 				.date
 					span= day.date.toISOString().substr(0,10)
 					= ' '
 					span= day.date.toDateString().substr(0,1)
 				.day
+					if day.today
+						- var hoursInMinutes = new Date().getUTCHours() * 60
+						- var minutes =  + hoursInMinutes + new Date().getUTCMinutes()
+						// TODO: Automatically update position with fronted javascript
+						.cursor(style='left:' + (minutes / 14.40 + '%'))
 					for event in day.events
 						.event(style=event.style, class=(event.empty ? 'empty' : ''))
 							if event.title
