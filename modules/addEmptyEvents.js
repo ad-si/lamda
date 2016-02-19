@@ -19,7 +19,7 @@ module.exports = (events) => {
 			event.endDate = (event.time.type === 'moment') ?
 				event.time.upperLimit :
 				(event.time.type === 'period') ?
-					event.time.end.upperLimit :
+					event.time.end.lowerLimit :
 					null
 			event.minutes = moment(event.endDate)
 				.diff(event.startDate, 'minutes')
@@ -30,16 +30,17 @@ module.exports = (events) => {
 
 			const startMoment = moment.utc(event.startDate).startOf('day')
 			const endMoment = moment.utc(event.endDate).endOf('day')
+			let lastEventEndDate = startMoment.toDate()
 
 			if (!timeFrame || timeFrame.startMoment !== startMoment) {
 				timeFrame = {startMoment, endMoment}
 			}
 
-			// If last event started on another day …
-			if (events[index - 1] && !moment
-					.utc(events[index - 1].startDate)
-					.startOf('day')
-					.isSame(startMoment)
+			if (events[index - 1]) {
+				// If last event started on another day …
+				if (!moment.utc(events[index - 1].startDate)
+						.startOf('day')
+						.isSame(startMoment)
 				) {
 					// … add empty event to the end of the day
 					const endOfLastDay = moment.utc(events[index - 1])
@@ -52,15 +53,19 @@ module.exports = (events) => {
 							.diff(events[index - 1].endDate, 'minutes')
 					})
 				}
+				else {
+					lastEventEndDate = events[index - 1].endDate
+				}
+			}
 
 			if (timeFrame.startMoment.isSameOrBefore(event.startDate)) {
 				if (timeFrame.startMoment.isBefore(event.startDate)) {
 					newEvents.push({
 						empty: true,
-						startDate: timeFrame.startMoment.toDate(),
+						startDate: lastEventEndDate,
 						endDate: event.startDate,
 						minutes: moment(event.startDate)
-							.diff(timeFrame.startMoment, 'minutes')
+							.diff(lastEventEndDate, 'minutes')
 					})
 				}
 

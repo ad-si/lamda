@@ -16,11 +16,14 @@ block content
 					span= day.date.toDateString().substr(0,1)
 				.day
 					if day.today
-						- var hoursInMinutes = new Date().getUTCHours() * 60
-						- var minutes =  + hoursInMinutes + new Date().getUTCMinutes()
 						// TODO: Automatically update position with fronted javascript
-						.cursor(style='left:' + (minutes / 14.40 + '%'))
+						.cursor(style='left:' + percentageOfDay)
 					for event in day.events
-						.event(style=event.style, class=(event.empty ? 'empty' : ''))
+						.event(
+							style= event.style
+							class= (event.empty ? 'empty' : '')
+							title= (event.startDate.toISOString().substr(0,16) + ' to \n' +
+								event.endDate.toISOString().substr(0,16)).replace(/T/g, ' ')
+						)
 							if event.title
 								span= event.title + ' '

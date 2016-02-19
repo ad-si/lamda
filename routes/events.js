@@ -11,12 +11,16 @@ const loadBirthdays = require('../modules/loadBirthdays')
 const processEvents = require('../modules/processEvents')
 const mapEventsToDays = require('../modules/mapEventsToDays')
 
-const eventsDirectory = path.join(userHome, 'Events')
+// const eventsDirectory = path.join(userHome, 'Events')
+const eventsDirectory = path.resolve(__dirname, '../test/events')
+
+const displayInUTC = true
 
 
 module.exports = (request, response, done) => {
 
-	const now = moment()
+	// const now = moment()
+	const now = moment('2015-11-25')
 	const pastDays = 10
 	const futureDays = 50
 	const startDate = now
@@ -29,7 +33,7 @@ module.exports = (request, response, done) => {
 	loadEvents(eventsDirectory)
 		.then((events) => loadBirthdays()
 			.then(contacts => {
-				events = events.concat(contacts)
+				// events = events.concat(contacts)
 				return events
 			})
 		)
@@ -60,9 +64,14 @@ module.exports = (request, response, done) => {
 				endDate
 			)
 
+			const minuteOfDay = displayInUTC ?
+				new Date().getUTCHours() * 60 + new Date().getUTCMinutes() :
+				new Date().getHours() * 60 + new Date().getMinutes()
+
 			response.render('index', {
 				page: 'events',
-				days: renderDays
+				days: renderDays,
+				percentageOfDay: (minuteOfDay / 14.40) + '%'
 			})
 		})
 		.catch(error => {

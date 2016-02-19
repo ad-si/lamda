@@ -1,29 +1,29 @@
 'use strict'
 
-let moment = require('moment')
+const moment = require('moment')
 
-module.exports = function (events, startDate, endDate) {
+module.exports = (events, startDate, endDate) => {
 
-	var days = [],
-		i
+	const numberOfDays = endDate.diff(startDate, 'days')
+	const days = []
 
-	for (i = 0; i < endDate.diff(startDate, 'days'); i++) {
-		!function () {
+	for (let dayIndex = 0; dayIndex < numberOfDays; dayIndex++) {
+		const date = startDate.clone().add(dayIndex, 'days')
+		const day = {
+			date: date.clone().toDate(),
+			events: events.filter(event =>
+				moment(event.startDate).isSame(date, 'day')
+			)
+		}
 
-			var date = startDate.clone().add(i, 'days'),
-				day = {
-					date: date.clone().toDate(),
-					events: events.filter(function (event) {
-						return moment(event.startDate).isSame(date, 'day')
-					})
-				}
+		if (moment().isSame(date, 'day'))
+			day.today = true
 
-			if (moment().isSame(date, 'day'))
-				day.today = true
-
-			days.push(day)
-		}()
+		days.push(day)
 	}
+
+	console.log(days)
+
 
 	return days
 }
