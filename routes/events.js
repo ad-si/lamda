@@ -11,16 +11,16 @@ const loadBirthdays = require('../modules/loadBirthdays')
 const processEvents = require('../modules/processEvents')
 const mapEventsToDays = require('../modules/mapEventsToDays')
 
-// const eventsDirectory = path.join(userHome, 'Events')
-const eventsDirectory = path.resolve(__dirname, '../test/events')
+const eventsDirectory = path.join(userHome, 'Events')
+// const eventsDirectory = path.resolve(__dirname, '../test/events')
 
 const displayInUTC = true
 
 
 module.exports = (request, response, done) => {
 
-	// const now = moment()
-	const now = moment('2015-11-25')
+	const now = moment()
+	// const now = moment('2015-11-25')
 	const pastDays = 10
 	const futureDays = 50
 	const startDate = now

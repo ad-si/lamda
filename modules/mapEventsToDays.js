@@ -22,8 +22,5 @@ module.exports = (events, startDate, endDate) => {
 		days.push(day)
 	}
 
-	console.log(days)
-
-
 	return days
 }

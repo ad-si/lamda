@@ -43,7 +43,7 @@ module.exports = (events) => {
 						.isSame(startMoment)
 				) {
 					// … add empty event to the end of the day
-					const endOfLastDay = moment.utc(events[index - 1])
+					const endOfLastDay = moment.utc(events[index - 1].endDate)
 						.endOf('day')
 					newEvents.push({
 						empty: true,
