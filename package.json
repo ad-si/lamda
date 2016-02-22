@@ -12,6 +12,7 @@
     "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.5.2",
+    "json2csv": "^3.2.0",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "serve-favicon": "^2.3.0",

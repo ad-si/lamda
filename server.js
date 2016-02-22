@@ -7,6 +7,7 @@ const userHome = require('user-home')
 const serveFavicon = require('serve-favicon')
 
 const contacts = require('./routes/contacts')
+const dataExport = require('./routes/dataExport')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !Boolean(module.parent)
@@ -25,6 +26,7 @@ function setupRouting () {
 	app.set('views', path.join(projectDirectory, 'views'))
 
 	app.get('/', contacts)
+	app.get('/export', dataExport)
 }
 
 if (runsStandalone) {

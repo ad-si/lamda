@@ -5,7 +5,8 @@ block styles
 	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
 
 block content
-	p You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
+	p#summary You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
+	a#export.button(href='#{baseURL}/export?format=csv') Export as CSV
 	br
 	if errors.length > 0
 		.errors
