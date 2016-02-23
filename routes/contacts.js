@@ -49,7 +49,7 @@ module.exports = (request, response) => {
 						'name',
 						'birthday',
 						'email',
-						'mobile',
+						'phones',
 						'website',
 						'facebook',
 						'address'

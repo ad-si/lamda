@@ -22,8 +22,45 @@ function getCountryCode (countryName) {
 	return soughtElement
 }
 
+function addPlus (number) {
+	return String(
+		String(number)[0] !== '+' ?
+		'+' + number :
+		number
+	)
+}
 
-module.exports = function (data) {
+function addPhone (number, array) {
+	if (typeof number === 'number' || typeof number === 'string') {
+		array.push({
+			type: 'mobile',
+			number: number
+		})
+	}
+}
+
+
+function combinePhoneNumbers (contact) {
+	contact.phones = contact.phones || []
+
+	addPhone(contact.mobile, contact.phones)
+	delete contact.mobile
+
+	addPhone(contact.phone, contact.phones)
+	delete contact.phone
+
+	addPhone(contact.home, contact.phones)
+	delete contact.home
+
+	contact.phones.forEach(phone => {
+		phone.number = addPlus(phone.number)
+	})
+
+	return contact
+}
+
+
+module.exports = (data) => {
 
 	data.gender = data.gender || ''
 
@@ -33,10 +70,6 @@ module.exports = function (data) {
 	if (!data.name)
 		data.name = data.firstname + ' ' + data.lastname
 
-	if (typeof data.phone === 'number')
-		data.phone = '+' + data.phone
-	if (typeof data.mobile === 'number')
-		data.mobile = '+' + data.mobile
 	if (typeof data.fax === 'number')
 		data.fax = '+' + data.fax
 
@@ -69,6 +102,8 @@ module.exports = function (data) {
 
 	if (data.address)
 		data.address = formatAddress(data.address)
+
+	data = combinePhoneNumbers(data)
 
 	return data
 }
