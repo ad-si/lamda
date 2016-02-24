@@ -21,6 +21,8 @@ dangerColor = rgb(140, 20, 0)
 
 #contacts
 	padding 2em
+	ul
+		list-style-position inside
 	table
 		text-align left
 		width 100%
@@ -40,8 +42,12 @@ dangerColor = rgb(140, 20, 0)
 			padding 0.2em 0.5em
 		a
 			display inline-block
-	.email
+	.emails
 		text-align center
+		ul
+			list-style-type none
+			li
+				display inline-block
 		a
 			display inline-block
 			width 1.5em
@@ -49,6 +55,7 @@ dangerColor = rgb(140, 20, 0)
 			text-indent -9999px
 			getBgImage('envelope-closed')
 			background-size auto 14px
+			margin-bottom 0.2em
 	.address span
 		vertical-align middle
 	.country
@@ -62,14 +69,10 @@ dangerColor = rgb(140, 20, 0)
 		background-image url(/images/email-provider/default.svg)
 		background-repeat no-repeat
 
-	for provider in gmail gmx t-online web yahoo
+	for provider in providers
 		.{provider}
-			background-image url(
-				/images/email-provider/desaturated/provider.png) !important
+			background-image url(/images/email-provider/provider.png) !important
 			background-repeat no-repeat
-
-	.phones
-		list-style inside
 
 // Not very helpful right now
 /*.birthday

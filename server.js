@@ -18,9 +18,18 @@ const publicDirectory = path.join(projectDirectory, 'public')
 function setupRouting () {
 	app.use(stylus.middleware({
 		src: path.join(publicDirectory, 'styles'),
-		debug: isDevMode,
-		compress: !isDevMode,
+		compile: (stylusString, filePath) => stylus(stylusString)
+			.set('filename', filePath)
+			.set('compress', !isDevMode)
+			.set('sourcemap', isDevMode)
+			.define('providers', fs
+				.readdirSync(
+					path.join(publicDirectory, 'images/email-provider')
+				)
+				.map(fileName => fileName.replace(/\.png$/gi, ''))
+			)
 	}))
+
 	app.use(express.static(publicDirectory))
 
 	app.set('views', path.join(projectDirectory, 'views'))

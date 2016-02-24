@@ -48,7 +48,7 @@ module.exports = (request, response) => {
 					sortedKeys: [
 						'name',
 						'birthday',
-						'email',
+						'emails',
 						'phones',
 						'website',
 						'facebook',

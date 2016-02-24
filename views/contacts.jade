@@ -56,17 +56,17 @@ block content
 										a(href='https://facebook.com/' + value, , target='_blank')
 											= value
 
-									else if key === 'email'
-										if value && typeof value === 'string'
-											- var provider = value.split('@')[1].split('.')
-
-											- Array.isArray(provider) ? provider.pop() : ''
-											a(
-												href="mailto:#{value}"
-												target='_blank'
-												class="provider #{provider.join('.')}"
-											)
-												= value
+									else if key === 'emails'
+										ul
+											for email in contact.emails
+												- var provider = email.value.split('@')[1].split('.')
+												- Array.isArray(provider) ? provider.pop() : ''
+												li: a(
+													href="mailto:#{email.value}"
+													target='_blank'
+													class="provider #{provider.pop()}"
+												)
+													= email.value
 
 									else if key === 'birthday'
 										| #{value.toISOString().substr(0,10)} (#{contact.age})

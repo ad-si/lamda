@@ -59,6 +59,33 @@ function combinePhoneNumbers (contact) {
 	return contact
 }
 
+function unifyEmailAddresses (contact) {
+	contact.emails = contact.emails || []
+
+	if (contact.email) {
+		if (typeof contact.email === 'string') {
+			contact.emails.push({
+				type: 'main',
+				value: contact.email
+			})
+		}
+		else {
+			contact.emails.push(contact.email)
+		}
+		delete contact.email
+	}
+
+	contact.emails = contact.emails.map(email => {
+		if (typeof email === 'string') {
+			return {
+				value: email
+			}
+		}
+		return email
+	})
+
+	return contact
+}
 
 module.exports = (data) => {
 
@@ -104,6 +131,7 @@ module.exports = (data) => {
 		data.address = formatAddress(data.address)
 
 	data = combinePhoneNumbers(data)
+	data = unifyEmailAddresses(data)
 
 	return data
 }
