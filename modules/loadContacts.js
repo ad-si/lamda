@@ -4,7 +4,7 @@ const yaml = require('js-yaml')
 
 const encoding = 'utf-8'
 const yamlRegex = /\.yaml$/i
-
+const errors = []
 
 module.exports = (contactsPath) => fsp
 	.readdir(contactsPath)

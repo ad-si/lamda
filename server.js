@@ -7,7 +7,7 @@ const userHome = require('user-home')
 const serveFavicon = require('serve-favicon')
 
 const contacts = require('./routes/contacts')
-const dataExport = require('./routes/dataExport')
+const dataExport = require('./routes/export')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !Boolean(module.parent)
