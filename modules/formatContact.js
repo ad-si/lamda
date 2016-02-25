@@ -87,6 +87,24 @@ function unifyEmailAddresses (contact) {
 	return contact
 }
 
+function addMapLink (contact) {
+	value = contact.address
+	contact.mapLink = 'https://nominatim.openstreetmap.org/search?'
+
+	if (value) {
+		contact.mapLink = contact.mapLink + [
+			value.country ? ('&country=' + value.country) : '',
+			value.county ? ('&county=' + value.county) : '',
+			value.city ? ('&city=' + value.city) : '',
+			value.zip ? ('&postalcode=' + value.zip) : '',
+			value.street ?
+				('&street=' +
+					[value.number, value.addition, value.street ].join(' ')) :
+				''
+		].join('')
+	}
+}
+
 module.exports = (data) => {
 
 	data.gender = data.gender || ''
@@ -132,6 +150,8 @@ module.exports = (data) => {
 
 	data = combinePhoneNumbers(data)
 	data = unifyEmailAddresses(data)
+
+	addMapLink(data)
 
 	return data
 }

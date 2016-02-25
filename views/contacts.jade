@@ -72,15 +72,19 @@ block content
 										| #{value.toISOString().substr(0,10)} (#{contact.age})
 
 									else if key === 'address' && value
-										if value.country
-											span.country(class=value.countryCode, title=value.country)
-												= value.country + ', '
-										span
-											= value.city ? value.city + ' ' : ''
-											= value.zip ? value.zip + ', ' : ''
-											= value.street ? value.street + ' ' : ''
-											= value.number ? value.number + ' ' : ''
-											= value.addition ? contact[key].addition : ''
+										a(
+											href=contact.mapLink
+											target='_blank'
+										)
+											if value.country
+												span.country(class=value.countryCode, title=value.country)
+													= value.country + ', '
+											span
+												= value.city ? value.city + ' ' : ''
+												= value.zip ? value.zip + ', ' : ''
+												= value.street ? value.street + ' ' : ''
+												= value.number ? value.number + ' ' : ''
+												= value.addition ? value.addition : ''
 
 									else
 										=contact[key]
