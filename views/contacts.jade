@@ -10,12 +10,15 @@ block scripts
 
 block content
 	p#summary You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
-	a#export.button(href='#{baseURL}/export?format=csv') Export as CSV
+
 	form(action='' method='post')
 		input(type='hidden' inputmode='verbatim' placeholder='IDs of contacts')
+
 	button#selectAll Select all
 	button#selectNone.hidden Select none
-	br
+	a#export.button.hidden(href='#{baseURL}/export?format=csv').
+		Export selected as CSV
+
 	if errors.length > 0
 		.errors
 			for error in errors

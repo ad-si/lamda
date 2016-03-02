@@ -10,6 +10,7 @@
     "browserify-middleware": "^7.0.0",
     "capitalize": "^1.0.0",
     "express": "^4.12.4",
+    "filesaver.js": "^0.2.0",
     "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.5.2",

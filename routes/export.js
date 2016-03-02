@@ -3,6 +3,7 @@
 const path = require('path')
 const json2csv = require('json2csv')
 const loadContacts = require('../modules/loadContacts')
+const getFields = require('../modules/getFields')
 
 
 module.exports = (request, response) => {
@@ -25,17 +26,10 @@ module.exports = (request, response) => {
 
 	return loadContacts(contactsPath)
 		.then(contacts => {
-			const csvFieldsMap = []
-			contacts.forEach(contact => {
-				Object
-					.keys(contact)
-					.forEach(key => csvFieldsMap[key] = true)
-			})
-
 			json2csv(
 				{
 					data: contacts,
-					fields: Object.keys(csvFieldsMap)
+					fields: getFields(contacts)
 				},
 				conversionCallback
 			)

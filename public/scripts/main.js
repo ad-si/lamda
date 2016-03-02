@@ -1,5 +1,8 @@
 'use strict'
 
+const json2csv = require('json2csv')
+const fileSaver = require('filesaver.js')
+const getFields = require('../../modules/getFields')
 const Ybdb = require('ybdb')
 const db = new Ybdb()
 
@@ -8,6 +11,7 @@ db.object.contacts = contacts
 
 const selectNoneButton = document.getElementById('selectNone')
 const selectAllButton = document.getElementById('selectAll')
+const exportButton = document.getElementById('export')
 const tableBody = document.querySelector('tbody')
 let numberOfSelectedContacts = 0
 
@@ -15,15 +19,23 @@ function setSelectButtonsVisibility () {
 	if (numberOfSelectedContacts === 0) {
 		selectNoneButton.classList.add('hidden')
 		selectAllButton.classList.remove('hidden')
+		exportButton.classList.add('hidden')
 	}
-	else if (numberOfSelectedContacts === contacts.length) {
-		selectAllButton.classList.add('hidden')
+	else if (numberOfSelectedContacts > 0) {
 		selectNoneButton.classList.remove('hidden')
+		exportButton.classList.remove('hidden')
+
+		if (numberOfSelectedContacts === contacts.length) {
+			selectAllButton.classList.add('hidden')
+		}
+		else {
+			selectAllButton.classList.remove('hidden')
+		}
 	}
-	else {
-		selectNoneButton.classList.remove('hidden')
-		selectAllButton.classList.remove('hidden')
-	}
+}
+
+function getSelected () {
+	return Array.from(tableBody.querySelectorAll('tr.selected'))
 }
 
 
@@ -55,16 +67,50 @@ selectAllButton.addEventListener('click', () => {
 		.forEach(row => row.classList.add('selected'))
 
 	numberOfSelectedContacts += unselectedContacts.length
-	console.log(numberOfSelectedContacts, contacts.length)
-
 	setSelectButtonsVisibility()
 })
 
 // Select none
 selectNoneButton.addEventListener('click', () => {
-	Array
-		.from(tableBody.querySelectorAll('tr.selected'))
-		.forEach(row => row.classList.remove('selected'))
+	getSelected().forEach(row => row.classList.remove('selected'))
 	numberOfSelectedContacts = 0
 	setSelectButtonsVisibility()
+})
+
+
+// Export selected
+exportButton.addEventListener('click', (event) => {
+	event.preventDefault()
+
+	const contactsToBeExported = []
+
+	getSelected()
+		.map(element => element.id)
+		.forEach(contactId => {
+			contactsToBeExported.push(
+				db('contacts')
+					.chain()
+					.find({id: contactId})
+					.omit(['id', 'mapLink'])
+					.value()
+			)
+		})
+
+	json2csv(
+		{
+			data: contactsToBeExported,
+			fields: getFields(contactsToBeExported),
+		},
+		(error, csv) => {
+			if (error)
+				throw error
+
+			const csvText = csv.replace(/(,?)null(,?)/g, '$1$2')
+			const csvBlob = new Blob(
+				[csvText],
+				{type: 'text/csv;charset=utf-8'}
+			)
+			fileSaver.saveAs(csvBlob, 'contacts.csv')
+		}
+	)
 })
