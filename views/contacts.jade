@@ -49,11 +49,15 @@ block content
 										if nickname
 											small= '(' + nickname + ')'
 
-									else if key === 'website'
-										- value = value.replace(/https?:\/\//, '')
-										- value = value.replace(/www\./, '')
-										a(href='http://' + value, target='_blank')
-											= value
+									else if key === 'links'
+										ul
+											for link in contact.links
+												a.provider(
+													href=link.url
+													target='_blank'
+													class=link.provider
+												)
+													= link.provider
 
 									else if key === 'phones'
 										if contact.phones.length === 0
@@ -62,10 +66,6 @@ block content
 											ul
 												for phone in contact.phones
 													li: a(href='tel:' + phone.number)= phone.number
-
-									else if key === 'facebook'
-										a(href='https://facebook.com/' + value, , target='_blank')
-											= value
 
 									else if key === 'emails'
 										ul

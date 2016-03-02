@@ -26,9 +26,8 @@ function setupRouting () {
 			.set('compress', !isDevMode)
 			.set('sourcemap', isDevMode)
 			.define('providers', fs
-				.readdirSync(
-					path.join(publicDirectory, 'images/email-provider')
-				)
+				.readdirSync(path.join(publicDirectory, 'images/providers'))
+				.filter(fileName => fileName.toLowerCase().endsWith('.png'))
 				.map(fileName => fileName.replace(/\.png$/gi, ''))
 			)
 	}))

@@ -18,11 +18,13 @@ module.exports = (request, response) => {
 	loadContacts(contactsPath)
 		.then(contacts => contacts.map(contactData => {
 			if (contactData) {
+				contactData = formatContact(contactData)
+
 				Object
 					.keys(contactData)
 					.forEach(key => keys.add(key))
 
-				return formatContact(contactData)
+				return contactData
 			}
 		})
 		.sort((previous, current) => {
@@ -50,8 +52,7 @@ module.exports = (request, response) => {
 						'birthday',
 						'emails',
 						'phones',
-						'website',
-						'facebook',
+						'links',
 						'address'
 					]
 				}
