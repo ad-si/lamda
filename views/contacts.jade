@@ -13,6 +13,8 @@ block content
 	a#export.button(href='#{baseURL}/export?format=csv') Export as CSV
 	form(action='' method='post')
 		input(type='hidden' inputmode='verbatim' placeholder='IDs of contacts')
+	button#selectAll Select all
+	button#selectNone.hidden Select none
 	br
 	if errors.length > 0
 		.errors
