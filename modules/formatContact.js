@@ -102,6 +102,13 @@ function addMapLink (contact) {
 					[value.number, value.addition, value.street ].join(' ')) :
 				''
 		].join('')
+
+		contact.prettyAddress =
+			(value.city ? value.city + ' ' : '') +
+			(value.zip ? value.zip + ', ' : '') +
+			(value.street ? value.street + ' ' : '') +
+			(value.number ? value.number + ' ' : '') +
+			(value.addition ? value.addition : '')
 	}
 }
 
@@ -109,7 +116,7 @@ function combineLinks (contact) {
 	contact.links = contact.links || []
 
 	const providers = {
-		website: 'https://{{user}}',
+		website: 'http://{{user}}',
 		facebook: 'https://facebook.com/{{user}}',
 		linkedin: 'https://linkedin.com/in/{{user}}',
 		'google-plus': 'https://plus.google.com/u/0/+{{user}}',
@@ -130,7 +137,7 @@ function combineLinks (contact) {
 					(
 						contact[provider].startsWith('http') ?
 							contact[provider] :
-							'https://' + contact[provider]
+							'http://' + contact[provider]
 					) :
 					providers[provider].replace('{{user}}', contact[provider])
 			})
