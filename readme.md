@@ -1,5 +1,8 @@
 # Contacts
 
+All your contacts in one place.
+
+
 ## Template for YAML file
 
 ```yaml

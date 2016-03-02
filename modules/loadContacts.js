@@ -21,10 +21,12 @@ module.exports = (contactsPath) => fsp
 	.then(contactFilePromises => Promise.all(contactFilePromises))
 	.then(fileObjects => fileObjects.map(fileObject => {
 		try {
-			return yaml.safeLoad(fileObject.fileContent, {
+			const contact = yaml.safeLoad(fileObject.fileContent, {
 					filename: fileObject.fileName
 				}
 			)
+			contact.id = fileObject.fileName.slice(0,-5)
+			return contact
 		}
 		catch (error) {
 			error.message = capitalize(error.message)

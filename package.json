@@ -1,24 +1,27 @@
 {
   "name": "contacts",
   "version": "0.1.0",
-  "description": "## Template for YAML file",
+  "description": "All your contacts in one place",
   "keywords": [
     "lamda",
     "contacts"
   ],
   "dependencies": {
+    "browserify-middleware": "^7.0.0",
     "capitalize": "^1.0.0",
     "express": "^4.12.4",
     "fs-promise": "^0.3.1",
     "jade": "^1.11.0",
     "js-yaml": "^3.5.2",
     "json2csv": "^3.2.0",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lowdb": "^0.12.5",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
     "user-home": "^2.0.0",
-    "world-countries": "^1.7.3"
+    "world-countries": "^1.7.3",
+    "ybdb": "github:adius/ybdb"
   },
   "scripts": {
     "postinstall": "symlink-modules lamda-styles lamda-views",

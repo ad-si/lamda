@@ -5,6 +5,8 @@ const express = require('express')
 const stylus = require('stylus')
 const userHome = require('user-home')
 const serveFavicon = require('serve-favicon')
+const browserifyMiddleware = require('browserify-middleware')
+
 
 const contacts = require('./routes/contacts')
 const dataExport = require('./routes/export')
@@ -13,6 +15,7 @@ const isDevMode = app.get('env') === 'development'
 const runsStandalone = !Boolean(module.parent)
 const projectDirectory = __dirname
 const publicDirectory = path.join(projectDirectory, 'public')
+const scriptsDirectory = path.join(publicDirectory, 'scripts')
 
 
 function setupRouting () {
@@ -29,6 +32,8 @@ function setupRouting () {
 				.map(fileName => fileName.replace(/\.png$/gi, ''))
 			)
 	}))
+
+	app.use('/scripts', browserifyMiddleware(scriptsDirectory))
 
 	app.use(express.static(publicDirectory))
 
