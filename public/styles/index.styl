@@ -78,14 +78,15 @@ dangerColor = rgb(140, 20, 0)
 		background-repeat no-repeat
 
 	.emails .provider
-		background-image url(/images/\providers/email.svg)
+		background-image url(baseURL/images/\providers/email.svg)
 
 	.links .provider
-		background-image url(/images/\providers/website.svg)
+		background-image url(baseURL/images/\providers/website.svg)
 
 	for provider in providers
 		.{provider}
-			background-image url(/images/\providers/provider.png) !important
+			background-image url(
+				baseURL/images/\providers/provider.png) !important
 			background-repeat no-repeat
 
 tr.selected

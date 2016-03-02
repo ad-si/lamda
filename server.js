@@ -30,6 +30,7 @@ function setupRouting () {
 				.filter(fileName => fileName.toLowerCase().endsWith('.png'))
 				.map(fileName => fileName.replace(/\.png$/gi, ''))
 			)
+			.define('baseURL', app.locals.baseURL)
 	}))
 
 	app.use('/scripts', browserifyMiddleware(scriptsDirectory))
