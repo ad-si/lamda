@@ -1,32 +1,31 @@
+'use strict'
+
 const fs = require('fs')
 
 const pathToJson = require('../modules/pathToJson')
 const fsToJson = require('../modules/fsToJson')
 
 
-module.exports = function (req, res) {
+module.exports = (request, response) => {
 
-	var pathParam = req.params[0] || '',
-		columns = [],
-		depth = 0,
-		path = ''
+	const pathParam = request.params[0] || ''
+	const columns = []
+	let depth = 0
+	let path = ''
 
-
-	function buildColumns(element, children) {
-
+	function buildColumns (element, children) {
 		if (children) {
-
-			if (!columns[depth])
+			if (!columns[depth]) {
 				columns[depth] = {
 					active: '',
 					path: path,
 					entries: []
 				}
+			}
 
-			children.forEach(function (child) {
+			children.forEach(child => {
 
 				if (typeof child === 'object') {
-
 					columns[depth].path = path
 					path = path + '/' + child.name
 
@@ -36,8 +35,9 @@ module.exports = function (req, res) {
 					buildColumns(child, child.children)
 					depth--
 				}
-				else
+				else {
 					columns[depth].entries.push(child)
+				}
 			})
 		}
 		else {
@@ -65,11 +65,11 @@ module.exports = function (req, res) {
 	//console.log(JSON.stringify(pathToJson(baseURL, pathParam), null, 2))
 	//console.log(JSON.stringify(buildColumns(pathToJson(baseURL, pathParam).children), null, 2))
 
-	res.render('index', {
+	response.render('index', {
 		page: 'files',
 		columns: buildColumns(
-			pathToJson(req.app.locals.basePath, pathParam),
-			pathToJson(req.app.locals.basePath, pathParam).children
+			pathToJson(request.app.locals.basePath, pathParam),
+			pathToJson(request.app.locals.basePath, pathParam).children
 		)
 	})
 }

@@ -1,13 +1,15 @@
-var fs = require('fs'),
-	path = require('path')
+'use strict'
 
-module.exports = function fsToJson(filename) {
+const fs = require('fs')
+const path = require('path')
 
-	var stats = fs.lstatSync(filename),
-		info = {
-			path: filename,
-			name: path.basename(filename)
-		}
+module.exports = function fsToJson (filename) {
+
+	const stats = fs.lstatSync(filename)
+	const info = {
+		path: filename,
+		name: path.basename(filename)
+	}
 
 
 	if (stats.isDirectory()) {
@@ -19,7 +21,7 @@ module.exports = function fsToJson(filename) {
 	else {
 		// Assuming it's a file. In real life it could be a symlink or
 		// something else!
-		info.type = "file"
+		info.type = 'file'
 	}
 
 	return info

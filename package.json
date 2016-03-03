@@ -1,4 +1,3 @@
-
 {
   "name": "files",
   "version": "0.0.1",
@@ -6,7 +5,8 @@
   "keywords": [
     "files",
     "finder",
-    "explorer"
+    "explorer",
+    "lamda"
   ],
   "main": "server.js",
   "scripts": {
@@ -24,9 +24,10 @@
   "homepage": "https://bitbucket.org/lamdaos/files#readme",
   "dependencies": {
     "express": "^4.12.4",
+    "file-formats": "gitlab:adius/file-formats",
     "jade": "^1.11.0",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
