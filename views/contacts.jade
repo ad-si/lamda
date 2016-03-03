@@ -45,7 +45,8 @@ block content
 								)
 									if key === 'name'
 										- var nickname = contact.nickname
-										= value + ' '
+										a(href='/files/Contacts/' + contact.id + '.yaml')= value
+										= ' '
 										if nickname
 											small= '(' + nickname + ')'
 
@@ -82,7 +83,8 @@ block content
 													= email.value
 
 									else if key === 'birthday'
-										| #{value.toISOString().substr(0,10)} (#{contact.age})
+										= value.toISOString().substr(0,10) + ' '
+										small (#{contact.age})
 
 									else if key === 'address' && value
 										a(

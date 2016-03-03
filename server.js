@@ -61,6 +61,12 @@ if (runsStandalone) {
 
 	setupRouting()
 
+	app.get('/files/Contacts/:fileName', (request, response) => {
+		response.sendFile(
+			path.join(app.locals.basePath, 'Contacts', request.params.fileName)
+		)
+	})
+
 	const port = 3000
 	app.set('view engine', 'jade')
 	app.listen(port)
