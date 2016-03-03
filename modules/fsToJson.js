@@ -13,7 +13,7 @@ module.exports = function fsToJson (filename) {
 
 
 	if (stats.isDirectory()) {
-		info.type = 'folder'
+		info.type = 'directory'
 		info.children = fs.readdirSync(filename).map(function (child) {
 			return fsToJson(filename + '/' + child)
 		})

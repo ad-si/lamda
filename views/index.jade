@@ -5,26 +5,24 @@ block styles
 
 block content
 	div#columns
-		each column in columns
+		for column in columns
 			div
-				ul
-					if(column.entries)
-						if(column.entries.length)
-							each file in column.entries
-								li(class=(file === column.active) ? 'active' : '')
-									a(href='#{baseURL}' + column.path + '/' + file)
-										span
-										= file
-						else
+				if column.entries
+					ul
+						if !column.entries.length
 							p.muted This directory is empty
+						else
+							for file in column.entries
+								li(
+									class= file.active ? 'active' : ''
+									title= file.fileName
+								)
+									a(href= baseURL + column.path + '/' + file.fileName)
+										span!= file.icon
+										= file.name
 
-					else if(column.file)
+				else if column.fileName && column.content
+						pre= column.content
 
-						if(column.file.type === 'text')
-							pre= column.file.content
-
-						if(column.file.type === 'yaml')
-							pre= column.file.content
-
-					else
-						p.muted Can not be displayed
+				else
+					p.muted Can not be displayed

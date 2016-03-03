@@ -2,6 +2,41 @@
 
 const fs = require('fs')
 const path = require('path')
+const fileIcon = require('file-formats')
+const directoryIcon = fs.readFileSync(
+	path.resolve(__dirname, '../public/images/directory.svg'),
+	'utf-8'
+)
+
+
+function createFileObject (fileName, dirName) {
+	const stats = fs.lstatSync(path.join(
+		dirName, fileName
+	))
+	const extname = path.extname(fileName)
+	const fileEntry = {
+		fileName: fileName,
+		name: path.basename(fileName, extname),
+		extension: extname.substr(1),
+	}
+
+	if (stats.isDirectory()) {
+		fileEntry.type = 'directory'
+		fileEntry.icon = directoryIcon
+	}
+	else {
+		if (extname === '.txt') {
+			fileEntry.type = 'text'
+		}
+		else if (extname === '.yaml') {
+			fileEntry.type = 'yaml'
+		}
+		// TODO: Map all possible file types (and symlinks)
+		fileEntry.icon = fileIcon(fileEntry)
+	}
+
+	return fileEntry
+}
 
 
 module.exports = (baseURL, file) => {
@@ -12,37 +47,32 @@ module.exports = (baseURL, file) => {
 
 	function doIt (filename) {
 		const stats = fs.lstatSync(filename)
-		const info = {
+		let info = {
 			path: filename,
 			name: path.basename(filename),
+			directory: path.dirname(filename)
 		}
 
 		if (stats.isDirectory()) {
 			currentDepth++
 
-			info.type = 'folder'
+			info.type = 'directory'
+			info.icon = directoryIcon
 			info.children = fs
 				.readdirSync(filename)
 				.map(child => {
-					if (child === nodes[currentDepth])
+					if (child === nodes[currentDepth]) {
 						return doIt(filename + '/' + child)
-					else
-						return child
+					}
+					else {
+						return createFileObject(child, filename)
+					}
 				})
 		}
 		else {
 			currentDepth++
-
-			// TODO: Map all possible file types
-
-			if (path.extname(info.name) === '.txt')
-				info.type = 'text'
-
-			else if (path.extname(info.name) === '.yaml')
-				info.type = 'yaml'
-
-			else
-				info.type = "file" // Could be a symlink or something else!
+			info = createFileObject(info.name, info.directory)
+			info.active = true
 		}
 
 		if (currentDepth > maxDepth)

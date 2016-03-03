@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 
 const pathToJson = require('../modules/pathToJson')
 const fsToJson = require('../modules/fsToJson')
@@ -11,65 +12,64 @@ module.exports = (request, response) => {
 	const pathParam = request.params[0] || ''
 	const columns = []
 	let depth = 0
-	let path = ''
+	let currentPath = ''
 
-	function buildColumns (element, children) {
-		if (children) {
+	function buildColumns (fileTree) {
+		if (fileTree.children) {
 			if (!columns[depth]) {
 				columns[depth] = {
-					active: '',
-					path: path,
+					path: currentPath,
 					entries: []
 				}
 			}
 
-			children.forEach(child => {
+			fileTree.children.forEach(child => {
+				child.path = currentPath + '/' + child.fileName
 
-				if (typeof child === 'object') {
-					columns[depth].path = path
-					path = path + '/' + child.name
+				if (child.hasOwnProperty('children')) {
+					columns[depth].path = currentPath
+					currentPath =  currentPath + '/' + child.name
 
-					columns[depth].active = child.name
-					columns[depth].entries.push(child.name)
+					child.active = true
+					columns[depth].entries.push(child)
+
 					depth++
-					buildColumns(child, child.children)
+					buildColumns(child)
 					depth--
 				}
 				else {
 					columns[depth].entries.push(child)
+
+					if (child.hasOwnProperty('active')) {
+						depth++
+						buildColumns(child)
+						depth--
+					}
 				}
 			})
 		}
 		else {
-			columns[depth] = {
-				file: element
+			columns[depth] = fileTree
+
+			const fileExtensions = ['txt', 'yaml', 'json']
+
+			if (fileExtensions.indexOf(columns[depth].extension) > -1) {
+				columns[depth].content = fs.readFileSync(
+					path.join(request.app.locals.basePath, columns[depth].path),
+					'utf-8'
+				)
 			}
-
-			// TODO: Map file types to functions
-
-			if (columns[depth].file.type === 'text')
-				columns[depth].file.content = fs
-					.readFileSync(columns[depth].file.path, 'utf8')
-
-			else if (columns[depth].file.type === 'yaml')
-				columns[depth].file.content = fs
-					.readFileSync(columns[depth].file.path, 'utf8')
 		}
 
 
 		return columns
 	}
 
-	//console.log(baseURL, pathParam)
-	//console.log(JSON.stringify(fsToJson(baseURL), null, 2))
-	//console.log(JSON.stringify(pathToJson(baseURL, pathParam), null, 2))
-	//console.log(JSON.stringify(buildColumns(pathToJson(baseURL, pathParam).children), null, 2))
+	const fileTree = pathToJson(request.app.locals.basePath, pathParam)
+	const processedColumns = buildColumns(fileTree)
 
 	response.render('index', {
 		page: 'files',
-		columns: buildColumns(
-			pathToJson(request.app.locals.basePath, pathParam),
-			pathToJson(request.app.locals.basePath, pathParam).children
-		)
+		columns: processedColumns
 	})
 }
