@@ -1,30 +1,37 @@
+.spacer
+	height 100%
+
 #files
+	height 100%
 	font-size 0.85em
 	#columns
+		height 100%
 		display flex
 		flex-direction row
-		//align-items stretch
 		> div
+			height 100%
 			flex 1 1 auto
 			overflow scroll
 			border-right 1px solid rgba(127, 127, 127, 0.2)
 			padding 1em 0 1em 1em
-			ul
-				list-style none
-				line-height 1.5
-			li
-				padding-left 0.2em
-				span
-					display inline-block
-					getBgImage('folder')
-					width 0.8em
-					height 0.8em
-					margin-right 0.4em
-				&.active
-					background-color rgba(127, 127, 127, 0.2)
+			overflow-y scroll
 
-		div:first-of-type
-			flex-basis 200px
+			&:first-of-type
+				flex-basis 200px
 
-		div:last-of-type
-			border-right none
+			&:last-of-type
+				border-right none
+
+		ul
+			list-style none
+			line-height 1.5
+		li
+			padding-left 0.2em
+			span
+				display inline-block
+				getBgImage('folder')
+				width 0.8em
+				height 0.8em
+				margin-right 0.4em
+			&.active
+				background-color rgba(127, 127, 127, 0.2)
