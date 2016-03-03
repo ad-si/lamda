@@ -52,7 +52,7 @@ block content
 									else if key === 'links'
 										ul
 											for link in contact.links
-												a.provider(
+												li: a.provider(
 													href=link.url
 													target='_blank'
 													class=link.provider
