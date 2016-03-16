@@ -7,23 +7,26 @@
     "timeline"
   ],
   "dependencies": {
+    "@datatypes/duration": "^0.4.0",
+    "@datatypes/interval": "^0.4.0",
+    "@datatypes/moment": "^0.7.0",
+    "babel-polyfill": "^6.7.2",
     "clone": "^1.0.2",
-    "express": "^4.12.4",
-    "fs-promise": "^0.3.1",
-    "hour": "^0.1.1",
+    "express": "^4.13.4",
+    "fs-promise": "^0.5.0",
     "jade": "^1.11.0",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
     "moment": "^2.10.3",
     "serve-favicon": "^2.3.0",
-    "stylus": "^0.51.1",
+    "stylus": "^0.54.2",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "ava": "^0.8.0",
-    "moment": "^2.10.6",
-    "unexpected": "^10.4.0"
+    "ava": "^0.13.0",
+    "moment": "^2.12.0",
+    "unexpected": "^10.10.8"
   },
   "scripts": {
     "test": "ava",

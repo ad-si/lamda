@@ -8,12 +8,12 @@ block content
 		for day in days
 			- var classes = []
 			- if (day.today) classes.push('today')
-			- if (day.date.getDay() === 1) classes.push('monday')
+			- if (day.date.lowerLimit.getDay() === 1) classes.push('monday')
 			li(class= classes.join())
 				.date
-					span= day.date.toISOString().substr(0,10)
+					span= day.date.string.substr(0, 10)
 					= ' '
-					span= day.date.toDateString().substr(0,1)
+					span= day.date.lowerLimit.toDateString().substr(0, 1)
 				.day
 					if day.today
 						// TODO: Automatically update position with fronted javascript
@@ -22,8 +22,10 @@ block content
 						.event(
 							style= event.style
 							class= (event.empty ? 'empty' : '')
-							title= (event.startDate.toISOString().substr(0,16) + ' to \n' +
-								event.endDate.toISOString().substr(0,16)).replace(/T/g, ' ')
+							title= (
+								event.interval.start.string.substr(0, 16) + ' to \n' +
+								event.interval.end.string.substr(0, 16)).replace(/T/g, ' '
+							)
 						)
 							if event.title
 								span= event.title + ' '

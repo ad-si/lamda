@@ -1,9 +1,11 @@
+'use strict'
+
 function getStartDate () {
 
-	var rangeStart = new Date(),
-		rangeEnd = new Date(),
-		daysBefore = 10,
-		daysAfter = 100
+	const rangeStart = new Date()
+	const rangeEnd = new Date()
+	const daysBefore = 10
+	const daysAfter = 100
 
 	rangeStart.setDate(rangeStart.getDate() - daysBefore)
 	rangeEnd.setDate(rangeEnd.getDate() + daysAfter)
@@ -13,20 +15,22 @@ function getStartDate () {
 
 function getEndDate (startDate) {
 
-	var hourOffset = startDate.getHours() + fakesome.integer(1, 5)
+	const hourOffset = startDate.getHours() + fakesome.integer(1, 5)
 
 	return new Date(new Date(startDate.getTime()).setHours(hourOffset))
 }
 
 
-module.exports = function () {
+module.exports = (number) => {
 
-	var startDate = getStartDate()
+	number = number || 100
 
-	return fakesome.array(100).object({
+	const startDate = getStartDate()
+
+	return fakesome.array(number).object({
 		title: fakesome.word,
 		startDate: getStartDate,
-		duration: function () {
+		duration: () => {
 			return fakesome.integer(15, 1500)
 		}
 	})

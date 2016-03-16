@@ -1,41 +1,26 @@
 'use strict'
 
-let moment = require('moment')
+module.exports = (separatedEvents, event, eventIndex, events) => {
 
-module.exports = function (events, startDate, endDate) {
+	if ( // Compare date part of ISO strings
+		event.interval.start.string.substr(0, 10) !==
+		event.interval.end.string.substr(0, 10)
+	) {
+		const endOfDayEvent = Object.assign({}, event)
+		endOfDayEvent.interval = event.interval.clone()
+		endOfDayEvent.interval.end = endOfDayEvent.interval.start.clone()
+		endOfDayEvent.interval.end.endOfDay()
 
-	events.forEach(function (event) {
-		// In range
-		if ((event.startDate > startDate || event.endDate > startDate) &&
-			event.startDate < endDate) {
+		const startOfDayEvent = Object.assign({}, event)
+		startOfDayEvent.interval = event.interval.clone()
+		startOfDayEvent.interval.start = startOfDayEvent.interval.end.clone()
+		startOfDayEvent.interval.start.startOfDay()
 
-			// Start and end not on same day
-			var diffDays = moment(event.startDate)
-				.diff(moment(event.endDate), 'days')
+		separatedEvents.push(endOfDayEvent, startOfDayEvent)
+	}
+	else {
+		separatedEvents.push(event)
+	}
 
-			if (diffDays) {
-
-				for (let i = 0; i < diffDays; i++) {
-					!function () {
-
-						var eventClone = clone(event)
-
-						if (i !== 0)
-							eventClone.start = moment(eventClone.start)
-								.add(i, 'days')
-								.hour(0)
-								.minute(0)
-
-						eventClone.end = moment(eventClone.start)
-							.hour(24)
-							.minute(0)
-
-						events.push(eventClone)
-					}()
-				}
-			}
-		}
-	})
-
-	return events
+	return separatedEvents
 }

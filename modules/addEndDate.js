@@ -1,18 +1,11 @@
-var moment = require('moment')
+'use strict'
 
+module.exports = (events) => events
+	.map(event => {
+		event.endDate = moment(event.startDate)
+			.add(event.duration, 'minutes')
+			.toDate()
 
-module.exports = function (events) {
-
-	return events
-		.map(function (event) {
-
-			event.endDate = moment(event.startDate)
-				.add(event.duration, 'minutes')
-				.toDate()
-
-			return event
-		})
-		.sort(function (previous, current) {
-			return previous.startDate - current.startDate
-		})
-}
+		return event
+	})
+	.sort((previous, current) => previous.startDate - current.startDate)

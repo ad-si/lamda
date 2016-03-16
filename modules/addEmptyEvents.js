@@ -1,91 +1,100 @@
 'use strict'
 
-const moment = require('moment')
+const Interval = require('@datatypes/interval').default
+const Duration = require('@datatypes/duration').default
+const datatypesMoment = require('@datatypes/moment')
+const momentFromString = datatypesMoment.default
+const subtract = datatypesMoment.subtract
+const Moment = datatypesMoment.Moment
+const Instant = datatypesMoment.Instant
+const Millisecond = datatypesMoment.Millisecond
 
-module.exports = (events) => {
 
-	const newEvents = []
-	let timeFrame
+module.exports = (newEvents, event, index, events) => {
 
-	events
-		.filter(event => Boolean(event))
-		.map(event => {
-			// Unify start-date and end-date in events
-			event.startDate = (event.time.type === 'moment') ?
-				event.time.lowerLimit :
-				(event.time.type === 'period') ?
-					event.time.start.lowerLimit :
-					null
-			event.endDate = (event.time.type === 'moment') ?
-				event.time.upperLimit :
-				(event.time.type === 'period') ?
-					event.time.end.lowerLimit :
-					null
-			event.minutes = moment(event.endDate)
-				.diff(event.startDate, 'minutes')
+	function addStartOfDayEvent () {
+		// and add empty event until this event (first of the current day)
+		const startOfDay = event.interval.start
+			.clone()
+			.startOfDay()
+		const startString = startOfDay.string
+		const endString = event.interval.start.string
 
-			return event
-		})
-		.forEach((event, index, events) => {
+		if (startString !== endString ) {
+			newEvents.push({
+				empty: true,
+				interval: new Interval(startString + '--' + endString),
+			})
+		}
+	}
 
-			const startMoment = moment.utc(event.startDate).startOf('day')
-			const endMoment = moment.utc(event.endDate).endOf('day')
-			let lastEventEndDate = startMoment.toDate()
 
-			if (!timeFrame || timeFrame.startMoment !== startMoment) {
-				timeFrame = {startMoment, endMoment}
+	if (index === 0) {
+		addStartOfDayEvent()
+		newEvents.push(event)
+		return newEvents
+	}
+
+	// It exists a previous event and it was on another day
+	if (
+		index > 0 &&
+		(
+			events[index - 1].interval.start.string.substr(0, 10) !==
+			event.interval.start.string.substr(0, 10)
+		)
+	) {
+		// … add empty event to the end of that day
+		const endOfPreviousDay = events[index - 1].interval.end.clone()
+		endOfPreviousDay.endOfDay()
+
+		const startString = events[index - 1].interval.end.string
+		const endString = endOfPreviousDay.string
+
+		if (startString !== endString ) {
+			const interval = new Interval(startString + '--' + endString)
+			const endOfLastDayEvent = {
+				empty: true,
+				interval: interval,
 			}
+			newEvents.push(endOfLastDayEvent)
+		}
 
-			if (events[index - 1]) {
-				// If last event started on another day …
-				if (!moment.utc(events[index - 1].startDate)
-						.startOf('day')
-						.isSame(startMoment)
-				) {
-					// … add empty event to the end of the day
-					const endOfLastDay = moment.utc(events[index - 1].endDate)
-						.endOf('day')
-					newEvents.push({
-						empty: true,
-						startDate: events[index - 1].endDate,
-						endDate: endOfLastDay,
-						minutes: moment(endOfLastDay)
-							.diff(events[index - 1].endDate, 'minutes')
-					})
-				}
-				else {
-					lastEventEndDate = events[index - 1].endDate
-				}
+		addStartOfDayEvent()
+	}
+	// Previous event started on the same day
+	else {
+		// Add empty event as padding from previous to current event
+		const startString = events[index - 1].interval.end.string
+		const endString = event.interval.start.string
+
+		if (startString !== endString ) {
+			const paddingEvent = {
+				empty: true,
+				interval: new Interval(startString + '--' + endString),
 			}
+			newEvents.push(paddingEvent)
+		}
+	}
 
-			if (timeFrame.startMoment.isSameOrBefore(event.startDate)) {
-				if (timeFrame.startMoment.isBefore(event.startDate)) {
-					newEvents.push({
-						empty: true,
-						startDate: lastEventEndDate,
-						endDate: event.startDate,
-						minutes: moment(event.startDate)
-							.diff(lastEventEndDate, 'minutes')
-					})
-				}
+	newEvents.push(event)
 
-				newEvents.push(event)
+	// If last event
+	if (index === events.length - 1) {
+		const startString = event.interval.end.string
 
-				// If last event
-				if (index === events.length - 1) {
-					const emptyEndOfDayEvent = {
-						empty: true,
-						startDate: event.endDate,
-						endDate: timeFrame.endMoment.toDate(),
-						minutes: moment(timeFrame.endMoment)
-							.diff(event.endDate, 'minutes')
-					}
-					newEvents.push(emptyEndOfDayEvent)
-				}
+		// TODO: Replace with
+		// const endString = event.interval.end.clone().endOfDay().string
+		// (blocked by github.com/datatypesjs/moment/issues/6)
+		const endString = new Millisecond(
+			event.interval.end.lowerLimit.toISOString()
+		).endOfDay().string
 
-				timeFrame.startMoment = moment(event.endDate)
-			}
-		})
+		const emptyEndOfDayEvent = {
+			empty: true,
+			interval: new Interval(startString + '--' + endString),
+		}
+		newEvents.push(emptyEndOfDayEvent)
+	}
 
 	return newEvents
 }
