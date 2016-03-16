@@ -34,7 +34,7 @@ function notInRange (event, eventIndex, events) {
 
 module.exports = (request, response, done) => {
 
-	const pastDays = 50
+	const pastDays = 10
 	const futureDays = 50
 	const now = new Date()
 	const nowMoment = momentFromString(now.toISOString())
