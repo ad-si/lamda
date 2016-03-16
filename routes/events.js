@@ -17,6 +17,7 @@ const toDays = require('../modules/toDays')
 const addEndDate = require('../modules/addEndDate')
 const addStyleInformation = require('../modules/addStyleInformation')
 
+// TODO: Implement displaying in local time
 const displayInUTC = true
 let eventsDirectory = path.join(userHome, 'Events')
 
@@ -83,14 +84,9 @@ module.exports = (request, response, done) => {
 				.map(addStyleInformation)
 				.reduce(toDays, days)
 
-			const minuteOfDay = displayInUTC ?
-				new Date().getUTCHours() * 60 + new Date().getUTCMinutes() :
-				new Date().getHours() * 60 + new Date().getMinutes()
-
 			response.render('index', {
 				page: 'events',
 				days: daysWithEvents,
-				percentageOfDay: (minuteOfDay / 14.40) + '%'
 			})
 		})
 		.catch(done)
