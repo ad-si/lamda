@@ -3,15 +3,12 @@
 
 	ul
 		font-size: 0.75em
-		li
-			display flex
-			list-style none
-			margin-bottom 2px
 
-			div
-				line-height 26px
-				height 26px
-				display inline-block
+	li
+		line-height 2em
+		display flex
+		list-style none
+		margin-bottom 2px
 
 	#today .date
 		background-color rgba(200,80,60, 0.2)
@@ -19,13 +16,16 @@
 	.cursor
 		background-color rgba(200,80,60, 0.5)
 		position absolute
+		top 0
 		display block
 		width 2px
+		height 100%
 
 	.monday
 		margin-top 0.8em
 
 	.date
+		display inline-block
 		background-color rgba(black, 0.2)
 		padding 0 0 0 0.5em
 		margin-right 2px
@@ -40,8 +40,9 @@
 
 	.day
 		position relative
-		flex-grow 1
 		display flex
+		flex-flow column
+		flex-grow 1
 		box-shadow inset 2px 0 0 0 rgba(black, 0.2)
 		background-image: repeating-linear-gradient(
 			to right, transparent, transparent 2px,
@@ -53,6 +54,15 @@
 		// 	white 50%, white calc(50% + 1px),
 		// 	transparent calc(50% + 1px), transparent
 		// )
+		&.multiple-lanes
+			line-height 1.8em
+			.lane:not(:last-of-type)
+				margin-bottom 2px
+
+	.lane
+		display flex
+		flex-flow row
+
 
 	.event
 		white-space nowrap

@@ -10,7 +10,7 @@ const Instant = datatypesMoment.Instant
 const Millisecond = datatypesMoment.Millisecond
 
 
-module.exports = (newEvents, event, index, events) => {
+function addEmptyEventsToLane (newEvents, event, index, events) {
 
 	function addStartOfDayEvent () {
 		// and add empty event until this event (first of the current day)
@@ -32,54 +32,56 @@ module.exports = (newEvents, event, index, events) => {
 	if (index === 0) {
 		addStartOfDayEvent()
 		newEvents.push(event)
-		return newEvents
 	}
 
-	// It exists a previous event and it was on another day
-	if (
-		index > 0 &&
-		(
+	if (index > 0) {
+		if (
 			events[index - 1].interval.start.string.substr(0, 10) !==
 			event.interval.start.string.substr(0, 10)
-		)
-	) {
-		// … add empty event to the end of that day
-		const endOfPreviousDay = events[index - 1].interval.end.clone()
-		endOfPreviousDay.endOfDay()
+		) {
+			// … add empty event to the end of that day
+			const endOfPreviousDay = events[index - 1].interval.end.clone()
+			endOfPreviousDay.endOfDay()
 
-		const startString = events[index - 1].interval.end.string
-		const endString = endOfPreviousDay.string
+			const startString = events[index - 1].interval.end.string
+			const endString = endOfPreviousDay.string
 
-		if (startString !== endString ) {
-			const interval = new Interval(startString + '--' + endString)
-			const endOfLastDayEvent = {
-				empty: true,
-				interval: interval,
+			if (startString !== endString ) {
+				const interval = new Interval(startString + '--' + endString)
+				const endOfLastDayEvent = {
+					empty: true,
+					interval: interval,
+				}
+				newEvents.push(endOfLastDayEvent)
 			}
-			newEvents.push(endOfLastDayEvent)
+
+			addStartOfDayEvent()
 		}
+		// Previous event started on the same day
+		else {
+			// Add empty event as padding from previous to current event
+			const startString = events[index - 1].interval.end.string
+			const endString = event.interval.start.string
 
-		addStartOfDayEvent()
-	}
-	// Previous event started on the same day
-	else {
-		// Add empty event as padding from previous to current event
-		const startString = events[index - 1].interval.end.string
-		const endString = event.interval.start.string
-
-		if (startString !== endString ) {
-			const paddingEvent = {
-				empty: true,
-				interval: new Interval(startString + '--' + endString),
+			if (startString !== endString ) {
+				const paddingEvent = {
+					empty: true,
+					interval: new Interval(startString + '--' + endString),
+				}
+				newEvents.push(paddingEvent)
 			}
-			newEvents.push(paddingEvent)
 		}
+		newEvents.push(event)
 	}
 
-	newEvents.push(event)
+	const eventHash =
+		(event.interval.end.hour || 0) +
+		(event.interval.end.minute || 0) +
+		(event.interval.end.second || 0) +
+		(event.interval.end.millisecond || 0)
 
-	// If last event
-	if (index === events.length - 1) {
+	// Last event and before midnight
+	if (index === events.length - 1 && eventHash < (23 + 59 + 59 + 999)) {
 		const startString = event.interval.end.string
 
 		// TODO: Replace with
@@ -97,4 +99,14 @@ module.exports = (newEvents, event, index, events) => {
 	}
 
 	return newEvents
+}
+
+
+module.exports = (day) => {
+
+	day.lanes = day.lanes.map(laneOfEvents =>
+		laneOfEvents.reduce(addEmptyEventsToLane, [])
+	)
+
+	return day
 }

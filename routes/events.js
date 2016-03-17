@@ -14,6 +14,7 @@ const loadBirthdays = require('../modules/loadBirthdays')
 const splitEvents = require('../modules/splitEvents')
 const addEmptyEvents = require('../modules/addEmptyEvents')
 const toDays = require('../modules/toDays')
+const toDaysWithLanes = require('../modules/toDaysWithLanes')
 const addEndDate = require('../modules/addEndDate')
 const addStyleInformation = require('../modules/addStyleInformation')
 
@@ -22,7 +23,7 @@ const displayInUTC = true
 let eventsDirectory = path.join(userHome, 'Events')
 
 // Uncomment for testing
-// eventsDirectory = path.resolve(__dirname, '../test/events')
+// eventsDirectory = path.resolve(__dirname, '../test/sequential/')
 
 function notInRange (event, eventIndex, events) {
 	const eventStart = event.interval.start.lowerLimit
@@ -79,10 +80,12 @@ module.exports = (request, response, done) => {
 					eventB.interval.end.lowerLimit
 				)
 				.filter(notInRange)
+				// .forEach(day => console.dir(day, {depth: 1, colors: true}))
 				.reduce(splitEvents, [])
-				.reduce(addEmptyEvents, [])
-				.map(addStyleInformation)
 				.reduce(toDays, days)
+				.map(toDaysWithLanes)
+				.map(addEmptyEvents)
+				.map(addStyleInformation)
 
 			response.render('index', {
 				page: 'events',

@@ -19,17 +19,19 @@ block content
 					span= day.date.string.substr(0, 10)
 					= ' '
 					span= day.date.lowerLimit.toDateString().substr(0, 1)
-				.day
-					for event in day.events
-						.event(
-							style= event.style
-							class= (event.empty ? 'empty' : '')
-							title= (
-								//- TODO: event.interval.duration
-								'Duration: ' + event.interval + '\n' +
-								event.interval.start.string.substr(0, 16) + ' to \n' +
-								event.interval.end.string.substr(0, 16)).replace(/T/g, ' '
-							)
-						)
-							if event.title
-								span= event.title + ' '
+				.day(class= (day.lanes.length > 1) ? 'multiple-lanes' : null)
+					for lane in day.lanes
+						.lane
+							for event in lane
+								.event(
+									style= event.style
+									class= (event.empty ? 'empty' : '')
+									title= (
+										//- TODO: event.interval.duration
+										'Duration: ' + event.interval + '\n' +
+										event.interval.start.string.substr(0, 16) + ' to \n' +
+										event.interval.end.string.substr(0, 16)).replace(/T/g, ' '
+									)
+								)
+									if event.title
+										span= event.title + ' '
