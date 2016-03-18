@@ -36,5 +36,5 @@ block content
 										event.interval.end.string.substr(0, 16)).replace(/T/g, ' '
 									)
 								)
-									if event.title
-										span= event.title + ' '
+									a(href=event.singleViewURL)
+										= event.title

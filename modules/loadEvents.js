@@ -9,7 +9,9 @@ const momentFromString = require('@datatypes/moment').default
 const yamlRegex = /\.ya?ml$/i
 
 
-module.exports = (eventsPath) => {
+module.exports = (eventsPath, request) => {
+	console.log(request.app.locals)
+
 	return fsp
 		.readdir(eventsPath)
 		.then(filePaths =>
@@ -23,7 +25,7 @@ module.exports = (eventsPath) => {
 				.readFile(absoluteFilePath)
 				.then(fileContent => {
 					try {
-						const jsonEvent = yaml.safeLoad(
+						const eventObject = yaml.safeLoad(
 							fileContent,
 							{filename: filePath}
 						)
@@ -33,9 +35,23 @@ module.exports = (eventsPath) => {
 							timeString = momentFromString(timeString)
 								.intervalString
 						}
-						jsonEvent.interval = new Interval(timeString)
+						Object.assign(eventObject, {
+							interval: new Interval(timeString),
+							fileName: filePath,
+							singleViewURL: request.app.locals.runsStandalone ?
+								'/' + filePath :
+								'/files/Events/' + filePath,
+							baseName: timeString,
+							title: eventObject.title ?
+							 	eventObject.title :
+								(eventObject.type ?
+									(eventObject.type.slice(0,1).toUpperCase() +
+							 		eventObject.type.slice(1)) :
+									JSON.stringify(eventObject)
+								),
+						})
 
-						return jsonEvent
+						return eventObject
 					}
 					catch (error) {
 						console.error(error.stack)

@@ -36,8 +36,11 @@ function setupRouting () {
 
 
 if (runsStandalone) {
-	app.locals.basePath = userHome
-	app.locals.baseURL = ''
+	Object.assign(app.locals, {
+		basePath: userHome,
+		baseURL: '',
+		runsStandalone: runsStandalone,
+	})
 
 	app.use(serveFavicon(path.join(publicDirectory, 'images/favicon.ico')))
 

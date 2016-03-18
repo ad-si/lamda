@@ -36,7 +36,7 @@ function notInRange (event, eventIndex, events) {
 
 module.exports = (request, response, done) => {
 
-	loadEvents(eventsDirectory)
+	loadEvents(eventsDirectory, request)
 		.then(events => loadBirthdays()
 			.then(contacts => {
 				// events = events.concat(contacts)

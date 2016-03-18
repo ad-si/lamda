@@ -21,15 +21,6 @@ module.exports = (day) => {
 				.replace(/,/g, ';')
 				.replace(/^\{(.*)\}$/g, '$1')
 
-			if (!event.empty && !event.hasOwnProperty('title')) {
-				event.title = (
-						event.type.slice(0,1).toUpperCase() +
-				 		event.type.slice(1)
-					)
-					||
-					JSON.stringify(event)
-			}
-
 			return event
 		})
 	)
