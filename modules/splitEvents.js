@@ -20,11 +20,12 @@ module.exports = (separatedEvents, event, eventIndex, events) => {
 		while (
 			iteratorDay.string.substr(0, 10) !==
 			event.interval.end.string.substr(0, 10)
-		 ){
+		) {
 			const fullDay = Object.assign({}, event)
 			fullDay.interval = event.interval.clone()
 			fullDay.interval.start = iteratorDay.clone().startOfDay()
 			fullDay.interval.end = iteratorDay.clone().endOfDay()
+			fullDay.isSecondary = true
 			separatedEvents.push(fullDay)
 			iteratorDay = add(iteratorDay, new Duration('P1D'))
 		}
@@ -34,6 +35,7 @@ module.exports = (separatedEvents, event, eventIndex, events) => {
 		startOfDayEvent.interval = event.interval.clone()
 		startOfDayEvent.interval.start = startOfDayEvent.interval.end.clone()
 		startOfDayEvent.interval.start.startOfDay()
+		startOfDayEvent.isSecondary = true
 		separatedEvents.push(startOfDayEvent)
 	}
 	else {
