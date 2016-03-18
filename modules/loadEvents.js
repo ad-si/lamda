@@ -10,8 +10,6 @@ const yamlRegex = /\.ya?ml$/i
 
 
 module.exports = (eventsPath, request) => {
-	console.log(request.app.locals)
-
 	return fsp
 		.readdir(eventsPath)
 		.then(filePaths =>
@@ -30,13 +28,14 @@ module.exports = (eventsPath, request) => {
 							{filename: filePath}
 						)
 						const timeString = filePath.replace(yamlRegex, '')
+						const interval = new Interval(timeString)
 
 						if (!timeString.includes('--')) {
 							timeString = momentFromString(timeString)
 								.intervalString
 						}
 						Object.assign(eventObject, {
-							interval: new Interval(timeString),
+							interval,
 							fileName: filePath,
 							singleViewURL: request.app.locals.runsStandalone ?
 								'/' + filePath :
@@ -49,6 +48,12 @@ module.exports = (eventsPath, request) => {
 							 		eventObject.type.slice(1)) :
 									JSON.stringify(eventObject)
 								),
+							tooltipText:
+								// TODO: Print human readable duration
+								`Duration: ${interval.duration}\n` +
+								(`${interval.start.string.substr(0, 16)} to\n` +
+								interval.end.string.substr(0, 16))
+									.replace(/T/g, ' ')
 						})
 
 						return eventObject

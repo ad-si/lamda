@@ -29,12 +29,7 @@ block content
 								.event(
 									style= event.style
 									class= eventClasses.join(' ')
-									title= (
-										//- TODO: event.interval.duration
-										'Duration: ' + event.interval + '\n' +
-										event.interval.start.string.substr(0, 16) + ' to \n' +
-										event.interval.end.string.substr(0, 16)).replace(/T/g, ' '
-									)
+									title= event.tooltipText
 								)
 									a(href=event.singleViewURL)
 										= event.title
