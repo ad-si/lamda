@@ -26,13 +26,6 @@ let eventsDirectory = path.join(userHome, 'Events')
 // Uncomment for testing
 // eventsDirectory = path.resolve(__dirname, '../test/sequential/')
 
-function notInRange (event, eventIndex, events) {
-	const eventStart = event.interval.start.lowerLimit
-	const eventEnd = event.interval.end.upperLimit
-
-	return  eventEnd > events.startMoment.lowerLimit ||
-		eventStart < events.endMoment.upperLimit
-}
 
 module.exports = (request, response, done) => {
 
@@ -44,17 +37,25 @@ module.exports = (request, response, done) => {
 			})
 		)
 		.then(events => {
-			const days =  getDays()
-			events.startMoment = days.startMoment
-			events.endMoment = days.endMoment
+
+			const days = getDays()
+
+			function notInRange (event, eventIndex, events) {
+				const eventStart = event.interval.start.lowerLimit
+				const eventEnd = event.interval.end.upperLimit
+
+				return eventEnd > days.startMoment.lowerLimit ||
+					eventStart < days.endMoment.upperLimit
+			}
 
 			const daysWithEvents = events
+				.filter(event => event != null)
 				.sort((eventA, eventB) =>
 					eventA.interval.start.lowerLimit -
 					eventB.interval.end.lowerLimit
 				)
+				// .forEach(day => console.dir(day.interval.start, {depth: 0, colors: true}))
 				.filter(notInRange)
-				// .forEach(day => console.dir(day, {depth: 1, colors: true}))
 				.reduce(splitEvents, [])
 				.reduce(toDays, days)
 				.map(toDaysWithLanes)
