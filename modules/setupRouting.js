@@ -6,8 +6,6 @@ const express = require('express')
 const userHome = require('user-home')
 const serveFavicon = require('serve-favicon')
 const browserifyMiddleware = require('browserify-middleware')
-const consoleModule = require('console')
-const logger = new consoleModule.Console(process.stdin, process.stdout)
 
 const contacts = require('../routes/contacts')
 const dataExport = require('../routes/export')
@@ -68,17 +66,14 @@ function setupStandalone (app, isDevMode) {
     )
   })
 
-  const port = 3000
   app.set('view engine', 'jade')
-  app.listen(port)
-  logger.info('App listens on http://localhost:' + port)
 }
 
-module.exports = (options) => {
-  const {app, runsStandalone, locals, isDevMode} = options
+module.exports = (options = {}) => {
+  const {app, runsStandalone, locals, isDevMode, listeningCallback} = options
 
   if (runsStandalone) {
-    setupStandalone(app, isDevMode)
+    setupStandalone(app, isDevMode, listeningCallback)
   }
   else {
     app.locals = locals

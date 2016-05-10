@@ -9,7 +9,9 @@
   "scripts": {
     "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint --ignore-path .gitignore .",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node tests/main.js",
+    "prepublish": "npm test"
   },
   "dependencies": {
     "browserify-middleware": "^7.0.0",
