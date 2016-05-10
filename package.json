@@ -29,7 +29,10 @@
     "start": "node server.js"
   },
   "main": "server.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^2.9.0",
+    "javascript-styleguide": "^0.2.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://bitbucket.org/lamdaos/contacts.git"
@@ -37,5 +40,9 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://bitbucket.org/lamdaos/contacts#readme"
+  "homepage": "https://bitbucket.org/lamdaos/contacts#readme",
+  "eslintConfig": {
+    "root": true,
+    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+  }
 }
