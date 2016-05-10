@@ -3,6 +3,7 @@
 const json2csv = require('json2csv')
 const fileSaver = require('filesaver.js')
 const getFields = require('../../modules/getFields')
+const formatForCsv = require('../../modules/formatForCsv')
 const Ybdb = require('ybdb')
 const db = new Ybdb()
 
@@ -98,7 +99,7 @@ exportButton.addEventListener('click', (event) => {
 
 	json2csv(
 		{
-			data: contactsToBeExported,
+			data: formatForCsv(contactsToBeExported),
 			fields: getFields(contactsToBeExported),
 		},
 		(error, csv) => {

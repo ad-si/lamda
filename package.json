@@ -6,27 +6,28 @@
     "lamda",
     "contacts"
   ],
+  "scripts": {
+    "postinstall": "symlink-modules lamda-styles lamda-views",
+    "lint": "eslint --ignore-path .gitignore .",
+    "start": "node server.js"
+  },
   "dependencies": {
     "browserify-middleware": "^7.0.0",
     "capitalize": "^1.0.0",
-    "express": "^4.12.4",
+    "express": "^4.13.4",
     "filesaver.js": "^0.2.0",
-    "fs-promise": "^0.3.1",
+    "fs-promise": "^0.5.0",
     "jade": "^1.11.0",
-    "js-yaml": "^3.5.2",
-    "json2csv": "^3.2.0",
+    "js-yaml": "^3.6.0",
+    "json2csv": "^3.4.0",
     "lamda-styles": "bitbucket:lamdaos/lamda-styles",
     "lamda-views": "bitbucket:lamdaos/lamda-views",
     "lowdb": "^0.12.5",
     "serve-favicon": "^2.3.0",
-    "stylus": "^0.51.1",
+    "stylus": "^0.54.5",
     "user-home": "^2.0.0",
-    "world-countries": "^1.7.3",
+    "world-countries": "^1.7.8",
     "ybdb": "github:adius/ybdb"
-  },
-  "scripts": {
-    "postinstall": "symlink-modules lamda-styles lamda-views",
-    "start": "node server.js"
   },
   "main": "server.js",
   "devDependencies": {
