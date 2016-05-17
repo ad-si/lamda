@@ -1,6 +1,7 @@
 {
   "name": "books",
   "version": "0.0.1",
+  "description": "All your books in one place",
   "keywords": [
     "lamda",
     "books"
@@ -20,9 +21,9 @@
     "object-assign": "^4.0.1",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.51.1",
+    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
-  "description": "All your ebooks in one place",
   "main": "server.js",
   "devDependencies": {
     "morgan": "^1.6.1"

@@ -9,6 +9,8 @@ const setupRouting = require('./modules/setupRouting')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !Boolean(module.parent)
+const projectDirectory = __dirname
+const publicDirectory = path.join(projectDirectory, 'public')
 
 
 if (runsStandalone) {
@@ -18,21 +20,14 @@ if (runsStandalone) {
 	const userHome = require('user-home')
 	app.locals.basePath = userHome
 	app.locals.baseURL = ''
-
-	const serveFavicon = require('serve-favicon')
-	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
-	app.use(serveFavicon(faviconPath))
-
 	app.locals.styles = [{
 		path: '/styles/dark.css',
 		id: 'themeLink',
 	}]
-	app.use(stylus.middleware({
-		src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
-		dest: path.join(__dirname, 'public/styles'),
-		debug: isDevMode,
-		compress: !isDevMode,
-	}))
+
+	const serveFavicon = require('serve-favicon')
+	const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
+	app.use(serveFavicon(faviconPath))
 
 	setupRouting(app)
 
