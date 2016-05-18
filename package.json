@@ -30,7 +30,7 @@
     "lamda-views": "bitbucket:lamdaos/lamda-views",
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0",
-    "stylus": "^0.51.1",
+    "stylus": "^0.54.2",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
