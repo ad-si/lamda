@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require('path')
 
 const express = require('express')
@@ -13,26 +12,26 @@ const isMounted = Boolean(module.parent)
 
 
 if (!isMounted) {
-	app.locals.baseURL = ''
-	const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
+  app.locals.baseURL = ''
+  const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
 
-	app.use(serveFavicon(faviconPath))
-	app.locals.styles = [{
-		path: '/styles/dark.css',
-		id: 'themeLink'
-	}]
-	app.use(stylus.middleware({
-		src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
-		dest: path.join(__dirname, 'public/styles'),
-		debug: isDevMode,
-		compress: !isDevMode,
-	}))
+  app.use(serveFavicon(faviconPath))
+  app.locals.styles = [{
+    path: '/styles/dark.css',
+    id: 'themeLink',
+  }]
+  app.use(stylus.middleware({
+    src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
+    dest: path.join(__dirname, 'public/styles'),
+    debug: isDevMode,
+    compress: !isDevMode,
+  }))
 }
 
 app.use(stylus.middleware({
-	src: path.join(__dirname, 'public/styles'),
-	debug: isDevMode,
-	compress: !isDevMode,
+  src: path.join(__dirname, 'public/styles'),
+  debug: isDevMode,
+  compress: !isDevMode,
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(faviconServer())
@@ -44,8 +43,9 @@ app.get('/', index)
 module.exports = app
 
 if (!isMounted) {
-	const port = 3000
-	app.set('view engine', 'jade')
-	app.listen(port)
-	console.log('App listens on http://localhost:' + port)
+  const port = 3000
+  app.set('view engine', 'jade')
+  app.listen(port)
+  // eslint-disable-next-line no-console
+  console.log(`App listens on http://localhost:${port}`)
 }

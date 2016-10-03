@@ -1,147 +1,132 @@
-var fs = require('fs'),
-	path = require('path'),
-	findit = require('findit')
+const fs = require('fs')
+const path = require('path')
+const findit = require('findit')
 
 
-module.exports = function () {
+module.exports = () => {
+  const iconPathCache = {}
+  const ignoreList = [
+    'node_modules',
+    'bower_components',
+    'components',
+    'plugins',
+    'bin',
+    'lib',
+    'libs',
+    'build',
+    'trunk',
+    'misc',
+    'js',
+    'jscripts',
+    'scripts',
+    'css',
+    'gems',
+    'thumbs',
+    'cache',
+  ]
 
-	var iconPathCache = {},
-		ignoreList = [
-			'node_modules',
-			'bower_components',
-			'components',
-			'plugins',
-			'bin',
-			'lib',
-			'libs',
-			'build',
-			'trunk',
-			'misc',
-			'js',
-			'jscripts',
-			'scripts',
-			'css',
-			'gems',
-			'thumbs',
-			'cache'
-		]
+  return function (request, response, next) {
+    function sendFavicon (faviconPath) {
+      iconPathCache[request.url] = faviconPath
 
+      if (path.extname(faviconPath) === '.svg') {
+        response.set({
+          'Content-Type': 'image/svg+xml',
+        })
+      }
 
-	return function (request, response, next) {
+      const stream = fs.createReadStream(faviconPath)
+      stream.on('error', error => {
+        // eslint-disable-next-line
+        console.error(error)
+        delete iconPathCache[request.url]
+        searchFavicon()
+      })
+      stream.pipe(response)
+    }
 
-		var faviconPaths,
-			faviconPath = false,
-			foundFavicon,
-			absRepoPath,
-			stream,
-			finder,
-			invalidName
+    function noFavicon () {
+      iconPathCache[request.url] = false
 
+      response
+        .status(204)
+        .send()
+    }
 
-		function sendFavicon (faviconPath) {
+    function searchFavicon () {
+      const absRepoPath = path.join(
+        global.basePath,
+        'projects',
+        path.dirname(request.url)
+      )
+      const faviconPaths = [
+        'img/favicon.png',
+        'favicon.ico',
+        'images/favicon.png',
+      ]
+      let faviconPath
 
-			iconPathCache[request.url] = faviconPath
+      const foundFavicon = faviconPaths.some(relFaviconPath => {
+        faviconPath = path.join(absRepoPath, relFaviconPath)
+        return fs.existsSync(faviconPath)
+      })
 
-			if (path.extname(faviconPath) === '.svg')
-				response.set({
-					'Content-Type': 'image/svg+xml'
-				})
+      if (foundFavicon) {
+        sendFavicon(faviconPath)
+      }
+      else {
+        const finder = findit(absRepoPath)
 
+        finder.on('directory', (dir, stats, stop) => {
 
-			stream = fs.createReadStream(faviconPath)
-			stream.on('error', function(error){
-				console.error(error)
-				delete iconPathCache[request.url]
-				searchFavicon()
-			})
-			stream.pipe(response)
-		}
+          const baseName = path.basename(dir)
+          const invalidName = ignoreList.some(toIgnore => {
+            return baseName === toIgnore
+          })
 
-		function noFavicon(){
-			iconPathCache[request.url] = false
+          if (invalidName || (baseName[0] === '.' && baseName !== '.git')) {
+            stop()
+            return
+          }
 
-			response
-				.status(204)
-				.send()
-		}
+          if (
+            path
+              .relative(absRepoPath, dir)
+              .split(path.sep).length > 4
+          ) {
+            finder.stop()
+            noFavicon()
+          }
+        })
 
-		function searchFavicon(){
+        finder.on('file', filePath => {
+          if (
+            path.basename(filePath) === 'favicon.png' ||
+            path.basename(filePath) === 'favicon.svg' ||
+            path.basename(filePath) === 'favicon.ico'
+          ) {
+            finder.stop()
+            sendFavicon(filePath)
+          }
+        })
 
-			absRepoPath = path.join(
-				global.basePath,
-				'projects',
-				path.dirname(request.url)
-			)
+        finder.on('end', () => {
+          noFavicon()
+        })
+      }
+    }
 
-			faviconPaths = [
-				'img/favicon.png',
-				'favicon.ico',
-				'images/favicon.png'
-			]
-
-			foundFavicon = faviconPaths.some(function (relFaviconPath) {
-
-				faviconPath = path.join(absRepoPath, relFaviconPath)
-
-				return fs.existsSync(faviconPath)
-			})
-
-
-			if (foundFavicon)
-				sendFavicon(faviconPath)
-
-			else {
-
-				finder = findit(absRepoPath)
-
-				finder.on('directory', function (dir, stats, stop) {
-
-					var baseName = path.basename(dir)
-
-					invalidName = ignoreList.some(function (toIgnore) {
-						return baseName === toIgnore
-					})
-
-					if (invalidName ||
-					    (baseName[0] === '.' && baseName !== '.git')) {
-						stop()
-						return
-					}
-
-					if (path.relative(absRepoPath, dir).split(path.sep).length > 4) {
-						finder.stop()
-						noFavicon()
-					}
-				})
-
-				finder.on('file', function (filePath) {
-					if (path.basename(filePath) === 'favicon.png' ||
-					    path.basename(filePath) === 'favicon.svg' ||
-					    path.basename(filePath) === 'favicon.ico') {
-
-						finder.stop()
-
-						sendFavicon(filePath)
-					}
-				})
-
-				finder.on('end', function () {
-					noFavicon()
-				})
-			}
-		}
-
-
-		if (request.url.search(/favicon.ico$/) === -1)
-			next()
-
-		else if (iconPathCache[request.url] === false)
-			noFavicon()
-
-		else if (iconPathCache[request.url])
-			sendFavicon(iconPathCache[request.url])
-
-		else
-			searchFavicon()
-	}
+    if (request.url.search(/favicon.ico$/) === -1) {
+      next()
+    }
+    else if (iconPathCache[request.url] === false) {
+      noFavicon()
+    }
+    else if (iconPathCache[request.url]) {
+      sendFavicon(iconPathCache[request.url])
+    }
+    else {
+      searchFavicon()
+    }
+  }
 }
