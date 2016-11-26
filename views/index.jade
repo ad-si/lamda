@@ -1,74 +1,74 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
+  link(rel='stylesheet' href='#{baseURL}/styles/index.css')
 
 block content
 
-	if lists
-		.interface
-			aside
-				ul
-					for list in lists
-						li
-							a(
-								href='#{baseURL}/' + list.id
-								class= (list.id === currentList) ? 'active' : ''
-							)
-								= list.name + ' '
-								if list.tasks
-									span.number
-										= list.numberOfCompletedTasks + '/' + list.tasks.length
+  if lists
+    .interface
+      aside
+        ul
+          for list in lists
+            li
+              a(
+                href='#{baseURL}/' + list.id
+                class= (list.id === currentList) ? 'active' : ''
+              )
+                = list.name + ' '
+                if list.tasks
+                  span.number
+                    = list.numberOfCompletedTasks + '/' + list.tasks.length
 
-			article
-				for list in lists
-					if list.id === currentList
-						if list.tasks
-							ul
-								form(action='#', method='post')
-									li(class='addNewTask')
-										input(type='text', name='title', placeholder='Add a new task …')
-								for task in list.tasks
-									- var className = (task.completed_at) ? 'completed' : ''
-									li(class=className)
-										= task.title
-										span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
-						else
-							p Well done! Nothing left to do!
+      article
+        for list in lists
+          if list.id === currentList
+            if list.tasks
+              ul
+                form(action='#' method='post')
+                  li(class='addNewTask')
+                    input(type='text' name='title' placeholder='Add a new task …')
+                for task in list.tasks
+                  - var className = (task.completed_at) ? 'completed' : ''
+                  li(class=className)
+                    = task.title
+                    span.createdAt= ' ' + task.created_at.toISOString().substr(0,10)
+            else
+              p Well done! Nothing left to do!
 
-	if tasks
-		article
-			ul
-				form(action='#', method='post')
-					li(class='addNewTask')
-						input(type='text', name='title', placeholder='Add a new task …')
-				for task in tasks
-					li(class=(task.completed ? 'completed' : ''))
-						= task.title
-						span.createdAt= ' ' + task.creationDate.toISOString().substr(0,10)
+  if tasks
+    article
+      ul
+        form(action='#' method='post')
+          li(class='addNewTask')
+            input(type='text' name='title' placeholder='Add a new task …')
+        for task in tasks
+          li(class=(task.completed ? 'completed' : ''))
+            = task.title
+            span.createdAt= ' ' + task.creationDate.toISOString().substr(0,10)
 
-	else
-		.getting-started
-			p
-				| You do not have any lists yet.
-				br
-				| In order to get started
-				| create a tasks directory in your home directory
-				| and add a yaml file for each list.
+  else
+    .getting-started
+      p
+        | You do not have any lists yet.
+        br
+        | In order to get started
+        | create a tasks directory in your home directory
+        | and add a yaml file for each list.
 
-			p Each yaml file must be structured like this:
+      p Each yaml file must be structured like this:
 
-			pre: code
-				| name: Name of the list
-				| tasks:
-				|   -
-				|     created_at: 2015-01-01T12:00Z
-				|     title: Task 1
-				|   -
-				|     created_at: 2015-01-01T13:00Z
-				|     title: Task 2
+      pre: code
+        | name: Name of the list
+        | tasks:
+        |   -
+        |     created_at: 2015-01-01T12:00Z
+        |     title: Task 1
+        |   -
+        |     created_at: 2015-01-01T13:00Z
+        |     title: Task 2
 
 
 
 block scripts
-	script(src='#{baseURL}/scripts/index.js')
+  script(src='#{baseURL}/scripts/index.js')

@@ -1,11 +1,9 @@
-!function (window, document) {
+const asides = document.getElementsByTagName('aside')
 
-	var $aside = $('aside')
-
-	$aside.find('li').each(function(index, listItem){
-		listItem.click(function(event){
-			alert('test')
-		})
-	})
-
-}(window, document)
+Array
+  .from(asides[0].querySelector('li'))
+  .forEach(listItem => {
+    listItem.addEventListener('click', () => {
+      alert('test')
+    })
+  })
