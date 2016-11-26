@@ -1,11 +1,10 @@
 const formatAddress = require('./formatAddress')
 
 function addPlus (number) {
-  return String(
-    String(number)[0] !== '+' ?
-      '+' + number :
-      number
-  )
+  number = String(number)
+  return number[0] === '+'
+    ? number
+    : '+' + number
 }
 
 function addPhone (number, array) {
@@ -30,9 +29,14 @@ function combinePhoneNumbers (contact) {
   addPhone(contact.home, contact.phones)
   delete contact.home
 
-  contact.phones.forEach(phone => {
-    phone.number = addPlus(phone.number)
-  })
+  contact.phones = contact.phones
+    .map(entry => {
+      if (typeof entry === 'number') {
+        entry = {number: entry}
+      }
+      entry.number = addPlus(entry.number)
+      return entry
+    })
 
   return contact
 }
