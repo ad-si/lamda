@@ -79,9 +79,9 @@ function addMapLink (contact) {
       value.county ? '&county=' + value.county : '',
       value.city ? '&city=' + value.city : '',
       value.zip ? '&postalcode=' + value.zip : '',
-      value.street ?
-        '&street=' + [value.number, value.addition, value.street ].join(' ') :
-        '',
+      value.street
+        ? '&street=' + [value.number, value.addition, value.street ].join(' ')
+        : '',
     ].join('')
 
     contact.prettyAddress =
@@ -116,11 +116,11 @@ function combineLinks (contact) {
         contact[provider] = String(contact[provider])
         contact.links.push({
           provider: provider,
-          url: contact[provider].includes('/') ?
-            contact[provider].startsWith('http') ?
-                contact[provider] :
-                'http://' + contact[provider] :
-            providers[provider].replace('{{user}}', contact[provider]),
+          url: contact[provider].includes('/')
+            ? contact[provider].startsWith('http')
+              ? contact[provider]
+              : 'http://' + contact[provider]
+            : providers[provider].replace('{{user}}', contact[provider]),
         })
         delete contact.provider
       }

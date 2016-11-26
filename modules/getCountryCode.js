@@ -1,5 +1,3 @@
-'use strict'
-
 const countries = require('world-countries')
 
 module.exports = (countryName) => {

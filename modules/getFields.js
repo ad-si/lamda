@@ -1,11 +1,11 @@
 module.exports = (array) => {
-	const fieldsMap = {}
+  const fieldsMap = {}
 
-	array.forEach(array => {
-		Object
-			.keys(array)
-			.forEach(key => fieldsMap[key] = true)
-	})
+  array.forEach(subArray => {
+    Object
+      .keys(subArray)
+      .forEach(key => fieldsMap[key] = true)
+  })
 
-	return Object.keys(fieldsMap)
+  return Object.keys(fieldsMap)
 }
