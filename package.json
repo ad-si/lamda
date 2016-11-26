@@ -14,27 +14,27 @@
     "prepublish": "npm test"
   },
   "dependencies": {
-    "browserify-middleware": "^7.0.0",
+    "browserify-middleware": "^7.1.0",
     "capitalize": "^1.0.0",
-    "express": "^4.13.4",
+    "express": "^4.14.0",
     "filesaver.js": "^0.2.0",
-    "fs-promise": "^0.5.0",
+    "fs-promise": "^1.0.0",
     "jade": "^1.11.0",
-    "js-yaml": "^3.6.0",
-    "json2csv": "^3.4.0",
+    "js-yaml": "^3.7.0",
+    "json2csv": "^3.7.2",
     "lamda-styles": "bitbucket:lamdaos/lamda-styles",
     "lamda-views": "bitbucket:lamdaos/lamda-views",
-    "lowdb": "^0.12.5",
-    "serve-favicon": "^2.3.0",
+    "lowdb": "^0.14.0",
+    "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
     "user-home": "^2.0.0",
-    "world-countries": "^1.7.8",
+    "world-countries": "^1.8.1",
     "ybdb": "github:adius/ybdb"
   },
   "main": "server.js",
   "devDependencies": {
-    "eslint": "^2.9.0",
-    "javascript-styleguide": "^0.2.2"
+    "eslint": "^3.11.0",
+    "javascript-styleguide": "^1.0.0"
   },
   "repository": {
     "type": "git",
