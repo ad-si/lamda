@@ -1,144 +1,83 @@
-'use strict'
-
 const path = require('path')
 
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
-const evlReduce = require('eventlang-reduce')
 
-
-function getFileName (string) {
-
-	var offset = -path.extname(string).length || undefined
-
-	return string.slice(0, offset)
-}
-
-function byCompletion (a, b) {
-	if (a.hasOwnProperty('completed_at'))
-		return Number(!b.hasOwnProperty('completed_at'))
-
-	return -1
-}
 
 function alphabeticallyBy (attribute, order) {
+  let factor
+  if (order === 'ascending' || !order) factor = 1
+  else if (order === 'descending') factor = -1
+  else throw new Error(order + ' is not allowed here.')
 
-	var factor
+  return function (itemA, itemB) {
+    const first = itemA[attribute]
+    const second = itemB[attribute]
 
-	if (order === 'descending')
-		factor = -1
-	else if (order === 'ascending')
-		factor = 1
-	else
-		throw new Error(order + ' is not allowed here.')
-
-	return function (a, b) {
-		var first = a[attribute],
-			second = b[attribute]
-
-		if (a[attribute] < b[attribute]) return -factor
-		if (a[attribute] > b[attribute]) return factor
-		return 0
-	}
+    if (first < second) return -factor
+    if (first > second) return factor
+    return 0
+  }
 }
 
-function getList (fileName, callback) {
-
-	fs.readFile(
-		(listPath + '/' + fileName),
-		{encoding: 'utf-8'},
-		function (error, fileContent) {
-
-			if (error) throw error
-
-			var completedTasks = [],
-				uncompletedTasks = [],
-				numberOfCompletedTasks = 0,
-				listData
-
-			if (fileContent !== '')
-				listData = yaml.safeLoad(fileContent)
-				//,{schema: 'FAILSAFE_SCHEMA'})
-
-			listData.id = fileName.slice(0, -5)
-
-			if (listData.tasks) {
-
-				// TODO: Sort by age, due date, importance, …
-				listData
-					.tasks
-					.sort(alphabeticallyBy('created_at', 'descending'))
-
-				listData
-					.tasks
-					.forEach(function (task) {
-						if (task.hasOwnProperty('completed_at'))
-							completedTasks.push(task)
-						else
-							uncompletedTasks.push(task)
-					})
-			}
-
-			listData.numberOfCompletedTasks = completedTasks.length
-
-			listData.tasks = uncompletedTasks.concat(completedTasks)
-
-			callback(listData)
-		}
-	)
-}
-
-
-function writeBackList (filePath, listData) {
-
-	listData.tasks.sort(alphabeticallyBy('created_at', 'descending'))
-
-	fs.writeFile(filePath, yaml.safeDump(listData), function (error) {
-
-		if (error) throw error
-
-		console.log('Task was saved!')
-	})
-}
+// function getKeyToDateMap (eventMap, reducedObject) {
+//   const timestamps = Object.keys(reducedObject)
+//   const keyToDateMap = new Map()
+//
+//   timestamps.forEach(timestamp => {
+//     Object
+//       .keys(reducedObject[timestamp])
+//       .forEach(key => {
+//         keyToDateMap.set(key, timestamp)
+//       })
+//   })
+//
+//   return keyToDateMap
+// }
 
 
 module.exports = function (request, response) {
+  const tasksPath = path.join(request.app.locals.basePath, 'tasks')
 
-	const tasksPath = path.join(request.app.locals.basePath, 'tasks')
+  return fsp
+    .readdir(tasksPath)
+    .then(filePaths => {
+      const fileContentPromises = filePaths
+        .filter(filePath => /\.yaml$/i.test(filePath))
+        .map(filePath => fsp.readFile(
+          path.join(tasksPath, filePath),
+          'utf-8'
+        ))
 
-	fsp
-		.readdir(tasksPath)
-		.then(filePaths => Promise
-			.all(filePaths.map(filePath => fsp.readFile(
-				path.join(tasksPath, filePath),
-				'utf8'
-			)))
-		)
-		.then(files => {
-			let taskEventPromises = files.map(
-				fileContent => yaml.safeLoad(fileContent)
-			)
-			return Promise.all(taskEventPromises)
-		})
-		.then(eventTasks => {
-			return eventTasks.map(eventTask => {
-				let reducedObject = {}
+      return Promise.all(fileContentPromises)
+    })
+    .then(files => files
+      .map(fileContent => yaml.safeLoad(fileContent))
+      .map(eventTask => {
+        // See https://github.com/adius/eventlang-reduce for explanation
+        const reducedObject = {}
+        for (const timestamp in eventTask) {
+          if (!eventTask.hasOwnProperty(timestamp)) continue
+          Object.assign(reducedObject, eventTask[timestamp])
+        }
 
-				for (let timestamp in eventTask)
-					Object.assign(reducedObject, eventTask[timestamp])
+        reducedObject.creationDate = new Date(
+          Object
+            .keys(eventTask)
+            .sort()[0]
+        )
 
-				reducedObject.creationDate = new Date(
-					Object.keys(eventTask).sort()[0]
-				)
-
-				return reducedObject
-			})
-		})
-		.then(tasks => {
-			response.render('index', {
-				page: 'tasks',
-				tasks: tasks
-			})
-		})
-		.catch(error => console.error(error.stack))
+        return reducedObject
+      })
+      // .filter(reducedObject => !reducedObject.completed)
+      .sort(alphabeticallyBy('creationDate', 'descending'))
+    )
+    .then(tasks => {
+      response.render('index', {
+        page: 'tasks',
+        tasks: tasks,
+      })
+    })
+    // eslint-disable-next-line no-console
+    .catch(error => console.error(error))
 }

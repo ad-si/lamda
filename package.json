@@ -26,15 +26,21 @@
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.52.0",
-    "tasks": "0.0.3",
     "user-home": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.7.0",
+    "javascript-styleguide": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/lamdaos/tasks.git"
   },
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://bitbucket.org/lamdaos/tasks#readme"
+  "homepage": "https://bitbucket.org/lamdaos/tasks#readme",
+  "eslintConfig": {
+    "root": true,
+    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+  }
 }
