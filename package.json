@@ -11,6 +11,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "lint": "eslint --ignore-path .gitignore .",
+    "test": "npm run lint",
+    "prepublish": "npm run test",
     "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "dependencies": {
