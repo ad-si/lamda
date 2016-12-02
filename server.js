@@ -52,9 +52,9 @@ if (runsStandalone) {
   setupRouting()
 
   const port = 3000
-  app.set('view engine', 'jade')
+  app.set('view engine', 'pug')
   app.listen(port)
-  console.info('App listens on http://localhost:' + port)
+  console.info(`App listens on http://localhost:${port}`)
 }
 else {
   module.exports = (locals) => {

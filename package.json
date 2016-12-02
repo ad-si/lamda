@@ -7,13 +7,10 @@
     "news"
   ],
   "dependencies": {
-    "crawler": "~0.4.3",
     "express": "^4.14.0",
     "feedparser": "~1.1.5",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.7.0",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
