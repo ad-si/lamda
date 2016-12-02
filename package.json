@@ -13,31 +13,34 @@
   ],
   "dependencies": {
     "@datatypes/duration": "^0.4.0",
-    "@datatypes/interval": "^0.4.0",
-    "@datatypes/moment": "^0.7.0",
-    "babel-polyfill": "^6.7.2",
-    "browserify-middleware": "^7.0.0",
-    "clone": "^1.0.2",
-    "express": "^4.13.4",
-    "fs-promise": "^0.5.0",
-    "inquirer": "^1.2.2",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.6.1",
+    "@datatypes/interval": "^0.4.1",
+    "@datatypes/moment": "^0.8.1",
+    "babel-polyfill": "^6.16.0",
+    "browserify-middleware": "^7.1.0",
+    "clone": "^2.1.0",
+    "express": "^4.14.0",
+    "fs-promise": "^1.0.0",
+    "inquirer": "^1.2.3",
+    "js-yaml": "^3.7.0",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "moment": "^2.10.3",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.54.2",
+    "moment": "^2.17.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "ava": "^0.13.0",
-    "moment": "^2.12.0",
-    "unexpected": "^10.10.8"
+    "ava": "^0.17.0",
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0",
+    "moment": "^2.17.0",
+    "unexpected": "^10.20.0"
   },
   "scripts": {
-    "test": "ava",
+    "lint": "eslint .",
+    "test": "npm run lint && ava",
     "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "repository": {
@@ -47,5 +50,8 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/events"
+  "homepage": "https://bitbucket.org/lamdaos/events",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }

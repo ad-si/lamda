@@ -1,0 +1,35 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet', href='#{baseURL}/styles/index.css')
+
+block scripts
+  script(src='#{baseURL}/scripts/main.js')
+
+block content
+  ul
+    for day in days
+      - var classes = []
+      - if (day.date.lowerLimit.getDay() === 1) classes.push('monday')
+      li(
+        id= day.today ? 'today' : null
+        class= classes.join(' ')
+      )
+        .date
+          span= day.date.string.substr(0, 10)
+          = ' '
+          span= day.date.lowerLimit.toDateString().substr(0, 1)
+        .day(class= (day.lanes.length > 1) ? 'multiple-lanes' : null)
+          for lane in day.lanes
+            .lane
+              for event in lane
+                - var eventClasses = []
+                - if (event.empty) eventClasses.push('empty')
+                - if (event.isSecondary) eventClasses.push('secondary')
+                .event(
+                  style= event.style
+                  class= eventClasses.join(' ')
+                  title= event.tooltipText
+                )
+                  a(href=event.singleViewURL)
+                    = event.title
