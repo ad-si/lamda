@@ -1,81 +1,66 @@
-var fs = require('fs'),
-    path = require('path'),
-    yaml = require('js-yaml'),
-    Feedparser = require('feedparser'),
-    feedparser = new Feedparser,
-    Crawler = require('crawler').Crawler,
-    crawler = new Crawler({
-	    maxConnections: 10,
-	    callback: function (error, result, $) {
+const Feedparser = require('feedparser')
+const requestModule = require('request')
 
-		    $("#content a").each(function (index, a) {
-			    //c.queue(a.href)
-			    console.log(a.href)
-		    })
-	    }
+// const Crawler = require('crawler')
+// const crawler = new Crawler({
+//   maxConnections: 10,
+//   // eslint-disable-next-line id-length
+//   'callback': (error, result, $) => {
+//     $('#content a')
+//       .each((index, link) => {
+//         // c.queue(link.href)
+//         console.info(link.href)
+//       })
+//   },
+// })
+
+
+module.exports = (request, response) => {
+  const url = request.app.locals.news
+    ? request.app.locals.news.url
+    : 'http://feeds.feedblitz.com/newatlas'
+
+  if (!url) {
+    response.render('index', {
+      page: 'news',
     })
+    return
+  }
+
+  const articles = []
+  const feedReq = requestModule(url)
+
+  feedReq.on('error', error => {
+    console.error(error)
+  })
+  feedReq.on('response', function (feedResponse) {
+    const stream = this
+    if (feedResponse.statusCode !== 200) {
+      return this.emit('error', new Error('Bad status code'))
+    }
+    stream.pipe(feedparser)
+  })
 
 
-module.exports = function (req, res) {
+  const feedparser = new Feedparser()
 
-	var FeedParser = require('feedparser'),
-	    request = require('request'),
-	    url = req.app.locals.news ?
-            req.app.locals.news.url :
-            'http://feeds.feedblitz.com/gizmag',
-	    feedparser = new FeedParser(),
-	    articles = [],
-    	feedReq
+  feedparser.on('error', error => {
+    console.error(error)
+  })
+  feedparser.on('readable', function () {
+    // This is where the action is!
+    const stream = this
+    let item
 
-
-	//crawler.queue(url)
-
-	if (url) {
-
-		feedReq = request(url)
-
-		feedReq.on('error', function (error) {
-			throw new Error(error)
-		})
-
-		feedReq.on('response', function (res) {
-
-			var stream = this
-
-			if (res.statusCode != 200)
-				return this.emit('error', new Error('Bad status code'))
-
-			stream.pipe(feedparser)
-		})
-
-
-		feedparser.on('error', function (error) {
-			throw new Error(error)
-		})
-
-		feedparser.on('readable', function () {
-			// This is where the action is!
-			var stream = this,
-				meta = this.meta,
-				item
-
-			while (item = stream.read()) {
-				articles.push(item)
-			}
-		})
-
-
-
-		feedparser.on('end', function () {
-			res.render('index', {
-				page: 'news',
-				articles: articles
-			})
-		})
-	}
-	else {
-		res.render('index', {
-			page: 'news'
-		})
-	}
+    // eslint-disable-next-line no-cond-assign
+    while (item = stream.read()) {
+      articles.push(item)
+    }
+  })
+  feedparser.on('end', () => {
+    response.render('index', {
+      page: 'news',
+      articles: articles,
+    })
+  })
 }

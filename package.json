@@ -7,23 +7,27 @@
     "news"
   ],
   "dependencies": {
-    "crawler": "~0.2.5",
-    "express": "^4.12.4",
-    "feedparser": "~0.16.6",
+    "crawler": "~0.4.3",
+    "express": "^4.14.0",
+    "feedparser": "~1.1.5",
     "jade": "^1.11.0",
-    "js-yaml": "^3.3.1",
+    "js-yaml": "^3.7.0",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "morgan": "^1.6.1",
-    "request": "^2.34.0",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.53.0",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
     "user-home": "^2.0.0"
   },
   "main": "server.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eslint .",
     "start": "node server.js",
     "postinstall": "symlink-modules lamda-styles lamda-views"
   },
@@ -34,5 +38,8 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/news#readme"
+  "homepage": "https://bitbucket.org/lamdaos/news#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }
