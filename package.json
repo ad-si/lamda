@@ -4,16 +4,17 @@
   "description": "Views for LamdaOS",
   "main": "layout.jade",
   "scripts": {
-    "test": "jade --hierarchy --out build ."
+    "test": "pug --hierarchy --out build *.pug"
   },
   "keywords": [
     "lamda"
   ],
   "author": "Adrian Sieber",
-  "license": "MIT",
-  "dependencies": {},
+  "license": "UNLICENSED",
+  "private": true,
   "devDependencies": {
-    "jade": "^1.11.0"
+    "pug": "^2.0.0-beta6",
+    "pug-cli": "^1.0.0-alpha6"
   },
   "repository": {
     "type": "git",
