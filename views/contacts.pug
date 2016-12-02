@@ -1,22 +1,22 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-  link(rel='stylesheet' href='#{baseURL}/styles/flags16.css')
-  link(rel='stylesheet' href='#{baseURL}/styles/index.css')
+  link(rel='stylesheet' href=`${baseURL}/styles/flags16.css`)
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
 
 block scripts
   script!= 'var contacts = ' + JSON.stringify(contacts)
-  script(src='#{baseURL}/scripts/main.js')
+  script(src=`${baseURL}/scripts/main.js`)
 
 block content
-  p#summary You have #{contacts.length} contacts. (#{percentageOfMale}% Male)
+  p#summary= `You have ${contacts.length} contacts. (${percentageOfMale}% Male)`
 
   form(action='' method='post')
     input(type='hidden' inputmode='verbatim' placeholder='IDs of contacts')
 
   button#selectAll Select all
   button#selectNone.hidden Select none
-  a#export.button.hidden(href='#{baseURL}/export?format=csv').
+  a#export.button.hidden(href=`${baseURL}/export?format=csv`).
     Export selected as CSV
 
   if errors.length > 0
@@ -75,23 +75,23 @@ block content
                         - var provider = email.value.split('@')[1].split('.')
                         - Array.isArray(provider) ? provider.pop() : ''
                         li: a(
-                          href="mailto:#{email.value}"
+                          href=`mailto:${email.value}`
                           target='_blank'
-                          class="provider #{provider.pop()}"
+                          class=`provider ${provider.pop()}`
                           title='Send an email to ' + email.value
                         )
                           = email.value
 
                   else if key === 'birthday'
                     = value.toISOString().substr(0,10) + ' '
-                    small (#{contact.age})
+                    small= `(${contact.age})`
 
                   else if key === 'address' && value
                     a(
                       href=contact.mapLink
                       target='_blank'
-                      title='Open #{value.country}, #{contact.prettyAddress}' +
-                        'in OpenStreetMap'
+                      title=`Open ${value.country}, ${contact.prettyAddress}
+                        in OpenStreetMap`
                     )
                       if value.country
                         span.country(class=value.countryCode, title=value.country)

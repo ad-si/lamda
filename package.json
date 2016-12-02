@@ -2,10 +2,7 @@
   "name": "contacts",
   "version": "0.1.0",
   "description": "All your contacts in one place",
-  "keywords": [
-    "lamda",
-    "contacts"
-  ],
+  "main": "server.js",
   "scripts": {
     "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint --ignore-path .gitignore .",
@@ -19,33 +16,35 @@
     "express": "^4.14.0",
     "filesaver.js": "^0.2.0",
     "fs-promise": "^1.0.0",
-    "jade": "^1.11.0",
     "js-yaml": "^3.7.0",
     "json2csv": "^3.7.2",
     "lamda-styles": "bitbucket:lamdaos/lamda-styles",
     "lamda-views": "bitbucket:lamdaos/lamda-views",
     "lowdb": "^0.14.0",
+    "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
     "user-home": "^2.0.0",
     "world-countries": "^1.8.1",
     "ybdb": "github:adius/ybdb"
   },
-  "main": "server.js",
   "devDependencies": {
-    "eslint": "^3.11.0",
-    "javascript-styleguide": "^1.0.0"
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
   },
+  "keywords": [
+    "lamda",
+    "contacts"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/lamdaos/contacts.git"
+    "url": "bitbucket:lamdaos/contacts"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
   "homepage": "https://bitbucket.org/lamdaos/contacts#readme",
   "eslintConfig": {
-    "root": true,
-    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+    "extends": "eslint-config-javascript"
   }
 }

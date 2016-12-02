@@ -12,11 +12,12 @@ const dataExport = require('../routes/export')
 const projectDirectory = path.join(__dirname, '..')
 const publicDirectory = path.join(projectDirectory, 'public')
 const scriptsDirectory = path.join(publicDirectory, 'scripts')
+const stylesDirectory = path.join(publicDirectory, 'styles')
 
 
 function setupRoutes (app, isDevMode) {
   app.use(stylus.middleware({
-    src: path.join(publicDirectory, 'styles'),
+    src: stylesDirectory,
     compile: (stylusString, filePath) => stylus(stylusString)
       .set('filename', filePath)
       .set('compress', !isDevMode)
@@ -66,7 +67,7 @@ function setupStandalone (app, isDevMode) {
     )
   })
 
-  app.set('view engine', 'jade')
+  app.set('view engine', 'pug')
 }
 
 module.exports = (options = {}) => {
