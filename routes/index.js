@@ -1,68 +1,71 @@
-'use strict'
-
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml'),
-	betterPath = require('better-path')
+const fs = require('fs')
+const path = require('path')
+const betterPath = require('better-path')
 
 function isMovie (fileName) {
-	return fileName.search(/.+\.(webm|mp4|m4v|mkv)$/gi) !== -1
+  return fileName.search(/.+\.(webm|mp4|m4v|mkv)$/gi) !== -1
 }
 
-module.exports = function (req, res) {
+module.exports = (request, response) => {
+  const movies = []
+  const moviesPath = path.join(request.app.locals.basePath, 'movies')
+  const rootEntries = fs.readdirSync(moviesPath)
+  // eslint-disable-next-line no-unused-vars
+  let numberOfRootEntries = rootEntries.length
 
-	const movies = []
-	const moviesPath = path.join(req.app.locals.basePath, 'movies')
-	const rootEntries = fs.readdirSync(moviesPath)
-	let numberOfRootEntries = rootEntries.length
+  rootEntries.forEach(entry => {
+    const absoluteEntryPath = path.join(
+      request.app.locals.basePath,
+      'movies',
+      entry
+    )
+    let movieObjects = []
 
+    const isDirectory = fs
+      .lstatSync(absoluteEntryPath)
+      .isDirectory()
 
-	rootEntries.forEach(function (entry, index) {
+    if (isDirectory) {
+      movieObjects = fs.readdirSync(absoluteEntryPath)
+        .filter(isMovie)
+        .map(fileName => {
+          return {
+            title: betterPath(fileName)
+              .baseName(),
+            absolutePath: path.join(absoluteEntryPath, fileName),
+            link: entry + '/' + fileName,
+            type: 'video/x-matroska',
+          }
+        })
+    }
+    else if (isMovie(entry)) {
+      movieObjects = [{
+        title: betterPath(entry)
+          .baseName(),
+        absolutePath: absoluteEntryPath,
+        link: entry,
+      }]
+    }
+    else {
+      numberOfRootEntries--
+      return
+    }
 
-		var absoluteEntryPath = path.join(
-				req.app.locals.basePath,
-				'movies',
-				entry
-			),
-			movieObjects = []
+    movieObjects.forEach(movieObject => {
+      movies.push(movieObject)
+    })
+  })
 
-		if (fs.lstatSync(absoluteEntryPath).isDirectory()) {
-			movieObjects = fs.readdirSync(absoluteEntryPath)
-				.filter(isMovie)
-				.map(function (fileName) {
-					return {
-						title: betterPath(fileName).baseName(),
-						absolutePath: path.join(absoluteEntryPath, fileName),
-						link: entry + '/' + fileName,
-						type: 'video/x-matroska'
-					}
-				})
-		}
-		else if (isMovie(entry))
-			movieObjects = [{
-				title: betterPath(entry).baseName(),
-				absolutePath: absoluteEntryPath,
-				link: entry
-			}]
-
-		else {
-			numberOfRootEntries--
-			return
-		}
-
-		movieObjects.forEach(function (movieObject) {
-			movies.push(movieObject)
-		})
-	})
-
-	res.render('index', {
-		page: 'Movies',
-		movies: movies.sort(function (movieA, movieB) {
-			if (movieA.title.toLowerCase() > movieB.title.toLowerCase())
-				return 1
-			else if (movieA.title.toLowerCase() < movieB.title.toLowerCase())
-				return -1
-			return 0
-		})
-	})
+  response.render('index', {
+    page: 'Movies',
+    movies: movies.sort((movieA, movieB) => {
+      if (movieA.title.toLowerCase() > movieB.title.toLowerCase()) {
+        return 1
+      }
+      else if (movieA.title.toLowerCase() < movieB.title.toLowerCase()) {
+        return -1
+      }
+      return 0
+    }),
+  })
 }

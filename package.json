@@ -12,24 +12,31 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/lamdaos/movies.git"
+    "url": "bitbucket:lamdaos/movies"
   },
   "homepage": "https://bitbucket.org/lamdaos/movies#readme",
+  "scripts": {
+    "test": "eslint .",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
   "dependencies": {
     "better-path": "^0.2.0",
-    "express": "^4.13.4",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.3.1",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.51.1",
+    "express": "^4.14.0",
+    "js-yaml": "^3.7.0",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
   }
 }
