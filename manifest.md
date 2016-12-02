@@ -27,7 +27,7 @@ Until now:
 	- Files
 	- Directories
 - Apps
-	- Databses
+	- Databases
 
 Usage:
 Files must be added to apps which store the data in their own databases.
@@ -112,7 +112,6 @@ Versioning/History is a First class Citizen:
 - There should only be one kind of window / pane / tab.
 - Should be a system level feature
 
-
 Current situation:
 
 Imagine you want to edit 2 files with vim:
@@ -128,3 +127,49 @@ Imagine you want to edit 2 files with vim:
 1. Two processes
 
 Stick to the UNIX principle: Do one thing and to it well!
+
+
+## Paradigms
+
+> Separators are bad => Always prefer terminators
+
+- Adding items doesn't change two lines (especially good for versioning)
+- No more "Is it the end of the item or did the transmission fail?"
+- Consistent look
+
+
+## Character Set
+
+Replace Unicode with Huffman encoded character set
+
+Pros:
+
+- Every bit-string has a plain text representation
+- Storage of textual data is more efficient
+- Unlimited extensibility
+
+Cons:
+
+- Characters have different storage sizes
+
+
+## Files
+
+- Every line in a file must end with eol (end of line) line terminator
+- Every file must end with a eof (end of file) character
+	(=> no 0 bit files, as file has at least a eof character)
+  … or a file which ends with a newline character is a text file
+  and evertyhing else is a binary file
+
+Linux: Everything is a file
+Lamda: Everything is a text file (=> Need a different encoding than Unicode)
+
+=>
+No concept of binary or human unreadable files,
+but human intelligible and unintelligible
+
+
+## Related
+
+- [Tagspaces](https://tagspaces.org)
+- [Sandstorm](https://sandstorm.io)
