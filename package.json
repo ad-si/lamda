@@ -10,7 +10,7 @@
   ],
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eslint .",
     "start": "node server.js",
     "postinstall": "symlink-modules lamda-styles lamda-views"
   },
@@ -23,16 +23,22 @@
   "private": "true",
   "homepage": "https://bitbucket.org/lamdaos/files#readme",
   "dependencies": {
-    "express": "^4.12.4",
+    "express": "^4.14.0",
     "file-formats": "gitlab:adius/file-formats",
-    "jade": "^1.11.0",
     "lamda-styles": "bitbucket:lamdaos/lamda-styles",
     "lamda-views": "bitbucket:lamdaos/lamda-views",
     "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.54.2",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }

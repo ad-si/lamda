@@ -1,28 +1,24 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 
 module.exports = function fsToJson (filename) {
+  const stats = fs.lstatSync(filename)
+  const info = {
+    path: filename,
+    name: path.basename(filename),
+  }
 
-	const stats = fs.lstatSync(filename)
-	const info = {
-		path: filename,
-		name: path.basename(filename)
-	}
+  if (stats.isDirectory()) {
+    info.type = 'directory'
+    info.children = fs
+      .readdirSync(filename)
+      .map(child => fsToJson(filename + '/' + child))
+  }
+  else {
+    // Assuming it's a file. In real life it could be a symlink or
+    // something else!
+    info.type = 'file'
+  }
 
-
-	if (stats.isDirectory()) {
-		info.type = 'directory'
-		info.children = fs.readdirSync(filename).map(function (child) {
-			return fsToJson(filename + '/' + child)
-		})
-	}
-	else {
-		// Assuming it's a file. In real life it could be a symlink or
-		// something else!
-		info.type = 'file'
-	}
-
-	return info
+  return info
 }

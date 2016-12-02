@@ -1,0 +1,28 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+block content
+  div#columns
+    for column in columns
+      div
+        if column.entries
+          ul
+            if !column.entries.length
+              p.muted This directory is empty
+            else
+              for file in column.entries
+                li(
+                  class= file.active ? 'active' : ''
+                  title= file.fileName
+                )
+                  a(href=`${baseURL}${column.path}/${file.fileName}`)
+                    span!= file.icon
+                    = file.name
+
+        else if column.fileName && column.content
+          pre= column.content
+
+        else
+          p.muted Can not be displayed
