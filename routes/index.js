@@ -1,5 +1,5 @@
-module.exports = function (req, res) {
-	res.render('index',{
-		page: 'music'
-	})
+module.exports = function (request, response) {
+  response.render('index', {
+    page: 'music',
+  })
 }

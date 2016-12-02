@@ -1,0 +1,90 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+block content
+  #player
+    div
+      button#previous
+      button#play.paused
+      button#next
+
+    p#playerInfo Artist - Song Title
+
+    .progress
+      span#time 0:00
+      input(id="progress", type="range", min="0", value="0")
+      span#duration -0:00
+
+    .controls
+      button#queue
+      button#shuffle
+      button#repeat
+
+    .volumeControl
+      button#mute -
+      input#volume(type="range", min="0", max="1", step="0.01")
+      button#loud +
+
+    #currentQueue.bubble(style="display: none")
+
+    svg#spinner(
+      width='20'
+      height='20'
+      xmlns='http://www.w3.org/2000/svg'
+      xmlns:xlink='http://www.w3.org/1999/xlink'
+    )
+      defs
+        rect#l(
+          x='2'
+          y='-1'
+          rx='1'
+          ry='1'
+          width='8'
+          height='2'
+          fill='white'
+        )
+
+      g(transform='translate(10, 10)')
+        animatetransform(
+          attributename='transform'
+          calcmode='discrete'
+          type='rotate'
+          values='0;30;60;90;120;150;180;210;240;270;300;330;360'
+          additive='sum'
+          dur='1000ms'
+          repeatdur='indefinite'
+        )
+        use(xlink:href='#l' transform='rotate(0)' opacity='0')
+        use(xlink:href='#l' transform='rotate(30)' opacity='0.08')
+        use(xlink:href='#l' transform='rotate(60)' opacity='0.17')
+        use(xlink:href='#l' transform='rotate(90)' opacity='0.25')
+        use(xlink:href='#l' transform='rotate(120)' opacity='0.33')
+        use(xlink:href='#l' transform='rotate(150)' opacity='0.42')
+        use(xlink:href='#l' transform='rotate(180)' opacity='0.5')
+        use(xlink:href='#l' transform='rotate(210)' opacity='0.58')
+        use(xlink:href='#l' transform='rotate(240)' opacity='0.67')
+        use(xlink:href='#l' transform='rotate(270)' opacity='0.75')
+        use(xlink:href='#l' transform='rotate(300)' opacity='0.83')
+        use(xlink:href='#l' transform='rotate(330)' opacity='0.92')
+
+  #columns
+  //
+    #menu
+      input#search(type='search' placeholder='search')
+      a#artists Artists
+      a#songs Songs
+      a#info Infos
+      a#charts Charts
+      a#playlists Playlists
+    #c2
+    #c3
+    #c4
+    #Bubble.bubble(style='display:none')
+
+
+block scripts
+  script= `var baseURL = '${baseURL}'`
+  script(src=`${baseURL}/scripts/shaven.min.js`)
+  script(src=`${baseURL}/scripts/index.js`)
