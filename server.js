@@ -1,56 +1,53 @@
-var fs = require('fs'),
-	path = require('path'),
+const fs = require('fs')
+const path = require('path')
 
-	osenv = require('osenv'),
-	express = require('express'),
-	errorHandler = require('errorhandler'),
-	favicon = require('serve-favicon'),
-	compress = require('compression'),
-	logger = require('morgan'),
-	stylus = require('stylus'),
-	yaml = require('js-yaml'),
+const osenv = require('osenv')
+const express = require('express')
+const errorHandler = require('errorhandler')
+const favicon = require('serve-favicon')
+const compress = require('compression')
+const logger = require('morgan')
+const stylus = require('stylus')
+const yaml = require('js-yaml')
 
-	utils = require('./utils'),
-	app = express(),
+const app = express()
 
-	index = require('./routes/index'),
-	settings = require('./routes/settings'),
-	profile = require('./routes/profile'),
-	appLoader = require('./modules/appLoader'),
-	loadedApps,
-	scripts = [
-		'/components/jquery/jquery.js',
-		'/components/mousetrap/mousetrap.js',
-		'/js/index.js'
-	],
-	styles = [
-		{
-			path: '/styles/dark.css',
-			id: 'themeLink'
-		}
-	],
-	title = 'Lamda OS',
-	name,
-	locals
+const index = require('./routes/index')
+const settings = require('./routes/settings')
+const profile = require('./routes/profile')
+// const appLoader = require('./modules/appLoader')
+const scripts = [
+  '/components/jquery/jquery.js',
+  '/components/mousetrap/mousetrap.js',
+  '/js/index.js',
+]
+const styles = [
+  {
+    path: '/styles/dark.css',
+    id: 'themeLink',
+  },
+]
+const title = 'Lamda OS'
 
 
 const basePath = process.env.LAMDA_HOME || osenv.home()
 const projectPath = __dirname
 const devMode = app.get('env') === 'development'
 const config = {
-	owner: {}
+  owner: {},
 }
 
 try {
-	Object.assign(
-		config,
-		yaml.safeLoad(fs.readFileSync(
-			path.join(basePath, 'config.yaml')
-		))
-	)
+  Object.assign(
+    config,
+    yaml.safeLoad(fs.readFileSync(
+      path.join(basePath, 'config.yaml')
+    ))
+  )
 }
 catch (error) {
-	console.error(error.stack)
+  // eslint-disable-next-line no-console
+  console.error(error.stack)
 }
 
 // All environments
@@ -64,38 +61,39 @@ app.use(logger('dev'))
 app.use(compress())
 
 app.use(stylus.middleware({
-	src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
-	dest: path.join(__dirname, 'public/styles'),
-	debug: devMode,
-	compress: !devMode,
+  src: path.join(__dirname, 'linked_modules/lamda-styles/themes'),
+  dest: path.join(__dirname, 'public/styles'),
+  debug: devMode,
+  compress: !devMode,
 }))
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(
-	__dirname,
-	'linked_modules/lamda-styles/linked_modules/open-iconic/font'
+  __dirname,
+  'linked_modules/lamda-styles/linked_modules/open-iconic/font'
 )))
 
 
-locals = {
-	isMounted: true,
-	runsStandalone: false,
-	title: title,
-	scripts: scripts,
-	styles: styles,
-	config: config,
-	basePath: basePath,
-	projectPath: projectPath,
+const locals = {
+  isMounted: true,
+  runsStandalone: false,
+  title: title,
+  scripts: scripts,
+  styles: styles,
+  config: config,
+  basePath: basePath,
+  projectPath: projectPath,
 }
 app.locals = Object.assign({}, locals)
-loadedApps = appLoader(app, locals)
+// const loadedApps = appLoader(app, locals)
 
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
 
-if (config.owner.username)
-	app.get('/' + config.owner.username, profile)
+if (config.owner.username) {
+  app.get('/' + config.owner.username, profile)
+}
 
 
 // TODO: API
@@ -111,25 +109,29 @@ if (config.owner.username)
  */
 
 
-if (devMode)
-	app.use(errorHandler())
+if (devMode) {
+  app.use(errorHandler())
+}
 
-app.use(function (req, res) {
+app.use((request, response) => {
+  response.status(404)
 
-	res.status(404)
-
-	if (req.accepts('html'))
-		res.render('404.jade', {page: 'error404', url: req.url})
-
-	else if (req.accepts('json'))
-		res.send({error: 'Not found'})
-
-	else
-		res.type('txt').send('Not found')
+  if (request.accepts('html')) {
+    response.render('404.jade', {page: 'error404', url: request.url})
+  }
+  else if (request.accepts('json')) {
+    response.send({error: 'Not found'})
+  }
+  else {
+    response
+      .type('txt')
+      .send('Not found')
+  }
 })
 
-app.listen(app.get('port'), function () {
-	console.log(
-		'Express server listening on http://localhost:' + app.get('port')
-	)
+app.listen(app.get('port'), () => {
+  // eslint-disable-next-line no-console
+  console.info(
+    'Express server listening on http://localhost:' + app.get('port')
+  )
 })

@@ -24,10 +24,10 @@ Or same concept, but with focus on aspects of data:
 Until now:
 
 - Nodes
-	- Files
-	- Directories
+  - Files
+  - Directories
 - Apps
-	- Databases
+  - Databases
 
 Usage:
 Files must be added to apps which store the data in their own databases.
@@ -38,8 +38,8 @@ In order to retrieve the data user has to export data from apps
 Better:
 
 - Data containers
-	- Data
-	- Metadata
+  - Data
+  - Metadata
 - Filters (aka queries, aka views)
 - Apps
 
@@ -53,8 +53,8 @@ Apps operate always on the file system data
 
 => The filesystem is the API
 => Apps get a filtered subset of users data
-	=> Full control of what apps are able to access
-	=> No closed databases
+  => Full control of what apps are able to access
+  => No closed databases
 
 This is better, because files are too low level,
 which causes following problems:
@@ -70,12 +70,12 @@ The file system is actually just a list of files (with the notion of namespaces)
 
 Data Containers:
 - Set of UDCs (Universal Data Container) entities
-	- Directory containing a main.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, …)
+  - Directory containing a main.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, …)
 - No name (Name is UUID)
 - No order
 - No hierarchy
 - But creation time stamp! (Times stamps are also great IDs => no more overlap of id and name)
-	=> Enables links between documents which can't break (unlike file-paths)
+  => Enables links between documents which can't break (unlike file-paths)
 
 
 Every app is actually just a (text) editor.
@@ -157,7 +157,7 @@ Cons:
 
 - Every line in a file must end with eol (end of line) line terminator
 - Every file must end with a eof (end of file) character
-	(=> no 0 bit files, as file has at least a eof character)
+  (=> no 0 bit files, as file has at least a eof character)
   … or a file which ends with a newline character is a text file
   and evertyhing else is a binary file
 

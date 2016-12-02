@@ -2,65 +2,60 @@
   "name": "lamda",
   "description": "An antisocial and file-based web operating system",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "async": "^0.9.0",
-    "body-parser": "^1.11.0",
-    "clone": "^1.0.0",
-    "commander": "^2.3.0",
-    "compression": "^1.0.1",
-    "errorhandler": "^1.3.3",
-    "express": "^4.13.3",
-    "findit": "^2.0.0",
-    "gm": "^1.16.0",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.5.2",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "method-override": "^2.3.1",
-    "mkdirp": "^0.5.0",
-    "moment": "^2.5.1",
-    "morgan": "^1.5.1",
-    "nib": "^1.0.2",
-    "osenv": "^0.1.2",
-    "serve-favicon": "^2.1.6",
-    "sharp": "^0.11.3",
-    "static-favicon": "^2.0.0-alpha",
-    "stylus": "^0.53.0",
-    "symlink-modules": "^0.2.0",
-    "temp": "^0.8.1"
-  },
-  "scripts": {
-    "start": "node server.js",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
-  },
   "main": "server.js",
   "bin": {
     "lamda": "bin/cli.js"
   },
-  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views",
+    "lint": "eslint . ",
+    "test": "npm run lint"
+  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda.git"
+    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda"
   },
   "keywords": [
     "web os"
   ],
   "author": "Adrian Sieber",
-  "license": "All rights reserved",
+  "license": "UNLICENSED",
+  "private": true,
   "homepage": "https://bitbucket.org/lamdaos/lamda#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "compression": "^1.6.2",
+    "errorhandler": "^1.5.0",
+    "express": "^4.14.0",
+    "js-yaml": "^3.7.0",
+    "morgan": "^1.7.0",
+    "nib": "^1.1.2",
+    "osenv": "^0.1.3",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
   "optionalDependencies": {
-    "Books": "git+https://bitbucket.org/lamdaos/books.git",
-    "Contacts": "git+https://bitbucket.org/lamdaos/contacts.git",
-    "Events": "git+https://bitbucket.org/lamdaos/events.git",
-    "Files": "git+https://bitbucket.org/lamdaos/files.git",
-    "Movies": "git+https://bitbucket.org/lamdaos/movies.git",
-    "Music": "git+https://bitbucket.org/lamdaos/music.git",
-    "News": "git+https://bitbucket.org/lamdaos/news.git",
-    "Sheetmusic": "git+https://bitbucket.org/lamdaos/sheetmusic.git",
-    "Tasks": "git+https://bitbucket.org/lamdaos/tasks.git",
-    "Things": "git+https://bitbucket.org/lamdaos/things.git",
-    "photos": "git+https://bitbucket.org/lamdaos/photos.git",
-    "projects": "git+https://bitbucket.org/lamdaos/projects.git"
+    "events": "bitbucket:lamdaos/events",
+    "files": "bitbucket:lamdaos/files",
+    "books": "bitbucket:lamdaos/books",
+    "contacts": "bitbucket:lamdaos/contacts",
+    "movies": "bitbucket:lamdaos/movies",
+    "music": "bitbucket:lamdaos/music",
+    "photos": "bitbucket:lamdaos/photos",
+    "news": "bitbucket:lamdaos/news",
+    "projects": "bitbucket:lamdaos/projects",
+    "projects": "",
+    "sheetmusic": "bitbucket:lamdaos/sheetmusic",
+    "tasks": "bitbucket:lamdaos/tasks",
+    "things": "bitbucket:lamdaos/things"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
   }
 }

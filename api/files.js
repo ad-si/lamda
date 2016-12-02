@@ -1,61 +1,58 @@
-var fs = require('fs')
+const fs = require('fs')
 
-module.exports = function (path, callback) {
+module.exports = (path, loadCallback) => {
+  const baseURL = ''
 
-	function getStats(readPath, callback) {
+  function getStats (readPath, statsCallback) {
+    fs.stat(readPath, (error, stats) => {
+      if (error) throw error
 
-		fs.stat(readPath, function (err, stats) {
+      stats.path = path
 
-			if (err) throw err
+      statsCallback(stats)
+    })
+  }
 
-			stats.path = path
+  function readFiles (readPath, readCallback) {
+    const returnFiles = []
 
-			callback(stats)
-		})
-	}
+    fs.readdir(readPath, (error, files) => {
+      if (error) throw error
 
-	function readFiles(readPath, callback) {
+      files.forEach(file => {
 
-		var returnFiles = []
+        const fileInfo = {
+          type: '',
+          name: file,
+          path: (path + '/' + file)
+            .replace(/(\/)+/g, '/'),
+        }
+        const isDirectory = fs
+          .lstatSync(readPath + '/' + file)
+          .isDirectory()
 
-		fs.readdir(readPath, function (err, files) {
+        if (isDirectory) {
+          fileInfo.type = 'directory'
+        }
 
-			if (err) throw err
+        returnFiles.push(fileInfo)
+      })
 
-
-			files.forEach(function (file) {
-
-				var fileInfo = {
-					type: '',
-					name: file,
-					path: (path + '/' + file).replace(/(\/)+/g, '/')
-				}
-
-				if(fs.lstatSync(readPath + '/' + file).isDirectory())
-					fileInfo.type = 'directory'
-
-				returnFiles.push(fileInfo)
-			})
-
-			callback(returnFiles)
-		})
-	}
+      readCallback(returnFiles)
+    })
+  }
 
 
-	fs.lstat(baseURL + '/' + path, function (err, stats) {
-
-		if (err) throw err
-
-		if (stats.isDirectory()){
-
-			//if(path.substr(-1) == '/')
-				readFiles(baseURL + '/' + path, callback)
-			//else
-			//	getStats(baseURL + '/' + path, callback)
-		}
-
-		else
-			getStats(baseURL + '/' + path, callback)
-
-	})
+  fs.lstat(baseURL + '/' + path, (error, stats) => {
+    if (error) throw error
+    if (stats.isDirectory()) {
+      // if(path.substr(-1) == '/')
+      readFiles(baseURL + '/' + path, loadCallback)
+      // else
+      //   getStats(baseURL + '/' + path, loadCallback)
+    }
+    else {
+      getStats(baseURL + '/' + path, loadCallback)
+    }
+  })
 }

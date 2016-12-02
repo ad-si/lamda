@@ -1,63 +1,47 @@
-var fs = require('fs'),
-	path = require('path')
+const fs = require('fs')
+const path = require('path')
 
+module.exports = (baseURL, file) => {
+  const nodes = file.split('/')
+  let currentDepth = 0
+  let maxDepth = 0
 
-module.exports = function pathToJson(baseURL, file) {
+  function doIt (filename) {
+    const stats = fs.lstatSync(filename)
+    const info = {
+      path: filename,
+      name: path.basename(filename),
+    }
 
-	var nodes = file.split('/'),
-		currentDepth = 0,
-		maxDepth = 0,
-		returnObject
+    if (stats.isDirectory()) {
+      currentDepth++
 
+      info.type = 'folder'
+      info.children = fs
+        .readdirSync(filename)
+        .map(child => {
+          if (child === nodes[currentDepth]) return doIt(filename + '/' + child)
+          else return child
+        })
+    }
+    else {
+      currentDepth++
 
-	function doIt(filename) {
+      // TODO: Map all possible file types
 
-		var stats = fs.lstatSync(filename),
-			info = {
-				path: filename,
-				name: path.basename(filename)
-			}
+      if (path.extname(info.name) === '.txt') info.type = 'text'
+      else if (path.extname(info.name) === '.yaml') info.type = 'yaml'
+      else info.type = 'file' // Could be a symlink or something else!
+    }
 
+    if (currentDepth > maxDepth) maxDepth = currentDepth
 
-		if (stats.isDirectory()) {
+    currentDepth--
+    return info
+  }
 
-			currentDepth++
+  const returnObject = doIt(baseURL)
+  returnObject.maxDepth = maxDepth
 
-			info.type = 'folder'
-			info.children = fs.readdirSync(filename).map(function (child) {
-
-				if(child === nodes[currentDepth])
-					return doIt(filename + '/' + child)
-				else
-					return child
-			})
-		}
-		else {
-			currentDepth++
-
-			// TODO: Map all possible file types
-
-			if(path.extname(info.name) === '.txt')
-				info.type = 'text'
-
-			else if(path.extname(info.name) === '.yaml')
-				info.type = 'yaml'
-
-			else
-				info.type = "file" // Could be a symlink or something else!
-		}
-
-		if(currentDepth > maxDepth)
-			maxDepth = currentDepth
-
-		currentDepth--
-		return info
-	}
-
-	returnObject = doIt(baseURL)
-
-	returnObject.maxDepth = maxDepth
-
-
-	return returnObject
+  return returnObject
 }

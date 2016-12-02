@@ -1,53 +1,47 @@
-var fs = require('fs'),
-	files = require('../api/files'),
-	events = require('../api/events'),
-	music = require('../api/music')
+const files = require('../api/files')
+const events = require('../api/events')
+const music = require('../api/music')
 
 
-module.exports.files = function (request, callback) {
+module.exports.files = (request, loadCallback) => {
+  let path = ''
 
-	var path = ''
+  if (request.params) {
+    path = '/' + request.params[0]
+  }
 
-	if(request.params)
-		path = '/' + request.params[0]
-
-	files(path, function (data) {
-		callback(data)
-	})
+  files(path, loadCallback)
 }
 
-module.exports.events = function (request, response) {
+module.exports.events = (request, response) => {
+  // let path = ''
+  //
+  // if (request.params) {
+  //   path = '/' + request.params[0]
+  // }
 
-	var path = ''
-
-	if(request.params)
-		path = '/' + request.params[0]
-
-	response.send(events())
+  response.send(events())
 }
 
 module.exports.music = {
-	song: function (request, response, callback) {
+  song: (request, response) => {
+    // const path = ''
 
-		var path = ''
+    // console.log(JSON.stringify(request, null, 2))
+    // console.log(request)
 
-		//console.log(JSON.stringify(request, null, 2))
-		//console.log(request)
+    // response.send(music())
 
-		//response.send(music())
+    music(request, response, response.send)
 
-		music(request, response, function (data) {
-			response.send(data)
-		})
+    // if(request.params)
+    //   path = '/' + req.params[0]
 
-		//if(request.params)
-		//	path = '/' + req.params[0]
-
-		//files(path, function (data) {
-		//	callback(data)
-		//})
-	},
-	songs: function(){},
-	artist: function(){},
-	artists: function(){}
+    // files(path, function (data) {
+    //   callback(data)
+    // })
+  },
+  songs: () => {},
+  artist: () => {},
+  artists: () => {},
 }

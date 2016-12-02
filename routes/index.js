@@ -1,6 +1,8 @@
-module.exports = function (req, res) {
-
-	res.render('index', {
-		page: 'home'
-	})
+module.exports = (request, response) => {
+  response.render(
+    'index',
+    {
+      page: 'home',
+    }
+  )
 }

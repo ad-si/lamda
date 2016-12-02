@@ -1,131 +1,122 @@
-var fs = require('fs'),
+const fsToJson = require('../api/fsToJson')
+const app = {}
+const baseURL = ''
 
-	fsToJson = require('../api/fsToJson'),
-	app = {}
+app.artist = () => {}
 
+app.artists = (request, response, loadCallback) => {
+  loadCallback(fsToJson(baseURL + '/music'))
 
-app.artist = function(){
+  /*
+  fs.readdir(baseURL + '/music', function (error, files) {
 
-}
+    if (error) throw error
 
-app.artists = function (request, response, callback) {
+    loadCallback(files)
+  })
+  */
 
-	callback(fsToJson(baseURL + '/music'))
+  /*
+   if (path === '/artists') {
 
-	/*
-	fs.readdir(baseURL + '/music', function (error, files) {
+   function artists() {
+   var verzeichnispfad = 'music'
+   var artists = array_slice(scanDir(music), 2)
 
-		if (error) throw error
+   var a = {}
 
-		callback(files)
-	})
-	*/
+   a['error'] = false
 
-	/*
-	 if (path === '/artists') {
+   for (var i = 0; i < count(artists); i++) {
+   if (strpos(artists[i], '.') === false && strpos(artists[i], ':') === false) {
+   a['data'][] = {
+   'id': i,
+   'name': artists[i],
+   'slug': urlencode(artists[i])
+   }
+   }
+   }
 
-	 function artists() {
-	 var verzeichnispfad = 'music'
-	 var artists = array_slice(scanDir(music), 2)
+   return json_encode(a)
+   }
 
-	 var a = {}
+   alert(artists())
 
-	 a['error'] = false
+   } else if (path === '/artist') {
 
-	 for (var i = 0; i < count(artists); i++) {
-	 if (strpos(artists[i], '.') === false && strpos(artists[i], ':') === false) {
-	 a['data'][] = {
-	 'id': i,
-	 'name': artists[i],
-	 'slug': urlencode(artists[i])
-	 }
-	 }
-	 }
+   var artist = _GET['artist']
 
-	 return json_encode(a)
-	 }
+   if ((_GET['songs']) && _GET['songs']) {
 
-	 alert(artists())
+   var songs = array_slice(scanDir(music + "" + '/' + "" + artist), 2)
 
-	 } else if (path === '/artist') {
+   var a = {}
 
-	 var artist = _GET['artist']
+   for (var i = 0; i < count(songs); i++) {
+   a['data'][i] = {
+   id: i,
+   title: basename(songs[i], '.mp3'),
+   slug: urlencode(songs[i]),
+   src: "http://api.tunediver.com/music/artist/songs[i]"
+   }
+   }
 
-	 if ((_GET['songs']) && _GET['songs']) {
+   alert(json_encode(a))
 
-	 var songs = array_slice(scanDir(music + "" + '/' + "" + artist), 2)
+   } else if (path === '/song') {
 
-	 var a = {}
+   artist = _GET['artist']
+   var song = _GET['song']
 
-	 for (var i = 0; i < count(songs); i++) {
-	 a['data'][i] = {
-	 id: i,
-	 title: basename(songs[i], '.mp3'),
-	 slug: urlencode(songs[i]),
-	 src: "http://api.tunediver.com/music/artist/songs[i]"
-	 }
-	 }
+   a['data'] = {
+   id: 1,
+   title: basename(song, '.mp3'),
+   slug: urlencode(song),
+   track_artist: 'Artist',
+   lyrics: 'This are the lyrics of the Song',
+   src: "http://api.tunediver.com/music/artist/song"
+   }
 
-	 alert(json_encode(a))
+   console.log(JSON.stringify(a))
 
-	 } else if (path === '/song') {
+   } else {
 
-	 artist = _GET['artist']
-	 var song = _GET['song']
+   a['data'] = {
+   'name': _GET['artist'],
+   'bio': 'This is the bio of ' + "" + artist,
+   'country': 'Someland'
+   }
 
-	 a['data'] = {
-	 id: 1,
-	 title: basename(song, '.mp3'),
-	 slug: urlencode(song),
-	 track_artist: 'Artist',
-	 lyrics: 'This are the lyrics of the Song',
-	 src: "http://api.tunediver.com/music/artist/song"
-	 }
+   console.log(JSON.stringify(a))
+   }
 
-	 console.log(JSON.stringify(a))
+   } else if ((_GET['songs']) && _GET['songs']) {
 
-	 } else {
-
-	 a['data'] = {
-	 'name': _GET['artist'],
-	 'bio': 'This is the bio of ' + "" + artist,
-	 'country': 'Someland'
-	 }
-
-	 console.log(JSON.stringify(a))
-	 }
-
-	 } else if ((_GET['songs']) && _GET['songs']) {
-
-	 } else {
-	 alert('{error: true; data: "Something went wrong"}')
-	 }
-	 */
+   } else {
+   alert('{error: true; data: "Something went wrong"}')
+   }
+   */
 
 }
 
 
-app.song = function(){
+app.song = () => {}
 
-}
-
-app.songs = function(){
-
-}
+app.songs = () => {}
 
 module.exports = app
 
 
 // function songs(){
-// 	$artists = array_slice(scanDir($verzeichnispfad), 2)
-// 	$all = array()
+//  $artists = array_slice(scanDir($verzeichnispfad), 2)
+//  $all = array()
 //
-// 	foreach ($artists as $artist){
-// 		if(is_dir($verzeichnispfad.'/'.$artist)){
-// 			$songs = array_slice(scanDir($verzeichnispfad.'/'.$artist), 2)
-// 			$all[$artist] = $songs
-// 		}
-// 	}
+//  foreach ($artists as $artist){
+//    if(is_dir($verzeichnispfad.'/'.$artist)){
+//      $songs = array_slice(scanDir($verzeichnispfad.'/'.$artist), 2)
+//      $all[$artist] = $songs
+//    }
+//  }
 //
-// 	echo json_encode($all)
+//  echo json_encode($all)
 // }

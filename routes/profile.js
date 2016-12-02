@@ -1,17 +1,12 @@
-var fs = require('fs'),
-	yaml = require('js-yaml')
+module.exports = (request, response) => {
+  const availableFields = {
+    theme: ['light', 'dark'],
+    owner: {},
+  }
 
-
-module.exports = function (request, response) {
-
-	var availableFields = {
-		theme: ['light', 'dark'],
-		owner: {}
-	}
-
-	response.render('profile', {
-		page: 'profile',
-		owner: request.app.locals.config.owner,
-		availableFields: availableFields
-	})
+  response.render('profile', {
+    page: 'profile',
+    owner: request.app.locals.config.owner,
+    availableFields,
+  })
 }
