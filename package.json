@@ -2,41 +2,46 @@
   "name": "books",
   "version": "0.0.1",
   "description": "All your books in one place",
-  "keywords": [
-    "lamda",
-    "books"
-  ],
+  "main": "server.js",
+  "scripts": {
+    "test": "eslint --ignore-pattern linked_modules .",
+    "postinstall": "symlink-modules lamda-styles lamda-views epubjs"
+  },
   "dependencies": {
     "epub-metadata": "^0.2.0",
-    "epubjs": "^0.2.11",
+    "epubjs": "^0.2.15",
     "exif2": "0.0.1",
-    "express": "^4.13.3",
+    "express": "^4.14.0",
     "fastmatter": "^1.1.0",
-    "fs-promise": "^0.3.1",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.4.3",
-    "jszip": "^2.5.0",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "js-yaml": "^3.7.0",
+    "jszip": "^2.6.1",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
     "object-assign": "^4.0.1",
-    "serve-favicon": "^2.3.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
     "stylus": "^0.51.1",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
-  "main": "server.js",
   "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0",
     "morgan": "^1.6.1"
   },
-  "scripts": {
-    "postinstall": "symlink-modules lamda-styles lamda-views epubjs"
-  },
+  "keywords": [
+    "lamda",
+    "books"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/books.git"
+    "url": "bitbucket:lamdaos/books"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://bitbucket.org/lamdaos/books#readme"
+  "homepage": "https://bitbucket.org/lamdaos/books#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }

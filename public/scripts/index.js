@@ -1,38 +1,35 @@
-!function (document, window) {
+/* globals bookUrl, ePub */
+// TODO: remove globals
 
-	if (/\.epub$/.test(bookUrl)) {
+// const ePub = require('epubjs')
 
-		var book = ePub({
-			restore: true,
-			styles: {
-				color: 'rgb(200,200,200)'
-			}
-		})
+if (/\.epub$/.test(bookUrl)) {
+  const book = ePub({
+    restore: true,
+    styles: {
+      color: 'rgb(200, 200, 200)',
+    },
+  })
 
-		book.open(bookUrl)
+  book.open(bookUrl)
 
-		book.renderTo('bookContent')
+  book.renderTo('bookContent')
 
-		document
-			.getElementById('previous')
-			.addEventListener('click', function () {
-				book.prevPage()
-			})
+  document
+    .getElementById('previous')
+    .addEventListener('click', () => {
+      book.prevPage()
+    })
 
-		document
-			.getElementById('next')
-			.addEventListener('click', function () {
-				book.nextPage()
-			})
+  document
+    .getElementById('next')
+    .addEventListener('click', () => {
+      book.nextPage()
+    })
 
-		// book
-		// 	.getMetadata()
-		// 	.then(function (meta) {
-		// 		console.log(meta)
-		// 	})
-	}
-	else {
-
-	}
-
-}(document, window)
+  // book
+  //  .getMetadata()
+  //  .then(function (meta) {
+  //    console.log(meta)
+  //  })
+}

@@ -1,0 +1,30 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/screen.css`)
+
+block content
+  if books && books.length > 0
+    p#state Your library contains
+      em  #{books.length} book#{books.length == 1 ? '' : 's'}
+
+    #library
+      each book in books
+        a.book(
+          href=book.url
+          title=`${book.author}\n${book.title}`)
+          .cover
+            .description
+              p.author= book.author
+              p.title= book.title
+            img(src=book.imageSource)
+          p= book.title
+  else
+    p There are currently no books in your library
+
+block scripts
+  if book
+    script(src=`${baseURL}/linked_modules/epubjs/build/libs/zip.min.js`)
+    script(src=`${baseURL}/linked_modules/epubjs/build/epub.js`)
+    script= `var bookUrl = '${book.url.replace("\'", "\\\'")}'`
+    script(src=`${baseURL}/scripts/index.js`)
