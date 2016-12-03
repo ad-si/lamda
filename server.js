@@ -4,17 +4,20 @@ const express = require('express')
 const stylus = require('stylus')
 const imageResizer = require('image-resizer-middleware')
 const serveFavicon = require('serve-favicon')
+const userHome = require('user-home')
 
-const publicPath = path.join(__dirname, 'public')
-const viewsPath =  path.join(__dirname, 'views')
+const projectPath = __dirname
+const viewsPath =  path.join(projectPath, 'views')
+const modulesPath = path.join(projectPath, 'node_modules')
+const publicPath = path.join(projectPath, 'public')
 const stylesPath = path.join(publicPath, 'styles')
-const modulesPath = path.join(__dirname, 'node_modules')
 
 const things = require('./routes/things')
 const thing = require('./routes/thing')
 
 const app = express()
 app.locals.baseURL = '/things'
+app.locals.basePath = path.join(userHome, 'things')
 const isMounted = Boolean(module.parent)
 const isDevMode = app.get('env') === 'development'
 
@@ -27,18 +30,17 @@ function setupRouting () {
   }))
   app.use(express.static(publicPath))
 
-  const thingsPath = path.join(app.locals.basePath, 'things')
   app.use(imageResizer.getMiddleware({
-    basePath: thingsPath,
+    basePath: app.locals.basePath,
     thumbnailsPath: path.join(publicPath, 'thumbnails'),
   }))
-  app.use(express.static(thingsPath))
+  app.use(express.static(app.locals.basePath))
   app.use('/node_modules', express.static(modulesPath))
 
   app.set('views', viewsPath)
 
-  app.get('/', things(app.locals.baseURL))
-  app.get('/:id', thing)
+  app.get('/', things(app.locals))
+  app.get('/:id', thing(app.locals))
 }
 
 if (!isMounted) {

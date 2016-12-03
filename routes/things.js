@@ -8,7 +8,6 @@ const isImage = require('is-image')
 
 // const imageResizer = require('image-resizer-middleware')
 
-const thingsDir = path.join(global.basePath, 'things')
 const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
 
 
@@ -102,31 +101,33 @@ function callRenderer (response, things, view) {
 }
 
 
-module.exports = (baseURL) => {
-  return (request, response) => {
+module.exports = (options = {}) => {
+  const {baseURL, basePath: thingsDir} = options
 
-    const view = request.query.view === 'wide' ? 'wide' : 'standard'
+  return (request, response) => {
+    const view = request.query.view === 'wide'
+      ? 'wide'
+      : 'standard'
 
     return fsp
       .readdir(thingsDir)
-      .then(thingDirs => {
-        return thingDirs
-          .filter(thingDir => !thingDir.startsWith('.'))
-          .map(thingDir => {
-            const thing = {
-              images: [],
-              directory: thingDir,
-            }
-            const absoluteThingDir = path.join(thingsDir, thingDir)
+      .then(thingDirs => thingDirs
+        .filter(thingDir => !thingDir.startsWith('.'))
+        .map(thingDir => {
+          const thing = {
+            images: [],
+            directory: thingDir,
+          }
+          const absoluteThingDir = path.join(thingsDir, thingDir)
 
-            return fsp
-              .readdir(absoluteThingDir)
-              .then(files => {
-                thing.files = files
-                return thing
-              })
-          })
-      })
+          return fsp
+            .readdir(absoluteThingDir)
+            .then(files => {
+              thing.files = files
+              return thing
+            })
+        })
+      )
       .then(thingPromises => {
         return Promise.all(thingPromises)
       })
@@ -161,17 +162,17 @@ module.exports = (baseURL) => {
             thing.imageThumbnailPath = path.join(
               thumbnailsDirectory, thing.imagePath)
             thing.image = url.format({
-              pathname: baseURL + '/' + thing.imagePath,
+              pathname: `${baseURL}/${thing.imagePath}`,
               query: {
                 'max-width': 200,
                 'max-height': 200,
               },
             })
-            thing.rawImage = '/things/' + thing.imagePath
+            thing.rawImage = `${baseURL}/${thing.imagePath}`
           }
 
           thing.name = thing.directory.replace(/_/g, ' ')
-          thing.url = '/things/' + thing.directory
+          thing.url = `${baseURL}/${thing.directory}`
 
           return thing
         })
