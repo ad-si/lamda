@@ -1,60 +1,48 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 
-const yaml = require('js-yaml')
-const imageResizer = require('image-resizer-middleware')
 const isImage = require('is-image')
-const userHome = require('user-home')
 
 
-module.exports = function (songsPath, thumbsPath) {
+module.exports = (songsPath) => {
+  return function (request, response) {
+    const songs = []
+    const songDirs = fs.readdirSync(songsPath)
+    let numberOfDirectories = songDirs.length
 
-	return function (req, res) {
+    songDirs.forEach(songDir => {
+      const dirPath = path.join(songsPath, songDir)
+      let files
 
-		var songs = [],
-			songDirs = fs.readdirSync(songsPath),
-			numberOfDirectories = songDirs.length
+      const isDirectory = fs
+        .lstatSync(dirPath)
+        .isDirectory()
 
+      if (isDirectory && songDir[0] !== '.') {
+        files = fs.readdirSync(dirPath)
+      }
+      else {
+        numberOfDirectories--
+        return
+      }
 
-		songDirs.forEach(function (songDir, index) {
+      const images = files
+        .filter(isImage)
+        .map(fileName => {
+          return path.join(songDir, fileName)
+        })
 
-			var dirPath = path.join(songsPath, songDir),
-				files,
-				images
+      songs.push({
+        id: songDir,
+        images,
+      })
 
-
-			if (fs.lstatSync(dirPath).isDirectory() && songDir[0] !== '.')
-				files = fs.readdirSync(dirPath)
-
-			else {
-				numberOfDirectories--
-				return
-			}
-
-			images = files
-				.filter(isImage)
-				.map(function (fileName) {
-					return path.join(songDir, fileName)
-				})
-
-
-			function renderPage () {
-
-				songs.push({
-					id: songDir,
-					images: images
-				})
-
-				if (songs.length === numberOfDirectories)
-					res.render('pieces', {
-						page: 'sheetmusic',
-						songs: songs
-					})
-			}
-
-			renderPage()
-		})
-	}
+      if (songs.length === numberOfDirectories) {
+        response.render('pieces', {
+          page: 'sheetmusic',
+          songs: songs,
+        })
+      }
+    })
+  }
 }

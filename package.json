@@ -2,37 +2,45 @@
   "name": "sheetmusic",
   "description": "Sheetmusic app for LamdaOS",
   "version": "0.1.0",
+  "main": "server.js",
+  "scripts": {
+    "lint": "eslint .",
+    "smoke-test": "node --require './server.js' --eval 'console.log(\"OK\")'",
+    "test": "npm run lint && npm run smoke-test",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "gm": "^1.23.0",
+    "image-resizer-middleware": "^0.4.0",
+    "is-image": "^1.0.1",
+    "js-yaml": "^3.7.0",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lilyware": "^0.3.1",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
   "keywords": [
     "lamda",
     "sheetmusic"
   ],
-  "scripts": {
-    "test": "node --require './server.js' --eval 'console.log(\"OK\")'",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
-  },
-  "dependencies": {
-    "express": "^4.12.4",
-    "gm": "^1.18.1",
-    "image-resizer-middleware": "v0.3.0",
-    "is-image": "^1.0.1",
-    "js-yaml": "^3.3.1",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "lilyware": "^0.3.0",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.51.1",
-    "symlink-modules": "^0.2.0",
-    "user-home": "^2.0.0"
-  },
-  "main": "server.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/lamdaos/sheetmusic.git"
+    "url": "bitbucket:lamdaos/sheetmusic"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/sheetmusic#readme"
+  "homepage": "https://bitbucket.org/lamdaos/sheetmusic#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }

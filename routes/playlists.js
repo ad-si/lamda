@@ -1,38 +1,35 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 
 const yaml = require('js-yaml')
 
 
-module.exports = function (playlistsPath) {
+module.exports = (playlistsPath) => {
+  return (request, response) => {
+    const playlistDirs = fs.readdirSync(playlistsPath)
+    const playlists = []
 
-	return function (req, res) {
+    playlistDirs.forEach(playlistDir => {
+      try {
+        const playlistData = yaml.safeLoad(fs.readFileSync(
+          path.join(playlistsPath, playlistDir, 'index.yaml'),
+          'utf-8'
+        ))
 
-		const playlistDirs = fs.readdirSync(playlistsPath)
-		const playlists = []
+        playlistData.id = playlistDir
 
-		playlistDirs.forEach(function (playlistDir) {
-			try {
-				const playlistData = yaml.safeLoad(fs.readFileSync(
-					path.join(playlistsPath, playlistDir, 'index.yaml'),
-					'utf-8'
-				))
+        playlists.push(playlistData)
+      }
+      catch (error) {
+        if (error.code !== 'ENOTDIR') {
+          console.error(error)
+        }
+      }
+    })
 
-				playlistData.id = playlistDir
-
-				playlists.push(playlistData)
-			}
-			catch (error) {
-				if (error.code !== 'ENOTDIR')
-					console.error(error)
-			}
-		})
-
-		res.render('playlists', {
-			page: 'playlists',
-			playlists: playlists
-		})
-	}
+    response.render('playlists', {
+      page: 'playlists',
+      playlists: playlists,
+    })
+  }
 }

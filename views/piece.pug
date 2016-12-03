@@ -1,54 +1,54 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href=`${baseURL}/styles/index.css`)
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
 
 block content
-	h2= song.title || song.name
-	br
+  h2= song.title || song.name
+  br
 
-	- var invalidProps = ['id', 'images', 'name', 'title', 'lilypondFiles']
+  - var invalidProps = ['id', 'images', 'name', 'title', 'lilypondFiles']
 
-	dl
-		each value, key in song
-			if invalidProps.indexOf(key) === -1
-				dt= key[0].toUpperCase() + key.slice(1) + ':'
-				dd= value
-				br
+  dl
+    each value, key in song
+      if invalidProps.indexOf(key) === -1
+        dt= key[0].toUpperCase() + key.slice(1) + ':'
+        dd= value
+        br
 
-	a.button(href=`${baseURL}/#{song.id}/raw?style=inline`).
-		Horizontal View
-	a.button(href=`${baseURL}/#{song.id}/raw?style=wrapped`).
-		Vertical View
+  a.button(href=`${baseURL}/${song.id}/raw?style=inline`).
+    Horizontal View
+  a.button(href=`${baseURL}/${song.id}/raw?style=wrapped`).
+    Vertical View
 
-	br
+  br
 
-	if song.images && song.images.length != 0
-		.images
-			h3 Images
-			br
-			each image in song.images
-				if image
-					.image
-						img(src=image.thumbnailPath)
-						br
-						a(href=image.path) Raw
+  if song.images && song.images.length != 0
+    .images
+      h3 Images
+      br
+      each image in song.images
+        if image
+          .image
+            img(src=image.thumbnailPath)
+            br
+            a(href=image.path) Raw
 
-	if song.lilypondFiles && song.lilypondFiles.length != 0
-		.lilypondFiles
-			h3 LilyPond Files
-			br
-			each file in song.lilypondFiles
-				if file
-					.image
-						img(src=file.path + '?resolution=10')
-						br
-						a(href=file.path) PNG
-						= ' | '
-						a(href=file.path + '?format=svg') SVG
-						= ' | '
-						a(href=file.path + '?format=pdf') PDF
-						= ' | '
-						a(href=file.path + '?format=ps') PS
-						= ' | '
-						a(href=file.path + '?format=midi') MIDI
+  if song.lilypondFiles && song.lilypondFiles.length != 0
+    .lilypondFiles
+      h3 LilyPond Files
+      br
+      each file in song.lilypondFiles
+        if file
+          .image
+            img(src=file.path + '?resolution=10')
+            br
+            a(href=file.path) PNG
+            = ' | '
+            a(href=file.path + '?format=svg') SVG
+            = ' | '
+            a(href=file.path + '?format=pdf') PDF
+            = ' | '
+            a(href=file.path + '?format=ps') PS
+            = ' | '
+            a(href=file.path + '?format=midi') MIDI
