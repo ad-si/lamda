@@ -1,11 +1,11 @@
 const path = require('path')
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
-const capitalize = require('capitalize')
+// const capitalize = require('capitalize')
 
 const encoding = 'utf-8'
 const yamlRegex = /\.yaml$/i
-const errors = []
+// const errors = []
 
 module.exports = (contactsPath) => fsp
   .readdir(contactsPath)
@@ -21,21 +21,21 @@ module.exports = (contactsPath) => fsp
   )
   .then(contactFilePromises => Promise.all(contactFilePromises))
   .then(fileObjects => fileObjects.map(fileObject => {
-    try {
-      const contact = yaml.safeLoad(
-        fileObject.fileContent,
-        {
-          filename: fileObject.fileName,
-        }
-      )
-      contact.id = fileObject.fileName.slice(0, -5)
-      return contact
-    }
-    catch (error) {
-      error.message = capitalize(error.message)
-      errors.push(error)
-      // eslint-disable-next-line no-console
-      console.error(error.message)
-      return null
-    }
+    const contact = yaml.safeLoad(
+      fileObject.fileContent,
+      {
+        filename: fileObject.fileName,
+      }
+    )
+    contact.id = fileObject.fileName.slice(0, -5)
+    return contact
   }))
+  .catch(error => {
+    if (!error.message.includes('no such file or directory')) {
+      throw error
+    }
+    // error.message = capitalize(error.message)
+    // errors.push(error)
+    console.error(error.message)
+    return null
+  })

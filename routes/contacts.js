@@ -10,24 +10,38 @@ module.exports = (request, response) => {
   const keys = new Set()
   const errors = []
 
+  // TODO: Get errors from loadContacts
   loadContacts(contactsPath)
-    .then(contacts => contacts.map(contactData => {
-      if (!contactData) return undefined
+    .then(contacts => {
+      if (!contacts) return null
 
-      contactData = formatContact(contactData)
+      return contacts
+        .map(contactData => {
+          if (!contactData) return undefined
 
-      Object
-        .keys(contactData)
-        .forEach(key => keys.add(key))
+          contactData = formatContact(contactData)
 
-      return contactData
+          Object
+            .keys(contactData)
+            .forEach(key => keys.add(key))
+
+          return contactData
+        })
+        .sort((previous, current) => {
+          return previous && current && previous.name && current.name
+            ? previous.name.localeCompare(current.name)
+            : undefined
+        })
     })
-    .sort((previous, current) => {
-      return previous && current && previous.name && current.name
-        ? previous.name.localeCompare(current.name)
-        : undefined
-    }))
     .then(sortedContacts => {
+      if (!sortedContacts) {
+        response.render('contacts', {
+          page: 'contacts',
+          noDirectory: true,
+        })
+        return
+      }
+
       const numberOfMale = sortedContacts
         .filter(contact => contact && contact.gender === 'male')
         .length
@@ -55,7 +69,6 @@ module.exports = (request, response) => {
       )
     })
     .catch(error =>
-      // eslint-disable-next-line no-console
       console.error(error.stack)
     )
 }
