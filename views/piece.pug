@@ -1,7 +1,7 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='#{baseURL}/styles/index.css')
+	link(rel='stylesheet', href=`${baseURL}/styles/index.css`)
 
 block content
 	h2= song.title || song.name
@@ -16,9 +16,9 @@ block content
 				dd= value
 				br
 
-	a.button(href='#{baseURL}/#{song.id}/raw?style=inline').
+	a.button(href=`${baseURL}/#{song.id}/raw?style=inline`).
 		Horizontal View
-	a.button(href='#{baseURL}/#{song.id}/raw?style=wrapped').
+	a.button(href=`${baseURL}/#{song.id}/raw?style=wrapped`).
 		Vertical View
 
 	br

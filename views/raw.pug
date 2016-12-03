@@ -6,7 +6,7 @@ block head
 	- viewport[2] = 'minimum-scale=1'
 	- viewport[3] = 'maximum-scale=10'
 	meta(name='viewport', content=viewport.join())
-	link(rel='stylesheet' href='#{baseURL}/styles/raw.css')
+	link(rel='stylesheet' href=`${baseURL}/styles/raw.css`)
 
 block body
 	div(class=style)
