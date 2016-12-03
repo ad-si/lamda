@@ -1,196 +1,186 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
 
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
-const gm = require('gm')
 const isImage = require('is-image')
 
-const imageResizer = require('image-resizer-middleware')
+// const imageResizer = require('image-resizer-middleware')
 
 const thingsDir = path.join(global.basePath, 'things')
 const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
 
 
 try {
-	fs.mkdirSync(thumbnailsDirectory)
+  fs.mkdirSync(thumbnailsDirectory)
 }
 catch (error) {
-	if (error && error.code !== 'EEXIST')
-		throw error
+  if (error && error.code !== 'EEXIST') {
+    throw error
+  }
 }
 
 
 function getCoverImage (images) {
+  // Try to load one of the default images,
+  // otherwise choose a random one
 
-	// Try to load one of the default images,
-	// otherwise choose a random one
+  images = images || []
+  const defaultNames = [
+    'overview',
+    'front',
+    'index',
+    'top',
+  ]
+  let coverImage = images[0] || null
 
-	var defaultNames,
-		coverImage
+  defaultNames.some(name => {
+    return images.some(image => {
+      const baseName = path.basename(image, '.png')
 
-	images = images || []
-	defaultNames = [
-			'overview',
-			'front',
-			'index',
-			'top'
-		]
-	coverImage = images[0] || null
+      if (baseName === name) {
+        coverImage = image
+        return true
+      }
 
+      return false
+    })
+  })
 
-	defaultNames.some(function (name) {
-		return images.some(function (image) {
-
-			var baseName = path.basename(image, '.png')
-
-			if (baseName === name) {
-				coverImage = image
-				return true
-			}
-
-			return false
-		})
-	})
-
-	return coverImage
+  return coverImage
 }
 
 
-function callRenderer (res, things, view) {
+function callRenderer (response, things, view) {
+  let fortune
 
-	var fortune
+  if (things) {
+    fortune = things
+      .map(element => {
+        return element.price
+      })
+      .reduce((previous, current) => {
+        if (typeof previous === 'string') {
+          previous = Number(previous.slice(0, -1))
+        }
 
-	if (things) {
-		fortune = things
-			.map(function (element) {
-				return element.price
-			})
-			.reduce(function (previous, current) {
+        previous = previous || 0
 
-				if (typeof previous === 'string')
-					previous = Number(previous.slice(0, -1))
+        if (typeof current === 'string') {
+          current = Number(
+            current
+              .slice(0, -1)
+              .replace('~', '')
+          )
+        }
 
-				previous = previous || 0
+        current = current || 0
 
+        return previous + current
+      })
+      .toFixed(2)
+  }
 
-				if (typeof current === 'string')
-					current = Number(
-						current
-							.slice(0, -1)
-							.replace('~', '')
-					)
+  things = things || []
 
-				current = current || 0
+  response.render('index', {
+    page: 'things',
+    things: things.sort((itemA, itemB) => {
 
+      const dateA = itemA.dateOfPurchase === 'Date' ? 0 : itemA.dateOfPurchase
+      const dateB = itemB.dateOfPurchase === 'Date' ? 0 : itemB.dateOfPurchase
 
-				return previous + current
-			})
-			.toFixed(2)
-	}
+      itemA = new Date(dateA || 0)
+      itemB = new Date(dateB || 0)
 
-	things = things || []
-
-	res.render('index', {
-		page: 'things',
-		things: things.sort(function (a, b) {
-
-			var dateA = (a.dateOfPurchase === 'Date') ? 0 : a.dateOfPurchase,
-				dateB = (b.dateOfPurchase === 'Date') ? 0 : b.dateOfPurchase
-
-			a = new Date(dateA || 0)
-			b = new Date(dateB || 0)
-
-			return b - a
-		}),
-		view: view,
-		fortune: fortune
-	})
+      return itemB - itemA
+    }),
+    view: view,
+    fortune: fortune,
+  })
 }
 
 
-module.exports = function (baseURL) {return function (req, response) {
+module.exports = (baseURL) => {
+  return (request, response) => {
 
-	let view = (req.query.view === 'wide') ? 'wide' : 'standard'
+    const view = request.query.view === 'wide' ? 'wide' : 'standard'
 
-	return fsp
-		.readdir(thingsDir)
-		.then(thingDirs => {
-			return thingDirs
-				.filter(thingDir => !thingDir.startsWith('.'))
-				.map(function (thingDir) {
-					let thing = {
-						images: [],
-						directory: thingDir,
-					}
-					let indexData = {}
-					let absoluteThingDir = path.join(thingsDir, thingDir)
+    return fsp
+      .readdir(thingsDir)
+      .then(thingDirs => {
+        return thingDirs
+          .filter(thingDir => !thingDir.startsWith('.'))
+          .map(thingDir => {
+            const thing = {
+              images: [],
+              directory: thingDir,
+            }
+            const absoluteThingDir = path.join(thingsDir, thingDir)
 
-					return fsp
-						.readdir(absoluteThingDir)
-						.then(files => {
-							thing.files = files
-							return thing
-						})
-				})
-		})
-		.then(thingPromises => {
-			return Promise.all(thingPromises)
-		})
-		.then(function (things) {
+            return fsp
+              .readdir(absoluteThingDir)
+              .then(files => {
+                thing.files = files
+                return thing
+              })
+          })
+      })
+      .then(thingPromises => {
+        return Promise.all(thingPromises)
+      })
+      .then(things => {
+        return things.map(thing => {
+          thing.images = thing.files.filter(isImage)
 
-			return things.map(function (thing) {
-				thing.images = thing.files.filter(isImage)
+          if (thing.files.indexOf('index.yaml') > 0) {
+            return fsp
+              .readFile(
+                path.join(thingsDir, thing.directory, 'index.yaml')
+              )
+              .then(fileContent => {
+                const thingData = yaml.safeLoad(fileContent)
+                return Object.assign(thing, thingData)
+              })
+          }
+          else {
+            return Promise.resolve(thing)
+          }
+        })
+      })
+      .then(thingPromises => {
+        return Promise.all(thingPromises)
+      })
+      .then(things => {
+        return things.map(thing => {
+          const coverImage = getCoverImage(thing.images)
 
-				if (thing.files.indexOf('index.yaml') > 0) {
-					return fsp
-						.readFile(
-							path.join(thingsDir, thing.directory, 'index.yaml')
-						)
-						.then(fileContent => {
-							let thingData = yaml.safeLoad(fileContent)
-							return Object.assign(thing, thingData)
-						})
-				}
-				else {
-					return Promise.resolve(thing)
-				}
-			})
-		})
-		.then(thingPromises => {
-			return Promise.all(thingPromises)
-		})
-		.then(things => {
-			return things.map(thing => {
-				let coverImage = getCoverImage(thing.images)
+          if (coverImage)  {
+            thing.imagePath = path.join(thing.directory, coverImage)
+            thing.imageThumbnailPath = path.join(
+              thumbnailsDirectory, thing.imagePath)
+            thing.image = url.format({
+              pathname: baseURL + '/' + thing.imagePath,
+              query: {
+                'max-width': 200,
+                'max-height': 200,
+              },
+            })
+            thing.rawImage = '/things/' + thing.imagePath
+          }
 
-				if (coverImage)  {
-					thing.imagePath = path.join(thing.directory, coverImage)
-					thing.imageThumbnailPath = path.join(
-						thumbnailsDirectory, thing.imagePath)
-					thing.image = url.format({
-						pathname: baseURL + '/' + thing.imagePath,
-						query: {
-							'max-width': 200,
-							'max-height': 200,
-						}
-					})
-					thing.rawImage = '/things/' + thing.imagePath
-				}
+          thing.name = thing.directory.replace(/_/g, ' ')
+          thing.url = '/things/' + thing.directory
 
-				thing.name = thing.directory.replace(/_/g, ' ')
-				thing.url = '/things/' + thing.directory
-
-				return thing
-			})
-		})
-		.then(things => {
-			callRenderer(response, things, view)
-		})
-		.catch(error => {
-			console.error(error.stack)
-		})
-}}
+          return thing
+        })
+      })
+      .then(things => {
+        callRenderer(response, things, view)
+      })
+      .catch(error => {
+        console.error(error.stack)
+      })
+  }
+}

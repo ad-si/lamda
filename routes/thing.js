@@ -1,63 +1,53 @@
-var path = require('path'),
-	fs = require('fs'),
-	yaml = require('js-yaml'),
-	isImage = require('is-image'),
+const path = require('path')
+const fs = require('fs')
+const yaml = require('js-yaml')
+const isImage = require('is-image')
 
-	thingsPath = path.join(global.basePath, 'things')
-
-
-module.exports = function (request, response) {
-
-	var requestedThingPath,
-		files,
-		images
+const thingsPath = path.join(global.basePath, 'things')
 
 
-	requestedThingPath = path.join(thingsPath, request.params.id)
-	files = fs.readdirSync(requestedThingPath)
-	images = files.filter(isImage)
+module.exports = (request, response) => {
+  const requestedThingPath = path.join(thingsPath, request.params.id)
+  const files = fs.readdirSync(requestedThingPath)
+  const images = files.filter(isImage)
 
-	function renderPage () {
+  function renderPage () {
+    if (files.indexOf('index.yaml') === -1) {
+      response.render('thing', {
+        page: 'thing',
+        thing: {
+          id: request.params.id,
+          name: request
+            .params
+            .id
+            .replace(/_/g, ' ')
+            .replace(/-/g, ' - '),
+          images: images,
+        },
+      })
+    }
+    else {
+      fs.readFile(
+        path.join(requestedThingPath, 'index.yaml'),
+        {encoding: 'utf-8'},
+        (error, fileContent) => {
+          if (error) throw error
 
-		if (files.indexOf('index.yaml') === -1)
-			response.render('thing', {
-				page: 'thing',
-				thing: {
-					id: request.params.id,
-					name: request
-						.params
-						.id
-						.replace(/_/g, ' ')
-						.replace(/-/g, ' - '),
-					images: images
-				}
-			})
+          const jsonData = yaml.safeLoad(fileContent)
+          jsonData.id = request.params.id
+          jsonData.images = images
 
-		else
-			fs.readFile(
-				path.join(requestedThingPath, 'index.yaml'),
-				{encoding: 'utf-8'},
-				function (error, fileContent) {
+          response.render('thing', {
+            page: 'thing',
+            thing: jsonData,
+          })
+        }
+      )
+    }
+  }
 
-					var jsonData
+  // if (!createThumbnails(req.params.name, images))
+  //  imagesPath = '/thumbs/sheetmusic'
 
-					if (error) throw error
-
-					jsonData = yaml.safeLoad(fileContent)
-					jsonData.id = request.params.id
-					jsonData.images = images
-
-					response.render('thing', {
-						page: 'thing',
-						thing: jsonData
-					})
-				}
-			)
-	}
-
-
-	//if (!createThumbnails(req.params.name, images))
-	//	imagesPath = '/thumbs/sheetmusic'
-
-	renderPage()
+  renderPage()
 }

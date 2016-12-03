@@ -3,7 +3,10 @@
   "description": "All your things in one place",
   "version": "0.0.1",
   "main": "server.js",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint"
+  },
   "dependencies": {
     "array.from": "^1.0.3",
     "express": "^4.14.0",
@@ -22,7 +25,10 @@
     "table-to-json": "^0.11.1",
     "user-home": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
   "keywords": [
     "lamda",
     "things"
@@ -33,5 +39,8 @@
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/lamdaos/things#readme"
+  "homepage": "https://bitbucket.org/lamdaos/things#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }
