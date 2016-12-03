@@ -1,180 +1,177 @@
-var fs = require('fs'),
-	path = require('path'),
-	util = require('util'),
-	isImage = require('is-image'),
+const fs = require('fs')
+const path = require('path')
+const util = require('util')
 
-	filterMonths = filterTwoDigitDirs,
-	filterDays = filterTwoDigitDirs
+const filterMonths = filterTwoDigitDirs
+const filterDays = filterTwoDigitDirs
 
-
-function getYear (date) {
-	try {
-		date = date.toISOString()
-	}
-	catch (error) {
-		console.error(error.stack)
-	}
-	return date.slice(0, 4)
-}
+// function getYear (date) {
+//   try {
+//     date = date.toISOString()
+//   }
+//   catch (error) {
+//     console.error(error.stack)
+//   }
+//   return date.slice(0, 4)
+// }
 
 function getMonth (date) {
-	try {
-		date = date.toISOString()
-	}
-	catch (error) {
-		console.error(error.stack)
-	}
-	return date.slice(5, 7)
+  try {
+    date = date.toISOString()
+  }
+  catch (error) {
+    console.error(error.stack)
+  }
+  return date.slice(5, 7)
 }
 
 function getDay (date) {
-	try {
-		date = date.toISOString()
-	}
-	catch (error) {
-		console.error(error.stack)
-	}
-	return date.slice(8, 10)
+  try {
+    date = date.toISOString()
+  }
+  catch (error) {
+    console.error(error.stack)
+  }
+  return date.slice(8, 10)
 }
 
 function filterTwoDigitDirs (list) {
-	return list.filter(function (file) {
-		return /^[0-9]{2}$/.test(file)
-	})
+  return list.filter(file => {
+    return /^[0-9]{2}$/.test(file)
+  })
 }
 
 function filterYears (list) {
-	return list.filter(function (file) {
-		return /^[0-9]{4}$/.test(file)
-	})
+  return list.filter(file => {
+    return /^[0-9]{4}$/.test(file)
+  })
 }
 
-function filterImages (list) {
-	return list.filter(helper.isImage)
-}
+// function filterImages (list) {
+//   return list.filter(helper.isImage)
+// }
 
 function filterEvents (files) {
-	return files.filter(function (file) {
-		return /([0-9]{4}-)?([01][0-9]-)?[0-3][0-9]_.*/.test(file)
-	})
+  return files.filter(file => {
+    return /([0-9]{4}-)?([01][0-9]-)?[0-3][0-9]_.*/.test(file)
+  })
 }
 
 function getFiles (directory) {
-	return new Promise(function (fulfill, reject) {
-		fs.readdir(directory, function (error, files) {
-			if (error) {
-				if (error.code === 'ENOENT')
-					fulfill([])
-				else
-					reject(error)
-			}
-			else
-				fulfill(files)
-		})
-	})
+  return new Promise((fulfill, reject) => {
+    fs.readdir(directory, (error, files) => {
+      if (error) {
+        if (error.code === 'ENOENT') fulfill([])
+        else reject(error)
+      }
+      else {
+        fulfill(files)
+      }
+    })
+  })
 }
 
 function createPeriodObject (year, month, events, baseURL) {
+  const periodObject = {
+    year: year,
+    month: month,
+    url: baseURL + '/' + year + '/' + month,
+    events: events.map(event => {
+      const dateString = event.split('_', 1)[0]
+      const name = event
+        .split('_')
+        .slice(1)
+        .join('_')
+      const day = dateString
+        .split('-')
+        .pop()
+      const date = new Date(`${year}-${month}-${day}`)
 
-	const periodObject = {
-		year: year,
-		month: month,
-		url: baseURL + '/' + year + '/' + month,
-		events: events.map(event => {
-			const dateString = event.split('_', 1)[0]
-			const name = event
-				.split('_')
-				.slice(1)
-				.join('_')
-			const day = dateString.split('-').pop()
-			const date = new Date(`${year}-${month}-${day}`)
+      return {
+        name: name.replace(/[-_]/g, ' '),
+        date: date instanceof Date && isFinite(date)
+          ? date
+            .toISOString()
+            .slice(0, 10)
+          : null,
+        url: [
+          baseURL,
+          date.getFullYear(),
+          getMonth(date),
+          getDay(date),
+          name,
+        ].join('/'),
+      }
+    }),
+  }
 
-			return {
-				name: name.replace(/[-_]/g, ' '),
-				date: date instanceof Date && isFinite(date) ?
-					date.toISOString().slice(0, 10) :
-					null,
-				url: [
-					baseURL,
-					date.getFullYear(),
-					getMonth(date),
-					getDay(date),
-					name
-				].join('/')
-			}
-		})
-	}
-
-	return periodObject
+  return periodObject
 }
 
 function getEventDirectory (year, month, day, eventName, photosDirectory) {
+  eventName = util.format('%s-%s-%s_%s', year, month, day, eventName)
 
-	eventName = util.format('%s-%s-%s_%s', year, month, day, eventName)
-
-	return path.join(photosDirectory, year, month, eventName)
+  return path.join(photosDirectory, year, month, eventName)
 }
 
 function getImagesForEvent (year, month, day, eventName, photosDirectory) {
-	return getFiles(
-		getEventDirectory(year, month, day, eventName, photosDirectory)
-	)
+  return getFiles(
+    getEventDirectory(year, month, day, eventName, photosDirectory)
+  )
 }
 
 function getEventsForMonth (year, month, photosDirectory, baseURL) {
+  const monthDirectory = path.join(photosDirectory, year, month)
 
-	var monthDirectory = path.join(photosDirectory, year, month)
-
-	return getFiles(monthDirectory)
-		.then(filterEvents)
-		.then(events => {
-			return createPeriodObject(year, month, events, baseURL)
-		})
-		.catch(error => console.error(error.stack))
+  return getFiles(monthDirectory)
+    .then(filterEvents)
+    .then(events => {
+      return createPeriodObject(year, month, events, baseURL)
+    })
+    .catch(error => console.error(error.stack))
 }
 
 function getMonthsForYear (year, photosDirectory, baseURL) {
+  const yearDirectory = path.join(photosDirectory, year)
 
-	var yearDirectory = path.join(photosDirectory, year)
-
-	return getFiles(yearDirectory)
-		.then(function (files) {
-			// Find unique available months from directory and event names
-			return filterMonths(files)
-				.concat(filterEvents(files)
-					.map(function (file) {
-						return file.slice(5, 7)
-					}))
-				.filter(function (element, index, array) {
-					return array.indexOf(element) === index
-				})
-		})
-		.then(function (months) {
-			return Promise.all(months.map(function (month) {
-				return getEventsForMonth(year, month, photosDirectory, baseURL)
-			}))
-		})
-		.then(function (months) {
-			return {
-				year: year,
-				url: baseURL + '/' + year,
-				months: months
-			}
-		})
-		.catch(error => console.error(error.stack))
+  return getFiles(yearDirectory)
+    .then(files => {
+      // Find unique available months from directory and event names
+      return filterMonths(files)
+        .concat(filterEvents(files)
+          .map(file => {
+            return file.slice(5, 7)
+          }))
+        .filter((element, index, array) => {
+          return array.indexOf(element) === index
+        })
+    })
+    .then((months) => {
+      return Promise.all(months.map((month) => {
+        return getEventsForMonth(year, month, photosDirectory, baseURL)
+      }))
+    })
+    .then((months) => {
+      return {
+        year,
+        url: `${baseURL}/${year}`,
+        months,
+      }
+    })
+    .catch(error => console.error(error.stack))
 }
 
 
 module.exports = {
-	getFiles: getFiles,
-	getEventDirectory: getEventDirectory,
-	getImagesForEvent: getImagesForEvent,
-	getMonthsForYear: getMonthsForYear,
-	getEventsForMonth: getEventsForMonth,
-	filterYears: filterYears,
-	filterMonths: filterMonths,
-	filterDays: filterDays,
-	filterEvents: filterEvents,
-	filterImages: filterImages,
-	createPeriodObject: createPeriodObject
+  getFiles,
+  getEventDirectory,
+  getImagesForEvent,
+  getMonthsForYear,
+  getEventsForMonth,
+  filterYears,
+  filterMonths,
+  filterDays,
+  filterEvents,
+  // filterImages,
+  // createPeriodObject
 }

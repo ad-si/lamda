@@ -1,36 +1,44 @@
 {
   "name": "photos",
+  "description": "Webserver to access and manage all you local photos",
   "version": "0.0.1",
-  "keywords": [
-    "photos"
-  ],
+  "main": "server.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint",
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
   "dependencies": {
-    "es6-promise": "^2.0.0",
     "express": "^4.12.4",
     "gm": "^1.18.1",
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
-    "jade": "^1.11.0",
     "js-yaml": "^3.3.1",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.53.0",
     "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
-  "scripts": {
-    "start": "node server.js",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
   },
-  "description": "## Schema",
-  "main": "server.js",
-  "devDependencies": {},
+  "keywords": [
+    "lamda",
+    "photos"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/photos.git"
+    "url": "bitbucket:lamdaos/photos"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/lamdaos/photos#readme"
+  "homepage": "https://bitbucket.org/lamdaos/photos#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
 }

@@ -1,42 +1,40 @@
-var fs = require('fs'),
-	path = require('path'),
-	url = require('url'),
-	util = require('util'),
+const path = require('path')
+const url = require('url')
+const util = require('util')
 
-	gm = require('gm')
+const gm = require('gm')
 
 
-module.exports = function (request, response, next) {
+module.exports = (request, response) => {
+  const year = request.params.year
+  const month = request.params.month
+  const day = request.params.day
+  const eventName = request.params.event
+  const photoName = request.params.photo
 
-	var year = request.params.year,
-		month = request.params.month,
-		day = request.params.day,
-		eventName = request.params.event,
-		photoName = request.params.photo,
+  const urlObject = url.parse(request.url, true)
+  const src = [
+    request.app.locals.basePath,
+    year,
+    month,
+    util.format('%s-%s-%s_%s', year, month, day, eventName),
+    photoName,
+  ].join('/') +
+  '.' + urlObject.query.filetype
 
-		imagePath = path.join(year, month, day, eventName, photoName),
-		urlObject = url.parse(request.url, true),
-		src = [
-			request.app.locals.basePath,
-			year,
-			month,
-			util.format('%s-%s-%s_%s', year, month, day, eventName),
-			photoName
-		].join('/') +
-		'.' + urlObject.query.filetype
+  gm(path.join(global.baseURL, src))
+    .identify((error, data) => {
+      if (error) {
+        console.error(error)
+      }
 
-	gm(path.join(global.baseURL, src))
-		.identify(function (error, data) {
-			if (error)
-				console.log(error)
-
-			response.render('photo', {
-				page: 'Photo',
-				photo: {
-					name: request.params.photo,
-					src: src,
-					exif: JSON.stringify(data, null, 2)
-				}
-			})
-		})
+      response.render('photo', {
+        page: 'Photo',
+        photo: {
+          name: request.params.photo,
+          src: src,
+          exif: JSON.stringify(data, null, 2),
+        },
+      })
+    })
 }

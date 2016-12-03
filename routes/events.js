@@ -1,118 +1,109 @@
-const fs = require('fs')
 const path = require('path')
 const util = require('util')
-
-const yaml = require('js-yaml')
 
 const utils = require('../modules/utils')
 
 const events = {}
 
 
-events.period = function (req, res, next) {
+events.period = function (request, response, next) {
+  const photosDirectory = path.join(request.app.locals.basePath, 'photos')
+  const year = request.params.year
+  const month = request.params.month
+  const day = request.params.day
 
-	const photosDirectory = path.join(req.app.locals.basePath, 'photos')
+  if (day) {
+    // TODO
+  }
+  else if (month) {
+    utils
+      .getEventsForMonth(
+        year,
+        month,
+        photosDirectory,
+        request.app.locals.baseURL
+      )
+      .then(monthObject => {
+        monthObject.page = 'Photos'
+        monthObject.year = year
+        monthObject.yearUrl = request.app.locals.baseURL + '/' + year
 
-	var year = req.params.year,
-		yearDir = path.join(photosDirectory, year),
-		month = req.params.month,
-		monthDir = month ? path.join(photosDirectory, month) : null,
-		day = req.params.day,
-		dayDir = day ? path.join(photosDirectory, day) : null
+        response.render('index', monthObject)
+      })
+      .catch(error => {
+        console.error(error)
+        next()
+      })
+  }
+  else {
+    utils
+      .getMonthsForYear(year, photosDirectory, request.app.locals.baseURL)
+      .then(yearObject => {
 
-
-	if (day) {
-		//TODO
-	}
-	else if (month) {
-		utils
-			.getEventsForMonth(
-				year,
-				month,
-				photosDirectory,
-				req.app.locals.baseURL
-			)
-			.then(function (monthObject) {
-				monthObject.page = 'Photos'
-				monthObject.year = year
-				monthObject.yearUrl = req.app.locals.baseURL + '/' + year
-
-				res.render('index', monthObject)
-			})
-			.catch(function (error) {
-				console.error(error)
-				next()
-			})
-	}
-	else
-		utils
-			.getMonthsForYear(year, photosDirectory, req.app.locals.baseURL)
-			.then(function (yearObject) {
-
-				res.render('index', {
-					page: 'Photos',
-					years: [yearObject]
-				})
-			})
-			.catch(function (error) {
-				console.error(error)
-				next()
-			})
+        response.render('index', {
+          page: 'Photos',
+          years: [yearObject],
+        })
+      })
+      .catch(error => {
+        console.error(error)
+        next()
+      })
+  }
 }
 
 
-events.event = function (req, res, next) {
+events.event = (request, response) => {
+  const photosDirectory = path.join(request.app.locals.basePath, 'photos')
+  const year = request.params.year
+  const month = request.params.month
+  const day = request.params.day
+  const eventName = request.params.event
 
-	const photosDirectory = path.join(req.app.locals.basePath, 'photos')
-	var year = req.params.year,
-		month = req.params.month,
-		day = req.params.day,
-		eventName = req.params.event
-
-	utils
-		.getImagesForEvent(year, month, day, eventName, photosDirectory)
-		.then(utils.filterImages)
-		.then(function (photos) {
-			return photos.map(function (photoName) {
-
-				return {
-					name: photoName,
-					url: [
-						req.app.locals.baseURL,
-						year,
-						month,
-						day,
-						eventName,
-						photoName.replace(/\.(jpg|png)$/i, '') +
-						'?filetype=' +
-						path.extname(photoName).slice(1).toLowerCase()
-					].join('/'),
-					src: [
-						req.app.locals.baseURL,
-						year,
-						month,
-						util.format('%s-%s-%s_%s', year, month, day, eventName),
-						photoName
-					].join('/')
-				}
-			})
-		})
-		.then(function (photos) {
-			res.render('event', {
-				page: 'Event',
-				maxWidth: 300,
-				maxHeight: 300,
-				event: {
-					year: year,
-					month: month,
-					day: day,
-					name: eventName,
-					photos: photos
-				}
-			})
-		})
-
-
+  utils
+    .getImagesForEvent(year, month, day, eventName, photosDirectory)
+    .then(utils.filterImages)
+    .then(photos => {
+      return photos.map(photoName => {
+        return {
+          name: photoName,
+          url: [
+            request.app.locals.baseURL,
+            year,
+            month,
+            day,
+            eventName,
+            photoName.replace(/\.(jpg|png)$/i, '') +
+            '?filetype=' +
+            path
+              .extname(photoName)
+              .slice(1)
+              .toLowerCase(),
+          ].join('/'),
+          src: [
+            request.app.locals.baseURL,
+            year,
+            month,
+            util.format('%s-%s-%s_%s', year, month, day, eventName),
+            photoName,
+          ].join('/'),
+        }
+      })
+    })
+    .then(photos => {
+      response.render('event', {
+        page: 'Event',
+        maxWidth: 300,
+        maxHeight: 300,
+        event: {
+          year: year,
+          month: month,
+          day: day,
+          name: eventName,
+          photos: photos,
+        },
+      })
+    })
 }
 
 module.exports = events
