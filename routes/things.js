@@ -102,7 +102,7 @@ function callRenderer (response, things, view) {
 
 
 module.exports = (options = {}) => {
-  const {baseURL, basePath: thingsDir} = options
+  const {baseURL, appPath: thingsDir} = options
 
   return (request, response) => {
     const view = request.query.view === 'wide'

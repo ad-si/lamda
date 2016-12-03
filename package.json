@@ -8,10 +8,8 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "array.from": "^1.0.3",
     "express": "^4.14.0",
     "fs-promise": "^1.0.0",
-    "gm": "^1.23.0",
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
     "javascript-styleguide": "^1.0.0",
@@ -26,8 +24,10 @@
     "user-home": "^2.0.0"
   },
   "devDependencies": {
+    "errorhandler": "^1.5.0",
     "eslint": "^3.11.1",
-    "eslint-config-javascript": "^1.1.0"
+    "eslint-config-javascript": "^1.1.0",
+    "morgan": "^1.7.0"
   },
   "keywords": [
     "lamda",

@@ -4,22 +4,21 @@ const express = require('express')
 const stylus = require('stylus')
 const imageResizer = require('image-resizer-middleware')
 const serveFavicon = require('serve-favicon')
+const errorHandler = require('errorhandler')
 const userHome = require('user-home')
+
+const things = require('./routes/things')
+const thing = require('./routes/thing')
+
+const app = express()
+const runsStandalone = !module.parent
+const isDevMode = app.get('env') === 'development'
 
 const projectPath = __dirname
 const viewsPath =  path.join(projectPath, 'views')
 const modulesPath = path.join(projectPath, 'node_modules')
 const publicPath = path.join(projectPath, 'public')
 const stylesPath = path.join(publicPath, 'styles')
-
-const things = require('./routes/things')
-const thing = require('./routes/thing')
-
-const app = express()
-app.locals.baseURL = '/things'
-app.locals.basePath = path.join(userHome, 'things')
-const isMounted = Boolean(module.parent)
-const isDevMode = app.get('env') === 'development'
 
 
 function setupRouting () {
@@ -43,7 +42,12 @@ function setupRouting () {
   app.get('/:id', thing(app.locals))
 }
 
-if (!isMounted) {
+if (runsStandalone) {
+  const morgan = require('morgan')
+  app.use(morgan('dev', {skip: () => !isDevMode}))
+
+  app.locals.appPath = path.join(userHome, 'things')
+  app.locals.basePath = path.join(userHome, 'things')
   app.locals.baseURL = ''
 
   const faviconPath = path.join(publicPath, 'images/favicon.ico')
@@ -62,6 +66,8 @@ if (!isMounted) {
 
   setupRouting()
 
+  if (isDevMode) app.use(errorHandler())
+
   const port = 3000
   app.set('view engine', 'pug')
   app.listen(port)
@@ -69,7 +75,14 @@ if (!isMounted) {
 }
 else {
   module.exports = (locals) => {
-    app.locals = locals
+    app.locals = Object.assign(
+      {},
+      locals,
+      {
+        appPath: path.join(userHome, 'things'),
+        baseURL: '/things',
+      }
+    )
     setupRouting()
     return app
   }
