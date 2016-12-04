@@ -20,16 +20,18 @@ module.exports = (contactsPath) => fsp
     )
   )
   .then(contactFilePromises => Promise.all(contactFilePromises))
-  .then(fileObjects => fileObjects.map(fileObject => {
-    const contact = yaml.safeLoad(
-      fileObject.fileContent,
-      {
-        filename: fileObject.fileName,
-      }
-    )
-    contact.id = fileObject.fileName.slice(0, -5)
-    return contact
-  }))
+  .then(fileObjects => fileObjects
+    .map(fileObject => {
+      const contact = yaml.safeLoad(
+        fileObject.fileContent,
+        {
+          filename: fileObject.fileName,
+        }
+      )
+      contact.id = fileObject.fileName.slice(0, -5)
+      return contact
+    })
+  )
   .catch(error => {
     if (!error.message.includes('no such file or directory')) {
       throw error

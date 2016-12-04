@@ -9,9 +9,9 @@ block scripts
   script(src=`${baseURL}/scripts/main.js`)
 
 block content
-  if !contacts
+  if !contacts || contacts.length === 0
     .getting-started
-      if noDirectory
+      if !contacts
         p.
           You do not have a "contacts" directory yet.
           In order to get started create a "contacts" directory

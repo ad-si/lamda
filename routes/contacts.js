@@ -37,7 +37,7 @@ module.exports = (request, response) => {
       if (!sortedContacts) {
         response.render('contacts', {
           page: 'contacts',
-          noDirectory: true,
+          contacts: null,
         })
         return
       }
