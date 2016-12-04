@@ -1,7 +1,7 @@
 {
-  "name": "music",
+  "name": "songs",
   "version": "0.0.1",
-  "description": "All you music",
+  "description": "All you songs",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",
@@ -11,16 +11,17 @@
   },
   "keywords": [
     "lamda",
-    "music"
+    "music",
+    "songs"
   ],
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/music"
+    "url": "bitbucket:lamdaos/songs"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/music#readme",
+  "homepage": "https://bitbucket.org/lamdaos/songs#readme",
   "dependencies": {
     "errorhandler": "^1.5.0",
     "express": "^4.14.0",

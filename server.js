@@ -4,8 +4,8 @@ const express = require('express')
 const stylus = require('stylus')
 const errorHandler = require('errorhandler')
 
-const index = require('./routes/index')
-const music = require('./routes/music')
+const songs = require('./routes/songs')
+const routes = require('./routes')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !module.parent
@@ -22,18 +22,18 @@ function setupRouting () {
   }))
   app.use(express.static(publicDirectory))
 
-  app.use('/raw', express.static(path.join(app.locals.basePath, 'music')))
+  app.use('/raw', express.static(path.join(app.locals.basePath, 'routes')))
 
   app.set('views', path.join(projectDirectory, 'views'))
 
-  app.get('/api/artists', music.artists)
-  app.get('/api/artists/:artistId', music.artist)
-  app.get('/api/artists/:artistId/songs', music.songs)
-  app.get('/api/artists/:artistId/songs/:songId', music.song)
+  app.get('/api/artists', routes.artists)
+  app.get('/api/artists/:artistId', routes.artist)
+  app.get('/api/artists/:artistId/songs', routes.songs)
+  app.get('/api/artists/:artistId/songs/:songId', routes.song)
 
-  app.get('/api/songs', music.songs)
+  app.get('/api/songs', routes.songs)
 
-  app.get('*', index)
+  app.get('*', songs)
 }
 
 

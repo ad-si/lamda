@@ -521,7 +521,7 @@ print.song = (songId, artistId) => {
 print.startpage = function () {
   shaven(
     [querySelect('#c4'),
-      ['h2', 'Welcome to the music'],
+      ['h2', 'Welcome to Songs'],
     ]
   )
 }
