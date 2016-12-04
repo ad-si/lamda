@@ -1,5 +1,6 @@
 const path = require('path')
 const userHome = require('user-home')
+const Interval = require('@datatypes/interval').default
 
 const getDays = require('../modules/getDays')
 const loadEvents = require('../modules/loadEvents')
@@ -18,14 +19,19 @@ const eventsDirectory = path.join(userHome, 'Events')
 // eventsDirectory = path.resolve(__dirname, '../test/sequential/')
 
 module.exports = (request, response, done) => {
-  loadEvents(eventsDirectory, request)
-    .then(events => loadBirthdays()
-      .then(() => {
-        // events = events.concat(contacts)
-        return events
-      })
-    )
-    .then(events => {
+  return Promise
+    .all([
+      loadEvents(eventsDirectory, request),
+      loadBirthdays(),
+    ])
+    .then(results => {
+      const [events, birthdays] = results
+      const page = 'events'
+
+      if (!events && !birthdays) {
+        response.render('index', {page})
+        return
+      }
 
       const days = getDays()
 
@@ -37,15 +43,25 @@ module.exports = (request, response, done) => {
           eventStart < days.endMoment.upperLimit
       }
 
-      const daysWithEvents = events
-        .filter(event => event != null)
+      function addInterval (event) {
+        if (!event.hasOwnProperty('interval')) {
+          event.interval = new Interval(event.time.intervalString)
+        }
+        return event
+      }
+
+      const daysWithEvents = []
+        .concat(events)
+        .concat(birthdays)
+        .filter(event =>
+          event !== null &&
+          event !== undefined
+        )
+        .map(addInterval)
         .sort((eventA, eventB) =>
           eventA.interval.start.lowerLimit -
           eventB.interval.end.lowerLimit
         )
-        // .forEach(day =>
-        //   console.dir(day.interval.start, {depth: 0, colors: true})
-        // )
         .filter(notInRange)
         .reduce(splitEvents, [])
         .reduce(toDays, days)

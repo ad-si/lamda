@@ -1,12 +1,9 @@
-'use strict'
-
 const momentFromString = require('@datatypes/moment').default
 const add = require('@datatypes/moment').add
 const subtract = require('@datatypes/moment').subtract
 const Duration = require('@datatypes/duration').default
 
 module.exports = (options) => {
-
   options = options || {}
   const daysBefore = options.daysBefore != null ? options.daysBefore : 10
   const daysAhead = options.daysAhead != null ? options.daysAhead : 50

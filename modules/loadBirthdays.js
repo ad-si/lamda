@@ -18,44 +18,43 @@ module.exports = () => fsp
     .filter(filePath => yamlRegex.test(filePath))
     .map(filePath => fsp
       .readFile(path.join(contactsDirectory, filePath))
-      .then(fileContent => {
-        let contact
-        try {
-          contact = yaml.safeLoad(
-            fileContent,
-            {filename: filePath}
-          )
-          if (contact.birthday) {
-            if (!(contact.birthday instanceof Date)) {
-              contact.birthday = new Date(contact.birthday)
-            }
-            contact.birthday.setUTCFullYear(
-              new Date()
-                .getUTCFullYear()
-            )
+      .then(fileContent => yaml.safeLoad(fileContent, {filename: filePath}))
+      .then(contact => {
+        if (!contact.birthday) return
 
-            contact.title = contact.name ||
-              (contact.firstname + ' ' + contact.lastname)
+        if (!(contact.birthday instanceof Date)) {
+          contact.birthday = new Date(contact.birthday)
+        }
+        contact.birthday.setUTCFullYear(
+          new Date()
+            .getUTCFullYear()
+        )
 
-            // TODO: Display birthdays not just for current year
-            // TODO: Allow partial birthday (e.g. ????-04-23)
-            contact.time = new Day(
-              contact.birthday
-                .toJSON()
-                .slice(0, 10)
-            )
-            return contact
-          }
-          else {
-            return undefined
-          }
-        }
-        catch (error) {
-          console.error('An error occured for conact ', contact)
-          console.error(error.stack)
-        }
+        contact.title = contact.name ||
+          (contact.firstname + ' ' + contact.lastname)
+
+        // TODO: Display birthdays not just for current year
+        // TODO: Allow partial birthday (e.g. ????-04-23)
+        contact.time = new Day(
+          contact.birthday
+            .toJSON()
+            .slice(0, 10)
+        )
+        return contact
+      })
+      .catch(error => {
+        console.error('An error occured for a contact')
+        console.error(error.stack)
+        return
       })
     )
   )
   .then(filePromises => Promise.all(filePromises))
   .then(contacts => contacts.filter(contact => contact))
+  .catch(error => {
+    if (!error.message.includes('no such file or directory')) {
+      throw error
+    }
+    console.error(error.stack)
+    return null
+  })
