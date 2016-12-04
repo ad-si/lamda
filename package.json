@@ -1,0 +1,39 @@
+{
+  "name": "boilerplate",
+  "version": "0.0.1",
+  "description": "Basic app for Lamda views",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "symlink-modules lamda-styles lamda-views",
+    "lint": "eslint .",
+    "start": "node server.js",
+    "test": "npm run lint",
+    "prepublish": "npm test"
+  },
+  "keywords": [
+    "lamda",
+    "boilerplate"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "github:adius/boilerplate"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/adius/boilerplate/issues"
+  },
+  "homepage": "https://github.com/adius/boilerplate#readme",
+  "dependencies": {
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "symlink-modules": "^0.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
+}

@@ -1,12 +1,9 @@
-var fs = require('fs'),
-	express = require('express'),
-	stylus = require('stylus'),
-	path = require('path'),
-	index = require('./routes/index'),
-	app = express()
+const express = require('express')
+const index = require('./routes/index')
+const app = express()
 
 
-app.set('views', __dirname + '/views')
+app.set('views', `${__dirname}/views`)
 
 app.get('/', index)
 

@@ -1,24 +1,18 @@
-var fs = require('fs'),
-	path = require('path'),
-	yaml = require('js-yaml')
+module.exports = (request, response) => {
+  const data = [
+    {
+      title: 'Datum 1',
+    },
+    {
+      title: 'Datum 2',
+    },
+    {
+      title: 'Datum 3',
+    },
+  ]
 
-
-module.exports = function (req, res) {
-
-	var data = [
-		{
-			title: 'Datum 1'
-		},
-		{
-			title: 'Datum 2'
-		},
-		{
-			title: 'Datum 3'
-		}
-	]
-
-	res.render('index', {
-		page: 'boilerplate',
-		data: data
-	})
+  response.render('index', {
+    page: 'boilerplate',
+    data: data,
+  })
 }
