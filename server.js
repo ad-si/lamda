@@ -1,16 +1,22 @@
 const path = require('path')
+const childProcess = require('child_process')
 
 const express = require('express')
 const stylus = require('stylus')
 const errorHandler = require('errorhandler')
+const browserifyMiddleware = require('browserify-middleware')
 
 const tasks = require('./routes/tasks')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !module.parent
+
 const projectDirectory = __dirname
+const viewsDirectory = path.join(projectDirectory, 'views')
 const publicDirectory = path.join(projectDirectory, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
+const scriptsDirectory = path.join(publicDirectory, 'scripts')
+const tasksDirectoryName = 'Tasks'
 
 
 function setupRouting () {
@@ -19,8 +25,9 @@ function setupRouting () {
     debug: isDevMode,
     compress: !isDevMode,
   }))
+  app.use('/scripts', browserifyMiddleware(scriptsDirectory))
   app.use(express.static(publicDirectory))
-  app.set('views', path.join(projectDirectory, 'views'))
+  app.set('views', viewsDirectory)
   app.get('/', tasks)
   app.get('/:taskView', tasks)
 }
@@ -31,19 +38,8 @@ if (runsStandalone) {
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
   const userHome = require('user-home')
-  app.locals.basePath = userHome
+  app.locals.basePath = path.join(userHome, tasksDirectoryName)
   app.locals.baseURL = ''
-
-  app.locals.styles = [{
-    path: '/styles/dark.css',
-    id: 'themeLink',
-  }]
-  app.use(stylus.middleware({
-    src: path.join(projectDirectory, 'linked_modules/lamda-styles/themes'),
-    dest: stylesDirectory,
-    debug: isDevMode,
-    compress: !isDevMode,
-  }))
 
   const serveFavicon = require('serve-favicon')
   const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
@@ -51,12 +47,33 @@ if (runsStandalone) {
 
   setupRouting()
 
+  app.get(
+    `/files/${tasksDirectoryName}/:fileName`,
+    (request, response) => {
+      const filePath = path.join(app.locals.basePath, request.params.fileName)
+      response.sendFile(filePath)
+    }
+  )
+
+  app.use('/open', (request, response) => {
+    const shellCommand = `edit ${request.path}`
+
+    childProcess.exec(
+      shellCommand,
+      (error, stdout, stderr) => {
+        if (stderr) console.error(stderr)
+        if (stdout) console.info(stdout)
+        if (error) throw error
+        response.sendStatus(200)
+      }
+    )
+  })
+
   if (isDevMode) app.use(errorHandler())
 
   const port = 3000
-  app.set('view engine', 'jade')
+  app.set('view engine', 'pug')
   app.listen(port)
-  // eslint-disable-next-line no-console
   console.info(`App listens on http://localhost:${port}`)
 }
 else {

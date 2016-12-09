@@ -9,6 +9,9 @@
   ],
   "author": "Adrian Sieber",
   "main": "server.js",
+  "browser": {
+    "vue": "vue/dist/vue.common"
+  },
   "scripts": {
     "start": "node server.js",
     "lint": "eslint --ignore-path .gitignore .",
@@ -17,23 +20,25 @@
     "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "dependencies": {
-    "async": "^1.4.0",
-    "errorhandler": "^1.4.2",
-    "eventlang-reduce": "^0.1.0",
-    "express": "^4.13.2",
-    "fs-promise": "^0.3.1",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.3.1",
+    "@datatypes/moment": "^0.8.2",
+    "browserify-middleware": "^7.1.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.14.0",
+    "fs-promise": "^1.0.0",
+    "js-yaml": "^3.7.0",
     "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
     "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0",
-    "stylus": "^0.52.0",
-    "user-home": "^2.0.0"
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "user-home": "^2.0.0",
+    "vue": "^2.1.4",
+    "vue-resource": "^1.0.3"
   },
   "devDependencies": {
-    "eslint": "^3.7.0",
-    "javascript-styleguide": "^1.0.0"
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
   },
   "repository": {
     "type": "git",
@@ -43,7 +48,6 @@
   "private": true,
   "homepage": "https://bitbucket.org/lamdaos/tasks#readme",
   "eslintConfig": {
-    "root": true,
-    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+    "extends": "eslint-config-javascript"
   }
 }

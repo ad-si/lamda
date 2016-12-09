@@ -1,0 +1,120 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+
+block scripts
+  script!= 'var rawTasks = ' + JSON.stringify(tasks)
+  script(src=`${baseURL}/scripts/index.js`)
+
+
+block content
+  article
+    form(action='#' method='post')
+      fieldset
+        input#newTask(
+          type='text'
+          name='title'
+          placeholder='Do this and that'
+        )
+        input.button(
+          type='submit'
+          value='Add'
+        )
+
+      fieldset
+        textarea#newFilter(
+          name='newFilter'
+          rows=3
+          cols=60
+        ).
+          task => {
+            task.createdAt.toDateString() === new Date().toDateString()
+          }
+
+        br
+
+        input#addFilterButton.button(
+          type='button'
+          value='Apply'
+        )
+
+        input#addViewButton.button(
+          type='button'
+          value='Add as new view'
+        )
+
+    template
+      p {{views.length}} Views:
+      ul.views
+        li.view(v-for='view in views')
+          input.button(
+            type='button'
+            v-bind:value='view.name'
+            @click='setCurrentView(view.name)'
+          )
+
+      p {{filteredTasks.length}} Tasks:
+      ul.tasks
+        li.task(
+          v-for='task in filteredTasks'
+          v-bind:class='{completed: task.completed}'
+        )
+          .positionLeft
+            input(type='checkbox' v-model='task.completed')
+            a(:href='`files/Tasks/${task.id}`') {{task.title}}
+            span.tag(
+              v-for='tag in task.tags'
+            ) {{tag}}
+
+          .positionRight
+            span.dueDate 📅 {{task.dueDateFormatted}}
+            button(@click='editFile(task.absoluteFilePath)') ✍
+
+  //- if tasks
+  //-   article
+  //-     form(action='#' method='post')
+  //-       input(
+  //-         type='text'
+  //-         name='title'
+  //-         placeholder='Add a task …'
+  //-       )
+  //-       br
+  //-       input(
+  //-         type='button'
+  //-         id='addViewButton'
+  //-         value='Add View'
+  //-       )
+  //-
+  //-     ul
+  //-       for task in tasks
+  //-         li(class=(task.completed ? 'completed' : ''))
+  //-           = task.title
+  //-           span.createdAt= ' ' + task.creationDate.toISOString().substr(0,10)
+  //-
+  //- else
+  //-   .getting-started
+  //-     p
+  //-       | You do not have any tasks yet.
+  //-       br
+  //-       | In order to get started
+  //-       | create a tasks directory in your home directory
+  //-       | and add a <timestamp>.yaml file for each task.
+  //-
+  //-     p Each yaml file must be structured like this:
+  //-
+  //-     pre: code.
+  //-       2015-01-01 12:38:44:
+  //-         title: Title of the task
+  //-         tags:
+  //-           - inbox
+  //-           - example
+  //-
+  //-       2015-01-01 13:09:31:
+  //-         completed: true
+
+  #modalBackdrop
+  #modal
+    textarea#viewCode.
+      Enter code to filter and sort task array

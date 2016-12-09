@@ -2,6 +2,7 @@ const path = require('path')
 
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
+const momentFromString = require('@datatypes/moment').default
 
 
 function alphabeticallyBy (attribute, order) {
@@ -36,36 +37,51 @@ function alphabeticallyBy (attribute, order) {
 // }
 
 
-module.exports = function (request, response) {
-  const tasksPath = path.join(request.app.locals.basePath, 'tasks')
+module.exports = (request, response) => {
+  const tasksPath = request.app.locals.basePath
 
   return fsp
     .readdir(tasksPath)
-    .then(filePaths => {
-      const fileContentPromises = filePaths
-        .filter(filePath => /\.yaml$/i.test(filePath))
-        .map(filePath => fsp.readFile(
-          path.join(tasksPath, filePath),
-          'utf-8'
-        ))
+    .then(filePaths =>
+      filePaths.filter(filePath => /\.yaml$/i.test(filePath))
+    )
+    .then(filteredFilePaths => {
+      const fileObjectPromises = filteredFilePaths
+        .map(filePath => {
+          const absolutePath = path.join(tasksPath, filePath)
+          return fsp
+            .readFile(absolutePath, 'utf-8')
+            .then(content => ({
+              relativePath: filePath,
+              absolutePath,
+              content,
+            }))
+        })
 
-      return Promise.all(fileContentPromises)
+      return Promise.all(fileObjectPromises)
     })
-    .then(files => files
-      .map(fileContent => yaml.safeLoad(fileContent))
-      .map(eventTask => {
+    .then(fileObjects => fileObjects
+      .map(fileObject => {
+        fileObject.data = yaml.safeLoad(fileObject.content)
+        return fileObject
+      })
+      .map(fileObject => {
         // See https://github.com/adius/eventlang-reduce for explanation
         const reducedObject = {}
-        for (const timestamp in eventTask) {
-          if (!eventTask.hasOwnProperty(timestamp)) continue
-          Object.assign(reducedObject, eventTask[timestamp])
+        for (const timestamp in fileObject.data) {
+          if (!fileObject.data.hasOwnProperty(timestamp)) continue
+          Object.assign(reducedObject, fileObject.data[timestamp])
         }
 
-        reducedObject.creationDate = new Date(
-          Object
-            .keys(eventTask)
-            .sort()[0]
+        const dateStringFromFilename = path.basename(
+          fileObject.relativePath,
+          '.yaml'
         )
+        reducedObject.creationDate = momentFromString(dateStringFromFilename)
+        reducedObject.id = fileObject.relativePath
+        reducedObject.absoluteFilePath = fileObject.absolutePath
+
+        // console.log(reducedObject.creationDate)
 
         return reducedObject
       })
