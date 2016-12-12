@@ -40,21 +40,21 @@ Better:
 - Data containers
   - Data
   - Metadata
-- Filters (aka queries, aka views)
+- Filters (aka queries, aka views, aka selections)
 - Apps
 
 Usage:
 User defines via filters which data apps can access.
-Apps operate always on the file system data
-=> Apps can be switched without problems
-=> No need to export data and user always stays in control
+Apps operate always on the file system data.
 
+This has several advantages:
 
-
-=> The filesystem is the API
-=> Apps get a filtered subset of users data
-  => Full control of what apps are able to access
-  => No closed databases
+- Apps can be switched without problems
+- No need to export data and user always stays in control
+- The filesystem is the API
+- Apps get a filtered subset of users data
+  - Full control of what apps are able to access
+- No closed databases
 
 This is better, because files are too low level,
 which causes following problems:
@@ -70,7 +70,7 @@ The file system is actually just a list of files (with the notion of namespaces)
 
 Data Containers:
 - Set of UDCs (Universal Data Container) entities
-  - Directory containing a main.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, …)
+  - Directory containing a data.yaml and all binary assets (e.g. MP3s, JPEGs, thumbnails, …)
 - No name (Name is UUID)
 - No order
 - No hierarchy
@@ -126,7 +126,7 @@ Imagine you want to edit 2 files with vim:
 1. Two vim buffers
 1. Two processes
 
-Stick to the UNIX principle: Do one thing and to it well!
+Stick to the UNIX principle: **Do one thing and to it well!**
 
 
 ## Paradigms
@@ -136,6 +136,7 @@ Stick to the UNIX principle: Do one thing and to it well!
 - Adding items doesn't change two lines (especially good for versioning)
 - No more "Is it the end of the item or did the transmission fail?"
 - Consistent look
+- easier copy & pasting
 
 
 ## Character Set
@@ -167,6 +168,28 @@ Lamda: Everything is a text file (=> Need a different encoding than Unicode)
 =>
 No concept of binary or human unreadable files,
 but human intelligible and unintelligible
+
+Maybe: No difference between directories and files!
+Every node can have (meta)data and children.
+
+
+### Hierarchy
+
+- Lamda root directory / home directory
+  - Images
+  - Things
+  - < object + plural "s" >
+
+Objects directories can contain:
+
+- YAML files (timestamp name is recommended)
+  - Plain key-value map
+  - Eventlang file (every key must be a valid timestamp / range / `?`)
+- Directories with timestamp name
+  - `data.yaml` and content / binary files
+- Directory hierarchies like `year/month/day/time(.yaml)?`
+-
+
 
 
 ## Related
