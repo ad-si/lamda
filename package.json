@@ -9,6 +9,9 @@
   ],
   "author": "Adrian Sieber",
   "main": "server.js",
+  "bin": {
+    "tasks": "cli.js"
+  },
   "browser": {
     "vue": "vue/dist/vue.common"
   },
@@ -34,7 +37,8 @@
     "stylus": "^0.54.5",
     "user-home": "^2.0.0",
     "vue": "^2.1.4",
-    "vue-resource": "^1.0.3"
+    "vue-resource": "^1.0.3",
+    "yargs": "^6.5.0"
   },
   "devDependencies": {
     "eslint": "^3.11.1",

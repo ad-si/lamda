@@ -66,11 +66,25 @@ module.exports = (request, response) => {
         return fileObject
       })
       .map(fileObject => {
-        // See https://github.com/adius/eventlang-reduce for explanation
         const reducedObject = {}
-        for (const timestamp in fileObject.data) {
-          if (!fileObject.data.hasOwnProperty(timestamp)) continue
-          Object.assign(reducedObject, fileObject.data[timestamp])
+        // Check if all keys are timestamps
+        const keysAreTimestamps = Object
+          .keys(fileObject.data)
+          .every(key => {
+            const keyString = String(key)
+            return keyString.length > 2 &&
+              String(new Date(keyString)) !== 'Invalid Date'
+          })
+
+        if (keysAreTimestamps) {
+          // See https://github.com/adius/eventlang-reduce for explanation
+          for (const timestamp in fileObject.data) {
+            if (!fileObject.data.hasOwnProperty(timestamp)) continue
+            Object.assign(reducedObject, fileObject.data[timestamp])
+          }
+        }
+        else {
+          Object.assign(reducedObject, fileObject.data)
         }
 
         const dateStringFromFilename = path.basename(
@@ -80,9 +94,7 @@ module.exports = (request, response) => {
         reducedObject.creationDate = momentFromString(dateStringFromFilename)
         reducedObject.id = fileObject.relativePath
         reducedObject.absoluteFilePath = fileObject.absolutePath
-
-        // console.log(reducedObject.creationDate)
-
+        
         return reducedObject
       })
       // .filter(reducedObject => !reducedObject.completed)
