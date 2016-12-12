@@ -7,14 +7,16 @@
     "lamda": "bin/cli.js"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run start-prod",
+    "start-prod": "NODE_ENV=production node server.js",
+    "start-dev": "NODE_ENV=development node server.js",
     "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint . ",
     "test": "npm run lint"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda"
+    "url": "bitbucket:lamdaos/lamda"
   },
   "keywords": [
     "web os"
@@ -27,12 +29,19 @@
     "commander": "^2.9.0",
     "compression": "^1.6.2",
     "errorhandler": "^1.5.0",
+    "events": "bitbucket:lamdaos/events",
     "express": "^4.14.0",
+    "files": "bitbucket:lamdaos/files",
     "js-yaml": "^3.7.0",
+    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
+    "lamda-views": "bitbucket:lamdaos/lamda-views",
     "morgan": "^1.7.0",
+    "music": "bitbucket:lamdaos/songs",
     "nib": "^1.1.2",
     "osenv": "^0.1.3",
+    "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
+    "songs": "bitbucket:lamdaos/songs",
     "stylus": "^0.54.5",
     "symlink-modules": "^0.2.0"
   },
@@ -41,16 +50,15 @@
     "eslint-config-javascript": "^1.1.0"
   },
   "optionalDependencies": {
-    "events": "bitbucket:lamdaos/events",
-    "files": "bitbucket:lamdaos/files",
+    "boilerplate": "bitbucket:lamdaos/boilerplate",
     "books": "bitbucket:lamdaos/books",
     "contacts": "bitbucket:lamdaos/contacts",
+    "events": "bitbucket:lamdaos/events",
+    "files": "bitbucket:lamdaos/files",
     "movies": "bitbucket:lamdaos/movies",
-    "music": "bitbucket:lamdaos/music",
-    "photos": "bitbucket:lamdaos/photos",
+    "songs": "bitbucket:lamdaos/songs",
     "news": "bitbucket:lamdaos/news",
-    "projects": "bitbucket:lamdaos/projects",
-    "projects": "",
+    "photos": "bitbucket:lamdaos/photos",
     "sheetmusic": "bitbucket:lamdaos/sheetmusic",
     "tasks": "bitbucket:lamdaos/tasks",
     "things": "bitbucket:lamdaos/things"

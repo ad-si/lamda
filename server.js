@@ -15,7 +15,7 @@ const app = express()
 const index = require('./routes/index')
 const settings = require('./routes/settings')
 const profile = require('./routes/profile')
-// const appLoader = require('./modules/appLoader')
+const appLoader = require('./modules/appLoader')
 const scripts = [
   '/components/jquery/jquery.js',
   '/components/mousetrap/mousetrap.js',
@@ -30,31 +30,36 @@ const styles = [
 const title = 'Lamda OS'
 
 
-const basePath = process.env.LAMDA_HOME || osenv.home()
+const homeDirectory = process.env.LAMDA_HOME || osenv.home()
+const configsPath = path.join(homeDirectory, '.lamda')
+const configFilePath = path.join(configsPath, 'config.yaml')
 const projectPath = __dirname
 const devMode = app.get('env') === 'development'
+let configFileContent
+let configObject = {}
 const config = {
   owner: {},
 }
 
 try {
-  Object.assign(
-    config,
-    yaml.safeLoad(fs.readFileSync(
-      path.join(basePath, 'config.yaml')
-    ))
-  )
+  configFileContent = fs.readFileSync(configFilePath)
+  configObject = yaml.safeLoad(configFileContent)
 }
 catch (error) {
-  // eslint-disable-next-line no-console
-  console.error(error.stack)
+  if (!error.message.includes('no such file or directory')) {
+    throw error
+  }
+  console.error('No config file was loaded')
 }
+
+Object.assign(config, configObject)
+
 
 // All environments
 app.set('port', process.env.PORT || 2000)
 
 app.set('views', path.join(__dirname, 'linked_modules/lamda-views'))
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 
 app.use(favicon(path.normalize('public/img/favicon.png')))
 app.use(logger('dev'))
@@ -77,22 +82,23 @@ app.use(express.static(path.join(
 const locals = {
   isMounted: true,
   runsStandalone: false,
-  title: title,
-  scripts: scripts,
-  styles: styles,
-  config: config,
-  basePath: basePath,
-  projectPath: projectPath,
+  title,
+  scripts,
+  styles,
+  config,
+  homeDirectory,
+  basePath: homeDirectory, // TODO: Deprecated
+  projectPath,
 }
 app.locals = Object.assign({}, locals)
-// const loadedApps = appLoader(app, locals)
+appLoader(app, locals)
 
 // Native Apps
 app.get('/', index)
 app.get('/settings', settings)
 
 if (config.owner.username) {
-  app.get('/' + config.owner.username, profile)
+  app.get(`/${config.owner.username}`, profile)
 }
 
 
@@ -117,7 +123,7 @@ app.use((request, response) => {
   response.status(404)
 
   if (request.accepts('html')) {
-    response.render('404.jade', {page: 'error404', url: request.url})
+    response.render('404.pug', {page: 'error404', url: request.url})
   }
   else if (request.accepts('json')) {
     response.send({error: 'Not found'})

@@ -60,7 +60,7 @@ function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 }
 
 
-module.exports = function (rootApp, locals) {
+module.exports = (rootApp, locals) => {
   let appDirectories
 
   if (!fs.existsSync('apps')) {
