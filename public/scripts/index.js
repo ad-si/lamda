@@ -1,4 +1,7 @@
-/* globals rawTasks */
+/* globals rawTasks, defaultConfig */
+
+console.log(defaultConfig)
+
 
 const Vue = require('vue')
 const VueResource = require('vue-resource')
@@ -14,43 +17,7 @@ const app = new Vue({
   el: '#tasks',
   data: {
     tasks: rawTasks,
-    views: [
-      {
-        name: 'Overdue',
-        filter: task =>
-          !task.completed && task.dueDate
-            ? task.dueDate < new Date()
-            : false,
-        sort: (taskA, taskB) =>
-          taskA.dueDate && taskB.dueDate
-            ? taskA.dueDate > taskB.dueDate
-            : 0,
-        map: task => task,
-      },
-      {
-        name: 'With due date',
-        filter: task => !task.completed && Boolean(task.dueDate),
-      },
-      {
-        name: 'Next 10 days',
-        filter: task => {
-          const now = new Date()
-          const inTenDays = new Date()
-            .setDate(now.getDate() + 10)
-          return task.dueDate &&
-            (task.dueDate < inTenDays) &&
-            (now < task.dueDate)
-        },
-      },
-      {
-        name: 'Completed',
-        filter: task => task.completed,
-      },
-      {
-        name: 'Open',
-        filter: task => !task.completed,
-      },
-    ],
+    views: defaultConfig.views,
     currentViewName: 'Overdue',
   },
   computed: {

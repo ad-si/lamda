@@ -5,18 +5,19 @@ const express = require('express')
 const stylus = require('stylus')
 const errorHandler = require('errorhandler')
 const browserifyMiddleware = require('browserify-middleware')
+const config = require('./config')
 
 const tasks = require('./routes/tasks')
 const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = !module.parent
 
+// Define important directories
 const projectDirectory = __dirname
 const viewsDirectory = path.join(projectDirectory, 'views')
 const publicDirectory = path.join(projectDirectory, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
 const scriptsDirectory = path.join(publicDirectory, 'scripts')
-const tasksDirectoryName = 'Tasks'
 
 
 function setupRouting () {
@@ -37,18 +38,16 @@ if (runsStandalone) {
   const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  const userHome = require('user-home')
-  app.locals.basePath = path.join(userHome, tasksDirectoryName)
+  app.locals.basePath = config.directory
   app.locals.baseURL = ''
 
   const serveFavicon = require('serve-favicon')
-  const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
-  app.use(serveFavicon(faviconPath))
+  app.use(serveFavicon(config.faviconPath))
 
   setupRouting()
 
   app.get(
-    `/files/${tasksDirectoryName}/:fileName`,
+    `/files/${path.basename(config.directory)}/:fileName`,
     (request, response) => {
       const filePath = path.join(app.locals.basePath, request.params.fileName)
       response.sendFile(filePath)
@@ -71,10 +70,11 @@ if (runsStandalone) {
 
   if (isDevMode) app.use(errorHandler())
 
-  const port = 3000
   app.set('view engine', 'pug')
-  app.listen(port)
-  console.info(`App listens on http://localhost:${port}`)
+
+  app.listen(config.port, () => {
+    console.info(`App listens on http://localhost:${config.port}`)
+  })
 }
 else {
   module.exports = (locals) => {

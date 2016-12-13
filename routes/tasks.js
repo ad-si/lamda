@@ -3,6 +3,7 @@ const path = require('path')
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
 const momentFromString = require('@datatypes/moment').default
+const defaultConfig = require('../config')
 
 
 function alphabeticallyBy (attribute, order) {
@@ -94,7 +95,7 @@ module.exports = (request, response) => {
         reducedObject.creationDate = momentFromString(dateStringFromFilename)
         reducedObject.id = fileObject.relativePath
         reducedObject.absoluteFilePath = fileObject.absolutePath
-        
+
         return reducedObject
       })
       // .filter(reducedObject => !reducedObject.completed)
@@ -103,7 +104,22 @@ module.exports = (request, response) => {
     .then(tasks => {
       response.render('index', {
         page: 'tasks',
-        tasks: tasks,
+        tasks,
+        tasksString: JSON.stringify(tasks),
+        defaultConfigString: JSON
+          .stringify(
+            defaultConfig,
+            (key, value) => typeof value === 'function'
+              ? value.toString()
+              : value,
+            2
+          )
+          // Include functions as real functions and not as strings
+          // Arrow functions
+          .replace(/\:\s*\"(.+?)\=\>(.+?)\"\s*(\,|\})/g, ':$1 => $2$3')
+          // Normal functions
+          .replace(/\:\s*"function(.+?)"\s*(,|})/g, ':function$1$2')
+          .replace(/\\n/g, '\n')
       })
     })
     // eslint-disable-next-line no-console

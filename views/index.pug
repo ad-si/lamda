@@ -5,7 +5,10 @@ block styles
 
 
 block scripts
-  script!= 'var rawTasks = ' + JSON.stringify(tasks)
+  script.
+    var rawTasks = !{JSON.stringify(tasks)}
+    var defaultConfig = !{defaultConfigString}
+
   script(src=`${baseURL}/scripts/index.js`)
 
 
