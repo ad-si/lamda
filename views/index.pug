@@ -72,7 +72,8 @@ block content
             ) {{tag}}
 
           .positionRight
-            span.dueDate 📅 {{task.dueDateFormatted}}
+            span.dueDate(v-if='task.hasOwnProperty("dueDateFormatted")')
+              | 📅 {{task.dueDateFormatted}}
             button(@click='editFile(task.absoluteFilePath)') ✍
 
   //- if tasks
