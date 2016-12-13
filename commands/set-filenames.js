@@ -11,7 +11,7 @@ module.exports = {
     },
   },
   handler: (options) => {
-    const tasksPath = path.resolve(options.dir)
+    const tasksPath = path.resolve(options.directory)
     fsp
       .readdir(tasksPath)
       .then(paths => paths
@@ -41,7 +41,7 @@ module.exports = {
           const fileName = fileObject.data.created_at
             .replace(/:/g, '')
             .replace(/Z$/i, '')
-          const absoluteTargetPath = path.join(tasksPath, fileName)
+          const absoluteTargetPath = path.join(tasksPath, `${fileName}.yaml`)
           return fsp.move(fileObject.absolutePath, absoluteTargetPath)
         })
       )
