@@ -42,7 +42,7 @@
     "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
+    "eslint": "^3.12.1",
     "eslint-config-javascript": "^1.1.0"
   },
   "repository": {

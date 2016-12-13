@@ -50,7 +50,4 @@ catch (error) {
   if (!error.message.includes('no such file or directory')) console.error(error)
 }
 
-console.dir(config, {depth: null, colors: true})
-
-
 module.exports = config

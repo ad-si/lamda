@@ -1,8 +1,5 @@
 /* globals rawTasks, defaultConfig */
 
-console.log(defaultConfig)
-
-
 const Vue = require('vue')
 const VueResource = require('vue-resource')
 
