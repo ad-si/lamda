@@ -119,7 +119,7 @@ module.exports = (request, response) => {
           .replace(/\:\s*\"(.+?)\=\>(.+?)\"\s*(\,|\})/g, ':$1 => $2$3')
           // Normal functions
           .replace(/\:\s*"function(.+?)"\s*(,|})/g, ':function$1$2')
-          .replace(/\\n/g, '\n')
+          .replace(/\\n/g, '\n'),
       })
     })
     // eslint-disable-next-line no-console

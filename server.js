@@ -38,7 +38,7 @@ if (runsStandalone) {
   const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  app.locals.basePath = config.directory
+  app.locals.basePath = path.normalize(config.directory)
   app.locals.baseURL = ''
 
   const serveFavicon = require('serve-favicon')
@@ -55,7 +55,7 @@ if (runsStandalone) {
   )
 
   app.use('/open', (request, response) => {
-    const shellCommand = `edit ${request.path}`
+    const shellCommand = `edit "${path.normalize(decodeURI(request.path))}"`
 
     childProcess.exec(
       shellCommand,
