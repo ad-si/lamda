@@ -38,7 +38,8 @@ module.exports = {
           return fileObject
         })
         .map(fileObject => {
-          const fileName = fileObject.data.created_at
+          const fileName = new Date(fileObject.data.created_at)
+            .toISOString()
             .replace(/:/g, '')
             .replace(/Z$/i, '')
           const absoluteTargetPath = path.join(tasksPath, `${fileName}.yaml`)
