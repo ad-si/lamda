@@ -28,7 +28,10 @@ Example config file:
 
 ```yaml
 port: 1234,
-directory: ~/Dropbox/ProjectA/tasks
+directories:
+  - ~/Dropbox/tasks
+  - ~/Dropbox (MyCompany)/ProjectA/tasks
+
 views:
   - name: Overdue
     filter: !!js/function |

@@ -5,11 +5,14 @@ const projectDirectory = __dirname
 const publicDirectory = path.join(projectDirectory, 'public')
 const merge = require('deepmerge')
 const yaml = require('js-yaml')
+const untildify = require('untildify')
 
-
+const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
   port: 3000,
-  directory: path.join(userHome, 'Tasks'),
+  directories: [
+    path.join(userHome, 'Tasks'),
+  ],
   faviconPath: path.join(publicDirectory, 'images/favicon.ico'),
   views: [
     {
@@ -27,9 +30,23 @@ const defaults = {
   ],
 }
 
-const configDirectory = path.join(userHome, '.config/lamda')
-let config = {}
 
+function normalizeConfig (configObject) {
+  if (configObject.hasOwnProperty('directory')) {
+    configObject.directories = configObject.directories || []
+    configObject.directories.push(configObject.directory)
+    delete configObject.directory
+  }
+  // Delete duplicates
+  configObject.directories = Array.from(new Set(
+    configObject.directories
+      .map(directoryPath => untildify(directoryPath))
+  ))
+  return configObject
+}
+
+
+let config = {}
 config = merge(config, defaults)
 
 try {

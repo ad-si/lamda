@@ -38,21 +38,17 @@ if (runsStandalone) {
   const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  app.locals.basePath = path.normalize(config.directory)
   app.locals.baseURL = ''
+  app.locals.directories = config.directories
 
   const serveFavicon = require('serve-favicon')
   app.use(serveFavicon(config.faviconPath))
 
   setupRouting()
 
-  app.get(
-    `/files/${path.basename(config.directory)}/:fileName`,
-    (request, response) => {
-      const filePath = path.join(app.locals.basePath, request.params.fileName)
-      response.sendFile(filePath)
-    }
-  )
+  app.get('/files/*', (request, response) => {
+    response.sendFile(path.join('/', request.params[0]))
+  })
 
   app.use('/open', (request, response) => {
     const shellCommand = `edit "${path.normalize(decodeURI(request.path))}"`

@@ -39,22 +39,27 @@ function alphabeticallyBy (attribute, order) {
 
 
 module.exports = (request, response) => {
-  const tasksPath = request.app.locals.basePath
-
-  return fsp
-    .readdir(tasksPath)
-    .then(filePaths =>
-      filePaths.filter(filePath => /\.yaml$/i.test(filePath))
+  const fileListPromises = request.app.locals.directories
+    .map(directoryPath => fsp
+        .readdir(directoryPath)
+        .then(fileNames => fileNames
+          .map(fileName => path.join(directoryPath, fileName))
+        )
     )
+
+  Promise
+    .all(fileListPromises)
+    .then(fileLists => {
+      const filePaths = [].concat.apply([], fileLists)
+      return filePaths.filter(filePath => /\.yaml$/i.test(filePath))
+    })
     .then(filteredFilePaths => {
       const fileObjectPromises = filteredFilePaths
         .map(filePath => {
-          const absolutePath = path.join(tasksPath, filePath)
           return fsp
-            .readFile(absolutePath, 'utf-8')
+            .readFile(filePath, 'utf-8')
             .then(content => ({
-              relativePath: filePath,
-              absolutePath,
+              absoluteFilePath: filePath,
               content,
             }))
         })
@@ -89,12 +94,11 @@ module.exports = (request, response) => {
         }
 
         const dateStringFromFilename = path.basename(
-          fileObject.relativePath,
+          fileObject.absoluteFilePath,
           '.yaml'
         )
         reducedObject.creationDate = momentFromString(dateStringFromFilename)
-        reducedObject.id = fileObject.relativePath
-        reducedObject.absoluteFilePath = fileObject.absolutePath
+        reducedObject.id = fileObject.absoluteFilePath
 
         return reducedObject
       })
