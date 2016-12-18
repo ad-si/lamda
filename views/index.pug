@@ -33,7 +33,7 @@ block content
           cols=60
         ).
           task => {
-            task.createdAt.toDateString() === new Date().toDateString()
+            task.creationDate.toDateString() === new Date().toDateString()
           }
 
         br
@@ -58,15 +58,15 @@ block content
             @click='setCurrentView(view.name)'
           )
 
-      p {{filteredTasks.length}} Tasks:
+      p {{processedTasks.length}} Tasks:
       ul.tasks
         li.task(
-          v-for='task in filteredTasks'
-          v-bind:class='{completed: task.completed}'
+          v-for='task in processedTasks'
+          v-bind:class='{completed: task.isClosed}'
         )
           .positionLeft
-            input(type='checkbox' v-model='task.completed')
-            a(:href='`files/Tasks/${task.id}`') {{task.title}}
+            input(type='checkbox' v-model='task.isClosed')
+            a(:href='`files${task.id}`') {{task.title}}
             span.tag(
               v-for='tag in task.tags'
             ) {{tag}}
@@ -74,7 +74,7 @@ block content
           .positionRight
             span.dueDate(v-if='task.hasOwnProperty("dueDateFormatted")')
               | 📅 {{task.dueDateFormatted}}
-            button(@click='editFile(task.absoluteFilePath)') ✍
+            button(@click='editFile(task.id)') ✍
 
   //- if tasks
   //-   article

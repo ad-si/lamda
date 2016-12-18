@@ -2,6 +2,7 @@ const path = require('path')
 
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
+
 const momentFromString = require('@datatypes/moment').default
 const defaultConfig = require('../config')
 
@@ -20,6 +21,48 @@ function alphabeticallyBy (attribute, order) {
     if (first > second) return factor
     return 0
   }
+}
+
+function normalizeTask (task) {
+  if (!task.creationDate) task.creationDate = task.creation_date
+  if (!task.creationDate) task.creationDate = task.created_at
+  if (task.creationDate) {
+    task.creationDate = Date.parse(task.creationDate)
+    if (!Number.isNaN(task.creationDate)) {
+      task.creationDateFormatted = new Date(task.creationDate)
+        .toISOString()
+        .substr(0, 10)
+    }
+  }
+
+  if (!task.dueDate) task.dueDate = task.due
+  if (!task.dueDate) task.dueDate = task.due_to
+  if (!task.dueDate) task.dueDate = task.due_date
+  if (task.dueDate) {
+    task.dueDate = Date.parse(task.dueDate)
+    if (!Number.isNaN(task.dueDate)) {
+      task.dueDateFormatted = new Date(task.dueDate)
+        .toISOString()
+        .substr(0, 10)
+    }
+  }
+
+  if (
+    task.hasOwnProperty('completed') &&
+    !task.hasOwnProperty('state')
+  ) {
+    task.state = task.completed === true
+      ? 'closed'
+      : 'open'
+  }
+  delete task.completed
+
+  if (task.hasOwnProperty('state')) {
+    task.isOpen = task.state === 'open'
+    task.isClosed = task.state === 'closed'
+  }
+
+  return task
 }
 
 // function getKeyToDateMap (eventMap, reducedObject) {
@@ -100,7 +143,7 @@ module.exports = (request, response) => {
         reducedObject.creationDate = momentFromString(dateStringFromFilename)
         reducedObject.id = fileObject.absoluteFilePath
 
-        return reducedObject
+        return normalizeTask(reducedObject)
       })
       // .filter(reducedObject => !reducedObject.completed)
       .sort(alphabeticallyBy('creationDate', 'descending'))

@@ -10,6 +10,7 @@ const untildify = require('untildify')
 const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
   port: 3000,
+  tasksAreNormalized: true,
   directories: [
     path.join(userHome, 'Tasks'),
   ],
@@ -67,4 +68,6 @@ catch (error) {
   if (!error.message.includes('no such file or directory')) console.error(error)
 }
 
-module.exports = config
+module.exports = config.tasksAreNormalized
+  ? normalizeConfig(config)
+  : config

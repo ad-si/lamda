@@ -58,3 +58,16 @@ views:
         return !task.completed && Boolean(task.dueDate)
       }
 ```
+
+## Usage
+
+All task files get flattened and normalized before being passed to the renderer.
+A normalized task object looks like this:
+
+```yaml
+title: Buy milk
+description: Go to the mall and buy some milk.
+creationDate: 2015-03-18 09:37
+dueDate: 2016-09-22 19:55
+state: open # closed, in progress, …
+```
