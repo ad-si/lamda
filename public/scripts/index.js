@@ -23,8 +23,20 @@ const app = new Vue({
         view => view.name === this.currentViewName
       )
     },
-    filteredTasks: function () {
-      return this.normalizedTasks.filter(this.currentView.filter)
+    processedTasks: function () {
+      let processedTasks = this.tasks
+
+      if (this.currentView.filter) {
+        processedTasks = processedTasks.filter(this.currentView.filter)
+      }
+      if (this.currentView.sort) {
+        processedTasks = processedTasks.sort(this.currentView.sort)
+      }
+      if (this.currentView.map) {
+        processedTasks.map(this.currentView.map)
+      }
+
+      return processedTasks
     },
   },
   methods: {
