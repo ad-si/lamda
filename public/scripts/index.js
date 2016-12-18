@@ -15,7 +15,7 @@ const app = new Vue({
   data: {
     tasks: rawTasks,
     views: defaultConfig.views,
-    currentViewName: 'Overdue',
+    currentViewName: defaultConfig.views[0].name,
   },
   computed: {
     currentView: function () {
