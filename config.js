@@ -10,7 +10,6 @@ const untildify = require('untildify')
 const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
   port: 3000,
-  tasksAreNormalized: true,
   directories: [
     path.join(userHome, 'Tasks'),
   ],
@@ -47,13 +46,16 @@ function normalizeConfig (configObject) {
 }
 
 
-let config = {}
-config = merge(config, defaults)
+let config = {tasks: defaults}
 
 try {
   const fileContent = fs.readFileSync(path.join(configDirectory, 'lamda.yaml'))
   const lamdaConfig = yaml.load(fileContent)
-  config = merge(config, lamdaConfig.tasks)
+  config = merge(
+    config,
+    {lamda: lamdaConfig},
+    {arrayMerge: (sourceArray, destArray) => destArray}
+  )
 }
 catch (error) {
   if (!error.message.includes('no such file or directory')) console.error(error)
@@ -62,12 +64,14 @@ catch (error) {
 try {
   const fileContent = fs.readFileSync(path.join(configDirectory, 'tasks.yaml'))
   const tasksConfig = yaml.load(fileContent)
-  config = merge(config, tasksConfig)
+  config = merge(
+    config,
+    {tasks: tasksConfig},
+    {arrayMerge: (sourceArray, destArray) => destArray}
+  )
 }
 catch (error) {
   if (!error.message.includes('no such file or directory')) console.error(error)
 }
 
-module.exports = config.tasksAreNormalized
-  ? normalizeConfig(config)
-  : config
+module.exports = normalizeConfig(config.tasks)
