@@ -4,7 +4,7 @@ const yaml = require('js-yaml')
 
 module.exports = {
   command: 'set-filenames [directory]',
-  desc: 'Use `creationDate` key of yaml file to set filenames of tasks',
+  desc: 'Use `creationDate` key of yaml files to update their filenames',
   builder: {
     directory: {
       default: '.',
