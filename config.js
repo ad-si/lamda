@@ -7,6 +7,12 @@ const merge = require('deepmerge')
 const yaml = require('js-yaml')
 const untildify = require('untildify')
 
+function sortByDueDate (taskA, taskB) {
+  if (!taskA.dueDate && taskB.dueDate) return 1
+  if (taskA.dueDate && !taskB.dueDate) return -1
+  return taskA.dueDate - taskB.dueDate
+}
+
 const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
   port: 3000,
@@ -16,15 +22,17 @@ const defaults = {
   faviconPath: path.join(publicDirectory, 'images/favicon.ico'),
   views: [
     {
+      name: 'Open',
+      filter: task => !task.isClosed,
+      sort: sortByDueDate,
+    },
+    {
       name: 'Overdue',
       filter: task =>
-        !task.completed && task.dueDate
+        !task.isClosed && task.dueDate
           ? task.dueDate < new Date()
           : false,
-      sort: (taskA, taskB) =>
-        taskA.dueDate && taskB.dueDate
-          ? taskA.dueDate > taskB.dueDate
-          : 0,
+      sort: sortByDueDate,
       map: task => task,
     },
   ],
