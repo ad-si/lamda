@@ -41,19 +41,20 @@ careInstructions:
     - Iron at high temperature
     - Do not iron
 
-  - Cleaning
-    - Dry clean (Hydrocarbon solvent only (HCS))
-    - Gentle cleaning with hydrocarbon solvents
-    - Very gentle cleaning with hydrocarbon solvents
-    - Dryclean tetrachloroethylene (PCE) only
-    - Gentle cleaning with PCE
-    - Very gentle cleaning with PCE
-    - Do not dry clean
+  - ` ( ) ` - Cleaning
+    - ` (F) ` - Dry clean with hydrocarbon solvent only (HCS)
+    - `_(F)_` - Gentle cleaning with hydrocarbon solvents
+    - `=(F)=` - Very gentle cleaning with hydrocarbon solvents
+    
+    - ` (P) ` - Dry clean, any solvent except tetrachloroethylene
+    - `_(P)_` - Gentle cleaning with PCE
+    - `=(P)=` - Very gentle cleaning with PCE
+    - ` (x) ` - Do not dry clean
 
-  - Professional wet cleaning
-    - Gentle wet cleaning
-    - Very gentle wet cleaning
-    - Professional wet cleaning is not allowed
+    - ` (W) ` - Professional wet cleaning
+    - `_(W)_` - Gentle wet cleaning
+    - `=(W)=` - Very gentle wet cleaning
+    - ` (x) ` - Do not wet clean
 
   - Do not use fabric softener
   - Use mild detergent only
