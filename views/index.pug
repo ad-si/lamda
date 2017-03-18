@@ -14,55 +14,56 @@ block scripts
 
 block content
   article
-    form(action='#' method='post')
-      fieldset
-        input#newTask(
-          type='text'
-          name='title'
-          placeholder='Do this and that'
-        )
-        input.button(
-          type='submit'
-          value='Add'
-        )
-
-      fieldset
-        textarea#newFilter(
-          name='newFilter'
-          rows=3
-          cols=60
-        ).
-          task => {
-            task.creationDate.toDateString() === new Date().toDateString()
-          }
-
-        br
-
-        input#addFilterButton.button(
-          type='button'
-          value='Apply'
-        )
-
-        input#addViewButton.button(
-          type='button'
-          value='Add as new view'
-        )
-
     template
+      form(action='#' method='post' @submit.prevent='addNewTask()')
+        fieldset
+          input#newTask(
+            v-model='newTaskTitle'
+            type='text'
+            name='title'
+            placeholder='Do this and that'
+          )
+          input.button(
+            type='submit'
+            value='Add'
+          )
+
+        //- fieldset
+        //-   textarea#newFilter(
+        //-     name='newFilter'
+        //-     rows=3
+        //-     cols=60
+        //-   ).
+        //-     task => {
+        //-       task.creationDate.toDateString() === new Date().toDateString()
+        //-     }
+        //- 
+        //-   br
+        //- 
+        //-   input#addFilterButton.button(
+        //-     type='button'
+        //-     value='Apply'
+        //-   )
+        //- 
+        //-   input#addViewButton.button(
+        //-     type='button'
+        //-     value='Add as new view'
+        //-   )
+
       p {{views.length}} Views:
       ul.views
         li.view(v-for='view in views')
           input.button(
-            type='button'
-            v-bind:value='view.name'
+            type='button',
+            :value='view.name'
             @click='setCurrentView(view.name)'
           )
 
       p {{processedTasks.length}} Tasks:
       ul.tasks
         li.task(
-          v-for='task in processedTasks'
-          v-bind:class='{completed: task.isClosed}'
+          v-for='task in processedTasks',
+          :class='{completed: task.isClosed}'
         )
           .positionLeft
             input(type='checkbox' v-model='task.isClosed')
@@ -72,8 +73,14 @@ block content
             ) {{tag}}
 
           .positionRight
-            span.dueDate(v-if='task.hasOwnProperty("dueDateFormatted")')
-              | 📅 {{task.dueDateFormatted}}
+            span.dates
+              span.calendar 📅
+              span.creationDate(v-if='task.creationDateFormatted')
+                | {{task.creationDateFormatted}}
+              span.dueDate(v-if='task.dueDateFormatted')
+                small= ' due '
+                | {{task.dueDateFormatted}}
+            
             button(@click='editFile(task.id)') ✍
 
   //- if tasks

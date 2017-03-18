@@ -1,6 +1,7 @@
 const path = require('path')
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
+const Instant = require('@datatypes/moment').Instant
 
 module.exports = {
   command: 'set-filenames [directory]',
@@ -37,11 +38,24 @@ module.exports = {
           fileObject.data = yaml.safeLoad(fileObject.content)
           return fileObject
         })
-        .map(fileObject => {
-          const fileName = new Date(fileObject.data.created_at)
-            .toISOString()
-            .replace(/:/g, '')
-            .replace(/Z$/i, '')
+        .map((fileObject, index) => {
+          const creationDate = fileObject.data.created_at ||
+            fileObject.data.createdAt ||
+            fileObject.data.creationDate ||
+            fileObject.data.creation
+
+          const fileName = creationDate
+            ? new Instant(creationDate)
+              .toISOString()
+              .replace(
+                // TODO: Add flag for changing precision
+                // /T(\d{2}):(\d{2}).+$/i,
+                // `T$1$2_${index.toString(36)}`
+                /T(\d{2}):(\d{2}):(\d{2}).+$/i,
+                `T$1$2$3_${index.toString(36)}`
+              )
+            : `0000-00-00_${index.toString(36)}`
+
           const absoluteTargetPath = path.join(tasksPath, `${fileName}.yaml`)
           return fsp.move(fileObject.absolutePath, absoluteTargetPath)
         })

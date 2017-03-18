@@ -2,11 +2,15 @@ const path = require('path')
 const childProcess = require('child_process')
 
 const express = require('express')
+const bodyParser = require('body-parser')
 const stylus = require('stylus')
 const errorHandler = require('errorhandler')
 const browserifyMiddleware = require('browserify-middleware')
-const config = require('./config')
+const fsp = require('fs-promise')
+const yaml = require('js-yaml')
+const Instant = require('@datatypes/moment').Instant
 
+const config = require('./config')
 const tasks = require('./routes/tasks')
 const app = express()
 const isDevMode = app.get('env') === 'development'
@@ -29,7 +33,41 @@ function setupRouting () {
   app.use('/scripts', browserifyMiddleware(scriptsDirectory))
   app.use(express.static(publicDirectory))
   app.set('views', viewsDirectory)
-  app.get('/', tasks)
+  app
+    .route('/')
+    .get(tasks)
+    .post(
+      bodyParser.json(),
+      (request, response, next) => {
+        const nowISO = new Instant()
+          .toISOString()
+        const nowSecond = nowISO
+          .slice(0, 19)
+          .replace(/:/g, '')
+        const filePath = path.join(
+          // directories[0] is always the main directory
+          // TODO: Prompt the user where to store the task
+          request.app.locals.directories[0],
+          `${nowSecond}.yaml`
+        )
+        const nowMinute = nowISO
+          .slice(0, 16)
+          .replace('T', ' ')
+        const newTask = {
+          [nowMinute]: {
+            title: request.body.title,
+          },
+        }
+        console.info(`Create task "${filePath}"`)
+
+        fsp
+          .writeFile(filePath, yaml.safeDump(newTask))
+          .then(() => {
+            response.sendStatus(200)
+          })
+          .catch(next)
+      }
+    )
   app.get('/:taskView', tasks)
 }
 

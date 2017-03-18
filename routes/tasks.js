@@ -140,7 +140,17 @@ module.exports = (request, response) => {
           fileObject.absoluteFilePath,
           '.yaml'
         )
-        reducedObject.creationDate = momentFromString(dateStringFromFilename)
+
+        try {
+          reducedObject.creationDate = momentFromString(dateStringFromFilename)
+        }
+        catch (error) {
+          console.error(
+            `"${fileObject.absoluteFilePath}" has no valid file name`
+          )
+          reducedObject.creationDate = null
+        }
+
         reducedObject.id = fileObject.absoluteFilePath
 
         return normalizeTask(reducedObject)

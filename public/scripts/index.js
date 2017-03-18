@@ -16,6 +16,7 @@ const app = new Vue({
     tasks: rawTasks,
     views: defaultConfig.views,
     currentViewName: defaultConfig.views[0].name,
+    newTaskTitle: '',
   },
   computed: {
     currentView: function () {
@@ -46,6 +47,12 @@ const app = new Vue({
     editFile: function (absoluteFilePath) {
       this.$http
         .get(`/open${absoluteFilePath}`)
+        .catch(error => console.error(error))
+    },
+    addNewTask: function () {
+      const currentURL = new URL(window.location)
+      this.$http
+        .post(currentURL.pathname, {title: this.newTaskTitle})
         .catch(error => console.error(error))
     },
   },

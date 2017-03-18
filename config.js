@@ -15,7 +15,7 @@ function sortByDueDate (taskA, taskB) {
 
 const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
-  port: 3000,
+  port: 2188,
   directories: [
     path.join(userHome, 'Tasks'),
   ],
