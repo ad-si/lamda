@@ -12,9 +12,9 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/movies"
+    "url": "git+ssh://git@github.com/adius/movies"
   },
-  "homepage": "https://bitbucket.org/lamdaos/movies#readme",
+  "homepage": "https://github.com/adius/movies#readme",
   "scripts": {
     "test": "eslint .",
     "postinstall": "symlink-modules lamda-styles lamda-views"
@@ -23,8 +23,8 @@
     "better-path": "^0.2.0",
     "express": "^4.14.0",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
