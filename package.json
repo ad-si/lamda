@@ -1,8 +1,8 @@
 {
   "name": "lamda-views",
   "version": "0.1.1",
-  "description": "Views for LamdaOS",
-  "main": "layout.jade",
+  "description": "Views for Lamda",
+  "main": "layout.pug",
   "scripts": {
     "test": "pug --hierarchy --out build *.pug"
   },
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda-views.git"
+    "url": "git+ssh://git@bitbucket.org/adius/lamda-views.git"
   },
-  "homepage": "https://bitbucket.org/lamdaos/lamda-views#readme"
+  "homepage": "https://github.com/adius/lamda-views#readme"
 }
