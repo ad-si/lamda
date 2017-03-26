@@ -31,12 +31,13 @@
     "express": "^4.15.2",
     "fs-promise": "^2.0.0",
     "js-yaml": "^3.8.2",
-    "lamda-styles": "github:adius/lamda-styles",
-    "lamda-views": "github:adius/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "morgan": "^1.8.1",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.4.1",
     "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
     "untildify": "^3.0.2",
     "user-home": "^2.0.0",
     "vue": "^2.2.4",
@@ -49,11 +50,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "github:adius/tasks"
+    "url": "git+ssh://git@github.com/adius/tasks"
   },
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "github:adius/tasks",
+  "homepage": "https://github.com/adius/tasks",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
