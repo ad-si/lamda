@@ -1,6 +1,6 @@
 {
   "name": "sheetmusic",
-  "description": "Sheetmusic app for LamdaOS",
+  "description": "Sheetmusic app for Lamda",
   "version": "0.1.0",
   "main": "server.js",
   "scripts": {
@@ -15,8 +15,8 @@
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "lilyware": "^0.3.1",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
@@ -34,12 +34,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/sheetmusic"
+    "url": "git+ssh://git@github.com/adius/sheetmusic"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/sheetmusic#readme",
+  "homepage": "https://github.com/adius/sheetmusic#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
