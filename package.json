@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://adius@bitbucket.org/lamdaos/projects.git"
+    "url": "git+https://adius@bitbucket.org/adius/projects.git"
   },
   "keywords": [
     "lamda",
@@ -21,18 +21,17 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "express": "^4.14.0",
+    "express": "^4.14.1",
     "findit": "^2.0.0",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.6.1",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
-    "nodegit": "^0.16.0",
-    "serve-favicon": "^2.3.0",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles.git",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views.git",
+    "nodegit": "^0.17.0",
+    "pug": "^2.0.0-beta11",
+    "serve-favicon": "^2.4.0",
     "stylus": "^0.54.5",
     "user-home": "^2.0.0"
   },
-  "homepage": "https://bitbucket.org/lamdaos/projects#readme",
+  "homepage": "https://github.com/adius/projects#readme",
   "eslintConfig": {
     "root": true,
     "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
