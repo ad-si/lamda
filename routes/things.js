@@ -5,7 +5,7 @@ const url = require('url')
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
 const isImage = require('is-image')
-
+const Instant = require('@datatypes/moment').Instant
 // const imageResizer = require('image-resizer-middleware')
 
 const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
@@ -86,14 +86,23 @@ function callRenderer (response, things, view) {
   response.render('index', {
     page: 'things',
     things: things.sort((itemA, itemB) => {
+      let datetimeA = itemA.dateOfPurchase && itemA.dateOfPurchase !== 'Date'
+          ? itemA.dateOfPurchase
+          : itemA.datetime
+      let datetimeB = itemB.dateOfPurchase && itemB.dateOfPurchase !== 'Date'
+          ? itemB.dateOfPurchase
+          : itemB.datetime
 
-      const dateA = itemA.dateOfPurchase === 'Date' ? 0 : itemA.dateOfPurchase
-      const dateB = itemB.dateOfPurchase === 'Date' ? 0 : itemB.dateOfPurchase
+      datetimeA = new Instant(datetimeA)
+        .getTime()
+        ? new Instant(datetimeA)
+        : new Instant(0)
+      datetimeB = new Instant(datetimeB)
+        .getTime()
+        ? new Instant(datetimeB)
+        : new Instant(0)
 
-      itemA = new Date(dateA || 0)
-      itemB = new Date(dateB || 0)
-
-      return itemB - itemA
+      return datetimeB - datetimeA
     }),
     view: view,
     fortune: fortune,
@@ -115,13 +124,14 @@ module.exports = (options = {}) => {
         .filter(thingDir => !thingDir.startsWith('.'))
         .map(thingDir => {
           const thing = {
+            datetime: thingDir,
             images: [],
             directory: thingDir,
+            absoluteDirectory: path.join(thingsDir, thingDir),
           }
-          const absoluteThingDir = path.join(thingsDir, thingDir)
 
           return fsp
-            .readdir(absoluteThingDir)
+            .readdir(thing.absoluteDirectory)
             .then(files => {
               thing.files = files
               return thing
@@ -135,14 +145,25 @@ module.exports = (options = {}) => {
         return things.map(thing => {
           thing.images = thing.files.filter(isImage)
 
-          if (thing.files.indexOf('index.yaml') > 0) {
+          // TODO: Share with thing.js
+          const dataFileName = thing.files.includes('index.yaml')
+            ? 'index.yaml'
+            : thing.files.includes('data.yaml')
+              ? 'data.yaml'
+              : false
+
+          if (dataFileName) {
+            const filePath = path.join(thingsDir, thing.directory, dataFileName)
             return fsp
-              .readFile(
-                path.join(thingsDir, thing.directory, 'index.yaml')
-              )
+              .readFile(filePath)
               .then(fileContent => {
                 const thingData = yaml.safeLoad(fileContent)
                 return Object.assign(thing, thingData)
+              })
+              .catch(error => {
+                console.error(filePath)
+                console.error(error)
+                return thing
               })
           }
           else {

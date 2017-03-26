@@ -5,14 +5,20 @@ const isImage = require('is-image')
 
 module.exports = (options = {}) => {
   const {basePath} = options
-  
+
   return (request, response) => {
     const requestedThingPath = path.join(basePath, request.params.id)
     const files = fs.readdirSync(requestedThingPath)
     const images = files.filter(isImage)
 
     function renderPage () {
-      if (files.indexOf('index.yaml') === -1) {
+      const dataFileName = files.includes('index.yaml')
+        ? 'index.yaml'
+        : files.includes('data.yaml')
+          ? 'data.yaml'
+          : false
+
+      if (!dataFileName) {
         response.render('thing', {
           page: 'thing',
           thing: {
@@ -28,7 +34,7 @@ module.exports = (options = {}) => {
       }
       else {
         fs.readFile(
-          path.join(requestedThingPath, 'index.yaml'),
+          path.join(requestedThingPath, dataFileName),
           {encoding: 'utf-8'},
           (error, fileContent) => {
             if (error) throw error
