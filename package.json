@@ -16,6 +16,7 @@
     "request": "^2.79.0",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "main": "server.js",
