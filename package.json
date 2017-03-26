@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
   },
   "dependencies": {
     "@datatypes/moment": "^0.9.1",
@@ -21,6 +22,7 @@
     "serve-favicon": "^2.3.2",
     "shaven": "^1.1.0",
     "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
     "table-to-json": "^0.11.1",
     "user-home": "^2.0.0"
   },

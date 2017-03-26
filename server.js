@@ -5,7 +5,6 @@ const stylus = require('stylus')
 const imageResizer = require('image-resizer-middleware')
 const serveFavicon = require('serve-favicon')
 const errorHandler = require('errorhandler')
-const userHome = require('user-home')
 
 const things = require('./routes/things')
 const thing = require('./routes/thing')
@@ -44,19 +43,23 @@ function setupRouting () {
 
 if (runsStandalone) {
   const morgan = require('morgan')
+  const userHome = require('user-home')
+
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  app.locals.appPath = path.join(userHome, 'things')
-  app.locals.basePath = path.join(userHome, 'things')
-  app.locals.baseURL = ''
+  Object.assign(app.locals, {
+    basePath: userHome,
+    baseURL: '',
+    runsStandalone,
+    styles: [{
+      path: '/styles/dark.css',
+      id: 'themeLink',
+    }],
+  })
 
   const faviconPath = path.join(publicPath, 'images/favicon.ico')
   app.use(serveFavicon(faviconPath))
 
-  app.locals.styles = [{
-    path: '/styles/dark.css',
-    id: 'themeLink',
-  }]
   app.use(stylus.middleware({
     src: path.join(modulesPath, 'lamda-styles/themes'),
     dest: stylesPath,
@@ -75,14 +78,7 @@ if (runsStandalone) {
 }
 else {
   module.exports = (locals) => {
-    app.locals = Object.assign(
-      {},
-      locals,
-      {
-        appPath: path.join(userHome, 'things'),
-        baseURL: '/things',
-      }
-    )
+    app.locals = locals
     setupRouting()
     return app
   }

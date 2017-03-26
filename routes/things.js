@@ -83,7 +83,7 @@ function callRenderer (response, things, view) {
 
   things = things || []
 
-  response.render('index', {
+  response.render('things', {
     page: 'things',
     things: things.sort((itemA, itemB) => {
       let datetimeA = itemA.dateOfPurchase && itemA.dateOfPurchase !== 'Date'
@@ -111,7 +111,8 @@ function callRenderer (response, things, view) {
 
 
 module.exports = (options = {}) => {
-  const {baseURL, appPath: thingsDir} = options
+  const {baseURL, basePath} = options
+  const thingsDir = path.join(basePath, 'Things')
 
   return (request, response) => {
     const view = request.query.view === 'wide'

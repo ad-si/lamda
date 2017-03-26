@@ -1,4 +1,4 @@
-extends ../node_modules/lamda-views/layout
+extends ../linked_modules/lamda-views/layout
 
 block scripts
   script(src=`${baseURL}/node_modules/array.from/array-from.js`)
@@ -9,9 +9,7 @@ block styles
   link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
 
 block content
-
   div(class= view + 'View', )
-
     button.filter#all(title='Show all things'): span
         | All
 
@@ -57,7 +55,6 @@ block content
     br
 
     #thingsContainer
-
       if view == 'wide'
         for thing in things
           div
