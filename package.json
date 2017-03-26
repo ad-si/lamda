@@ -8,14 +8,15 @@
     "test": "npm run lint"
   },
   "dependencies": {
+    "@datatypes/moment": "^0.9.1",
     "express": "^4.14.0",
     "fs-promise": "^1.0.0",
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
     "javascript-styleguide": "^1.0.0",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "shaven": "^1.1.0",
@@ -25,7 +26,7 @@
   },
   "devDependencies": {
     "errorhandler": "^1.5.0",
-    "eslint": "^3.11.1",
+    "eslint": "^3.13.0",
     "eslint-config-javascript": "^1.1.0",
     "morgan": "^1.7.0"
   },
@@ -35,11 +36,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/things.git"
+    "url": "git+ssh://git@bitbucket.org/adius/things.git"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/lamdaos/things#readme",
+  "homepage": "https://github.com/adius/things#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
