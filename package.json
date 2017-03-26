@@ -9,8 +9,8 @@
   "dependencies": {
     "express": "^4.14.0",
     "feedparser": "~1.1.5",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/news.git"
+    "url": "git+ssh://git@bitbucket.org/adius/news.git"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/news#readme",
+  "homepage": "https://github.com/adius/news#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
