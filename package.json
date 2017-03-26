@@ -15,8 +15,8 @@
     "fastmatter": "^1.1.0",
     "js-yaml": "^3.7.0",
     "jszip": "^2.6.1",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "object-assign": "^4.0.1",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
@@ -35,12 +35,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/books"
+    "url": "git+ssh://git@github.com/adius/books"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://bitbucket.org/lamdaos/books#readme",
+  "homepage": "https://github.com/adius/books#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
