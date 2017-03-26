@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/adius/boilerplate#readme",
   "dependencies": {
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "symlink-modules": "^0.2.0"
   },
   "devDependencies": {
