@@ -16,17 +16,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/files.git"
+    "url": "git+ssh://git@github.com/adius/files"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/files#readme",
+  "homepage": "https://github.com/adius/files#readme",
   "dependencies": {
     "express": "^4.14.0",
     "file-formats": "gitlab:adius/file-formats",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "fs-promise": "^1.0.0",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "morgan": "^1.6.1",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
