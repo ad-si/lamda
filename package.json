@@ -18,12 +18,13 @@
     "fs-promise": "^1.0.0",
     "js-yaml": "^3.7.0",
     "json2csv": "^3.7.2",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "lowdb": "^0.14.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0",
     "world-countries": "^1.8.1",
     "ybdb": "github:adius/ybdb"
@@ -38,12 +39,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/contacts"
+    "url": "git+ssh://git@github.com/adius/contacts"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://bitbucket.org/lamdaos/contacts#readme",
+  "homepage": "https://github.com/adius/contacts#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
