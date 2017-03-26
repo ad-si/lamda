@@ -22,8 +22,8 @@
     "fs-promise": "^1.0.0",
     "inquirer": "^1.2.3",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "git+https://bitbucket.org/lamdaos/lamda-styles.git",
-    "lamda-views": "git+https://bitbucket.org/lamdaos/lamda-views.git",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles.git",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views.git",
     "moment": "^2.17.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
@@ -45,12 +45,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/events.git"
+    "url": "git+ssh://git@bitbucket.org/adius/events.git"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://bitbucket.org/lamdaos/events",
+  "homepage": "https://github.com/adius/events",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
