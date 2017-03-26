@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/lamdaos/lamda-styles.git"
+    "url": "git+ssh://git@bitbucket.org/adius/lamda-styles.git"
   },
-  "homepage": "https://bitbucket.org/lamdaos/lamda-styles#readme"
+  "homepage": "https://github.com/adius/lamda-styles#readme"
 }
