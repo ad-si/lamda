@@ -15,8 +15,8 @@
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
     "js-yaml": "^3.3.1",
-    "lamda-styles": "bitbucket:lamdaos/lamda-styles",
-    "lamda-views": "bitbucket:lamdaos/lamda-views",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.53.0",
@@ -33,11 +33,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "bitbucket:lamdaos/photos"
+    "url": "git+ssh://git@github.com/adius/photos"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/lamdaos/photos#readme",
+  "homepage": "https://github.com/adius/photos#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
