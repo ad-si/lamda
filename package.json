@@ -1,6 +1,6 @@
 {
   "name": "books",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "All your books in one place",
   "main": "server.js",
   "scripts": {
