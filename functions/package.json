@@ -8,7 +8,8 @@
     "@sendgrid/mail": "^6.1.4",
     "common-tags": "^1.4.0",
     "dropbox": "^2.5.11",
-    "js-yaml": "^3.10.0"
+    "js-yaml": "^3.10.0",
+    "lib": "^3.0.1"
   },
   "private": true,
   "stdlib": {

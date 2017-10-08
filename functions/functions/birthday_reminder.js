@@ -1,8 +1,8 @@
-const Dropbox = require('dropbox')
-const sendgrid = require('@sendgrid/mail')
-const yaml = require('js-yaml')
-const {stripIndent} = require('common-tags')
 const util = require('util')
+
+const lib = require('lib')
+const sendgrid = require('@sendgrid/mail')
+const {stripIndent} = require('common-tags')
 
 
 function getMonthAndDay (date) {
@@ -20,14 +20,14 @@ function getAge (birthDate) {
   if (typeof birthDate.toISOString !== 'function') return 0
 
   const now = new Date()
-  const age = now.getFullYear() - birthDate.getFullYear()
-  const monthDiff = now.getMonth() - birthDate.getMonth()
+  const age = now.getUTCFullYear() - birthDate.getUTCFullYear()
+  const monthDiff = now.getUTCMonth() - birthDate.getUTCMonth()
 
   if (
     monthDiff < 0 ||
     (
       monthDiff === 0 &&
-      now.getDate() < birthDate.getDate()
+      now.getUTCDate() < birthDate.getUTCDate()
     )
   ) {
     age--
@@ -45,8 +45,15 @@ function getMail ({recipient, name, age}) {
     Liebe Grüße!
   `
   const mail = {
+    from: {
+      name: 'Birthday Reminder',
+      email: 'birthday-reminder@stdlib.com',
+    },
     to: recipient,
-    from: 'birthday-reminder@stdlib.com',
+    replyTo: {
+      email: `${name}@example.com`,
+      name,
+    },
     subject: `${name} turns ${age} years old today`,
     text,
     html: text.replace(/\n/g, '<br>'),
@@ -62,32 +69,17 @@ function getMail ({recipient, name, age}) {
 
 
 function sendBirthdayReminder (mail) {
+  console.info(`Try to send birthday reminder for "${mail.replyTo.name}"`)
   sendgrid.setApiKey(process.env.sendgridApiKey)
   return sendgrid.send(mail)
 }
 
 
-function isYamlEntry (entry) {
-  return entry['.tag'] === 'file' &&
-    entry.name.endsWith('.yaml')
-}
-
-
-function fileToJson (file) {
-  const fileContent = Buffer
-    .from(file.fileBinary, 'binary')
-    .toString()
-
-  return yaml.safeLoad(fileContent)
-}
-
-
 function hasBirthdayToday (contact) {
-  if (!contact.birthday) return
-
-  const now = new Date()
-
-  return getMonthAndDay(contact.birthday) === getMonthAndDay(now)
+  const birthdayUnix = Date.parse(contact.birthday)
+  if (!birthdayUnix) return
+  return getMonthAndDay(new Date(birthdayUnix)) ===
+    getMonthAndDay(new Date())
 }
 
 
@@ -105,28 +97,11 @@ function contactToMail (contact) {
 
 
 async function loadFiles (context) {
-  const dropbox = new Dropbox({
-    accessToken: process.env.dropboxAccessToken,
-  })
-  const response = await dropbox.filesListFolder({path: '/Contacts'})
-
-  if (response.has_more) {
-    throw new Error('Not all files were loaded')
-  }
-
-  const files = await Promise.all(
-    response.entries
-      .filter(isYamlEntry)
-      .map(entry => dropbox
-        .filesDownload({path: entry.path_display})
-      )
-  )
-
-  console.info(`Found ${files.length} contacts`)
+  const getFromDropbox = lib[`${context.service.identifier}.api.dropbox`]
+  const contacts = await getFromDropbox('/Contacts')
 
   return await Promise.all(
-    files
-      .map(fileToJson)
+    contacts
       .filter(hasBirthdayToday)
       .map(contactToMail)
       .map(sendBirthdayReminder)
@@ -140,18 +115,14 @@ async function checkAndSend (context, counter) {
     return 'All contacts have been checked'
   }
   catch (error) {
-    console.error(`Try number ${counter} failed`)
-    console.error(
-      util.inspect(error, {colors: true, depth: null})
-    )
+    counter -= 1
 
-    if (counter) {
-      counter -= 1
-      return checkAndSend(context, counter)
-    }
-    else {
-      return 'An error occured'
-    }
+    console.error(`Try failed. Try ${counter} more times.`)
+    console.error(util.inspect(error, {colors: true, depth: null}))
+
+    return counter
+      ? checkAndSend(context, counter)
+      : 'An error occured'
   }
 }
 
