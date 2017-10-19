@@ -1,2 +1,4 @@
-/node_modules
+/build
+/elm-stuff
 /env.json
+/node_modules

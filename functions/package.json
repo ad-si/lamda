@@ -1,6 +1,6 @@
 {
   "name": "lamda",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The distributed personal computing platform",
   "author": "adius <stdlib@ad-si.com>",
   "main": "functions/__main__.js",
@@ -9,7 +9,9 @@
     "common-tags": "^1.4.0",
     "dropbox": "^2.5.11",
     "js-yaml": "^3.10.0",
-    "lib": "^3.0.1"
+    "lib": "^3.0.1",
+    "pug": "^2.0.0-rc.4",
+    "world-countries": "^1.8.1"
   },
   "private": true,
   "stdlib": {

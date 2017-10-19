@@ -1,0 +1,139 @@
+extends ../../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/flags16.css`)
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+//- block scripts
+//-   script!= 'var contacts = ' + JSON.stringify(contacts)
+//-   script(src=`${baseURL}/scripts/main.js`)
+
+block content
+  if !contacts || contacts.length === 0
+    .getting-started
+      if !contacts
+        p.
+          You do not have a "contacts" directory yet.
+          In order to get started create a "contacts" directory
+          in your Lamda root directory.
+
+      else
+        p
+          | You do not have any "contacts" yet.
+          br
+          | In order to get started add a
+          | &lt;timestamp&gt;.yaml file for each contact
+          | to your "contacts" directory.
+
+    p Each yaml file must be structured like this:
+
+    pre: code.
+      2015-01-01 12:38:
+        name: John Doe
+        birthday: 1983-08-26
+        tags:
+          - friend
+
+      2015-03-19 13:09:
+        email: john.doe-new@site.org
+
+  else
+    p#summary.
+      You have #{contacts.length} contacts.
+      (#{percentageOfMale}% Male)`
+
+    form(action='' method='post')
+      input(type='hidden' inputmode='verbatim' placeholder='IDs of contacts')
+
+    button#selectAll Select all
+    button#selectNone.hidden Select none
+    a#export.button.hidden(href=`${baseURL}/export?format=csv`).
+      Export selected as CSV
+
+    if errors && errors.length > 0
+      .errors
+        for error in errors
+          .alert-danger= error.message
+    table
+      thead
+        tr
+          // Print available keys in a sorted order
+          each key in sortedKeys
+            if availableKeys.indexOf(key) !== -1
+              if key !== 'gender'
+                th= key.toUpperCase()
+      tbody
+        for contact in contacts
+          if contact
+            tr(class=contact.gender id=contact.id)
+              for key in sortedKeys
+                if Object.keys(contact).indexOf(key) !== -1
+                  - var value = contact[key]
+                  - var title = (typeof value == 'string') ? value : null
+                  td(
+                    class = key
+                    title = title
+                  )
+                    if key === 'name'
+                      - var nickname = contact.nickname
+                      a(href='/files/Contacts/' + contact.id + '.yaml')= value
+                      = ' '
+                      if nickname
+                        small= '(' + nickname + ')'
+
+                    else if key === 'links'
+                      ul
+                        for link in contact.links
+                          li: a.provider(
+                            href=link.url
+                            target='_blank'
+                            class=link.provider
+                            title='Open website ' + link.url
+                          )
+                            = link.provider
+
+                    else if key === 'phones'
+                      if contact.phones.length === 0
+                        a(href='tel:' + value)= value
+                      else
+                        ul
+                          for phone in contact.phones
+                            li: a(href='tel:' + phone.number)= phone.number
+
+                    else if key === 'emails'
+                      ul
+                        for email in contact.emails
+                          - var provider = email.value.split('@')[1].split('.')
+                          - Array.isArray(provider) ? provider.pop() : ''
+                          li: a(
+                            href=`mailto:${email.value}`
+                            target='_blank'
+                            class=`provider ${provider.pop()}`
+                            title='Send an email to ' + email.value
+                          )
+                            = email.value
+
+                    else if key === 'birthday'
+                      = value.toISOString().substr(0,10) + ' '
+                      small= `(${contact.age})`
+
+                    else if key === 'address' && value
+                      a(
+                        href=contact.mapLink
+                        target='_blank'
+                        title=`Open ${value.country}, ${contact.prettyAddress}
+                          in OpenStreetMap`
+                      )
+                        if value.country
+                          span.country(
+                            class=value.countryCode
+                            title=value.country
+                          )
+                            = value.country + ', '
+                        span
+                          = contact.prettyAddress
+
+                    else
+                      =contact[key]
+                else
+                  td

@@ -1,6 +1,8 @@
 const Dropbox = require('dropbox')
 const yaml = require('js-yaml')
 
+const developmentMode = true
+
 
 function isYamlEntry (entry) {
   return entry['.tag'] === 'file' &&
@@ -23,6 +25,13 @@ function fileToJson (file) {
 * @returns {array} Array of objects
 */
 module.exports = async (path) => {
+  if (developmentMode) {
+    return [
+      {name: 'John Doe'},
+      {name: 'Anna Smith'},
+    ]
+  }
+
   console.info(`Load YAML files from Dropbox at "${path}"`)
 
   const dropbox = new Dropbox({
