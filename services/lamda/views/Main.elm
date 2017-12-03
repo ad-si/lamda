@@ -3,6 +3,29 @@ module Main exposing (main)
 import Html exposing (Html, text, div, p, table, tr, td, th, thead, tbody)
 import Http
 import Types exposing (..)
+import Json.Decode as Decode
+import Dict
+
+
+type JsVal
+    = JsString String
+    | JsInt Int
+    | JsFloat Float
+    | JsArray (List JsVal)
+    | JsObject (Dict String JsVal)
+    | JsNull
+
+
+jsValDecoder : Decoder JsVal
+jsValDecoder =
+    Decode.oneOf
+        [ Decode.map JsString Decode.string
+        , Decode.map JsInt Decode.int
+        , Decode.map JsFloat Decode.float
+        , Decode.list (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsArray
+        , Decode.dict (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsObject
+        , Decode.null JsNull
+        ]
 
 
 main : Html msg
@@ -26,7 +49,7 @@ getContacts =
             "/adius/lamda/api/dropbox?path=Contacts"
 
         request =
-            Http.get contactsUrl decodeContacts
+            Http.get contactsUrl jsValDecoder
     in
         Http.send ContactsLoaded request
 

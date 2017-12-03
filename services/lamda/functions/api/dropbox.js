@@ -1,7 +1,9 @@
+const util = require('util')
+
 const Dropbox = require('dropbox')
 const yaml = require('js-yaml')
 
-const developmentMode = true
+const developmentMode = false
 
 
 function isYamlEntry (entry) {
@@ -19,16 +21,17 @@ function fileToJson (file) {
 }
 
 
-/**
-* Load directory containting YAML files from Dropbox
-* @param {string} path Path to directory in Dropbox
-* @returns {array} Array of objects
-*/
-module.exports = async (path) => {
+async function loadData (path) {
   if (developmentMode) {
     return [
-      {name: 'John Doe'},
-      {name: 'Anna Smith'},
+      {
+        name: 'John Doe',
+        birthday: new Date('1963-05-14'),
+      },
+      {
+        name: 'Anna Smith',
+        birthday: new Date('1985-10-03'),
+      },
     ]
   }
 
@@ -56,4 +59,33 @@ module.exports = async (path) => {
   return await Promise.all(
     files.map(fileToJson)
   )
+}
+
+
+async function tryToLoadData (counter, path) {
+  try {
+    const data = await loadData(path)
+    return data
+  }
+  catch (error) {
+    counter -= 1
+
+    console.error(`Try failed. Try ${counter} more times.`)
+    console.error(util.inspect(error, {colors: true, depth: null}))
+
+    return counter
+      ? tryToLoadData(counter, path)
+      : 'An error occured'
+  }
+}
+
+
+/**
+* Load directory containting YAML files from Dropbox
+* @param {string} path Path to directory in Dropbox
+* @returns {array} Array of objects
+*/
+module.exports = async (path) => {
+  const counter = 10
+  return await tryToLoadData(counter, path)
 }

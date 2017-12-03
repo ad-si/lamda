@@ -1,5 +1,3 @@
-const util = require('util')
-
 const lib = require('lib')
 const sendgrid = require('@sendgrid/mail')
 const {stripIndent} = require('common-tags')
@@ -17,10 +15,16 @@ function getMonthAndDay (date) {
 function getAge (birthDate) {
   // Taken from https://stackoverflow.com/a/7091965/1850340
 
+  if (typeof birthDate === 'string') {
+    const parsed = Date.parse(birthDate)
+    if (parsed) birthDate = new Date(parsed)
+    else return 0
+  }
+
   if (typeof birthDate.toISOString !== 'function') return 0
 
   const now = new Date()
-  const age = now.getUTCFullYear() - birthDate.getUTCFullYear()
+  let age = now.getUTCFullYear() - birthDate.getUTCFullYear()
   const monthDiff = now.getUTCMonth() - birthDate.getUTCMonth()
 
   if (
@@ -30,7 +34,7 @@ function getAge (birthDate) {
       now.getUTCDate() < birthDate.getUTCDate()
     )
   ) {
-    age--
+    age -= 1
   }
 
   return age
@@ -68,10 +72,11 @@ function getMail ({recipient, name, age}) {
 }
 
 
-function sendBirthdayReminder (mail) {
+async function sendBirthdayReminder (mail) {
   console.info(`Try to send birthday reminder for "${mail.replyTo.name}"`)
   sendgrid.setApiKey(process.env.sendgridApiKey)
-  return sendgrid.send(mail)
+  await sendgrid.send(mail)
+  return `Birthday reminder for "${mail.replyTo.name}" was sent`
 }
 
 
@@ -96,7 +101,11 @@ function contactToMail (contact) {
 }
 
 
-async function loadFiles (context) {
+/**
+* Checks which contacts have birthday and sends you a reminder
+* @returns {array}
+*/
+module.exports = async (context) => {
   const getFromDropbox = lib[`${context.service.identifier}.api.dropbox`]
   const contacts = await getFromDropbox('/Contacts')
 
@@ -106,32 +115,4 @@ async function loadFiles (context) {
       .map(contactToMail)
       .map(sendBirthdayReminder)
   )
-}
-
-
-async function checkAndSend (context, counter) {
-  try {
-    await loadFiles(context)
-    return 'All contacts have been checked'
-  }
-  catch (error) {
-    counter -= 1
-
-    console.error(`Try failed. Try ${counter} more times.`)
-    console.error(util.inspect(error, {colors: true, depth: null}))
-
-    return counter
-      ? checkAndSend(context, counter)
-      : 'An error occured'
-  }
-}
-
-
-/**
-* Checks which contacts have birthday and sends you a reminder
-* @returns {string}
-*/
-module.exports = async (context) => {
-  let counter = 10
-  return await checkAndSend(context, counter)
 }
