@@ -1,0 +1,19 @@
+{
+  "name": "bike",
+  "version": "0.1.0",
+  "description": "Rent a nextbike",
+  "author": "adius <stdlib@ad-si.com>",
+  "main": "functions/rent.js",
+  "dependencies": {
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "tough-cookie": "^2.3.3"
+  },
+  "private": true,
+  "stdlib": {
+    "build": "faaslang",
+    "name": "adius/bike",
+    "timeout": 10000,
+    "publish": false
+  }
+}
