@@ -80,9 +80,9 @@ async function rentBike (iframeUrl, sessionId, bikeId) {
 
 /**
 * Get the keycode of the bike lock
-* @param {string} bikeId ID of bicycle which shall be rented
-* @param {string} token Authentication token
-* @returns {string}
+* @param {String} bikeId ID of bicycle which shall be rented
+* @param {String} token Authentication token
+* @returns {Object}
 */
 module.exports = async (bikeId, token) => {
   if (token !== process.env.nextbikeToken) {
