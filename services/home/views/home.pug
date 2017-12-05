@@ -13,53 +13,95 @@ head
 
       body
         font-family Helvetica, sans-serif
+        font-size 15px
 
-      .wrapper
+      main
         margin 0 auto
 
       .tile
         display inline-block
-        padding 1em
+        padding 0.8em
         margin 0 1em 1em 0
         border 1px solid lightgray
         border-radius 3px
         background-color hsl(0, 0, 95%)
 
+      a.link
+        text-decoration none
+        color inherit
+
+      .link
+        .icon:not(:empty)
+          margin-right 0.5em
+
+      fieldset
+        border none
+        padding 0
+
+        legend
+          padding-left 0
+          font-weight 700
+          margin-bottom 0.5em
+
+        .table
+          display table
+
+        .row
+          display table-row
+
+        label
+          display table-cell
+          text-align right
+          padding-right 0.5em
+
+        input
+          display table-cell
+
+
       @media screen and (min-width 40em)
-        .wrapper
+        main
           width 40em
 
 body
-  .wrapper
-    h1 Welcome to #{name}'s Home
+  main
+    section
+      h1 Links
 
-    h2 Bookmarks
+      for link in links
+        -
+          const style = !link.background_color
+            ? ''
+            : `background-color: ${link.background_color}; border: none;`
 
-    for bookmark in bookmarks
-      .tile
-        a(href=bookmark.url)= bookmark.title
+        a.tile.link(href=link.url, style=style)
+          if link.icon
+            span.icon(style=`color:${link.font_color}`)= link.icon
+          span(style=`color:${link.font_color}`)= link.title
 
+    section
+      h1 Forms
 
-    h2 Forms
+      for form in forms
+        form.tile(action=form.url method='get')
+          fieldset
+            legend= form.title
+            .table
+              for value, fieldName in form.fields
+                if value.type == 'submit'
+                  br
+                  input(
+                    type='submit'
+                    value='Submit'
+                  )
 
-    for form in forms
-      form.tile(action=form.url method='get')
-        for value, fieldName in form.fields
-          if value.type == 'submit'
-            input(
-              type='submit'
-              value='Submit'
-            )
+                else
+                  .row
+                    label(for=value.name)
+                      = value.name
 
-          else
-            label(for=value.name)
-              = value.name + ': '
-
-            input(
-              id=value.name
-              name=value.name
-              type=value.type
-              placeholder=value.placeholder
-            )
-
-          br
+                    input(
+                      id=value.name
+                      name=value.name
+                      type=value.type
+                      placeholder=value.placeholder
+                    )
