@@ -12,7 +12,7 @@ async function getHtml () {
   const dataFilePath = path.resolve(__dirname, '../data.yaml')
   const dataYaml = await fse.readFile(dataFilePath)
   const data = yaml.safeLoad(dataYaml)
-  const html = compiledTemplate(data.home)
+  const html = compiledTemplate(data)
 
   return html
 }

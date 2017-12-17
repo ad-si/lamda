@@ -18,10 +18,13 @@ head
       main
         margin 0 auto
 
+      #links
+        padding-top 0.5em
+
       .tile
         display inline-block
-        padding 0.8em
-        margin 0 1em 1em 0
+        padding 0.6em 0.8em
+        margin 0 0.6em 0.6em 0
         border 1px solid lightgray
         border-radius 3px
         background-color hsl(0, 0, 95%)
@@ -64,9 +67,7 @@ head
 
 body
   main
-    section
-      h1 Links
-
+    section#links
       for link in links
         -
           const style = !link.background_color
@@ -78,7 +79,7 @@ body
             span.icon(style=`color:${link.font_color}`)= link.icon
           span(style=`color:${link.font_color}`)= link.title
 
-    section
+    section#forms
       h1 Forms
 
       for form in forms
