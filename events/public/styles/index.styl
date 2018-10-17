@@ -1,0 +1,84 @@
+#events
+  padding 1em 0 0 0
+
+  ul
+    font-size: 0.75em
+
+  li
+    line-height 2em
+    display flex
+    list-style none
+    margin-bottom 2px
+
+  #today .date
+    background-color rgba(200,80,60, 0.2)
+
+  .cursor
+    background-color rgba(200,80,60, 0.5)
+    position absolute
+    top 0
+    display block
+    width 2px
+    height 100%
+
+  .monday
+    margin-top 0.8em
+
+  .date
+    display inline-block
+    background-color rgba(black, 0.2)
+    padding 0 0 0 0.5em
+    margin-right 2px
+    flex-basis auto
+    flex-grow 0
+    span:last-of-type
+      display inline-block
+      width 1.2em
+      padding-right 0.4em
+      text-align right
+      opacity 0.5
+
+  .day
+    position relative
+    display flex
+    flex-flow column
+    flex-grow 1
+    box-shadow inset 2px 0 0 0 rgba(black, 0.2)
+    background-image: repeating-linear-gradient(
+      to right, transparent, transparent 2px,
+      rgba(black, 0.2) 2px, rgba(black, 0.2) 12.5%
+    )
+    // TODO: Replace with following gradient when browser support is fixed
+    // linear-gradient(
+    //  to right, transparent, transparent 50%,
+    //  white 50%, white calc(50% + 1px),
+    //  transparent calc(50% + 1px), transparent
+    // )
+    &.multiple-lanes
+      line-height 1.8em
+      .lane:not(:last-of-type)
+        margin-bottom 2px
+
+  .lane
+    display flex
+    flex-flow row
+
+
+  .event
+    white-space nowrap
+    background-color rgba(0, 0, 0, 0.3)
+    overflow hidden
+    flex-basis 0
+
+    &:hover
+      overflow visible
+
+    a
+      margin-left 4px
+    &.secondary
+      color rgb(100, 100, 100)
+
+
+  .empty
+    background-color transparent !important
+    background-image none !important
