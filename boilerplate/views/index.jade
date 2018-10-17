@@ -1,0 +1,9 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+block content
+  each datum in data
+    div
+      p= datum.title
