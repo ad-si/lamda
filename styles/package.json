@@ -1,0 +1,24 @@
+{
+  "name": "lamda-styles",
+  "version": "0.1.1",
+  "description": "Styles for Lamda",
+  "main": "screen.styl",
+  "keywords": [
+    "lamda"
+  ],
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "open-iconic": "^1.1.1",
+    "symlink-modules": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "symlink-modules open-iconic"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/adius/lamda-styles.git"
+  },
+  "homepage": "https://github.com/adius/lamda-styles#readme"
+}
