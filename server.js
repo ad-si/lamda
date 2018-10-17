@@ -25,11 +25,15 @@ function setupRouting () {
 
 if (runsStandalone) {
   const morgan = require('morgan')
+  const userHome = require('user-home')
+
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  const userHome = require('user-home')
-  app.locals.basePath = userHome
-  app.locals.baseURL = ''
+  Object.assign(app.locals, {
+    basePath: userHome,
+    baseURL: '',
+    runsStandalone,
+  })
 
   app.locals.styles = [{
     path: '/styles/dark.css',

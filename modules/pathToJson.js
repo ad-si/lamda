@@ -81,6 +81,54 @@ module.exports = (baseURL, file) => {
     return info
   }
 
+  // TODO: Finish implementation
+  // const fsp = require('fs-promise')
+  //
+  // function doItAsync (filename) {
+  //   const info = {
+  //     path: filename,
+  //     name: path.basename(filename),
+  //     directory: path.dirname(filename),
+  //   }
+  //
+  //   return fsp
+  //     .lstat(filename)
+  //     .then(stats => {
+  //       if (stats.isDirectory()) {
+  //         currentDepth++
+  //
+  //         return fsp
+  //           .readdir(filename)
+  //           .then(children => {
+  //             info.type = 'directory'
+  //             info.icon = directoryIcon
+  //             info.children = children
+  //               .map(child => {
+  //                 if (child === nodes[currentDepth]) {
+  //                   return doIt(filename + '/' + child)
+  //                 }
+  //                 else {
+  //                   return createFileObject(child, filename)
+  //                 }
+  //               })
+  //           })
+  //
+  //       }
+  //       else {
+  //         currentDepth++
+  //         info = createFileObject(info.name, info.directory)
+  //         info.active = true
+  //       }
+  //
+  //       if (currentDepth > maxDepth) {
+  //         maxDepth = currentDepth
+  //       }
+  //
+  //       currentDepth--
+  //       return info
+  //     })
+  // }
+
   const returnObject = doIt(baseURL)
 
   returnObject.maxDepth = maxDepth
