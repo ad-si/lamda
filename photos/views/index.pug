@@ -1,0 +1,30 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet', href=`${baseURL}/styles/index.css`)
+
+block content
+  if years && years.length > 0
+    for year in years
+      div
+        h2: a(href=year.url)= year.year
+        hr
+        if year.months
+          each month in year.months
+            div.month
+              p: a(href=month.url)= month.month
+              //p.small= event.date
+  else
+    p No photos available
+
+  if month
+    h2
+      a(href=yearUrl)= year
+      | -
+      = month
+    hr
+
+    each event in events
+      div.event
+        p: a(href=event.url)= event.name
+        p.small= event.date
