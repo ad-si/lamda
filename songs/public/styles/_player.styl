@@ -1,0 +1,134 @@
+#player
+  border-top 1px solid rgba(127, 127, 127, 0.4)
+  background-color rgba(127, 127, 127, 0.2)
+  color fgMuted
+  font-size 12px
+
+  > *
+    display inline-block
+    vertical-align middle
+  button
+    background none
+    color inherit
+  #play
+    border 1px solid fg
+    height 30px
+    line-height 30px
+    width 30px
+    margin 0 5px
+    font-size: 16px
+    border-radius 15px
+    position relative
+    &.playing:before
+      content "\2759\2759"
+      position absolute
+      top -1px
+      left: 9px
+    &.paused:before
+      content "\25B6"
+      position absolute
+      top 0
+      left: 8px
+
+  #previous,
+  #next
+    border-radius 15px
+    height 30px
+    margin 0 5px
+    width 30px
+    &:before
+      letter-spacing: -5px
+      position: relative
+      bottom: 2px
+      right 6px
+
+  #previous:before
+    content: "\25C0\25C0"
+  #next
+    margin-right: 2em
+    &:before
+      content: "\25B6\25B6"
+
+
+  .inputBar
+    display: inline-block
+    width: 300px
+    height: 8px
+    border-radius: 4px
+    background-image: linear-gradient(rgb(40,180,220), rgb(20, 120, 140))
+    box-shadow: 0px 1px rgba(255,255,255,0.2), 0px -1px black
+    .handler
+      height: 8px
+      width: 8px
+      border-radius: 4px
+      background-image: linear-gradient(rgb(20,80,90), rgb(20, 50, 40))
+
+  #playerInfo
+    margin-right 2em
+
+  .progress
+    margin-right 2em
+    #progress
+      width: 300px
+      margin: 0 4px
+    #volume
+      width: 120px
+      margin: 0 4px
+
+    #time,
+    #duration
+      vertical-align: middle
+
+
+  .controls
+    margin-right 2em
+
+    button
+      margin-right 0.4em
+
+    #queue
+      z-index: 10
+      vertical-align: -20%
+      font-size: 16px
+      width: 30px
+      height: 30px
+      &:before
+        content: "\2630"
+
+    #repeat:before
+      content: '\21BA'
+      font-size: 20px
+      font-weight: 900
+      vertical-align: middle
+
+    #shuffle:before
+      content: '\21C4'
+      font-size: 20px
+      font-weight: 900
+      vertical-align: middle
+
+    #share:before
+      content: '\2709'
+      font-size: 20px
+      font-weight: 900
+      vertical-align: middle
+
+
+  #currentQueue
+    top: 72px
+    left: 385px
+    width: 200px
+    height: 200px
+    &:before
+      top: -24px
+      right: 28px
+    &:after
+      top: -20px
+      right: 30px
+
+  #loud,
+  #mute
+    height: 18px
+    width: 18px
+    border-radius: 10px
+    vertical-align: middle
