@@ -38,6 +38,6 @@ module.exports = (contactsPath) => fsp
     }
     // error.message = capitalize(error.message)
     // errors.push(error)
-    console.error(error.message)
+    console.error(error.stack)
     return null
   })
