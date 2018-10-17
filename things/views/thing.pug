@@ -1,0 +1,42 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet', href=`${baseURL}/styles/index.css`)
+
+block content
+  h2= thing.name
+  hr
+
+  dl
+    each value, key in thing
+      if key !== 'id' && key !== 'images' && key !== 'name'
+        dt= String(key)[0].toUpperCase() + key.slice(1) + ':'
+
+        if key == 'urls'
+          - const urls = [].concat(value)
+          for url in urls
+            dd: a(href=url)= url
+            br
+
+        else if (value instanceof Date)
+          dd= value.toJSON().replace('T',' ').replace('Z','')
+
+        else if typeof value == 'object'
+          dd!= JSON.stringify(value, null, '<br>').replace(/"/g, '').slice(6,-1)
+
+        else
+          dd= value
+
+        br
+
+  hr
+
+  if thing.images
+    .images
+      each imagePath in thing.images
+        if imagePath
+          a(href=imagePath): img(
+            src=imagePath
+            alt='Photo of ' + thing.name
+            title='Photo of ' + thing.name
+          )
