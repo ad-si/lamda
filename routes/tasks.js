@@ -47,11 +47,15 @@ function normalizeTask (task) {
     }
   }
 
-  if (
-    task.hasOwnProperty('completed') &&
+  const stateIsInferable =
+    (
+      task.hasOwnProperty('completed') ||
+      task.hasOwnProperty('obsolete')
+    ) &&
     !task.hasOwnProperty('state')
-  ) {
-    task.state = task.completed === true
+
+  if (stateIsInferable) {
+    task.state = task.completed || task.obsolete
       ? 'closed'
       : 'open'
   }
@@ -90,9 +94,21 @@ module.exports = (request, response) => {
         )
     )
 
+  // const database = new Ybdb({
+  //   storagePath: path.join(__dirname, 'fixtures/contact-files'),
+  // })
+  //
+  // database
+  //   .init()
+  //   .then(initializedDb => initializedDb
+  //     .getState()
+  //     .Tasks
+
   Promise
     .all(fileListPromises)
     .then(fileLists => {
+      console.log(fileLists)
+
       const filePaths = [].concat.apply([], fileLists)
       return filePaths.filter(filePath => /\.yaml$/i.test(filePath))
     })
