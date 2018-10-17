@@ -1,0 +1,47 @@
+{
+  "name": "books",
+  "version": "0.1.0",
+  "description": "All your books in one place",
+  "main": "server.js",
+  "scripts": {
+    "test": "eslint --ignore-pattern linked_modules .",
+    "postinstall": "symlink-modules lamda-styles lamda-views epubjs"
+  },
+  "dependencies": {
+    "epub-metadata": "^0.2.0",
+    "epubjs": "^0.2.15",
+    "exif2": "0.0.1",
+    "express": "^4.14.0",
+    "fastmatter": "^1.1.0",
+    "js-yaml": "^3.7.0",
+    "jszip": "^2.6.1",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
+    "object-assign": "^4.0.1",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.51.1",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0",
+    "morgan": "^1.6.1"
+  },
+  "keywords": [
+    "lamda",
+    "books"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adius/books"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": true,
+  "homepage": "https://github.com/adius/books#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
+}
