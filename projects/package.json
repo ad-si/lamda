@@ -1,0 +1,39 @@
+{
+  "name": "projects",
+  "version": "0.1.0",
+  "description": "Display all git projects in your projects directory",
+  "main": "server.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint",
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://adius@bitbucket.org/adius/projects.git"
+  },
+  "keywords": [
+    "lamda",
+    "project"
+  ],
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "express": "^4.14.1",
+    "findit": "^2.0.0",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles.git",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views.git",
+    "nodegit": "^0.17.0",
+    "pug": "^2.0.0-beta11",
+    "serve-favicon": "^2.4.0",
+    "stylus": "^0.54.5",
+    "user-home": "^2.0.0"
+  },
+  "homepage": "https://github.com/adius/projects#readme",
+  "eslintConfig": {
+    "root": true,
+    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+  }
+}
