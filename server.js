@@ -44,8 +44,7 @@ module.exports = app
 
 if (!isMounted) {
   const port = 3000
-  app.set('view engine', 'jade')
+  app.set('view engine', 'pug')
   app.listen(port)
-  // eslint-disable-next-line no-console
-  console.log(`App listens on http://localhost:${port}`)
+  console.info(`App listens on http://localhost:${port}`)
 }

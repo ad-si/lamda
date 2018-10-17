@@ -1,7 +1,7 @@
 extends ../linked_modules/lamda-views/layout
 
 block styles
-	link(rel='stylesheet', href='#{baseURL}/styles/screen.css')
+	link(rel='stylesheet' href=`${baseURL}/styles/screen.css`)
 
 block content
 	p Total number of commits: #{numberOfCommits}
