@@ -1,0 +1,24 @@
+{
+  "name": "lamda-views",
+  "version": "0.1.1",
+  "description": "Views for Lamda",
+  "main": "layout.pug",
+  "scripts": {
+    "test": "pug --hierarchy --out build *.pug"
+  },
+  "keywords": [
+    "lamda"
+  ],
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "pug": "^2.0.0-beta6",
+    "pug-cli": "^1.0.0-alpha6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/adius/lamda-views.git"
+  },
+  "homepage": "https://github.com/adius/lamda-views#readme"
+}
