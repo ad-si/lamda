@@ -1,0 +1,15 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+block content
+  if articles
+    for article in articles
+      div
+        h2!= article.title
+        p!= article.summary
+      hr
+
+  else
+    p There are currently no articles available.

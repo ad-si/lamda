@@ -1,0 +1,43 @@
+{
+  "name": "news",
+  "version": "0.0.1",
+  "description": "All your news",
+  "keywords": [
+    "lamda",
+    "news"
+  ],
+  "dependencies": {
+    "express": "^4.14.0",
+    "feedparser": "~1.1.5",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.79.0",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "main": "server.js",
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "scripts": {
+    "test": "eslint .",
+    "start": "node server.js",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/adius/news.git"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
+  "homepage": "https://github.com/adius/news#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
+}
