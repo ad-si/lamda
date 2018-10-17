@@ -35,13 +35,6 @@ function hideSpinner (element) {
   element.parentElement.style.backgroundImage = 'none'
 }
 
-// function checkCompletion () {
-//   if (this.complete) {
-//     $(this)
-//       .load()
-//   }
-// }
-
 function hideSpinnerOnLoad (image) {
   image.addEventListener('load', () => {
     image
@@ -68,12 +61,12 @@ Array.prototype.slice
 Array
   .from(document.querySelectorAll('.filter'))
   .forEach(element => {
-    element.addEventListener('click', () => {
+    element.addEventListener('click', event => {
       document
-        .querySelector('#thingsContainer')
+        .getElementById('thingsContainer')
         .innerHTML = ''
 
-      const filterType = this.id
+      const filterType = element.id
 
       things
         .filter(thing => {
@@ -82,7 +75,7 @@ Array
             (thingType === filterType)
         })
         .forEach(thing => {
-          shaven(
+          shaven.default(
             [document.querySelector('#thingsContainer'),
               ['div',
                 ['a', {href: thing.url},
