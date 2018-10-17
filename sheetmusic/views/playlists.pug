@@ -1,0 +1,18 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet', href=`${baseURL}/styles/index.css`)
+
+block content
+  h2 Playlists
+
+  table
+    thead
+      tr
+        th Name
+        th Songs
+    tbody
+      each playlist in playlists
+        tr
+          td: a(href=`${baseURL}/playlist/${playlist.id}`)= playlist.name
+          td= playlist.songs.length

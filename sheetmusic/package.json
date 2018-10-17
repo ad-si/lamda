@@ -1,0 +1,46 @@
+{
+  "name": "sheetmusic",
+  "description": "Sheetmusic app for Lamda",
+  "version": "0.1.0",
+  "main": "server.js",
+  "scripts": {
+    "lint": "eslint .",
+    "smoke-test": "node --require './server.js' --eval 'console.log(\"OK\")'",
+    "test": "npm run lint && npm run smoke-test",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "gm": "^1.23.0",
+    "image-resizer-middleware": "^0.4.0",
+    "is-image": "^1.0.1",
+    "js-yaml": "^3.7.0",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
+    "lilyware": "^0.3.1",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "keywords": [
+    "lamda",
+    "sheetmusic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adius/sheetmusic"
+  },
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
+  "homepage": "https://github.com/adius/sheetmusic#readme",
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
+}

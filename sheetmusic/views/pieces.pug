@@ -1,0 +1,36 @@
+extends ../linked_modules/lamda-views/layout
+
+block styles
+  link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
+
+block content
+  a.button(href='') #{songs.length} Songs
+  a.button(href=`${baseURL}/playlists`) Playlists
+  br
+
+  table
+    thead
+      th Name
+      th View
+      th Pages
+    tbody
+      each song in songs
+        tr
+          td.name
+            a(href=String(song.id))
+              = song.id.replace(/_/gi, ' ')
+          td
+            a(href=`${baseURL}/${song.id}/raw?style=wrapped`)
+              span.oi(data-glyph='resize-height')
+            = ' '
+            a(href=`${baseURL}/raw/${song.id}/raw?style=inline`)
+              span.oi(data-glyph='resize-width')
+
+
+          td.pages
+            if song.images
+              each image, index in song.images
+                if image
+                  a.badge(href=image.path)
+                    = (index + 1)
+                  = ' '
