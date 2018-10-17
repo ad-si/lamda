@@ -1,0 +1,83 @@
+@import '../../linked_modules/lamda-styles/themes/dark.styl'
+
+#tasks
+  .getting-started
+    margin 2em
+    line-height 1.5
+    p
+      margin-bottom 1em
+
+  .interface
+    display flex
+    align-items stretch
+
+  ul
+    list-style-type none
+
+  li.view
+    display inline-block
+
+  .tag
+    background-color bgQuiet
+    border-radius 2px
+    padding 0.2em 0.4em
+
+  .positionRight
+    .calendar
+      margin-right: 1em
+    small
+      color fgQuiet
+    .dates
+      margin-right: 2em
+
+  article
+    flex 1
+    padding 2em
+
+    form
+      padding-bottom 1em
+
+    ul.tasks li
+      align-content center
+      color fgMuted
+      display flex
+      flex-direction row
+      flex-wrap wrap
+      border-style solid
+      border-color bgQuiet
+      border-width 0 0 1px 0
+      vertical-align middle
+      line-height 4
+
+      &:first-of-type
+        border-top-width 1px
+
+      .positionLeft
+        flex-grow 1
+
+      input[type=checkbox]
+        margin-right 1em
+
+      a
+        margin-right 1em
+
+    > p
+      color fgQuiet
+
+    .completed
+      opacity 0.3
+      text-decoration line-through
+
+  #modalBackdrop
+    height 100%
+    width 100%
+    background-color rgba(0, 0, 0, 0.4)
+
+  #modal
+    display: none
+    margin: auto
+
+  #newTask
+    width: 40em
+    height: 2em
+    padding: 0 1em
