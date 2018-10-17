@@ -14,6 +14,5 @@ block content
     tbody
       each playlist in playlists
         tr
-          td: a(href=`${baseURL}/playlist/' + playlist.id)
-            =playlist.name
+          td: a(href=`${baseURL}/playlist/${playlist.id}`)= playlist.name
           td= playlist.songs.length
