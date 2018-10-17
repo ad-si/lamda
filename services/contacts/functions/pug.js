@@ -4,10 +4,10 @@ const path = require('path')
 const lib = require('lib')
 const pug = require('pug')
 
-const formatContact = require('../../modules/formatContact')
+const formatContact = require('../modules/formatContact')
 
 const compiledTemplate = pug.compileFile(
-  path.resolve(__dirname, '../../views/contacts.pug')
+  path.resolve(__dirname, '../views/contacts.pug')
 )
 
 
@@ -79,6 +79,7 @@ async function getHtml (context) {
       percentageOfMale: Math.trunc(numberOfMale / sortedContacts.length * 100),
       sortedKeys: [
         'name',
+        'gender',
         'birthday',
         'emails',
         'phones',
@@ -95,6 +96,9 @@ async function getHtml (context) {
 * @returns {buffer}
 */
 module.exports = (context, callback) => {
+  // Returning HTML is not yet supported for async functions
+  // therefore the callback variant is used
+  // (and stdlib requries the variable to be called `callback`)
   getHtml(context)
     .then(html => {
       callback(

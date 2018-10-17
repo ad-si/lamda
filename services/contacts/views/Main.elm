@@ -12,11 +12,11 @@ type JsVal
     | JsInt Int
     | JsFloat Float
     | JsArray (List JsVal)
-    | JsObject (Dict String JsVal)
+    | JsObject (Dict.Dict String JsVal)
     | JsNull
 
 
-jsValDecoder : Decoder JsVal
+jsValDecoder : Decode.Decoder JsVal
 jsValDecoder =
     Decode.oneOf
         [ Decode.map JsString Decode.string

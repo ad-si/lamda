@@ -77,7 +77,7 @@ module.exports = (rootApp, locals) => {
       })
   }
 
-  return appDirectories
+  const apps = appDirectories
     .filter(appPath => {
       const isDirectory = fs
         .statSync(appPath)
@@ -95,4 +95,8 @@ module.exports = (rootApp, locals) => {
         ),
     {}
   )
+
+  console.dir(apps, {depth: 1, colors: true})
+
+  return apps
 }

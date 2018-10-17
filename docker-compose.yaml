@@ -1,0 +1,9 @@
+version: '2'
+services:
+  lamda:
+    build:
+      context: .
+    expose:
+      - 2000
+    ports:
+      - 80:2000

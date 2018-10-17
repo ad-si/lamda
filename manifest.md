@@ -10,6 +10,7 @@ Operating system must handle data.
 - Grouping
 - Accessing
 - Providing
+- Using / Executing
 
 Or same concept, but with focus on aspects of data:
 
@@ -19,6 +20,7 @@ Or same concept, but with focus on aspects of data:
 - Relational - Relation to other data
 - Accessibility - Rights to access data
 - Reachability - Existence of infrastructure to reach data
+- Functional - Purpose of the data
 
 
 Until now:
@@ -171,6 +173,17 @@ but human intelligible and unintelligible
 
 Maybe: No difference between directories and files!
 Every node can have (meta)data and children.
+
+Necessary meta-data:
+
+```yaml
+uuid: 123e4567-e89b-12d3-a456-426655440000
+ # uuid contains creation timestamp with nanoseconds resolution
+contentHash: baec2cd5d57d243512c8dc1ee28cfb22
+```
+
+Different apps might use the `uuid` or the `contentHash` as id.
+(Either the creation time or the content is important)
 
 
 ### Hierarchy

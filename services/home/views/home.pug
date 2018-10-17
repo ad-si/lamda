@@ -74,7 +74,11 @@ body
             ? ''
             : `background-color: ${link.background_color}; border: none;`
 
-        a.tile.link(href=link.url, style=style)
+        a.tile.link(
+          href=link.url
+          style=style
+          rel='noopener noreferrer nofollow'
+        )
           if link.icon
             span.icon(style=`color:${link.font_color}`)= link.icon
           span(style=`color:${link.font_color}`)= link.title

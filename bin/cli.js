@@ -1,14 +1,10 @@
 #! /usr/bin/env node
 
-const program = require('commander')
-const packageFile = require('../package.json')
+const yargs = require('yargs')
 
-program
-  .version(packageFile.version)
-  .option('--home <path>', 'Set home folder')
-
-program.parse(process.argv)
-
-if (program.args.length === 0) {
-  program.help()
-}
+yargs
+  .commandDir('../commands')
+  .demandCommand(1)
+  .help()
+  .alias('help', 'h')
+  .argv
