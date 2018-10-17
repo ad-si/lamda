@@ -1,0 +1,42 @@
+{
+  "name": "movies",
+  "version": "0.0.1",
+  "description": "Display all your movies in a grid or table",
+  "keywords": [
+    "movies",
+    "lamda"
+  ],
+  "main": "server.js",
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adius/movies"
+  },
+  "homepage": "https://github.com/adius/movies#readme",
+  "scripts": {
+    "test": "eslint .",
+    "postinstall": "symlink-modules lamda-styles lamda-views"
+  },
+  "dependencies": {
+    "better-path": "^0.2.0",
+    "express": "^4.14.0",
+    "js-yaml": "^3.7.0",
+    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
+    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.2",
+    "stylus": "^0.54.5",
+    "symlink-modules": "^0.2.0",
+    "user-home": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "eslint-config-javascript": "^1.1.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-javascript"
+  }
+}
