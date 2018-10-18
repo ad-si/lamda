@@ -48,7 +48,7 @@ if (runsStandalone) {
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
   Object.assign(app.locals, {
-    basePath: userHome,
+    basePath: path.join(userHome, 'Dropbox (Personal)/Things/'),
     baseURL: '',
     runsStandalone,
     styles: [{

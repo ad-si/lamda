@@ -112,7 +112,7 @@ function callRenderer (response, things, view) {
 
 module.exports = (options = {}) => {
   const {baseURL, basePath} = options
-  const thingsDir = path.join(basePath, 'Things')
+  const thingsDir = basePath
 
   return (request, response) => {
     const view = request.query.view === 'wide'
@@ -122,7 +122,7 @@ module.exports = (options = {}) => {
     return fsp
       .readdir(thingsDir)
       .then(thingDirs => thingDirs
-        .filter(thingDir => !thingDir.startsWith('.'))
+        .filter(thingDir => !thingDir.includes('.'))
         .map(thingDir => {
           const thing = {
             datetime: thingDir,
@@ -133,6 +133,7 @@ module.exports = (options = {}) => {
 
           return fsp
             .readdir(thing.absoluteDirectory)
+            .catch(error => console.error(error))
             .then(files => {
               thing.files = files
               return thing
