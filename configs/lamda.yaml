@@ -1,0 +1,84 @@
+views:
+  - name: Books
+    # app: bitbucket:lamdaos/books
+    icon: fa-book
+    queries:
+      - path: ~/Books
+
+  - name: Contacts
+    # app: bitbucket:lamdaos/contacts
+    icon: fa-users
+    queries:
+      - path: ~/Contacts
+
+  - name: Documents
+    # app: bitbucket:lamdaos/documents
+    icon: fa-file-text-o
+    queries:
+      - path: ~/Documents
+
+  - name: Events
+    # app: bitbucket:lamdaos/events
+    icon: fa-calendar
+    queries:
+      - path: ~/Events
+
+  - name: Files
+    # app: bitbucket:lamdaos/files
+    icon: fa-list
+    queries:
+      - path: ~/Files
+
+  - name: Movies
+    # app: bitbucket:lamdaos/movies
+    icon: fa-video-camera
+    queries:
+      - path: ~/Movies
+
+  - name: Songs
+    # app: bitbucket:lamdaos/songs
+    icon: fa-headphones
+    queries:
+      - path: ~/Songs
+
+  - name: News
+    # app: bitbucket:lamdaos/news
+    icon: fa-newspaper-o
+
+  - name: Photos
+    # app: bitbucket:lamdaos/photos
+    icon: fa-picture-o
+    queries:
+      - path: ~/Photos
+
+  - name: Projects
+    # app: bitbucket:lamdaos/projects
+    icon: fa-cubes
+    queries:
+      - path: ~/Projects
+
+  - name: Sheetmusic
+    # app: bitbucket:lamdaos/sheetmusic
+    icon: fa-music
+    queries:
+      - path: ~/Sheetmusic
+
+  - name: Tasks
+    # app: bitbucket:lamdaos/tasks
+    icon: fa-check
+    queries:
+      - path: ~/Tasks
+
+  - name: Things
+    # app: bitbucket:lamdaos/things
+    icon: fa-bicycle
+    queries:
+      - path: ~/Things
+
+  - name: Notes
+    icon: fa-sticky-note # Name of fontawesome icon
+    # app: bitbucket:lamdaos/basic
+    queries:
+      - path: ~/Notes
+    config:
+      style: table
