@@ -6,23 +6,39 @@ const typeMap = {
   chino: 'pants',
   corduroys: 'pants',
   trousers: 'pants',
+
   boxershorts: 'boxers',
   'boxer shorts': 'boxers',
+
   pocketknife: 'tool',
   'pocket knife': 'tool',
   multimeter: 'tool',
   'digital caliper': 'tool',
+  ruler: 'tool',
+  tweezers: 'tool',
+
   belt: 'belt',
+
   'button up': 'button-up',
   'button-up': 'button-up',
-  'wire': 'cable',
+
+  wire: 'cable',
   'hdmi wire': 'cable',
   'hdmi-wire': 'cable',
-  'cable': 'cable',
+  cable: 'cable',
   'power cord': 'cable',
   'power-cord': 'cable',
 
+  coat: 'jacket',
+
+  pullover: 'sweater',
+  hoodie: 'sweater',
+  'hooded zipper': 'sweater',
+
+  stockings: 'socks',
+
   boots: 'shoes',
+  'hiking-boots': 'shoes',
   chucks: 'shoes',
   'flip-flops': 'shoes',
   'flip flops': 'shoes',
