@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+    "test": "npm run lint"
   },
   "dependencies": {
     "@datatypes/moment": "^0.10.0",
@@ -42,7 +41,7 @@
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
-  "homepage": "https://github.com/adius/things#readme",
+  "homepage": "https://github.com/ad-si/lamda",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }

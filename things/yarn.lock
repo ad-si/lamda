@@ -899,16 +899,14 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.1.5"
 
-"lamda-styles@git+ssh://git@github.com/adius/lamda-styles":
+lamda-styles@../styles:
   version "0.1.1"
-  resolved "git+ssh://git@github.com/adius/lamda-styles#1d08793cad4fecec4661747f85fa87cb0645521a"
   dependencies:
     open-iconic "^1.1.1"
     symlink-modules "^0.2.0"
 
-"lamda-views@git+ssh://git@github.com/adius/lamda-views":
+lamda-views@../views:
   version "0.1.1"
-  resolved "git+ssh://git@github.com/adius/lamda-views#6715cf0010a0955662825926860ace9b6754c9ef"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
