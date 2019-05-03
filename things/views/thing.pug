@@ -8,11 +8,14 @@ block content
   hr
 
   dl
-    each value, key in thing
-      if key !== 'id' && key !== 'images' && key !== 'name'
-        dt= String(key)[0].toUpperCase() + key.slice(1) + ':'
+    // Used as workaround for https://github.com/pugjs/pug/issues/3020
+    each entry in Object.entries(thing)
+      - let keyStr = String(entry[0])
+      - let value = entry[1]
+      if keyStr !== 'id' && keyStr !== 'images' && keyStr !== 'name'
+        dt= keyStr[0].toUpperCase() + keyStr.slice(1) + ':'
 
-        if key == 'urls'
+        if keyStr == 'urls'
           - const urls = [].concat(value)
           for url in urls
             dd: a(href=url)= url

@@ -3,6 +3,9 @@ const fs = require('fs')
 const yaml = require('js-yaml')
 const isImage = require('is-image')
 
+const {getMainYamlFile} = require('./helpers.js')
+
+
 module.exports = (options = {}) => {
   const {basePath} = options
 
@@ -12,11 +15,7 @@ module.exports = (options = {}) => {
     const images = files.filter(isImage)
 
     function renderPage () {
-      const dataFileName = files.includes('index.yaml')
-        ? 'index.yaml'
-        : files.includes('data.yaml')
-          ? 'data.yaml'
-          : false
+      const dataFileName = getMainYamlFile(files)
 
       if (!dataFileName) {
         response.render('thing', {

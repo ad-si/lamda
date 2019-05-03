@@ -8,6 +8,7 @@ const isImage = require('is-image')
 const Instant = require('@datatypes/moment').Instant
 // const imageResizer = require('image-resizer-middleware')
 
+const {getMainYamlFile} = require('./helpers.js')
 const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
 
 
@@ -102,7 +103,7 @@ function callRenderer (response, things, view) {
         ? new Instant(datetimeB)
         : new Instant(0)
 
-      return datetimeB - datetimeA
+      return Number(datetimeB) - Number(datetimeA)
     }),
     view: view,
     fortune: fortune,
@@ -125,7 +126,7 @@ module.exports = (options = {}) => {
         .filter(thingDir => !thingDir.includes('.'))
         .map(thingDir => {
           const thing = {
-            datetime: thingDir,
+            datetime: thingDir.split('_')[0],
             images: [],
             directory: thingDir,
             absoluteDirectory: path.join(thingsDir, thingDir),
@@ -146,13 +147,7 @@ module.exports = (options = {}) => {
       .then(things => {
         return things.map(thing => {
           thing.images = thing.files.filter(isImage)
-
-          // TODO: Share with thing.js
-          const dataFileName = thing.files.includes('index.yaml')
-            ? 'index.yaml'
-            : thing.files.includes('data.yaml')
-              ? 'data.yaml'
-              : false
+          const dataFileName = getMainYamlFile(thing.files)
 
           if (dataFileName) {
             const filePath = path.join(thingsDir, thing.directory, dataFileName)
@@ -201,7 +196,9 @@ module.exports = (options = {}) => {
         })
       })
       .then(things => {
-        callRenderer(response, things, view)
+        const filteredThings = things
+          .filter(thing => !thing.hasOwnProperty('endOfLife'))
+        callRenderer(response, filteredThings, view)
       })
       .catch(error => {
         console.error(error.stack)
