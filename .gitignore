@@ -2,3 +2,6 @@
 /.stdlib
 *.css
 env.json
+
+template
+build
