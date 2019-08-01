@@ -1,0 +1,14 @@
+<svg
+  width="13"
+  height="25"
+  viewBox="0 0 26 50"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M10,1C10,2 16,2 16,1L20,2L24,6L25,22L21,22L20,9L20,24L6,24L6,9L5,22L1,22L2,6L6,2L10,1Z"/>
+  <g id="pants" transform="matrix(1,0,0,1,13,37)">
+    <g transform="matrix(1,0,0,1,-13,-13)">
+      <path d="M7,1L19,1L21,25L17,25L13,7L9,25L5,25L7,1Z"/>
+    </g>
+  </g>
+</svg>

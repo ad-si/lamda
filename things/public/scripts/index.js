@@ -7,6 +7,10 @@ const typeMap = {
   corduroys: 'pants',
   trousers: 'pants',
 
+  // TODO: Reverse map direction and allow injective entries
+  // 'pajama pants': 'pants',
+  'pajama pants': 'pajamas',
+
   boxershorts: 'boxers',
   'boxer shorts': 'boxers',
 
@@ -22,6 +26,7 @@ const typeMap = {
   'button up': 'button-up',
   'button-up': 'button-up',
 
+  adapter: 'cable',
   wire: 'cable',
   'hdmi wire': 'cable',
   'hdmi-wire': 'cable',
@@ -32,10 +37,14 @@ const typeMap = {
   coat: 'jacket',
 
   pullover: 'sweater',
+  sweatshirt: 'sweater',
+  'sweat shirt': 'sweater',
   hoodie: 'sweater',
   'hooded zipper': 'sweater',
 
   stockings: 'socks',
+
+  'polo shirt': 't-shirt',
 
   boots: 'shoes',
   'hiking-boots': 'shoes',

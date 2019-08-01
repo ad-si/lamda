@@ -27,11 +27,13 @@ function getCoverImage (images) {
   // otherwise choose a random one
 
   images = images || []
+  // With descending importance
   const defaultNames = [
+    'main',
     'overview',
-    'front',
-    'index',
     'top',
+    'front',
+    'side',
   ]
   let coverImage = images[0] || null
 
