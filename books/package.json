@@ -13,7 +13,7 @@
     "exif2": "0.0.1",
     "express": "^4.14.0",
     "fastmatter": "^1.1.0",
-    "js-yaml": "^3.7.0",
+    "js-yaml": "^3.13.1",
     "jszip": "^2.6.1",
     "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
     "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
