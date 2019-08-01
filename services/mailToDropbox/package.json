@@ -2,7 +2,7 @@
   "dependencies": {
     "dropbox": "^2.5.12",
     "formidable": "^1.1.1",
-    "js-yaml": "^3.10.0",
+    "js-yaml": "^3.13.1",
     "raw-body": "^2.3.2"
   }
 }
