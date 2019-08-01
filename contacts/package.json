@@ -30,7 +30,7 @@
     "ybdb": "github:adius/ybdb"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
+    "eslint": "^4.18.2",
     "eslint-config-javascript": "^1.1.0"
   },
   "keywords": [
