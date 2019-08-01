@@ -1,0 +1,16 @@
+{
+  "name": "home",
+  "version": "0.0.0",
+  "description": "Landing page",
+  "author": "adius <stdlib@ad-si.com>",
+  "main": "functions/__main__.js",
+  "dependencies": {
+    "fs-extra": "^4.0.2",
+    "js-yaml": "^3.10.0",
+    "jstransformer-stylus": "^1.4.0",
+    "pug": "^2.0.0-rc.4"
+  },
+  "devDependencies": {
+    "pug-cli": "^1.0.0-alpha6"
+  }
+}

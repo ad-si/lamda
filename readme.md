@@ -1,6 +1,9 @@
 # λ Lamda
 
-The distributed personal computing platform.
+The serverless personal computing platform.
+
+Apps and services for the average Joe's computing needs
+deliverd as serverless functions.
 
 
 ## Features
@@ -22,7 +25,9 @@ The distributed personal computing platform.
 
 ## Development
 
-All relevant code is in the services directory.
+The core source code is in the `source` directory and vendor specific
+wrapper code for the functions is in `openfaas` for [OpenFaaS](openfaas.com)
+and `services` for [stdlib](stdlib.com).
 
 
 ## Related
