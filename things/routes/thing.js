@@ -13,6 +13,8 @@ module.exports = (options = {}) => {
     const requestedThingPath = path.join(basePath, request.params.id)
     const files = fs.readdirSync(requestedThingPath)
     const images = files.filter(isImage)
+    console.log(files)
+    const pdfs = files.filter(file => file.toLowerCase().endsWith('.pdf'))
 
     function renderPage () {
       const dataFileName = getMainYamlFile(files)
@@ -27,7 +29,8 @@ module.exports = (options = {}) => {
               .id
               .replace(/_/g, ' ')
               .replace(/-/g, ' - '),
-            images: images,
+            images,
+            pdfs,
           },
         })
       }
@@ -41,6 +44,7 @@ module.exports = (options = {}) => {
             const jsonData = yaml.safeLoad(fileContent)
             jsonData.id = request.params.id
             jsonData.images = images
+            jsonData.pdfs = pdfs
 
             response.render('thing', {
               page: 'thing',

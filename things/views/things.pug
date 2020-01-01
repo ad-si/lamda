@@ -13,8 +13,9 @@ block content
     button.filter#all(title='Show all things'): span
         | All
 
-    button.filter#jacket(title='Show only jackets')
-      include ../public/icons/jacket.svg
+    button.filter.emoji#jacket(title='Show only jackets').
+      🧥
+    //- include ../public/icons/jacket.svg
 
     button.filter#sweater(title='Show only sweaters')
       include ../public/icons/sweater.svg
@@ -25,37 +26,59 @@ block content
     button.filter#t-shirt(title='Show only t-shirts')
       include ../public/icons/t-shirt.svg
 
-    button.filter#pants(title='Show only pants')
-      include ../public/icons/pants.svg
+    button.filter.emoji#pants(title='Show only pants').
+      👖
+    //- include ../public/icons/pants.svg
 
     button.filter#pajamas(title='Show only pajamas')
       include ../public/icons/pajamas.svg
 
-    button.filter#shorts(title='Show only shorts')
-      include ../public/icons/shorts.svg
+    button.filter.emoji#shorts(title='Show only shorts').
+      🩳
+    //- include ../public/icons/shorts.svg
 
-    button.filter#boxers(title='Show only boxer shorts')
-      include ../public/icons/boxers.svg
+    button.filter.emoji#boxers(title='Show only boxer shorts').
+      🩲
+    //- include ../public/icons/boxers.svg
 
-    button.filter#socks(title='Show only socks')
-      include ../public/icons/socks.svg
+    button.filter.emoji#socks(title='Show only socks').
+      🧦
 
-    button.filter#shoes(title='Show only shoes')
-      include ../public/icons/shoes.svg
+    button.filter.emoji#shoes(title='Show only shoes').
+      👟
 
-    button.filter#gloves(title='Show only gloves')
-      include ../public/icons/gloves.svg
+    button.filter.emoji#gloves(title='Show only gloves').
+      🧤
+    //- include ../public/icons/gloves.svg
 
     button.filter#belt(title='Show only belts')
       include ../public/icons/belt.svg
 
-    button.filter#tool(title='Show only tools')
-      include ../public/icons/tool.svg
+    button.filter.emoji#tool(title='Show only tools').
+      🛠
+    //- include ../public/icons/tool.svg
 
     button.filter#cable(title='Show only cables')
       include ../public/icons/cable.svg
 
-    a.button(href=baseURL) standard
+    button.filter.emoji#kitchenware(title='Show only kitchenware').
+      🍽
+
+    button.filter.emoji#gadget(title='Show only gadgets').
+      💻
+
+    button.filter.emoji#bicycle(title='Show only bicycle gear').
+      🚲
+
+    button.filter.emoji#houseware(title='Show only houseware').
+      🏠
+
+    button.filter.emoji#music-gear(title='Show only muisc gear').
+      🎤
+
+    br
+
+    a.button(href=(baseURL || '/')) standard
     a.button(href=`${baseURL}?view=wide`) wide
 
     p#descriptionHeadline
@@ -72,6 +95,9 @@ block content
             if thing.image
               a(href=thing.url)
                 img(src=thing.image)
+            else
+              a.placeholder(href=thing.url)
+                include ../public/icons/thing.svg
       else
         for thing in things
           div(data-type=thing.type)
@@ -81,7 +107,7 @@ block content
                 img(src=thing.image)
             else
               a.placeholder(href=thing.url)
-                include ../public/icons/thing.svg
+                img(src='icons/thing.svg')
 
   script.
     var things = !{JSON.stringify(things)}

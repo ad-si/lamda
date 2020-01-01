@@ -11,6 +11,8 @@ const typeMap = {
   // 'pajama pants': 'pants',
   'pajama pants': 'pajamas',
 
+  'bicycle-gear': 'bicycle',
+
   boxershorts: 'boxers',
   'boxer shorts': 'boxers',
 
@@ -41,6 +43,17 @@ const typeMap = {
   'sweat shirt': 'sweater',
   hoodie: 'sweater',
   'hooded zipper': 'sweater',
+
+  // Music gear
+  microphone: 'music-gear',
+  instrument: 'music-gear',
+  'alto-saxophone': 'music-gear',
+  saxophone: 'music-gear',
+  headphones: 'music-gear',
+  earphones: 'music-gear',
+
+  // Houseware
+  homeware: 'houseware',
 
   stockings: 'socks',
 
@@ -105,7 +118,7 @@ Array
               ['div',
                 ['a', {href: thing.url},
                   ['img',
-                    {src: thing.image},
+                    {src: thing.image || 'icons/thing.svg'},
                     hideSpinnerOnLoad,
                   ],
                 ],

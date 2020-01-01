@@ -43,3 +43,13 @@ block content
             alt='Photo of ' + thing.name
             title='Photo of ' + thing.name
           )
+
+  br
+  hr
+
+  if thing.pdfs
+    ul.pdfs
+      each pdfPath in thing.pdfs
+        if pdfPath
+          li: a(href=pdfPath)
+            = pdfPath
