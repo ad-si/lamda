@@ -1,5 +1,3 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 const fastmatter = require('fastmatter')
@@ -57,7 +55,7 @@ function setDefaults (book) {
 
 
 module.exports.cover = (request, response) => {
-  const booksPath = path.join(request.app.locals.basePath, 'books')
+  const booksPath = request.app.locals.basePath
   const filePath = path.join(booksPath, request.params.book + '.epub')
   let imageFile = ''
   let epubFile
@@ -66,9 +64,14 @@ module.exports.cover = (request, response) => {
     if (error) throw error
 
     epubFile = new JsZip(fileContent)
-    imageFile = epubFile
-      .file(request.params[0])
-      .asNodeBuffer()
+    const imageFileObj = epubFile.file(request.params[0])
+
+    if (!imageFileObj) {
+      response.send()
+      return
+    }
+
+    imageFile = imageFileObj.asNodeBuffer()
 
     fs.writeFileSync(
       '/Users/adrian/Desktop/test.jpg',
@@ -82,7 +85,7 @@ module.exports.cover = (request, response) => {
 
 
 module.exports.one = (request, response) => {
-  const booksPath = path.join(request.app.locals.basePath, 'books')
+  const booksPath = request.app.locals.basePath
   const bookId = request.params.book
   const book = {
     name: bookId,
@@ -117,7 +120,7 @@ module.exports.one = (request, response) => {
 
 
 module.exports.all = (request, response) => {
-  const booksPath = path.join(request.app.locals.basePath, 'books')
+  const booksPath = request.app.locals.basePath
 
   function getAttributePromise (book) {
     return new Promise((fulfill, reject) => {
@@ -180,12 +183,14 @@ module.exports.all = (request, response) => {
       books = books
         .map(setDefaults)
         .sort((itemA, itemB) => {
-          return itemA.title > itemB.title
+          return itemA.fileName > itemB.fileName
             ? 1
-            : itemA.title < itemB.title
+            : itemA.fileName < itemB.fileName
               ? -1
               : 0
         })
+
+      console.dir(books.map(b => b.fileName), {'maxArrayLength': null})
 
       response.render('books', {
         page: 'Books',

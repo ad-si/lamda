@@ -1,4 +1,4 @@
-extends ../linked_modules/lamda-views/layout
+extends ../../views/layout
 
 block styles
   link(rel='stylesheet' href=`${baseURL}/styles/screen.css`)
@@ -11,17 +11,17 @@ block content
       #next.arrow >
 
   else if book.type == 'pdf'
-      object(
-        data=book.url
-        type='application/pdf'
-      )
-        p.
-          The PDF can not be displayed.
-          Download it from <a href=book.url>here<\a>
+    object#pdf-container(
+      data=book.url
+      type='application/pdf'
+    )
+      p.
+        The PDF can not be displayed.
+        Download it from #[a(href=book.url) here]
 
 block scripts
   if book
-    script(src=`${baseURL}/linked_modules/epubjs/build/libs/zip.min.js`)
-    script(src=`${baseURL}/linked_modules/epubjs/build/epub.js`)
-    script= `var bookUrl = '${book.url.replace("\'", "\\\'")}`
+    script(src=`${baseURL}/node_modules/epubjs/build/libs/zip.min.js`)
+    script(src=`${baseURL}/node_modules/epubjs/build/epub.js`)
+    script= `var bookUrl = '${book.url.replace("\'", "\\\'")}'`
     script(src=`${baseURL}/scripts/index.js`)
