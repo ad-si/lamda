@@ -8,28 +8,26 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "@datatypes/moment": "^0.10.0",
-    "express": "^4.15.3",
+    "@datatypes/moment": "^0.11.0",
+    "express": "^4.17.1",
     "fs-promise": "^2.0.3",
     "image-resizer-middleware": "^0.4.0",
-    "is-image": "^2.0.0",
+    "is-image": "^3.0.0",
     "javascript-styleguide": "^1.0.0",
-    "js-yaml": "^3.9.0",
-    "lamda-styles": "../styles",
-    "lamda-views": "../views",
-    "pug": "^2.0.0-rc.2",
-    "serve-favicon": "^2.4.3",
-    "shaven": "^1.1.0",
-    "stylus": "^0.54.5",
+    "js-yaml": "^3.14.0",
+    "pug": "^3.0.0",
+    "serve-favicon": "^2.5.0",
+    "shaven": "^1.3.0",
+    "stylus": "^0.54.7",
     "symlink-modules": "^0.2.0",
-    "table-to-json": "^0.12.0",
+    "table-to-json": "^1.0.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "errorhandler": "^1.5.0",
-    "eslint": "^4.3.0",
+    "errorhandler": "^1.5.1",
+    "eslint": "^7.2.0",
     "eslint-config-javascript": "^1.3.0",
-    "morgan": "^1.8.2"
+    "morgan": "^1.10.0"
   },
   "keywords": [
     "lamda",
