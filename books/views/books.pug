@@ -11,15 +11,25 @@ block content
 
       #library
         each book in books
+          -
+            const authorShort = book.author && book.author.length > 50
+                                  ? book.author.slice(0, 50) + '…'
+                                  : book.author
+
           a.book(
             href=book.url
             title=`${book.author}\n${book.title}`)
             .cover
               .description
-                p.author= book.author
+                p.author= authorShort
                 p.title= book.title
+
               if book.imageSource
                 img(src=book.imageSource)
+
+              if book.wasRead
+                div.wasRead ✔
+
             p= book.title
     else
       p There are currently no books in your library

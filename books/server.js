@@ -4,6 +4,7 @@ const express = require('express')
 const stylus = require('stylus')
 
 const books = require('./routes/books')
+const pdfCoverMiddleware = require('./pdf-cover-middleware.js')
 
 const app = express()
 const isDevMode = app.get('env') === 'development'
@@ -24,6 +25,14 @@ function setupRouting (app) {
   }))
   const booksDirectory = app.locals.basePath
 
+  // Returns for a URL "document.pdf.jpg" the cover-image of "document.pdf".
+  // Supports query parameters `width`, `height`, `max-width`, and `max-height`.
+  app.use(pdfCoverMiddleware.getMiddleware({
+    basePath: booksDirectory,
+    thumbnailsPath: path.join(publicDirectory, 'thumbnails'),
+  }))
+
+
   app.use(express.static(publicDirectory))
   app.use(express.static(booksDirectory))
   app.use('/node_modules', express.static(modulesPath))
@@ -41,7 +50,7 @@ if (runsStandalone) {
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
   const userHome = require('user-home')
-  app.locals.basePath = path.join(userHome, 'Dropbox (Personal)/Books/')
+  app.locals.basePath = path.join(userHome, 'Dropbox/Books/')
   app.locals.baseURL = ''
   app.locals.styles = [{
     path: '/styles/dark.css',

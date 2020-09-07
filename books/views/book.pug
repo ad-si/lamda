@@ -19,6 +19,9 @@ block content
         The PDF can not be displayed.
         Download it from #[a(href=book.url) here]
 
+  else if book.type == 'md'
+    div !{book.content.replace(/\n/g, '<br>')}
+
 block scripts
   if book
     script(src=`${baseURL}/node_modules/epubjs/build/libs/zip.min.js`)
