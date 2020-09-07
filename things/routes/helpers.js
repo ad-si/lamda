@@ -9,5 +9,5 @@ function getMainYamlFile (files) {
 }
 
 module.exports = {
-  getMainYamlFile
+  getMainYamlFile,
 }

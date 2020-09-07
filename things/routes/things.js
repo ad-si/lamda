@@ -6,7 +6,6 @@ const fsp = require('fs-promise')
 const yaml = require('js-yaml')
 const isImage = require('is-image')
 const Instant = require('@datatypes/moment').Instant
-// const imageResizer = require('image-resizer-middleware')
 
 const {getMainYamlFile} = require('./helpers.js')
 const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
@@ -39,9 +38,14 @@ function getCoverImage (images) {
 
   defaultNames.some(name => {
     return images.some(image => {
-      const baseName = path.basename(image, '.png')
+      const pngName = path.basename(image, '.png')
+      if (pngName === name) {
+        coverImage = image
+        return true
+      }
 
-      if (baseName === name) {
+      const heicName = path.basename(image, '.heic')
+      if (heicName === name) {
         coverImage = image
         return true
       }
@@ -73,7 +77,7 @@ function callRenderer (response, things, view) {
           current = Number(
             current
               .slice(0, -1)
-              .replace('~', '')
+              .replace('~', ''),
           )
         }
 
@@ -90,11 +94,11 @@ function callRenderer (response, things, view) {
     page: 'things',
     things: things.sort((itemA, itemB) => {
       let datetimeA = itemA.dateOfPurchase && itemA.dateOfPurchase !== 'Date'
-          ? itemA.dateOfPurchase
-          : itemA.datetime
+        ? itemA.dateOfPurchase
+        : itemA.datetime
       let datetimeB = itemB.dateOfPurchase && itemB.dateOfPurchase !== 'Date'
-          ? itemB.dateOfPurchase
-          : itemB.datetime
+        ? itemB.dateOfPurchase
+        : itemB.datetime
 
       datetimeA = new Instant(datetimeA)
         .getTime()
@@ -141,7 +145,7 @@ module.exports = (options = {}) => {
               thing.files = files
               return thing
             })
-        })
+        }),
       )
       .then(thingPromises => {
         return Promise.all(thingPromises)
@@ -199,7 +203,8 @@ module.exports = (options = {}) => {
       })
       .then(things => {
         const filteredThings = things
-          .filter(thing => !thing.hasOwnProperty('endOfLife'))
+          .filter(thing => !Object.prototype
+            .hasOwnProperty.call(thing, 'endOfLife'))
         callRenderer(response, filteredThings, view)
       })
       .catch(error => {

@@ -37,26 +37,35 @@ const typeMap = {
 
   // Battery
   'button cell': 'battery',
+  'batteries': 'battery',
 
   'belt': 'belt',
 
   'button up': 'button-up',
   'button-up': 'button-up',
 
+
   // Cable
   'adapter': 'cable',
-  'wire': 'cable',
-  'hdmi wire': 'cable',
-  'hdmi-wire': 'cable',
   'cable': 'cable',
   'cord': 'cable',
+  'hdmi wire': 'cable',
+  'hdmi-wire': 'cable',
   'power cord': 'cable',
+  'power-adapter': 'cable',
   'power-cord': 'cable',
+  'power-supply': 'cable',
+  'wire': 'cable',
 
   // Headgear
   'beanie': 'headgear',
   'hat': 'headgear',
   'scarf': 'headgear',
+
+
+  // Glasses
+  'sunglasses': 'glasses',
+
 
   'coat': 'jacket',
 
@@ -76,11 +85,14 @@ const typeMap = {
   'drumhead': 'music-gear',
   'ear-plugs': 'music-gear',
   'earphones': 'music-gear',
+  'guitar': 'music-gear',
   'headphones': 'music-gear',
   'instrument': 'music-gear',
   'keyboard': 'music-gear',
   'microphone': 'music-gear',
   'midi-controller': 'music-gear',
+  'music-stand': 'music-gear',
+  'music-stand-light': 'music-gear',
   'saxophone': 'music-gear',
   'sound-absorber': 'music-gear',
   'tenor-saxophone': 'music-gear',
@@ -94,11 +106,20 @@ const typeMap = {
   'pillow': 'houseware',
   'sheet': 'houseware',
   'washing machine': 'houseware',
+  'seating': 'houseware',
+
+  // 'Lighting'
+  'light': 'lighting',
+  'lamp': 'lighting',
+  'flashlight': 'lighting',
+  'torch': 'lighting',
 
   // 'Kitchenware'
   'bottle': 'kitchenware',
+  'coffee-grinder': 'kitchenware',
   'cup': 'kitchenware',
   'dishes': 'kitchenware',
+  'microwave': 'kitchenware',
   'plate': 'kitchenware',
 
   // Baggage
@@ -111,26 +132,29 @@ const typeMap = {
 
   // Gadget
   '3d-printer': 'gadget',
+  'audio system': 'gadget',
   'calculator': 'gadget',
   'charger': 'gadget',
+  'computer': 'gadget',
   'display': 'gadget',
   'hard-drive': 'gadget',
   'hub': 'gadget',
-  'keyboard': 'gadget',
+  'computer-keyboard': 'gadget',
   'laptop': 'gadget',
   'lock': 'gadget',
-  'music-player': 'gadget',
-  'mouse': 'gadget',
   'micro-sd-card': 'gadget',
   'monitor': 'gadget',
+  'mouse': 'gadget',
+  'music-player': 'gadget',
   'nas': 'gadget',
+  'network-switch': 'gadget',
   'padlock': 'gadget',
   'paracord': 'gadget',
-  'printer': 'gadget',
   'phone': 'gadget',
   'printer cartridge': 'gadget',
-  'router': 'gadget',
+  'printer': 'gadget',
   'repeater': 'gadget',
+  'router': 'gadget',
   'shaver': 'gadget',
   'sim-card': 'gadget',
   'smartphone': 'gadget',
@@ -138,9 +162,8 @@ const typeMap = {
   'stylus': 'gadget',
   'tablet': 'gadget',
   'tripod': 'gadget',
-  'usb-stick': 'gadget',
   'usb hub': 'gadget',
-  'audio system': 'gadget',
+  'usb-stick': 'gadget',
 
   // Sport
   'racket': 'sport',
@@ -150,19 +173,28 @@ const typeMap = {
   // DIY
   'solder': 'diy',
   'craft-supply': 'diy',
+  'electronics': 'diy',
   'pencil': 'diy',
+  'pencils': 'diy',
 
   // Sanitary Articles
   'sanitary-product': 'sanitary-article',
   'hygiene-article': 'sanitary-article',
   'hygiene-product': 'sanitary-article',
+  'styling-gel': 'sanitary-article',
+  'hair-gel': 'sanitary-article',
+  'hair-wax': 'sanitary-article',
   'lip-balm': 'sanitary-article',
   'shampoo': 'sanitary-article',
+  'skin-cream': 'sanitary-article',
   'deodorant': 'sanitary-article',
-  'hair powder': 'sanitary-article',
+  'hair-powder': 'sanitary-article',
   'perfume': 'sanitary-article',
 
   'stockings': 'socks',
+
+  // Toys
+  'toy': 'toys',
 
   // T-Shirt
   'polo shirt': 't-shirt',
@@ -174,6 +206,7 @@ const typeMap = {
   'flip-flops': 'shoes',
   'hiking-boots': 'shoes',
   'running-shoes': 'shoes',
+  'sandals': 'shoes',
   'ski boots': 'shoes',
   'ski-boots': 'shoes',
   'sneakers': 'shoes',
@@ -198,7 +231,7 @@ Array.prototype.slice
       'load',
       event => {
         hideSpinner(event.target)
-      }
+      },
     )
 
     if (image.complete) {
@@ -209,7 +242,7 @@ Array.prototype.slice
 Array
   .from(document.querySelectorAll('.filter'))
   .forEach(element => {
-    element.addEventListener('click', event => {
+    element.addEventListener('click', () => {
       document
         .getElementById('thingsContainer')
         .innerHTML = ''
@@ -233,7 +266,7 @@ Array
                   ],
                 ],
               ],
-            ]
+            ],
           )
         })
     })

@@ -12,7 +12,7 @@ block content
     each entry in Object.entries(thing)
       - let keyStr = String(entry[0])
       - let value = entry[1]
-      if keyStr !== 'id' && keyStr !== 'images' && keyStr !== 'name'
+      if !['id', 'images', 'name', 'pdfs'].includes(keyStr)
         dt= keyStr[0].toUpperCase() + keyStr.slice(1) + ':'
 
         if keyStr == 'urls'

@@ -13,8 +13,10 @@ module.exports = (options = {}) => {
     const requestedThingPath = path.join(basePath, request.params.id)
     const files = fs.readdirSync(requestedThingPath)
     const images = files.filter(isImage)
-    console.log(files)
-    const pdfs = files.filter(file => file.toLowerCase().endsWith('.pdf'))
+    const pdfs = files.filter(file => file
+      .toLowerCase()
+      .endsWith('.pdf'),
+    )
 
     function renderPage () {
       const dataFileName = getMainYamlFile(files)
@@ -50,7 +52,7 @@ module.exports = (options = {}) => {
               page: 'thing',
               thing: jsonData,
             })
-          }
+          },
         )
       }
     }
