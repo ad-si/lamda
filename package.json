@@ -40,7 +40,6 @@
     "morgan": "^1.8.1",
     "nib": "^1.1.2",
     "osenv": "^0.1.4",
-    "pug": "^2.0.0-beta9",
     "serve-favicon": "^2.4.0",
     "stylus": "^0.54.5",
     "symlink-modules": "^0.2.0",
@@ -51,18 +50,18 @@
     "eslint-config-javascript": "^1.3.0"
   },
   "optionalDependencies": {
-    "boilerplate": "git+ssh://git@github.com/adius/boilerplate",
-    "books": "git+ssh://git@github.com/adius/books",
-    "contacts": "git+ssh://git@github.com/adius/contacts",
-    "events": "git+ssh://git@github.com/adius/events",
-    "files": "git+ssh://git@github.com/adius/files",
-    "movies": "git+ssh://git@github.com/adius/movies",
-    "news": "git+ssh://git@github.com/adius/news",
-    "photos": "git+ssh://git@github.com/adius/photos",
-    "sheetmusic": "git+ssh://git@github.com/adius/sheetmusic",
-    "songs": "git+ssh://git@github.com/adius/songs",
-    "tasks": "git+ssh://git@github.com/adius/tasks",
-    "things": "git+ssh://git@github.com/adius/things"
+    "boilerplate": "./boilerplate",
+    "books": "./books",
+    "contacts": "./contacts",
+    "events": "./events",
+    "files": "./files",
+    "movies": "./movies",
+    "news": "./news",
+    "photos": "./photos",
+    "sheetmusic": "./sheetmusic",
+    "songs": "./songs",
+    "tasks": "./tasks",
+    "things": "./things"
   },
   "eslintConfig": {
     "extends": "eslint-config-javascript"
