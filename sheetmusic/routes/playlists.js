@@ -11,7 +11,7 @@ module.exports = (playlistsPath) => {
 
     playlistDirs.forEach(playlistDir => {
       try {
-        const playlistData = yaml.safeLoad(fs.readFileSync(
+        const playlistData = yaml.load(fs.readFileSync(
           path.join(playlistsPath, playlistDir, 'index.yaml'),
           'utf-8'
         ))

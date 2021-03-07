@@ -1,4 +1,4 @@
-extends ../linked_modules/lamda-views/layout
+extends ../../views/layout
 
 block styles
   link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
@@ -19,12 +19,12 @@ block content
           td.name
             a(href=String(song.id))
               = song.id.replace(/_/gi, ' ')
-          td
-            a(href=`${baseURL}/${song.id}/raw?style=wrapped`)
-              span.oi(data-glyph='resize-height')
+          td.viewButtons
+            a.wrapped(href=`${baseURL}/${song.id}/raw?style=wrapped`)
+              span ↕
             = ' '
-            a(href=`${baseURL}/raw/${song.id}/raw?style=inline`)
-              span.oi(data-glyph='resize-width')
+            a.inline(href=`${baseURL}/${song.id}/raw?style=inline`)
+              span ↔
 
 
           td.pages

@@ -57,7 +57,7 @@ module.exports = (songsPath, thumbsPath, baseURL) => {
 
           renderObject.song = Object.assign(
             renderObject.song,
-            yaml.safeLoad(fileContent)
+            yaml.load(fileContent)
           )
 
           response.render('piece', renderObject)

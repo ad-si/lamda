@@ -7,7 +7,7 @@ const yaml = require('js-yaml')
 module.exports = (playlistsPath, baseURL) => {
   return (request, response) => {
     const playlistPath = path.join(playlistsPath, request.params.id)
-    const playlistData = yaml.safeLoad(
+    const playlistData = yaml.load(
       fs.readFileSync(
         path.join(playlistPath, 'index.yaml'),
         'utf-8'

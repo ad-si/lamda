@@ -9,22 +9,47 @@
     span
       display inline-block
       margin-bottom 0.5em
+
   table
     width 100%
     border-collapse collapse
+
     tr
       width 100% !important
+
     th
       padding 0.4em 1em
 
     td, th
       text-align center
       border 1px solid rgba(127, 127, 127, 0.4)
+
     .name
       text-align left
       a
         display block
         padding 0.4em 1em
+
+    .viewButtons
+      display flex
+      a
+        display inline-block
+        border 1px solid rgba(127, 127, 127, 0.4)
+        width 1.5em
+        height 1.5em
+        line-height 1.5em
+        border-radius 2px
+        background-color rgba(127, 127, 127, 0.2)
+        vertical-align bottom
+
+        &.wrapped
+          margin-right 0.5em
+
+        &.inline span
+          position relative
+          bottom 0.15em
+
+
     .pages
       text-align left
       white-space normal
@@ -32,11 +57,13 @@
       padding-right 1em
       a
         display inline-block
+
     .badge
       border-radius 10px
       background-color solid rgba(127, 127, 127, 0.4)
       padding 0 0.3em
       text-align center
+
   .images
     .image
       display inline-block
