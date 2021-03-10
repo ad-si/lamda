@@ -45,6 +45,7 @@ Built with web technologies.
 ## Apps
 
 - Files (is default landing page)
+    - Includes a basic text editor and file previewer
 - Contacts
 - Events (aka Calendar)
 - Photos
@@ -59,6 +60,7 @@ Built with web technologies.
 
 Planned:
 
+- Terminal (running a shell for the underlaying computer / server)
 - Mails
 - Notes
 

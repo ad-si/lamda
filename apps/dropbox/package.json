@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "dropbox": "^4.0.30",
+    "express": "^4.17.1",
+    "js-yaml": "^3.13.1",
+    "node-fetch": "^2.6.0"
+  }
+}
