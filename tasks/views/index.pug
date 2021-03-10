@@ -1,4 +1,4 @@
-extends ../linked_modules/lamda-views/layout
+extends ../../views/layout
 
 block styles
   link(rel='stylesheet' href=`${baseURL}/styles/index.css`)
@@ -37,14 +37,14 @@ block content
         //-     task => {
         //-       task.creationDate.toDateString() === new Date().toDateString()
         //-     }
-        //- 
+        //-
         //-   br
-        //- 
+        //-
         //-   input#addFilterButton.button(
         //-     type='button'
         //-     value='Apply'
         //-   )
-        //- 
+        //-
         //-   input#addViewButton.button(
         //-     type='button'
         //-     value='Add as new view'
@@ -80,7 +80,7 @@ block content
               span.dueDate(v-if='task.dueDateFormatted')
                 small= ' due '
                 | {{task.dueDateFormatted}}
-            
+
             button(@click='editFile(task.id)') ✍
 
   //- if tasks

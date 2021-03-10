@@ -9,16 +9,16 @@ copy node_modules node_modules
 copy package.json package.json
 run npm build --unsafe-perm .
 
-run cd linked_modules/lamda-views && npm build --unsafe-perm .
-run cd linked_modules/lamda-styles && npm build --unsafe-perm .
+run cd views && npm build --unsafe-perm .
+run cd styles && npm build --unsafe-perm .
 
-run cd node_modules/books      && npm build --unsafe-perm .
-run cd node_modules/contacts   && npm build --unsafe-perm .
-run cd node_modules/events     && npm build --unsafe-perm .
-run cd node_modules/files      && npm build --unsafe-perm .
-run cd node_modules/movies     && npm build --unsafe-perm .
-run cd node_modules/news       && npm build --unsafe-perm .
-run cd node_modules/photos     && npm build --unsafe-perm .
+run cd books      && npm build --unsafe-perm .
+run cd contacts   && npm build --unsafe-perm .
+run cd events     && npm build --unsafe-perm .
+run cd files      && npm build --unsafe-perm .
+run cd movies     && npm build --unsafe-perm .
+run cd news       && npm build --unsafe-perm .
+run cd photos     && npm build --unsafe-perm .
 
 # run cd node_modules/projects   && npm build --unsafe-perm .
 # => Breaks as directory is never created
@@ -26,10 +26,10 @@ run cd node_modules/photos     && npm build --unsafe-perm .
 # npm install git+ssh://git@github.com/adius/projects
 # TODO: Needs rights to access the bitbucket website
 
-run cd node_modules/sheetmusic && npm build --unsafe-perm .
-run cd node_modules/songs      && npm build --unsafe-perm .
-run cd node_modules/tasks      && npm build --unsafe-perm .
-run cd node_modules/things     && npm build --unsafe-perm .
+run cd sheetmusic && npm build --unsafe-perm .
+run cd songs      && npm build --unsafe-perm .
+run cd tasks      && npm build --unsafe-perm .
+run cd things     && npm build --unsafe-perm .
 
 copy bin bin
 copy icons icons

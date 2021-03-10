@@ -4,7 +4,7 @@
   "description": "All your books in one place",
   "main": "server.js",
   "scripts": {
-    "test": "eslint --ignore-pattern linked_modules ."
+    "test": "eslint ."
   },
   "keywords": [
     "lamda",

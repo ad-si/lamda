@@ -74,8 +74,7 @@ if (runsStandalone) {
   app.locals.songsPath = path.join(app.locals.basePath, 'songs')
   app.locals.playlistsPath = path.join(app.locals.basePath, 'playlists')
 
-  // const fontsPath = path.join(projectPath,
-  //   'linked_modules/lamda-styles/linked_modules/font/fonts')
+  // const fontsPath = path.join(projectPath, 'styles/font/fonts')
   // app.use('/fonts', express.static(fontsPath))
 
   const faviconPath = path.join(projectPath, 'public/images/favicon.ico')

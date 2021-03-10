@@ -37,6 +37,6 @@ block content
 block scripts
   if book
     script(src=`${baseURL}/node_modules/epubjs/build/libs/zip.min.js`)
-    script(src=`${baseURL}/linked_modules/epubjs/build/epub.js`)
+    script(src=`${baseURL}/node_modules/epubjs/build/epub.js`)
     script= `var bookUrl = '${book.url.replace("\'", "\\\'")}'`
     script(src=`${baseURL}/scripts/index.js`)

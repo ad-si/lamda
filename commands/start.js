@@ -51,7 +51,7 @@ function startServer () {
   // All environments
   app.set('port', config.port)
 
-  app.set('views', path.join(projectPath, 'linked_modules/lamda-views'))
+  app.set('views', path.join(projectPath, 'views'))
   app.set('view engine', 'pug')
 
   app.use(favicon(config.faviconPath))
@@ -59,7 +59,7 @@ function startServer () {
   app.use(compress())
 
   app.use(stylus.middleware({
-    src: path.join(projectPath, 'linked_modules/lamda-styles/themes'),
+    src: path.join(projectPath, 'styles/themes'),
     dest: stylesDirectory,
     debug: devMode,
     compress: !devMode,
@@ -68,7 +68,7 @@ function startServer () {
   app.use(express.static(path.join(projectPath, 'public')))
   app.use(express.static(path.join(
     projectPath,
-    'linked_modules/lamda-styles/linked_modules/open-iconic/font'
+    'node_modules/open-iconic/font'
   )))
 
 

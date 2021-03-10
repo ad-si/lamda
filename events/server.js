@@ -46,7 +46,7 @@ if (runsStandalone) {
     id: 'themeLink',
   }]
   app.use(stylus.middleware({
-    src: path.join(projectDirectory, 'linked_modules/lamda-styles/themes'),
+    src: path.join(projectDirectory, '../styles/themes'),
     dest: path.join(publicDirectory, 'styles'),
     debug: isDevMode,
     compress: !isDevMode,
