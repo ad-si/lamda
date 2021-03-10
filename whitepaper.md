@@ -1,4 +1,4 @@
-# Lamda Manifest
+# Lamda - A browser based desktop environment built with web technologies
 
 ## Structure
 
@@ -186,6 +186,24 @@ Different apps might use the `uuid` or the `contentHash` as id.
 (Either the creation time or the content is important)
 
 
+## Tags
+
+- [Designing better file organization around tags not hierarchies][nayuki.io]
+- [TagSpaces] - Cross-platform file browser
+    organizing files and folders with tags and colors
+
+[TagSpaces]: https://www.tagspaces.org/
+[nayuki.io]:
+  https://www.nayuki.io/page/designing-better-file-organization-around-tags-not-hierarchies
+
+
+### Related
+
+- [Vfile] - Virtual file format for text processing.
+
+[Vfile]: https://github.com/vfile/vfile
+
+
 ### Hierarchy
 
 - Lamda root directory / home directory
@@ -201,11 +219,15 @@ Objects directories can contain:
 - Directories with timestamp name
   - `data.yaml` and content / binary files
 - Directory hierarchies like `year/month/day/time(.yaml)?`
--
-
 
 
 ## Related
 
 - [Tagspaces](https://tagspaces.org)
 - [Sandstorm](https://sandstorm.io)
+- [x] - Desktop environment in the browser
+- [Just Another Desktop Environment][jde] -
+    Linux desktop environment built with HTML, CSS, JavaScript, and Python.
+
+[jde]: https://github.com/codesardine/jde
+[x]: https://github.com/DustinBrett/x

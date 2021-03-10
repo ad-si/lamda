@@ -1,46 +1,80 @@
 # λ Lamda
 
-The serverless personal computing platform.
+A browser based desktop environment including several default apps.
+Built with web technologies.
 
-Apps and services for the average Joe's computing needs
-deliverd as serverless functions.
+<small>
+  <a href="http://www.danielmoth.com/Blog/lambda-Vs-Lamda.aspx">
+    Yes, lamda without a "b"
+  </a>
+<small>
 
 
 ## Features
 
-- Books
+- **Batteries included** -
+    Contains apps and services for most common computing needs.
+
+- **File based** -
+    All apps are required to only store and retrieve data as (plaintext) files
+    in their assigned storage directory.
+
+- **Easily installable** -
+    Download the binary, execute it, open your browser. 🚀
+
+- **Effective** -
+    Made for power users.
+    No useless whitespace, no animations, and no other pointless baggage.
+
+- **Innovative** -
+    Rethinks several UI and UX patterns which we've taken for granted.
+    (E.g. how a calendar is supposed to look like)
+
+
+### Anti-Features
+
+- **Window managment** -
+    Already handled by your browser
+
+- **Multi user features** -
+    Does not include any rights management, comment, or collaboration features.
+    However, can still be used by several people simultaneously
+    if they want to work on a shared set of data.
+
+
+## Apps
+
+- Files (is default landing page)
 - Contacts
-- Events
-- Files
-- Lamda
-- Movies
-- News
+- Events (aka Calendar)
 - Photos
+- Books
+- Movies
+- Songs (aka Music)
+- Tasks
 - Projects
 - Sheetmusic
-- Songs
-- Tasks
 - Things
+- News (aka Feed Reader)
+
+Planned:
+
+- Mails
+- Notes
 
 
-## Development
+## Technology
 
-The core source code is in the `source` directory and vendor specific
-wrapper code for the functions is in `openfaas` for [OpenFaaS](openfaas.com)
-and `services` for [stdlib](stdlib.com).
-
-
-## Related
-
-- https://coda.io - Docs + spreadsheets
+- Frontend: Elm
+- Backend: Node + Express
+    (Potential rewrite in Haskell or Rust in the future)
 
 
-## TODO
+**Checkout the [whitepaper](./whitepaper.md) for a more in depth explanation**
 
-- [ ] https://hackage.haskell.org/package/group-by-date
-- [ ] https://github.com/vfile/vfile
+
+## Ideas
+
+- [ ] Browse files based on tags and not hierarchies
 - [ ] List of bookmarklets which can be drag & dropped into new browsers
-- [ ] Config menu to specify which app to use for each folder
-- [ ] Directories entry like in package.json file
-      to specify where music, ebooks, … are located
-- [ ] https://www.nayuki.io/page/designing-better-file-organization-around-tags-not-hierarchies
+- [ ] Config to specify a list of directories each app is allowed to access
