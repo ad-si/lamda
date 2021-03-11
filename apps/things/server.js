@@ -61,7 +61,7 @@ if (runsStandalone) {
   app.use(serveFavicon(faviconPath))
 
   app.use(stylus.middleware({
-    src: path.join(modulesPath, 'lamda-styles/themes'),
+    src: path.join(modulesPath, '@lamdahq/styles/themes'),
     dest: stylesPath,
     debug: isDevMode,
     compress: !isDevMode,

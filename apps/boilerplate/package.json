@@ -1,10 +1,9 @@
 {
-  "name": "boilerplate",
+  "name": "@lamdahq/boilerplate",
   "version": "0.0.2",
   "description": "Basic app for Lamda views",
   "main": "index.js",
   "scripts": {
-    "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint .",
     "start": "node server.js",
     "test": "npm run lint",
@@ -16,24 +15,23 @@
   ],
   "repository": {
     "type": "git",
-    "url": "github:adius/boilerplate"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/adius/boilerplate/issues"
+    "url": "https://github.com/ad-si/lamda/issues"
   },
-  "homepage": "https://github.com/adius/boilerplate#readme",
-  "dependencies": {
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
-    "symlink-modules": "^0.2.0"
-  },
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/boilerplate#readme",
   "devDependencies": {
     "eslint": "^3.11.1",
     "eslint-config-javascript": "^1.1.0"
   },
   "eslintConfig": {
     "extends": "eslint-config-javascript"
+  },
+  "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1"
   }
 }

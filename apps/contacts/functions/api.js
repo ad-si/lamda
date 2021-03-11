@@ -1,5 +1,3 @@
-const lib = require('lib')
-
 const vCard = require('vcards-js')
 const mapKeys = require('mapkeys')
 
@@ -45,16 +43,12 @@ function json2vcf (contact) {
 * Checks which contacts have birthday and sends you a reminder
 * @returns {array}
 */
-module.exports = async (context) => {
-  // const getFromDropbox = lib[`${context.service.identifier}.api.dropbox`]
-  // const contacts = await getFromDropbox('/Contacts')
-
+module.exports = async () => {
   const test = [
     { name: 'Henri Marx',
       phone: '+49123456789',
       email: 'henri@example.org',
-      web: 'henri.io'
-
+      web: 'henri.io',
     },
     { name: 'Peter Kreuz',
       phone: 491537886315,
@@ -80,19 +74,19 @@ module.exports = async (context) => {
       lastname: 'Kaso',
       gender: 'female',
       email: 'abin.kaso@gmail.com',
-      address: { country: 'Germany' }
+      address: { country: 'Germany' },
     },
     { firstname: 'Max',
       lastname: 'Backe',
       gender: 'male',
       mobile: 491861321324,
-      address: { country: 'Germany' }
+      address: { country: 'Germany' },
     },
     { firstname: 'Carl',
       lastname: 'Fischer',
       phone: { type: 'cell', number: 1724561237 },
       gender: 'male',
-      address: { country: 'Germany' }
+      address: { country: 'Germany' },
     },
     { firstname: 'Joseph',
       lastname: 'Holft',
@@ -102,10 +96,10 @@ module.exports = async (context) => {
         'joseph.holft@hotmail.com',
       ],
       address: { country: 'Germany' },
-    }
+    },
   ]
 
   return test
-    .slice(0,10)
+    .slice(0, 10)
     .map(json2vcf)
 }

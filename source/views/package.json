@@ -1,5 +1,5 @@
 {
-  "name": "lamda-views",
+  "name": "@lamdahq/views",
   "version": "0.1.1",
   "description": "Views for Lamda",
   "main": "layout.pug",
@@ -12,13 +12,14 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
+  "dependencies": {},
   "devDependencies": {
-    "pug": "^2.0.0-beta6",
+    "pug": "^3.0.2",
     "pug-cli": "^1.0.0-alpha6"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/adius/lamda-views.git"
+    "url": "https://github.com/ad-si/lamda"
   },
-  "homepage": "https://github.com/adius/lamda-views#readme"
+  "homepage": "https://github.com/ad-si/lamda/tree/master/views#readme"
 }

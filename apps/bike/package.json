@@ -1,10 +1,12 @@
 {
-  "name": "bike",
+  "name": "@lamdahq/bike",
   "version": "0.1.0",
   "description": "Rent a nextbike",
   "author": "adius <stdlib@ad-si.com>",
   "main": "functions/rent.js",
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "tough-cookie": "^2.3.3"

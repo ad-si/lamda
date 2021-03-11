@@ -1,5 +1,5 @@
 {
-  "name": "files",
+  "name": "@lamdahq/files",
   "version": "0.0.1",
   "description": "Display all your files",
   "keywords": [
@@ -11,33 +11,31 @@
   "main": "server.js",
   "scripts": {
     "test": "eslint .",
-    "start": "node server.js",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/files"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://github.com/adius/files#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/files#readme",
   "dependencies": {
-    "express": "^4.14.0",
-    "file-formats": "git+ssh://git@github.com/adius/file-formats",
+    "@lamdahq/file-formats": "^0.3.0",
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
+    "express": "^4.17.1",
     "fs-promise": "^1.0.0",
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
-    "morgan": "^1.6.1",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "^2.3.2",
-    "stylus": "^0.54.5",
-    "symlink-modules": "^0.2.0",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2",
+    "serve-favicon": "^2.5.0",
+    "stylus": "^0.54.8",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
-    "eslint-config-javascript": "^1.1.0"
+    "eslint": "^7.21.0",
+    "eslint-config-javascript": "^1.3.0"
   },
   "eslintConfig": {
     "extends": "eslint-config-javascript"

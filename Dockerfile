@@ -1,4 +1,4 @@
-from node:8
+from node:15
 
 run mkdir -p /usr/src/app
 workdir /usr/src/app
@@ -12,24 +12,18 @@ run npm build --unsafe-perm .
 run cd views && npm build --unsafe-perm .
 run cd styles && npm build --unsafe-perm .
 
-run cd books      && npm build --unsafe-perm .
-run cd contacts   && npm build --unsafe-perm .
-run cd events     && npm build --unsafe-perm .
-run cd files      && npm build --unsafe-perm .
-run cd movies     && npm build --unsafe-perm .
-run cd news       && npm build --unsafe-perm .
-run cd photos     && npm build --unsafe-perm .
-
-# run cd node_modules/projects   && npm build --unsafe-perm .
-# => Breaks as directory is never created
-
-# npm install git+ssh://git@github.com/adius/projects
-# TODO: Needs rights to access the bitbucket website
-
-run cd sheetmusic && npm build --unsafe-perm .
-run cd songs      && npm build --unsafe-perm .
-run cd tasks      && npm build --unsafe-perm .
-run cd things     && npm build --unsafe-perm .
+run cd apps/books      && npm build --unsafe-perm .
+run cd apps/contacts   && npm build --unsafe-perm .
+run cd apps/events     && npm build --unsafe-perm .
+run cd apps/files      && npm build --unsafe-perm .
+run cd apps/movies     && npm build --unsafe-perm .
+run cd apps/news       && npm build --unsafe-perm .
+run cd apps/photos     && npm build --unsafe-perm .
+run cd apps/projects   && npm build --unsafe-perm .
+run cd apps/sheetmusic && npm build --unsafe-perm .
+run cd apps/songs      && npm build --unsafe-perm .
+run cd apps/tasks      && npm build --unsafe-perm .
+run cd apps/things     && npm build --unsafe-perm .
 
 copy bin bin
 copy icons icons

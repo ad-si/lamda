@@ -1,5 +1,5 @@
 {
-  "name": "movies",
+  "name": "@lamdahq/movies",
   "version": "0.0.1",
   "description": "Display all your movies in a grid or table",
   "keywords": [
@@ -12,24 +12,22 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/movies"
+    "url": "https://github.com/ad-si/lamda"
   },
-  "homepage": "https://github.com/adius/movies#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/movies#readme",
   "scripts": {
-    "test": "eslint .",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+    "test": "eslint ."
   },
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "better-path": "^0.2.0",
     "express": "^4.14.0",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
-    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {

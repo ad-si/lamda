@@ -1,5 +1,5 @@
 {
-  "name": "sheetmusic",
+  "name": "@lamdahq/sheetmusic",
   "description": "Sheetmusic app for Lamda",
   "version": "0.1.0",
   "main": "server.js",
@@ -9,6 +9,8 @@
     "test": "npm run lint && npm run smoke-test"
   },
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "gm": "^1.23.1",
@@ -19,7 +21,6 @@
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
-    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
@@ -34,12 +35,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/sheetmusic"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://github.com/adius/sheetmusic#readme",
+  "homepage": "https://github.com/ad-si/lamda#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }

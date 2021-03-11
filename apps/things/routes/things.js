@@ -160,7 +160,7 @@ module.exports = (options = {}) => {
             return fsp
               .readFile(filePath)
               .then(fileContent => {
-                const thingData = yaml.safeLoad(fileContent)
+                const thingData = yaml.load(fileContent)
                 return Object.assign(thing, thingData)
               })
               .catch(error => {

@@ -64,6 +64,12 @@ Planned:
 - Mails
 - Notes
 
+Each app can also be deployed in a standalone mode.
+In this mode the app is only wrapped with a minimal version of Lamda
+and the GUI shows only the app itself.
+This can be used if only one particular app
+and not the whole Lamda Suite is needed.
+
 
 ## Technology
 

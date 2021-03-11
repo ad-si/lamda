@@ -95,17 +95,17 @@ async function getHtml (context) {
 * View all contacts in a table
 * @returns {buffer}
 */
-module.exports = (context, callback) => {
+module.exports = (context, htmlRetrievedCb) => {
   // Returning HTML is not yet supported for async functions
   // therefore the callback variant is used
   // (and stdlib requries the variable to be called `callback`)
   getHtml(context)
     .then(html => {
-      callback(
+      htmlRetrievedCb(
         null,
         Buffer.from(html),
         {'Content-Type': 'text/html; charset=utf-8'},
       )
     })
-    .catch(error => callback(error))
+    .catch(error => htmlRetrievedCb(error))
 }

@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "message": "Chore: Publish",
+      "registry": "https://npm.pkg.github.com"
+    },
+    "bootstrap": {
+      "ignore": "component-*",
+      "npmClientArgs": []
+    }
+  },
+  "packages": [
+    "apps/*",
+    "design",
+    "source/styles",
+    "source/views"
+  ]
+}

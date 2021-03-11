@@ -43,7 +43,7 @@ module.exports = (options = {}) => {
           (error, fileContent) => {
             if (error) throw error
 
-            const jsonData = yaml.safeLoad(fileContent)
+            const jsonData = yaml.load(fileContent)
             jsonData.id = request.params.id
             jsonData.images = images
             jsonData.pdfs = pdfs

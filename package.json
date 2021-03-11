@@ -1,5 +1,5 @@
 {
-  "name": "lamda",
+  "name": "@lamdahq/lamda",
   "description": "A simple and modern web desktop environment",
   "version": "0.1.0",
   "bin": {
@@ -9,14 +9,13 @@
     "start": "echo 'Use the lamda command line tool to start the server' && exit 1",
     "start-prod": "NODE_ENV=production node server.js",
     "start-dev": "NODE_ENV=development node server.js",
-    "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint . ",
     "test": "npm run lint"
   },
-  "homepage": "https://github.com/adius/lamda",
+  "homepage": "https://github.com/ad-si/lamda#readme",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/lamda"
+    "url": "https://github.com/ad-si/lamda"
   },
   "keywords": [
     "web os",
@@ -28,24 +27,24 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@datatypes/config": "^0.4.0",
-    "commander": "^2.9.0",
-    "compression": "^1.6.2",
-    "deepmerge": "^1.3.2",
-    "errorhandler": "^1.5.0",
-    "express": "^4.14.1",
-    "js-yaml": "^3.8.1",
-    "morgan": "^1.8.1",
+    "@datatypes/config": "^0.5.1",
+    "commander": "^7.1.0",
+    "compression": "^1.7.4",
+    "deepmerge": "^4.2.2",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "js-yaml": "^4.0.0",
+    "morgan": "^1.10.0",
     "nib": "^1.1.2",
-    "osenv": "^0.1.4",
-    "serve-favicon": "^2.4.0",
-    "stylus": "^0.54.5",
-    "symlink-modules": "^0.2.0",
-    "yargs": "^7.1.1"
+    "osenv": "^0.1.5",
+    "serve-favicon": "^2.5.0",
+    "stylus": "^0.54.8",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "eslint": "^3.16.1",
-    "eslint-config-javascript": "^1.3.0"
+    "eslint": "^7.21.0",
+    "eslint-config-javascript": "^1.3.0",
+    "lerna": "^4.0.0"
   },
   "optionalDependencies": {
     "boilerplate": "./boilerplate",

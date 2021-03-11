@@ -1,5 +1,8 @@
 {
+  "name": "@lamdahq/mail-to-dropbox",
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "dropbox": "^2.5.12",
     "formidable": "^1.1.1",
     "js-yaml": "^3.10.0",

@@ -1,5 +1,5 @@
 {
-  "name": "books",
+  "name": "@lamdahq/books",
   "version": "0.1.0",
   "description": "All your books in one place",
   "main": "server.js",
@@ -12,13 +12,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/books"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://github.com/adius/books#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/books#readme",
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "epub-metadata": "^0.2.0",
     "epubjs": "^0.4.2",
     "exif2": "0.0.1",
@@ -27,8 +29,6 @@
     "gm": "^1.23.1",
     "js-yaml": "^3.14.0",
     "jszip": "^3.5.0",
-    "lamda-styles": "../styles",
-    "lamda-views": "../views",
     "object-assign": "^4.1.1",
     "pug": "^3.0.0",
     "serve-favicon": "^2.5.0",

@@ -1,3 +1,8 @@
+.PHONY: all
+all:
+	npx lerna bootstrap
+
+
 # Build HTML file for home
 source/home/build/home.html: source/home/views/home.pug | source/home/build
 	cd source/home/build

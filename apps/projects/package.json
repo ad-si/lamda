@@ -1,17 +1,16 @@
 {
-  "name": "projects",
+  "name": "@lamdahq/projects",
   "version": "0.1.0",
   "description": "Display all git projects in your projects directory",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint",
-    "start": "node server.js",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://adius@bitbucket.org/adius/projects.git"
+    "url": "https://github.com/ad-si/lamda"
   },
   "keywords": [
     "lamda",
@@ -21,19 +20,18 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "express": "^4.14.1",
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
+    "express": "^4.17.1",
     "findit": "^2.0.0",
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles.git",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views.git",
-    "nodegit": "^0.17.0",
-    "pug": "^2.0.0-beta11",
-    "serve-favicon": "^2.4.0",
-    "stylus": "^0.54.5",
+    "nodegit": "^0.27.0",
+    "pug": "^3.0.2",
+    "serve-favicon": "^2.5.0",
+    "stylus": "^0.54.8",
     "user-home": "^2.0.0"
   },
-  "homepage": "https://github.com/adius/projects#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/projects#readme",
   "eslintConfig": {
-    "root": true,
-    "extends": "./node_modules/javascript-styleguide/.eslintrc.yaml"
+    "extends": "eslint-config-javascript"
   }
 }

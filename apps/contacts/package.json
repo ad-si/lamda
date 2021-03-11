@@ -1,16 +1,17 @@
 {
-  "name": "contacts",
+  "name": "@lamdahq/contacts",
   "version": "0.1.0",
   "description": "All your contacts in one place",
   "main": "server.js",
   "scripts": {
-    "postinstall": "symlink-modules lamda-styles lamda-views",
     "lint": "eslint --ignore-path .gitignore .",
     "start": "node server.js",
     "test": "npm run lint && node tests/main.js",
     "prepublish": "npm test"
   },
   "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "browserify-middleware": "^7.1.0",
     "capitalize": "^1.0.0",
     "express": "^4.14.0",
@@ -18,13 +19,10 @@
     "fs-promise": "^1.0.0",
     "js-yaml": "^3.7.0",
     "json2csv": "^3.7.2",
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views",
     "lowdb": "^0.14.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
-    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0",
     "world-countries": "^1.8.1",
     "ybdb": "github:adius/ybdb"
@@ -39,12 +37,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/adius/contacts"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": true,
-  "homepage": "https://github.com/adius/contacts#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/contacts#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }

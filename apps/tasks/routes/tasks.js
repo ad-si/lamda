@@ -107,8 +107,6 @@ module.exports = (request, response) => {
   Promise
     .all(fileListPromises)
     .then(fileLists => {
-      console.log(fileLists)
-
       const filePaths = [].concat.apply([], fileLists)
       return filePaths.filter(filePath => /\.yaml$/i.test(filePath))
     })
@@ -142,7 +140,7 @@ module.exports = (request, response) => {
           })
 
         if (keysAreTimestamps) {
-          // See https://github.com/adius/eventlang-reduce for explanation
+          // See https://github.com/ad-si/eventlang-reduce for explanation
           for (const timestamp in fileObject.data) {
             if (!fileObject.data.hasOwnProperty(timestamp)) continue
             Object.assign(reducedObject, fileObject.data[timestamp])

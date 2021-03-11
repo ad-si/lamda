@@ -1,5 +1,5 @@
 {
-  "name": "events",
+  "name": "@lamdahq/events",
   "version": "0.2.0",
   "description": "Events app for λOS",
   "main": "server.js",
@@ -15,6 +15,8 @@
     "@datatypes/duration": "^0.4.0",
     "@datatypes/interval": "^0.4.1",
     "@datatypes/moment": "^0.8.1",
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
     "babel-polyfill": "^6.16.0",
     "browserify-middleware": "^7.1.0",
     "clone": "^2.1.0",
@@ -22,13 +24,10 @@
     "fs-promise": "^1.0.0",
     "inquirer": "^1.2.3",
     "js-yaml": "^3.7.0",
-    "lamda-styles": "git+ssh://git@github.com/adius/lamda-styles.git",
-    "lamda-views": "git+ssh://git@github.com/adius/lamda-views.git",
     "moment": "^2.17.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
-    "symlink-modules": "^0.2.0",
     "user-home": "^2.0.0"
   },
   "devDependencies": {
@@ -40,17 +39,16 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint && ava",
-    "postinstall": "symlink-modules lamda-styles lamda-views"
+    "test": "npm run lint && ava"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/adius/events.git"
+    "url": "https://github.com/ad-si/lamda"
   },
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "private": "true",
-  "homepage": "https://github.com/adius/events",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/events#readme",
   "eslintConfig": {
     "extends": "eslint-config-javascript"
   }
