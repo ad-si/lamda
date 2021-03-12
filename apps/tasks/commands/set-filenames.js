@@ -1,9 +1,9 @@
-const path = require('path')
-const fsp = require('fs-promise')
-const yaml = require('js-yaml')
-const Instant = require('@datatypes/moment').Instant
+import path from 'path'
+import fsp from 'fs-promise'
+import yaml from 'js-yaml'
+import {Instant} from '@datatypes/moment'
 
-module.exports = {
+export default {
   command: 'set-filenames [directory]',
   desc: 'Use `creationDate` key of yaml files to update their filenames',
   builder: {
@@ -16,7 +16,7 @@ module.exports = {
     fsp
       .readdir(tasksPath)
       .then(paths => paths
-        .filter(relativePath => /\.yaml$/.test(relativePath))
+        .filter(relativePath => /\.yaml$/.test(relativePath)),
       )
       .then(paths => {
         const fileObjectPromises = paths
@@ -35,7 +35,7 @@ module.exports = {
       })
       .then(fileObjects => fileObjects
         .map(fileObject => {
-          fileObject.data = yaml.safeLoad(fileObject.content)
+          fileObject.data = yaml.load(fileObject.content)
           return fileObject
         })
         .map((fileObject, index) => {
@@ -52,13 +52,13 @@ module.exports = {
                 // /T(\d{2}):(\d{2}).+$/i,
                 // `T$1$2_${index.toString(36)}`
                 /T(\d{2}):(\d{2}):(\d{2}).+$/i,
-                `T$1$2$3_${index.toString(36)}`
+                `T$1$2$3_${index.toString(36)}`,
               )
             : `0000-00-00_${index.toString(36)}`
 
           const absoluteTargetPath = path.join(tasksPath, `${fileName}.yaml`)
           return fsp.move(fileObject.absolutePath, absoluteTargetPath)
-        })
+        }),
       )
       .then(renamePromises => Promise.all(renamePromises))
       .then(() => {

@@ -1,13 +1,16 @@
-const util = require('util')
-const path = require('path')
+import url from 'url'
+import util from 'util'
+import path from 'path'
 
-const lib = require('lib')
-const pug = require('pug')
+import lib from 'lib'
+import pug from 'pug'
 
-const formatContact = require('../modules/formatContact')
+import formatContact from '../modules/formatContact'
 
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const compiledTemplate = pug.compileFile(
-  path.resolve(__dirname, '../views/contacts.pug')
+  path.resolve(dirname, '../views/contacts.pug'),
 )
 
 
@@ -86,7 +89,7 @@ async function getHtml (context) {
         'links',
         'address',
       ],
-    }
+    },
   )
 }
 
@@ -95,7 +98,7 @@ async function getHtml (context) {
 * View all contacts in a table
 * @returns {buffer}
 */
-module.exports = (context, htmlRetrievedCb) => {
+export default function (context, htmlRetrievedCb) {
   // Returning HTML is not yet supported for async functions
   // therefore the callback variant is used
   // (and stdlib requries the variable to be called `callback`)

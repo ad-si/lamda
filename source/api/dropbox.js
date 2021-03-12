@@ -1,7 +1,7 @@
-const util = require('util')
+import util from 'util'
 
-const Dropbox = require('dropbox')
-const yaml = require('js-yaml')
+import Dropbox from 'dropbox'
+import yaml from 'js-yaml'
 
 const developmentMode = false
 
@@ -17,7 +17,7 @@ function fileToJson (file) {
     .from(file.fileBinary, 'binary')
     .toString()
 
-  return yaml.safeLoad(fileContent)
+  return yaml.load(fileContent)
 }
 
 
@@ -50,14 +50,14 @@ async function loadData (path) {
     response.entries
       .filter(isYamlEntry)
       .map(entry => dropbox
-        .filesDownload({path: entry.path_display})
-      )
+        .filesDownload({path: entry.path_display}),
+      ),
   )
 
   console.info(`Found ${files.length} entries`)
 
   return await Promise.all(
-    files.map(fileToJson)
+    files.map(fileToJson),
   )
 }
 
@@ -85,7 +85,7 @@ async function tryToLoadData (counter, path) {
 * @param {string} path Path to directory in Dropbox
 * @returns {array} Array of objects
 */
-module.exports = async (path) => {
+export default async function (path) {
   const counter = 10
   return await tryToLoadData(counter, path)
 }

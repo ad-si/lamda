@@ -1,14 +1,19 @@
-const fs = require('fs')
-const path = require('path')
-const url = require('url')
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
 
-const fsp = require('fs-promise')
-const yaml = require('js-yaml')
-const isImage = require('is-image')
-const Instant = require('@datatypes/moment').Instant
+import fsp from 'fs-promise'
+import yaml from 'js-yaml'
+import isImage from 'is-image'
+import moment from '@datatypes/moment'
+const {Instant} = moment
 
-const {getMainYamlFile} = require('./helpers.js')
-const thumbnailsDirectory = path.resolve(__dirname, '../public/thumbnails')
+import {getMainYamlFile} from './helpers.js'
+
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+
+const thumbnailsDirectory = path.resolve(dirname, '../public/thumbnails')
 
 
 try {
@@ -117,7 +122,7 @@ function callRenderer (response, things, view) {
 }
 
 
-module.exports = (options = {}) => {
+export default function (options = {}) {
   const {baseURL, basePath} = options
   const thingsDir = basePath
 

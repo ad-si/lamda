@@ -1,7 +1,7 @@
 /* globals bookUrl, ePub */
 // TODO: remove globals
 
-// const ePub = require('epubjs')
+// import ePub from 'epubjs'
 
 if (/\.epub$/.test(bookUrl)) {
   const book = ePub({

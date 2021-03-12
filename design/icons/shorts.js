@@ -1,13 +1,16 @@
-const svgKit = require('../../svgKit.js')
+/* eslint-disable id-length */
+
+import svgKit from '../../svgKit.js'
+
 const defaults = {
   width: 26,
   height: 26,
   scale: 1,
 }
 
-module.exports.version = '0.3.0'
+export const version = '0.3.0'
 
-module.exports.shaven = function (conf) {
+export function shaven (conf) {
   conf = svgKit.applyDefaults(conf, defaults)
 
   return [
@@ -18,7 +21,7 @@ module.exports.shaven = function (conf) {
     },
     ['g',
       ['path', {
-        'd': 'M7,6' +
+        d: 'M7,6' +
           'h12' +
           'l2,14' +
           'h-6' +

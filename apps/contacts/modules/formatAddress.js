@@ -1,6 +1,6 @@
-const getCountryCode = require('./getCountryCode')
+import getCountryCode from './getCountryCode.js'
 
-module.exports = (addr) => {
+export default function (addr) {
   const countryEntry = addr
     ? getCountryCode(addr.country)
     : null

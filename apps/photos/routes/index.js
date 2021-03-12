@@ -1,9 +1,9 @@
-const path = require('path')
+import path from 'path'
 
-const utils = require('../modules/utils')
+import utils from '../modules/utils.js'
 
 
-module.exports = (request, response, next) => {
+export default function (request, response, next) {
   const photosDir = path.join(request.app.locals.basePath, 'photos')
 
   return utils
@@ -11,7 +11,7 @@ module.exports = (request, response, next) => {
     .then(utils.filterYears)
     .then(years => Promise.all(
       years.map(year =>
-        utils.getMonthsForYear(year, photosDir, request.app.locals.baseURL))
+        utils.getMonthsForYear(year, photosDir, request.app.locals.baseURL)),
     ))
     .then(years => {
       response.render('index', {

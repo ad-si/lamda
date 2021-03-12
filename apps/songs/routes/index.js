@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 const app = {}
 
@@ -123,4 +123,4 @@ app.artists = function (request, response) {
   })
 }
 
-module.exports = app
+export default app

@@ -1,0 +1,12 @@
+{
+  "name": "@lamdahq/dropbox",
+  "type": "module",
+  "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
+    "dropbox": "^4.0.30",
+    "express": "^4.17.1",
+    "js-yaml": "^3.13.1",
+    "node-fetch": "^2.6.0"
+  }
+}

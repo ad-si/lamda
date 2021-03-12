@@ -2,6 +2,7 @@
   "name": "@lamdahq/contacts",
   "version": "0.1.0",
   "description": "All your contacts in one place",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",

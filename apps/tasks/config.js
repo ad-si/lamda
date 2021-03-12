@@ -1,17 +1,23 @@
-const fs = require('fs')
-const path = require('path')
-const userHome = require('user-home')
-const projectDirectory = __dirname
+import  fs from 'fs'
+import  url from 'url'
+import  path from 'path'
+import  userHome from 'user-home'
+import  merge from 'deepmerge'
+import  yaml from 'js-yaml'
+import  untildify from 'untildify'
+
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const projectDirectory = dirname
 const publicDirectory = path.join(projectDirectory, 'public')
-const merge = require('deepmerge')
-const yaml = require('js-yaml')
-const untildify = require('untildify')
+
 
 function sortByDueDate (taskA, taskB) {
   if (!taskA.dueDate && taskB.dueDate) return 1
   if (taskA.dueDate && !taskB.dueDate) return -1
   return taskA.dueDate - taskB.dueDate
 }
+
 
 const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
@@ -40,7 +46,7 @@ const defaults = {
 
 
 function normalizeConfig (configObject) {
-  if (configObject.hasOwnProperty('directory')) {
+  if (Object.prototype.hasOwnProperty.call(configObject, 'directory')) {
     configObject.directories = configObject.directories || []
     configObject.directories.push(configObject.directory)
     delete configObject.directory
@@ -48,7 +54,7 @@ function normalizeConfig (configObject) {
   // Delete duplicates
   configObject.directories = Array.from(new Set(
     configObject.directories
-      .map(directoryPath => untildify(directoryPath))
+      .map(directoryPath => untildify(directoryPath)),
   ))
   return configObject
 }
@@ -62,7 +68,7 @@ try {
   config = merge(
     config,
     {lamda: lamdaConfig},
-    {arrayMerge: (sourceArray, destArray) => destArray}
+    {arrayMerge: (sourceArray, destArray) => destArray},
   )
 }
 catch (error) {
@@ -75,11 +81,11 @@ try {
   config = merge(
     config,
     {tasks: tasksConfig},
-    {arrayMerge: (sourceArray, destArray) => destArray}
+    {arrayMerge: (sourceArray, destArray) => destArray},
   )
 }
 catch (error) {
   if (!error.message.includes('no such file or directory')) console.error(error)
 }
 
-module.exports = normalizeConfig(config.tasks)
+export default normalizeConfig(config.tasks)

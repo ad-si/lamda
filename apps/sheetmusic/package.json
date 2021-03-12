@@ -2,6 +2,7 @@
   "name": "@lamdahq/sheetmusic",
   "description": "Sheetmusic app for Lamda",
   "version": "0.1.0",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",

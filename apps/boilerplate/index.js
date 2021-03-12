@@ -1,10 +1,15 @@
-const express = require('express')
-const index = require('./routes/index')
+import url from 'url'
+
+import express from 'express'
+
+import index from './routes/index'
+
+
 const app = express()
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
-
-app.set('views', `${__dirname}/views`)
+app.set('views', `${dirname}/views`)
 
 app.get('/', index)
 
-module.exports = app
+export default app

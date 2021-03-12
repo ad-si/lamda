@@ -2,6 +2,7 @@
   "name": "@lamdahq/files",
   "version": "0.0.1",
   "description": "Display all your files",
+  "type": "module",
   "keywords": [
     "files",
     "finder",

@@ -2,6 +2,7 @@
   "name": "@lamdahq/projects",
   "version": "0.1.0",
   "description": "Display all git projects in your projects directory",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",

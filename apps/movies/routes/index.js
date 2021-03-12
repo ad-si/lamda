@@ -1,23 +1,25 @@
-const fs = require('fs')
-const path = require('path')
-const betterPath = require('better-path')
+import fs from 'fs'
+import path from 'path'
+import betterPath from 'better-path'
+
 
 function isMovie (fileName) {
   return fileName.search(/.+\.(webm|mp4|m4v|mkv)$/gi) !== -1
 }
 
-module.exports = (request, response) => {
+
+export default function (request, response) {
   const movies = []
   const moviesPath = path.join(request.app.locals.basePath, 'movies')
   const rootEntries = fs.readdirSync(moviesPath)
   // eslint-disable-next-line no-unused-vars
-  let numberOfRootEntries = rootEntries.length
+  // let numberOfRootEntries = rootEntries.length
 
   rootEntries.forEach(entry => {
     const absoluteEntryPath = path.join(
       request.app.locals.basePath,
       'movies',
-      entry
+      entry,
     )
     let movieObjects = []
 
@@ -47,7 +49,7 @@ module.exports = (request, response) => {
       }]
     }
     else {
-      numberOfRootEntries--
+      // numberOfRootEntries--
       return
     }
 

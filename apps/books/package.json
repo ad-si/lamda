@@ -2,6 +2,7 @@
   "name": "@lamdahq/books",
   "version": "0.1.0",
   "description": "All your books in one place",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "test": "eslint ."

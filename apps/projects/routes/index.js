@@ -1,9 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const nodegit = require('nodegit')
-const findit = require('findit')
+import fs from 'fs'
+import path from 'path'
+import nodegit from 'nodegit'
+import findit from 'findit'
 
-const userHome = require('user-home')
+import userHome from 'user-home'
+
+
 global.basePath = global.basePath || userHome
 global.config = global.config || {}
 let projectsDir = path.join(global.basePath, 'projects')
@@ -43,7 +45,8 @@ catch (error) {
   }
 }
 
-module.exports = function (request, response) {
+
+export default function (request, response) {
   const projects = []
   let traversedTree = false
   let projectsCounter = 0

@@ -2,6 +2,7 @@
   "name": "@lamdahq/movies",
   "version": "0.0.1",
   "description": "Display all your movies in a grid or table",
+  "type": "module",
   "keywords": [
     "movies",
     "lamda"

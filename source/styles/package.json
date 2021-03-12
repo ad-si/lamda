@@ -2,6 +2,7 @@
   "name": "@lamdahq/styles",
   "version": "0.1.1",
   "description": "Styles for Lamda",
+  "type": "module",
   "main": "screen.styl",
   "keywords": [
     "lamda"

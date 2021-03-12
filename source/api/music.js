@@ -1,4 +1,5 @@
-const fsToJson = require('../api/fsToJson')
+import fsToJson from '../api/fsToJson'
+
 const app = {}
 const baseURL = ''
 
@@ -104,7 +105,7 @@ app.song = () => {}
 
 app.songs = () => {}
 
-module.exports = app
+export default app
 
 
 // function songs(){

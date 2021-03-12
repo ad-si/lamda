@@ -1,10 +1,10 @@
-const path = require('path')
+import path from 'path'
 
-const fsp = require('fs-promise')
-const yaml = require('js-yaml')
+import fsp from 'fs-promise'
+import yaml from 'js-yaml'
+import momentFromString from '@datatypes/moment'
 
-const momentFromString = require('@datatypes/moment').default
-const defaultConfig = require('../config')
+import defaultConfig from '../config.js'
 
 
 function alphabeticallyBy (attribute, order) {
@@ -49,10 +49,10 @@ function normalizeTask (task) {
 
   const stateIsInferable =
     (
-      task.hasOwnProperty('completed') ||
-      task.hasOwnProperty('obsolete')
+      Object.prototype.hasOwnProperty.call(task, 'completed') ||
+      Object.prototype.hasOwnProperty.call(task, 'obsolete')
     ) &&
-    !task.hasOwnProperty('state')
+    !Object.prototype.hasOwnProperty.call(task, 'state')
 
   if (stateIsInferable) {
     task.state = task.completed || task.obsolete
@@ -61,7 +61,7 @@ function normalizeTask (task) {
   }
   delete task.completed
 
-  if (task.hasOwnProperty('state')) {
+  if (Object.prototype.hasOwnProperty.call(task, 'state')) {
     task.isOpen = task.state === 'open'
     task.isClosed = task.state === 'closed'
   }
@@ -85,17 +85,18 @@ function normalizeTask (task) {
 // }
 
 
-module.exports = (request, response) => {
+export default function (request, response) {
   const fileListPromises = request.app.locals.directories
     .map(directoryPath => fsp
-        .readdir(directoryPath)
-        .then(fileNames => fileNames
-          .map(fileName => path.join(directoryPath, fileName))
-        )
+      .readdir(directoryPath)
+      .then(fileNames => fileNames
+        .map(fileName => path.join(directoryPath, fileName)),
+      ),
     )
 
+  // const dirname = path.dirname(url.fileURLToPath(import.meta.url))
   // const database = new Ybdb({
-  //   storagePath: path.join(__dirname, 'fixtures/contact-files'),
+  //   storagePath: path.join(dirname, 'fixtures/contact-files'),
   // })
   //
   // database
@@ -125,7 +126,7 @@ module.exports = (request, response) => {
     })
     .then(fileObjects => fileObjects
       .map(fileObject => {
-        fileObject.data = yaml.safeLoad(fileObject.content)
+        fileObject.data = yaml.load(fileObject.content)
         return fileObject
       })
       .map(fileObject => {
@@ -142,7 +143,12 @@ module.exports = (request, response) => {
         if (keysAreTimestamps) {
           // See https://github.com/ad-si/eventlang-reduce for explanation
           for (const timestamp in fileObject.data) {
-            if (!fileObject.data.hasOwnProperty(timestamp)) continue
+            if (
+              !Object.prototype.hasOwnProperty
+                .call(fileObject.data, timestamp)
+            ) {
+              continue
+            }
             Object.assign(reducedObject, fileObject.data[timestamp])
           }
         }
@@ -152,7 +158,7 @@ module.exports = (request, response) => {
 
         const dateStringFromFilename = path.basename(
           fileObject.absoluteFilePath,
-          '.yaml'
+          '.yaml',
         )
 
         try {
@@ -160,7 +166,7 @@ module.exports = (request, response) => {
         }
         catch (error) {
           console.error(
-            `"${fileObject.absoluteFilePath}" has no valid file name`
+            `"${fileObject.absoluteFilePath}" has no valid file name`,
           )
           reducedObject.creationDate = null
         }
@@ -170,7 +176,7 @@ module.exports = (request, response) => {
         return normalizeTask(reducedObject)
       })
       // .filter(reducedObject => !reducedObject.completed)
-      .sort(alphabeticallyBy('creationDate', 'descending'))
+      .sort(alphabeticallyBy('creationDate', 'descending')),
     )
     .then(tasks => {
       response.render('index', {
@@ -183,13 +189,13 @@ module.exports = (request, response) => {
             (key, value) => typeof value === 'function'
               ? value.toString()
               : value,
-            2
+            2,
           )
           // Include functions as real functions and not as strings
           // Arrow functions
-          .replace(/\:\s*\"(.+?)\=\>(.+?)\"\s*(\,|\})/g, ':$1 => $2$3')
+          .replace(/:\s*"(.+?)=>(.+?)"\s*(,|\})/g, ':$1 => $2$3')
           // Normal functions
-          .replace(/\:\s*"function(.+?)"\s*(,|})/g, ':function$1$2')
+          .replace(/:\s*"function(.+?)"\s*(,|})/g, ':function$1$2')
           .replace(/\\n/g, '\n'),
       })
     })

@@ -1,15 +1,19 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import url from 'url'
+import path from 'path'
 
-const stylus = require('stylus')
-const express = require('express')
-const userHome = require('user-home')
-const serveFavicon = require('serve-favicon')
-const browserifyMiddleware = require('browserify-middleware')
+import stylus from 'stylus'
+import express from 'express'
+import userHome from 'user-home'
+import serveFavicon from 'serve-favicon'
+import browserifyMiddleware from 'browserify-middleware'
 
-const contacts = require('../routes/contacts')
-const dataExport = require('../routes/export')
-const projectDirectory = path.join(__dirname, '..')
+import contacts from '../routes/contacts.js'
+import dataExport from '../routes/export.js'
+
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const projectDirectory = path.join(dirname, '..')
 const publicDirectory = path.join(projectDirectory, 'public')
 const scriptsDirectory = path.join(publicDirectory, 'scripts')
 const stylesDirectory = path.join(publicDirectory, 'styles')
@@ -25,10 +29,10 @@ function setupRoutes (app, isDevMode) {
       .define('providers', fs
         .readdirSync(path.join(publicDirectory, 'images/providers'))
         .filter(fileName => fileName
-            .toLowerCase()
-            .endsWith('.png')
+          .toLowerCase()
+          .endsWith('.png'),
         )
-        .map(fileName => fileName.replace(/\.png$/gi, ''))
+        .map(fileName => fileName.replace(/\.png$/gi, '')),
       )
       .define('baseURL', app.locals.baseURL),
   }))
@@ -63,14 +67,14 @@ function setupStandalone (app, isDevMode) {
 
   app.get('/files/Contacts/:fileName', (request, response) => {
     response.sendFile(
-      path.join(app.locals.basePath, 'Contacts', request.params.fileName)
+      path.join(app.locals.basePath, 'Contacts', request.params.fileName),
     )
   })
 
   app.set('view engine', 'pug')
 }
 
-module.exports = (options = {}) => {
+export default function (options = {}) {
   const {app, runsStandalone, locals, isDevMode, listeningCallback} = options
 
   if (runsStandalone) {

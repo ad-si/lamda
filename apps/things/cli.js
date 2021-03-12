@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const yargs = require('yargs')
+import yargs from 'yargs'
 
 yargs
   .commandDir('./commands')

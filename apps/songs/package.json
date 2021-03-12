@@ -2,6 +2,7 @@
   "name": "@lamdahq/songs",
   "version": "0.0.1",
   "description": "All you songs",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",

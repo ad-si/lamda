@@ -1,7 +1,7 @@
 /* globals baseURL */
 // TODO: Remove globals
 
-const shaven = require('shaven')
+import shaven from 'shaven'
 
 const playlist = []
 const player = new Player()
@@ -131,7 +131,7 @@ function Player () {
           ['div#.song',
             ['a', song.title],
           ],
-        ]
+        ],
       )
     })
   }
@@ -241,7 +241,7 @@ function Player () {
           audio.removeEventListener(
             'timeupdate',
             playerUpdater,
-            false
+            false,
           )
         }
       }, false)
@@ -289,7 +289,7 @@ function ajax (url, param, func) {
     }
     else {
       for (const key in param) {
-        if (param.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(param, key)) {
           str += key + '=' + param[key] + '&'
         }
       }
@@ -319,7 +319,7 @@ function ajax (url, param, func) {
       else {
         throw new Error(
           'Http error ' + xRequest.status +
-          ' occured during an ajax request to ' + path
+          ' occured during an ajax request to ' + path,
         )
       }
     }
@@ -340,7 +340,7 @@ print.artists = () => {
       const link = shaven(
         ['a', {href: '#'},
           artist.name,
-        ]
+        ],
       )[0]
 
       link.addEventListener('click', anEvent => {
@@ -354,7 +354,7 @@ print.artists = () => {
         history.pushState(
           {url: artist.id},
           artist.id,
-          baseURL + '/' + artist.id
+          baseURL + '/' + artist.id,
         )
       })
 
@@ -366,7 +366,7 @@ print.artists = () => {
 
           [link],
           ['button', ''],
-        ]
+        ],
       )
 
       querySelect('#c2')
@@ -396,7 +396,7 @@ print.artist = (id) => {
           ],
           ['div#bio', artist.bio],
         ],
-      ]
+      ],
     )
 
   })
@@ -417,7 +417,7 @@ print.songs = (artistId) => {
             [play],
             [link],
           ],
-        ]
+        ],
       )
 
       shaven(
@@ -427,7 +427,7 @@ print.songs = (artistId) => {
           ['span.duration'],
           ['span.release'],
           ['button#more'],
-        ]
+        ],
       )
 
       link.addEventListener('click', anEvent => {
@@ -446,7 +446,7 @@ print.songs = (artistId) => {
         else {
           throw new Error(
             'No source available for the song ' +
-            song.title
+            song.title,
           )
         }
 
@@ -479,8 +479,8 @@ print.song = (songId, artistId) => {
               ['p#trackArtist', 'by ' + song.trackArtist],
             ],
             ['img', {
-              'src': 'http://lorempixel.com/80/80',
-              'alt': 'Image of' + song.trackArtist},
+              src: 'http://lorempixel.com/80/80',
+              alt: 'Image of' + song.trackArtist},
             ],
             ['div.buttons',
               ['button#playSong', 'Play'],
@@ -489,7 +489,7 @@ print.song = (songId, artistId) => {
             ],
             ['div#lyrics', song.lyrics],
           ],
-        ]
+        ],
       )
 
       querySelect('#playSong')
@@ -500,7 +500,7 @@ print.song = (songId, artistId) => {
           else {
             throw new Error(
               'No source available for the song ' +
-              song.title
+              song.title,
             )
           }
 
@@ -513,7 +513,7 @@ print.song = (songId, artistId) => {
         .addEventListener('click', () => {
           playlist.push(song)
         })
-    }
+    },
   )
 
 }
@@ -522,7 +522,7 @@ print.startpage = function () {
   shaven(
     [querySelect('#c4'),
       ['h2', 'Welcome to Songs'],
-    ]
+    ],
   )
 }
 
@@ -544,7 +544,7 @@ function route (state) {
     else {
       throw new Error(
         'History Object does not contain an URL: ' +
-        state.url
+        state.url,
       )
     }
 
@@ -555,7 +555,7 @@ function route (state) {
   else {
     throw new Error(
       'The variable passed to route() ' +
-      'is not an object or a string: ' + state
+      'is not an object or a string: ' + state,
     )
   }
 
@@ -603,7 +603,7 @@ function view () {
           ['div#c3'],
           ['div#c4'],
           ['div#Bubble.bubble', {style: 'display:none'}],
-        ]
+        ],
       )
 
       querySelectcolumns.addEventListener('click', () => {
@@ -623,7 +623,7 @@ function view () {
           'keyup',
           anEvent => {
             anEvent.stopPropagation()
-          }
+          },
         )
 
       querySelect('#logo')
@@ -714,7 +714,7 @@ function setShortcuts () {
 
 const path = location.pathname.substr(
   baseURL.length + 1,
-  location.pathname.length
+  location.pathname.length,
 )
 
 history.replaceState({url: path}, path, baseURL + '/' + path)

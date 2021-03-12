@@ -1,8 +1,13 @@
-const fse = require('fs-extra')
-const path = require('path')
+import path from 'path'
+import url from 'url'
+
+import fse from 'fs-extra'
+
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 async function getHtml () {
-  const htmlPath = path.resolve(__dirname, '../build/contacts.html')
+  const htmlPath = path.resolve(dirname, '../build/contacts.html')
   const html = await fse.readFileSync(htmlPath)
   return html
 }
@@ -12,7 +17,7 @@ async function getHtml () {
 * @returns {buffer}
 */
 // eslint-disable-next-line id-blacklist
-module.exports = (token = '', context, callback) => {
+export default function (token = '', context, callback) {
   if (token !== process.env.contactsToken) {
     callback(
       null,

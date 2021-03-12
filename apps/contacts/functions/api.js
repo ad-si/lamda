@@ -1,5 +1,5 @@
-const vCard = require('vcards-js')
-const mapKeys = require('mapkeys')
+import vCard from 'vcards-js'
+import mapKeys from 'mapkeys'
 
 
 function json2vcf (contact) {
@@ -24,7 +24,7 @@ function json2vcf (contact) {
       contactNormalized,
       {
         version: '4.0',
-      }
+      },
     )
 
     // https://github.com/enesser/vCards-js/issues/27
@@ -43,7 +43,7 @@ function json2vcf (contact) {
 * Checks which contacts have birthday and sends you a reminder
 * @returns {array}
 */
-module.exports = async () => {
+export default async function () {
   const test = [
     { name: 'Henri Marx',
       phone: '+49123456789',

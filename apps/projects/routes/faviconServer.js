@@ -1,9 +1,9 @@
-const fs = require('fs')
-const path = require('path')
-const findit = require('findit')
+import fs from 'fs'
+import path from 'path'
+import findit from 'findit'
 
 
-module.exports = () => {
+export default function () {
   const iconPathCache = {}
   const ignoreList = [
     'node_modules',
@@ -57,7 +57,7 @@ module.exports = () => {
       const absRepoPath = path.join(
         global.basePath,
         'projects',
-        path.dirname(request.url)
+        path.dirname(request.url),
       )
       const faviconPaths = [
         'img/favicon.png',

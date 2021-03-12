@@ -1,15 +1,20 @@
-const fs = require('fs')
-const path = require('path')
-const fileIcon = require('file-formats')
+import fs from 'fs'
+import url from 'url'
+import path from 'path'
+
+import fileIcon from '@lamdahq/file-formats'
+
+
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const directoryIcon = fs.readFileSync(
-  path.resolve(__dirname, '../public/images/directory.svg'),
-  'utf-8'
+  path.resolve(dirname, '../public/images/directory.svg'),
+  'utf-8',
 )
 
 
 function createFileObject (fileName, dirName) {
   const stats = fs.lstatSync(path.join(
-    dirName, fileName
+    dirName, fileName,
   ))
   const extname = path.extname(fileName)
   const fileEntry = {
@@ -37,7 +42,7 @@ function createFileObject (fileName, dirName) {
 }
 
 
-module.exports = (baseURL, file) => {
+export default function (baseURL, file) {
 
   const nodes = file.split('/')
   let currentDepth = 0
@@ -81,8 +86,7 @@ module.exports = (baseURL, file) => {
     return info
   }
 
-  // TODO: Finish implementation
-  // const fsp = require('fs-promise')
+  // TODO: Finish implementationimport// const fsp from 'fs-promise'
   //
   // function doItAsync (filename) {
   //   const info = {

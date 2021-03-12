@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const isImage = require('is-image')
+import isImage from 'is-image'
 
 
-module.exports = (songsPath) => {
+export default function (songsPath) {
   return function (request, response) {
     const songs = []
     const songDirs = fs.readdirSync(songsPath)

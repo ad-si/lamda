@@ -1,13 +1,20 @@
-const path = require('path')
+import url from 'url'
+import path from 'path'
 
-const express = require('express')
-const stylus = require('stylus')
+import express from 'express'
+import stylus from 'stylus'
+import morgan from 'morgan'
+import serveFavicon from 'serve-favicon'
+import userHome from 'user-home'
 
-const index = require('./routes/index')
+import index from './routes/index.js'
+
+
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const runsStandalone = !module.parent
-const projectDirectory = __dirname
+const runsStandalone = true  // TODO: !module.parent
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const projectDirectory = dirname
 const publicDirectory = path.join(projectDirectory, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
 
@@ -27,14 +34,11 @@ function setupRouting () {
 
 
 if (runsStandalone) {
-  const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  const serveFavicon = require('serve-favicon')
   const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
   app.use(serveFavicon(faviconPath))
 
-  const userHome = require('user-home')
   app.locals.basePath = userHome
   app.locals.baseURL = ''
   app.locals.styles = [{
@@ -56,12 +60,12 @@ if (runsStandalone) {
   app.listen(port)
   console.info(`App listens on http://localhost:${port}`)
 }
-else {
-  module.exports = (locals) => {
-    app.locals = locals
-    setupRouting()
-    return app
-  }
 
-  module.exports.isCallback = true
+
+export default  function (locals) {
+  app.locals = locals
+  setupRouting()
+  return app
 }
+
+export const isCallback = true

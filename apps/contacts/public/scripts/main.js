@@ -1,8 +1,8 @@
-const json2csv = require('json2csv')
-const fileSaver = require('filesaver.js')
-const getFields = require('../../modules/getFields')
-const formatForCsv = require('../../modules/formatForCsv')
-const Ybdb = require('ybdb')
+import json2csv from 'json2csv'
+import fileSaver from 'filesaver.js'
+import getFields from '../../modules/getFields'
+import formatForCsv from '../../modules/formatForCsv'
+import Ybdb from 'ybdb'
 const db = new Ybdb()
 
 // Contacts is set in script tag in HTML
@@ -93,7 +93,7 @@ exportButton.addEventListener('click', (event) => {
           .chain()
           .find({id: contactId})
           .omit(['id', 'mapLink'])
-          .value()
+          .value(),
       )
     })
 
@@ -108,9 +108,9 @@ exportButton.addEventListener('click', (event) => {
       const csvText = csv.replace(/(,?)null(,?)/g, '$1$2')
       const csvBlob = new Blob(
         [csvText],
-        {type: 'text/csv;charset=utf-8'}
+        {type: 'text/csv;charset=utf-8'},
       )
       fileSaver.saveAs(csvBlob, 'contacts.csv')
-    }
+    },
   )
 })

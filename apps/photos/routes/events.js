@@ -1,7 +1,7 @@
-const path = require('path')
-const util = require('util')
+import path from 'path'
+import util from 'util'
 
-const utils = require('../modules/utils')
+import utils from '../modules/utils.js'
 
 const events = {}
 
@@ -21,7 +21,7 @@ events.period = function (request, response, next) {
         year,
         month,
         photosDirectory,
-        request.app.locals.baseURL
+        request.app.locals.baseURL,
       )
       .then(monthObject => {
         monthObject.page = 'Photos'
@@ -106,4 +106,4 @@ events.event = (request, response) => {
     })
 }
 
-module.exports = events
+export default events

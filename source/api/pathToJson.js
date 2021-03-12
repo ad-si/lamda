@@ -1,7 +1,8 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-module.exports = (baseURL, file) => {
+
+export default function (baseURL, file) {
   const nodes = file.split('/')
   let currentDepth = 0
   let maxDepth = 0

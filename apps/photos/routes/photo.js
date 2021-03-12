@@ -1,11 +1,11 @@
-const path = require('path')
-const url = require('url')
-const util = require('util')
+import path from 'path'
+import url from 'url'
+import util from 'util'
 
-const gm = require('gm')
+import gm from 'gm'
 
 
-module.exports = (request, response) => {
+export default function (request, response) {
   const year = request.params.year
   const month = request.params.month
   const day = request.params.day

@@ -1,27 +1,28 @@
-const path = require('path')
+import url from 'url'
+import path from 'path'
 
-const errorHandler = require('errorhandler')
-const express = require('express')
-const morgan = require('morgan')
-const serveFavicon = require('serve-favicon')
-const stylus = require('stylus')
-const userHome = require('user-home')
-// TODO: Reenable
-// const lilyware = require('lilyware')
+import errorHandler from 'errorhandler'
+import express from 'express'
+import morgan from 'morgan'
+import serveFavicon from 'serve-favicon'
+import stylus from 'stylus'
+import userHome from 'user-home'
+// TODO: Reenable import lilyware from 'lilyware'
 
-const pieces = require('./routes/pieces')
-const piece = require('./routes/piece')
-const raw = require('./routes/raw')
-const playlist = require('./routes/playlist')
-const playlists = require('./routes/playlists')
+import pieces from './routes/pieces.js'
+import piece from './routes/piece.js'
+import raw from './routes/raw.js'
+import playlist from './routes/playlist.js'
+import playlists from './routes/playlists.js'
 
 const app = express()
-const runsStandalone = !module.parent
+const runsStandalone = true  // TODO: Replace !module.parent
 const isDevMode = app.get('env') === 'development'
 
 app.locals.baseURL = '/sheetmusic'
 
-const projectPath = __dirname
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const projectPath = dirname
 const modulesPath = path.join(projectPath, 'node_modules')
 const publicPath = path.join(projectPath, 'public')
 const stylesPath = path.join(publicPath, 'styles')
@@ -51,10 +52,16 @@ function setupRouting () {
   app.get('/', pieces(app.locals.songsPath, thumbsPath))
 
   app.get('/playlists', playlists(app.locals.playlistsPath))
-  app.get('/playlist/:id', playlist(app.locals.playlistsPath, app.locals.baseURL))
+  app.get('/playlist/:id',
+    playlist(app.locals.playlistsPath, app.locals.baseURL),
+  )
 
-  app.get('/:name', piece(app.locals.songsPath, thumbsPath, app.locals.baseURL))
-  app.get('/:name/raw', raw(app.locals.songsPath, thumbsPath, app.locals.baseURL))
+  app.get('/:name',
+    piece(app.locals.songsPath, thumbsPath, app.locals.baseURL),
+  )
+  app.get('/:name/raw',
+    raw(app.locals.songsPath, thumbsPath, app.locals.baseURL),
+  )
 }
 
 
@@ -96,15 +103,15 @@ if (runsStandalone) {
   app.listen(port)
   console.info(`App listens on http://localhost:${port}`)
 }
-else {
-  module.exports = (locals) => {
-    app.locals = locals
-    setupRouting()
-    return app
-  }
 
-  module.exports.isCallback = true
+
+export default function (locals) {
+  app.locals = locals
+  setupRouting()
+  return app
 }
+
+export const isCallback = true
 
 
 

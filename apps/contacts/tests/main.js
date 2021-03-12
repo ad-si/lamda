@@ -1,8 +1,8 @@
+import consoleModule from 'console'
+import express from 'express'
+import setupRouting from '../modules/setupRouting'
 
-const express = require('express')
 const app = express()
-const setupRouting = require('../modules/setupRouting')
-const consoleModule = require('console')
 const logger = new consoleModule.Console(process.stdin, process.stdout)
 const isDevMode = true
 const runsStandalone = true

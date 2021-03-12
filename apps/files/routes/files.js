@@ -1,9 +1,10 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const pathToJson = require('../modules/pathToJson')
+import pathToJson from '../modules/pathToJson.js'
 
-module.exports = (request, response) => {
+
+export default function (request, response) {
   const pathParam = request.params[0] || ''
   const columns = []
   let depth = 0
@@ -21,7 +22,7 @@ module.exports = (request, response) => {
       fileTree.children.forEach(child => {
         child.path = currentPath + '/' + child.fileName
 
-        if (child.hasOwnProperty('children')) {
+        if (Object.prototype.hasOwnProperty.call(child, 'children')) {
           columns[depth].path = currentPath
           currentPath =  currentPath + '/' + child.name
 
@@ -35,7 +36,7 @@ module.exports = (request, response) => {
         else {
           columns[depth].entries.push(child)
 
-          if (child.hasOwnProperty('active')) {
+          if (Object.prototype.hasOwnProperty.call(child, 'active')) {
             depth++
             buildColumns(child)
             depth--
@@ -51,7 +52,7 @@ module.exports = (request, response) => {
       if (fileExtensions.indexOf(columns[depth].extension) > -1) {
         columns[depth].content = fs.readFileSync(
           path.join(request.app.locals.basePath, columns[depth].path),
-          'utf-8'
+          'utf-8',
         )
       }
     }

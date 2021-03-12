@@ -2,6 +2,7 @@
   "name": "@lamdahq/things",
   "description": "All your things in one place",
   "version": "0.0.1",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",

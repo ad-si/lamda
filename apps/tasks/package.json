@@ -2,6 +2,7 @@
   "name": "@lamdahq/tasks",
   "version": "0.0.1",
   "description": "Mountable or standalone server + app for task-managmenet",
+  "type": "module",
   "keywords": [
     "lamda",
     "tasks",

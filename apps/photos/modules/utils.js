@@ -1,6 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const util = require('util')
+import fs from 'fs'
+import path from 'path'
+import util from 'util'
 
 const filterMonths = filterTwoDigitDirs
 const filterDays = filterTwoDigitDirs
@@ -116,7 +116,7 @@ function getEventDirectory (year, month, day, eventName, photosDirectory) {
 
 function getImagesForEvent (year, month, day, eventName, photosDirectory) {
   return getFiles(
-    getEventDirectory(year, month, day, eventName, photosDirectory)
+    getEventDirectory(year, month, day, eventName, photosDirectory),
   )
 }
 
@@ -162,7 +162,7 @@ function getMonthsForYear (year, photosDirectory, baseURL) {
 }
 
 
-module.exports = {
+export default {
   getFiles,
   getEventDirectory,
   getImagesForEvent,

@@ -1,6 +1,6 @@
-const fs = require('fs')
+import fs from 'fs'
 
-module.exports = (path, loadCallback) => {
+export default function (path, loadCallback) {
   const baseURL = ''
 
   function getStats (readPath, statsCallback) {

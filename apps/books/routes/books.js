@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
-const url = require('url')
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
 
-const fastmatter = require('fastmatter')
-const objectAssign = require('object-assign')
-const epubMetadata = require('epub-metadata')
-const exif = require('exif2')
-const JsZip = require('jszip')
+import fastmatter from 'fastmatter'
+import objectAssign from 'object-assign'
+import epubMetadata from 'epub-metadata'
+import exif from 'exif2'
+import JsZip from 'jszip'
 
 
 function isBook (dirEnt) {
@@ -52,12 +52,12 @@ function getCoverImageUrl (book, baseURL) {
   }
   else if (book.type === 'pdf') {
     return url.format({
-        pathname: `${baseURL}/${book.fileName}.jpg`,
-        query: {
-          'max-width': 200,
-          'max-height': 200,
-        },
-      })
+      pathname: `${baseURL}/${book.fileName}.jpg`,
+      query: {
+        'max-width': 200,
+        'max-height': 200,
+      },
+    })
   }
   else {
     return ''
@@ -122,10 +122,9 @@ function getAttributePromise (book) {
 }
 
 
-module.exports.cover = (request, response) => {
+export async function cover (request, response) {
   const booksPath = request.app.locals.basePath
   const filePath = path.join(booksPath, request.params.book + '.epub')
-  let imageFile = ''
   let epubFile
 
   fs.readFile(filePath, async (error, fileContent) => {
@@ -151,14 +150,14 @@ module.exports.cover = (request, response) => {
       response.set('Content-Type', 'image/jpeg')
       response.send(imageFile)
     }
-    catch (error) {
-      console.error(error)
+    catch (unzipError) {
+      console.error(unzipError)
     }
   })
 }
 
 
-module.exports.one = async (request, response) => {
+export async function one (request, response) {
   const booksPath = request.app.locals.basePath
   const bookId = request.params.book
   const book = {
@@ -214,7 +213,7 @@ module.exports.one = async (request, response) => {
 }
 
 
-module.exports.all = async (request, response) => {
+export async function all (request, response) {
   const booksPath = request.app.locals.basePath
   const dirEnts = await getDirEnts(booksPath)
   const booksPromises = dirEnts

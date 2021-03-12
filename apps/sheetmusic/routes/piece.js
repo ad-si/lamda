@@ -1,9 +1,9 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const yaml = require('js-yaml')
+import yaml from 'js-yaml'
 
-const getPieceImages = require('../modules/getPieceImages')
+import getPieceImages from '../modules/getPieceImages.js'
 
 
 function getLilypondFilesObjects (files, songName, songsPath) {
@@ -23,13 +23,13 @@ function getLilypondFilesObjects (files, songName, songsPath) {
 }
 
 
-module.exports = (songsPath, thumbsPath, baseURL) => {
+export default function (songsPath, thumbsPath, baseURL) {
   return function (request, response) {
     const songId = request.params.name
     const requestedSongPath = path.join(songsPath, songId)
     const files = fs.readdirSync(requestedSongPath)
     const images = getPieceImages(
-      files, songId, songsPath, thumbsPath, baseURL
+      files, songId, songsPath, thumbsPath, baseURL,
     )
     const lilypondFiles = getLilypondFilesObjects(files, songId, songsPath)
     const renderObject = {
@@ -57,11 +57,11 @@ module.exports = (songsPath, thumbsPath, baseURL) => {
 
           renderObject.song = Object.assign(
             renderObject.song,
-            yaml.load(fileContent)
+            yaml.load(fileContent),
           )
 
           response.render('piece', renderObject)
-        }
+        },
       )
     }
   }

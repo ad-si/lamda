@@ -2,6 +2,7 @@
   "name": "@lamdahq/boilerplate",
   "version": "0.0.2",
   "description": "Basic app for Lamda views",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",

@@ -2,6 +2,7 @@
   "name": "@lamdahq/photos",
   "description": "Webserver to access and manage all you local photos",
   "version": "0.0.1",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",

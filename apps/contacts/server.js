@@ -1,26 +1,28 @@
-const express = require('express')
+import express from 'express'
+import setupRouting from './modules/setupRouting.js'
+
+
 const app = express()
-const setupRouting = require('./modules/setupRouting')
 const isDevMode = app.get('env') === 'development'
-const runsStandalone = !module.parent
+const runsStandalone = true  // TODO: !module.parent
 
 if (runsStandalone) {
   setupRouting({app, runsStandalone, isDevMode})
   const port = 3000
   app.listen(
     port,
-    () => console.info(`App listens on http://localhost:${port}`)
+    () => console.info(`App listens on http://localhost:${port}`),
   )
 }
-else {
-  module.exports = (locals) => {
-    setupRouting({
-      app,
-      locals,
-      runsStandalone,
-      isDevMode,
-    })
-    return app
-  }
-  module.exports.isCallback = true
+
+export default function (locals) {
+  setupRouting({
+    app,
+    locals,
+    runsStandalone,
+    isDevMode,
+  })
+  return app
 }
+
+export const isCallback = true

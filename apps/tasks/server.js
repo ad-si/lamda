@@ -1,23 +1,30 @@
-const path = require('path')
-const childProcess = require('child_process')
+import url from 'url'
+import path from 'path'
+import childProcess from 'child_process'
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const stylus = require('stylus')
-const errorHandler = require('errorhandler')
-const browserifyMiddleware = require('browserify-middleware')
-const fsp = require('fs-promise')
-const yaml = require('js-yaml')
-const Instant = require('@datatypes/moment').Instant
+import express from 'express'
+import bodyParser from 'body-parser'
+import stylus from 'stylus'
+import errorHandler from 'errorhandler'
+import browserifyMiddleware from 'browserify-middleware'
+import fsp from 'fs-promise'
+import yaml from 'js-yaml'
+import moment from '@datatypes/moment'
+const {Instant} = moment
+import morgan from 'morgan'
+import serveFavicon from 'serve-favicon'
 
-const config = require('./config')
-const tasks = require('./routes/tasks')
+import config from './config.js'
+import tasks from './routes/tasks.js'
+
+
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const runsStandalone = !module.parent
+const runsStandalone = true  // TODO: !module.parent
 
 // Define important directories
-const projectDirectory = __dirname
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const projectDirectory = dirname
 const viewsDirectory = path.join(projectDirectory, 'views')
 const publicDirectory = path.join(projectDirectory, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
@@ -48,7 +55,7 @@ function setupRouting () {
           // directories[0] is always the main directory
           // TODO: Prompt the user where to store the task
           request.app.locals.directories[0],
-          `${nowSecond}.yaml`
+          `${nowSecond}.yaml`,
         )
         const nowMinute = nowISO
           .slice(0, 16)
@@ -66,20 +73,17 @@ function setupRouting () {
             response.sendStatus(200)
           })
           .catch(next)
-      }
+      },
     )
   app.get('/:taskView', tasks)
 }
 
 
 if (runsStandalone) {
-  const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
   app.locals.baseURL = ''
   app.locals.directories = config.directories
-
-  const serveFavicon = require('serve-favicon')
   app.use(serveFavicon(config.faviconPath))
 
   setupRouting()
@@ -98,7 +102,7 @@ if (runsStandalone) {
         if (stdout) console.info(stdout)
         if (error) throw error
         response.sendStatus(200)
-      }
+      },
     )
   })
 
@@ -110,12 +114,12 @@ if (runsStandalone) {
     console.info(`App listens on http://localhost:${config.port}`)
   })
 }
-else {
-  module.exports = (locals) => {
-    app.locals = locals
-    setupRouting()
-    return app
-  }
 
-  module.exports.isCallback = true
+
+export default function (locals) {
+  app.locals = locals
+  setupRouting()
+  return app
 }
+
+export const isCallback = true

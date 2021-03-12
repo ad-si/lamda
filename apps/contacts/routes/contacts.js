@@ -1,10 +1,10 @@
-const path = require('path')
+import path from 'path'
 
-const formatContact = require('../modules/formatContact')
-const loadContacts = require('../modules/loadContacts')
+import formatContact from '../modules/formatContact.js'
+import loadContacts from '../modules/loadContacts.js'
 
 
-module.exports = (request, response) => {
+export default function (request, response) {
 
   const contactsPath = path.join(request.app.locals.basePath, 'contacts')
   const keys = new Set()
@@ -55,7 +55,7 @@ module.exports = (request, response) => {
           availableKeys: Array.from(keys),
           numberOfMale,
           percentageOfMale: Math.trunc(
-            numberOfMale / sortedContacts.length * 100
+            numberOfMale / sortedContacts.length * 100,
           ),
           sortedKeys: [
             'name',
@@ -65,10 +65,10 @@ module.exports = (request, response) => {
             'links',
             'address',
           ],
-        }
+        },
       )
     })
     .catch(error =>
-      console.error(error.stack)
+      console.error(error.stack),
     )
 }

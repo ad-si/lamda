@@ -1,4 +1,4 @@
-const formatAddress = require('./formatAddress')
+import formatAddress from './formatAddress.js'
 
 function addPlus (number) {
   number = String(number)
@@ -124,11 +124,12 @@ function combineLinks (contact) {
         })
         delete contact.provider
       }
-    }
-  )
+    },
+    )
 }
 
-module.exports = (data) => {
+
+export default function (data) {
 
   data.gender = data.gender || ''
 
@@ -146,7 +147,7 @@ module.exports = (data) => {
     data.age = String(
       new Date(new Date() - data.birthday)
         .toISOString()
-        .substr(0, 4) - 1970
+        .substr(0, 4) - 1970,
     )
   }
 

@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 
-const yargs = require('yargs')
+import yargs from 'yargs'
+import start from './start.js'
 
-yargs
-  .commandDir('../commands')
+yargs(process.argv.slice(2))
+  .command(start)
   .demandCommand(1)
   .help()
   .alias('help', 'h')

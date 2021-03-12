@@ -1,23 +1,29 @@
-const path = require('path')
+import url from 'url'
+import path from 'path'
 
-const express = require('express')
-const stylus = require('stylus')
+import express from 'express'
+import stylus from 'stylus'
+import morgan from 'morgan'
+import userHome from 'user-home'
+import serveFavicon from 'serve-favicon'
 
-const books = require('./routes/books')
-const pdfCoverMiddleware = require('./pdf-cover-middleware.js')
+import {one, all, cover} from './routes/books.js'
+import pdfCoverMiddleware from './pdf-cover-middleware.js'
+
 
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const runsStandalone = !module.parent
+const runsStandalone = true  // TODO: !module.parent
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
-const projectDirectory = __dirname
+const projectDirectory = dirname
 const viewsDirectory = path.join(projectDirectory, 'views')
 const modulesPath = path.join(projectDirectory, 'node_modules')
 const publicDirectory = path.join(projectDirectory, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
 
 
-function setupRouting (app) {
+function setupRouting () {
   app.use(stylus.middleware({
     src: stylesDirectory,
     debug: isDevMode,
@@ -39,17 +45,15 @@ function setupRouting (app) {
 
   app.set('views', viewsDirectory)
 
-  app.get('/', books.all)
-  app.get('/:book', books.one)
-  app.get('/:book.epub/*', books.cover)
+  app.get('/', all)
+  app.get('/:book', one)
+  app.get('/:book.epub/*', cover)
 }
 
 
 if (runsStandalone) {
-  const morgan = require('morgan')
   app.use(morgan('dev', {skip: () => !isDevMode}))
 
-  const userHome = require('user-home')
   app.locals.basePath = path.join(userHome, 'Dropbox/Books/')
   app.locals.baseURL = ''
   app.locals.styles = [{
@@ -57,7 +61,6 @@ if (runsStandalone) {
     id: 'themeLink',
   }]
 
-  const serveFavicon = require('serve-favicon')
   const faviconPath = path.join(publicDirectory, 'images/favicon.ico')
   app.use(serveFavicon(faviconPath))
 
@@ -68,19 +71,18 @@ if (runsStandalone) {
     compress: !isDevMode,
   }))
 
-  setupRouting(app)
+  setupRouting()
 
   const port = 3000
   app.set('view engine', 'pug')
   app.listen(port)
   console.info(`App listens on http://localhost:${port}`)
 }
-else {
-  module.exports = (locals) => {
-    app.locals = locals
-    setupRouting(app)
-    return app
-  }
 
-  module.exports.isCallback = true
+export default function (locals) {
+  app.locals = locals
+  setupRouting(app)
+  return app
 }
+
+export const isCallback = true

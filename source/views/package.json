@@ -2,6 +2,7 @@
   "name": "@lamdahq/views",
   "version": "0.1.1",
   "description": "Views for Lamda",
+  "type": "module",
   "main": "layout.pug",
   "scripts": {
     "test": "pug --hierarchy --out build *.pug"

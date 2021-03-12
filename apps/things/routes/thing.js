@@ -1,12 +1,12 @@
-const path = require('path')
-const fs = require('fs')
-const yaml = require('js-yaml')
-const isImage = require('is-image')
+import path from 'path'
+import fs from 'fs'
+import yaml from 'js-yaml'
+import isImage from 'is-image'
 
-const {getMainYamlFile} = require('./helpers.js')
+import {getMainYamlFile} from './helpers.js'
 
 
-module.exports = (options = {}) => {
+export default function (options = {}) {
   const {basePath} = options
 
   return (request, response) => {

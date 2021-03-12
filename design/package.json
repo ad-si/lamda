@@ -1,6 +1,7 @@
 {
   "name": "@lamdahq/design",
   "version": "0.0.0",
+  "type": "module",
   "author": "Adrian Sieber <mail@adriansieber.com>",
   "license": "ISC",
   "dependencies": {}

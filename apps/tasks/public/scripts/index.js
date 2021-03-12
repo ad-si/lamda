@@ -1,7 +1,7 @@
 /* globals rawTasks, defaultConfig */
 
-const Vue = require('vue')
-const VueResource = require('vue-resource')
+import Vue from 'vue'
+import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
@@ -21,7 +21,7 @@ const app = new Vue({
   computed: {
     currentView: function () {
       return this.views.find(
-        view => view.name === this.currentViewName
+        view => view.name === this.currentViewName,
       )
     },
     processedTasks: function () {

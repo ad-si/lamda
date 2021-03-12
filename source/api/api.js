@@ -1,29 +1,29 @@
-const files = require('../api/files')
-const events = require('../api/events')
-const music = require('../api/music')
+import * as apiFiles from '../api/files'
+import * as apiEvents from '../api/events'
+import * as apiMusic from '../api/music'
 
 
-module.exports.files = (request, loadCallback) => {
+export function files (request, loadCallback) {
   let path = ''
 
   if (request.params) {
     path = '/' + request.params[0]
   }
 
-  files(path, loadCallback)
+  apiFiles(path, loadCallback)
 }
 
-module.exports.events = (request, response) => {
+export function events (request, response) {
   // let path = ''
   //
   // if (request.params) {
   //   path = '/' + request.params[0]
   // }
 
-  response.send(events())
+  response.send(apiEvents())
 }
 
-module.exports.music = {
+export const music = {
   song: (request, response) => {
     // const path = ''
 
@@ -32,12 +32,12 @@ module.exports.music = {
 
     // response.send(music())
 
-    music(request, response, response.send)
+    apiMusic(request, response, response.send)
 
     // if(request.params)
     //   path = '/' + req.params[0]
 
-    // files(path, function (data) {
+    // apiFiles(path, function (data) {
     //   callback(data)
     // })
   },

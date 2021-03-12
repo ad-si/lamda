@@ -1,8 +1,8 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const isImage = require('is-image')
-const imageResizer = require('image-resizer-middleware')
+import isImage from 'is-image'
+import imageResizer from 'image-resizer-middleware'
 
 
 function createThumbnail (songName, image, thumbsPath) {
@@ -20,7 +20,7 @@ function createThumbnail (songName, image, thumbsPath) {
 }
 
 
-module.exports = (files, songName, songsPath, thumbsPath, baseURL) => {
+export default function (files, songName, songsPath, thumbsPath, baseURL) {
   return files
     .filter(isImage)
     .map(fileName => {

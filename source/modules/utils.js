@@ -1,7 +1,13 @@
-const countries = require('./public/js/countries.json')
-const nib = require('nib')
-const stylus = require('stylus')
+import fs from 'fs'
+import nib from 'nib'
+import stylus from 'stylus'
+
+
+const countries = JSON.parse(
+  fs.readFileSync('./public/js/countries.json', 'utf-8'),
+)
 const utils = {}
+
 
 function getFromArray (array, key, value) {
   let soughtElement = null
@@ -14,6 +20,7 @@ function getFromArray (array, key, value) {
 
   return soughtElement
 }
+
 
 function capitalize (string) {
   if (typeof string === 'string') {
@@ -45,7 +52,9 @@ utils.compileStyl = (str, path, config) => {
 
 utils.writeKeys = (keysObject, data) => {
   for (const key in data) {
-    if (!data.hasOwnProperty(key)) continue
+    if (!Object.prototype.hasOwnProperty.call(data, key)) {
+      continue
+    }
     keysObject[key] = true
   }
 }
@@ -57,7 +66,7 @@ utils.formatData = data => {
     const countryEntry = getFromArray(
       countries,
       'name',
-      capitalize(addr.country)
+      capitalize(addr.country),
     )
 
     if (addr.country) {
@@ -104,4 +113,4 @@ utils.removeFileExtension = (string) => {
 }
 
 
-module.exports = utils
+export default utils

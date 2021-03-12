@@ -1,0 +1,30 @@
+{
+  "name": "@lamdahq/birthday-reminder",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@lamdahq/styles": "^0.1.1",
+    "@lamdahq/views": "^0.1.1",
+    "@sendgrid/mail": "^6.1.4",
+    "common-tags": "^1.4.0",
+    "dropbox": "^2.5.11",
+    "execa": "^0.8.0",
+    "js-yaml": "^3.10.0",
+    "lib": "^3.0.1",
+    "mapkeys": "^0.1.1",
+    "pug": "^2.0.0-rc.4",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "tough-cookie": "^2.3.3",
+    "vcards-js": "^2.8.0",
+    "world-countries": "^1.8.1"
+  }
+}

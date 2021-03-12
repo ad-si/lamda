@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const yaml = require('js-yaml')
+import yaml from 'js-yaml'
 
 
-module.exports = (playlistsPath) => {
+export default function (playlistsPath) {
   return (request, response) => {
     const playlistDirs = fs.readdirSync(playlistsPath)
     const playlists = []
@@ -13,7 +13,7 @@ module.exports = (playlistsPath) => {
       try {
         const playlistData = yaml.load(fs.readFileSync(
           path.join(playlistsPath, playlistDir, 'index.yaml'),
-          'utf-8'
+          'utf-8',
         ))
 
         playlistData.id = playlistDir

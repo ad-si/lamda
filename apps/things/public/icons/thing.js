@@ -1,4 +1,6 @@
-module.exports.shaven = (conf, tools) => {
+/* eslint-disable id-length */
+
+export default function shaven (conf, tools) {
   const defaults = {
     width: 100,
     height: 100,
@@ -23,7 +25,7 @@ module.exports.shaven = (conf, tools) => {
       },
 
       ['path', {
-        'd': // Outline
+        d: // Outline
           'M1,2' +
           'l2,-1' +
           'l2,1' +

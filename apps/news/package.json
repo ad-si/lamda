@@ -2,6 +2,7 @@
   "name": "@lamdahq/news",
   "version": "0.0.1",
   "description": "All your news",
+  "type": "module",
   "keywords": [
     "lamda",
     "news"

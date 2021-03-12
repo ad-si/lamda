@@ -1,7 +1,7 @@
-const Feedparser = require('feedparser')
-const requestModule = require('request')
+import Feedparser from 'feedparser'
+import requestModule from 'request'
 
-// const Crawler = require('crawler')
+// import Crawler from 'crawler'
 // const crawler = new Crawler({
 //   maxConnections: 10,
 //   // eslint-disable-next-line id-length
@@ -15,7 +15,7 @@ const requestModule = require('request')
 // })
 
 
-module.exports = (request, response) => {
+export default function (request, response) {
   const url = request.app.locals.news
     ? request.app.locals.news.url
     : 'http://feeds.feedblitz.com/newatlas'

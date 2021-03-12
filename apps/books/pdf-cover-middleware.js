@@ -1,45 +1,47 @@
-const fs = require('fs')
-const path = require('path')
-const url = require('url')
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
 
-const gm = require('gm')
-const os = require('os')
-const mkdirp = require('mkdirp')
+import gm from 'gm'
+import os from 'os'
+import mkdirp from 'mkdirp'
 
 const cpus = os.cpus()
 
 const idleQueue = []
 const workers = []
 
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
-function workOffQueue (worker, firstPdf, callback) {
+
+function workOffQueue (worker, firstPdf, afterWriteCb) {
 
   function afterWrite (error, pdf) {
     if (error) {
-      callback(error)
-      if (pdf.callback) {
-        pdf.callback(error)
+      afterWriteCb(error)
+      if (pdf.thumbnailCb) {
+        pdf.thumbnailCb(error)
       }
       return
     }
 
-    console.log(
+    console.info(
       'Thumbnail:',
-      pdf.absolutePath, '->', pdf.absoluteThumbnailPath
+      pdf.absolutePath, '->', pdf.absoluteThumbnailPath,
     )
 
-    if (pdf.callback) {
-      pdf.callback(null, pdf.absoluteThumbnailPath)
+    if (pdf.thumbnailCb) {
+      pdf.thumbnailCb(null, pdf.absoluteThumbnailPath)
     }
 
-    let nextPdf = idleQueue.pop()
+    const nextPdf = idleQueue.pop()
 
     if (nextPdf) {
       worker.pdf = nextPdf
       convert(nextPdf)
     }
     else {
-      callback()
+      afterWriteCb()
     }
   }
 
@@ -50,15 +52,15 @@ function workOffQueue (worker, firstPdf, callback) {
 
     mkdirp(
       path.normalize(pathDirectories.join('/')),
-      (error) => {
-        if (error) {
-        	callback(error)
-        	return
+      (mkdirError) => {
+        if (mkdirError) {
+          afterWriteCb(mkdirError)
+          return
         }
 
         // TODO: Just try to create file and handle error
         if (fs.existsSync(pdf.absoluteThumbnailPath)) {
-          callback()
+          afterWriteCb()
           return
         }
 
@@ -69,9 +71,9 @@ function workOffQueue (worker, firstPdf, callback) {
           .noProfile()
           .write(
             pdf.absoluteThumbnailPath,
-            error => afterWrite(error, pdf)
+            error => afterWrite(error, pdf),
           )
-      }
+      },
     )
   }
 
@@ -89,7 +91,7 @@ function addWorker () {
 
   const worker = {
     id: new Date(),
-    pdf: currentPdf
+    pdf: currentPdf,
   }
 
   workers.push(worker)
@@ -97,21 +99,21 @@ function addWorker () {
   workOffQueue(
     worker,
     currentPdf,
-    () => workers.splice(workers.indexOf(worker), 1)
+    () => workers.splice(workers.indexOf(worker), 1),
   )
 }
 
 
 function addToQueue (pdf) {
   const positionInQueue = idleQueue
-    .map(pdf => pdf.absolutePath)
+    .map(thePdf => thePdf.absolutePath)
     .indexOf(pdf.absolutePath)
 
   const processingWorker = workers
     .map(worker => worker.pdf.absolutePath)
     .indexOf(pdf.absolutePath)
 
-  if (positionInQueue != -1 || processingWorker != -1) {
+  if (positionInQueue !== -1 || processingWorker !== -1) {
     return
   }
 
@@ -125,10 +127,12 @@ function addToQueue (pdf) {
 
 function getMiddleware (options = {}) {
   const thumbnailsPath = options.thumbnailsPath ||
-    path.join(__dirname, 'thumbs')
+    path.join(dirname, 'thumbs')
   const basePath = options.basePath || global.basePath
 
-  console.assert(basePath, 'BasePath is not specified')
+  if (!basePath) {
+    throw new Error('BasePath is not specified')
+  }
 
   return function (request, response, next) {
 
@@ -147,8 +151,10 @@ function getMiddleware (options = {}) {
       return
     }
 
-    const fullExtension = '.' + pathFromUrl.split('.').slice(1).join('.')
-    const fileName = path.basename(pathFromUrl, fullExtension)
+    const fullExtension = '.' + pathFromUrl.split('.')
+      .slice(1)
+      .join('.')
+    // const fileName = path.basename(pathFromUrl, fullExtension)
 
     const calculatedWidth = maxWidth || width
     const calculatedHeight = maxHeight || height
@@ -167,12 +173,12 @@ function getMiddleware (options = {}) {
 
     const pdf = {
       absolutePath: path.join(basePath,
-      	path.basename(pathFromUrl, fileExtension)),
+        path.basename(pathFromUrl, fileExtension)),
       absoluteThumbnailPath: path.join(thumbnailsPath, thumbnailPath),
       modifier,
       width: calculatedWidth,
       height: calculatedHeight,
-      callback: (error, absoluteThumbnailPath) => {
+      thumbnailCb: (error, absoluteThumbnailPath) => {
         if (error) {
           next(error)
           return
@@ -201,4 +207,4 @@ function getMiddleware (options = {}) {
 }
 
 
-module.exports = {addToQueue, getMiddleware}
+export default {addToQueue, getMiddleware}

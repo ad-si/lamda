@@ -1,16 +1,22 @@
-const fs = require('fs')
-const path = require('path')
-const yaml = require('js-yaml')
-const packageData = require('../package.json')
+import fs from 'fs'
+import path from 'path'
+import yaml from 'js-yaml'
+import { fileURLToPath } from 'url'
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+const packageData = JSON.parse(
+  fs.readFileSync(path.join(dirname, '../../package.json'), 'utf-8'),
+)
+const appsDir = path.resolve(dirname, '../../apps')
 
 
 function getPackageContent (appPath) {
   if (fs.existsSync(path.join(appPath, 'package.yaml'))) {
-    return yaml.safeLoad(
+    return yaml.load(
       fs.readFileSync(
         path.join(appPath, 'package.yaml'),
-        'utf-8'
-      )
+        'utf-8',
+      ),
     )
   }
   else if (fs.existsSync(path.join(appPath, 'package.json'))) {
@@ -22,20 +28,20 @@ function getPackageContent (appPath) {
 }
 
 
-function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
+async function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
   const absoluteAppPath = path.join(locals.projectPath, appPath)
   const appName = path.basename(appPath)
   const localsClone = Object.assign({}, locals)
 
   try {
-    let appModule = require(absoluteAppPath)
+    let appModule = await import(path.join(absoluteAppPath, 'server.js'))
 
     if (appModule.isCallback) {
       appModule = appModule(localsClone)
     }
     appMap[appName] = getPackageContent(absoluteAppPath)
 
-    if (!appMap[appName].hasOwnProperty('lamda')) {
+    if (!Object.hasOwnProperty.call(appMap[appName], 'lamda')) {
       appMap[appName].lamda = {}
     }
 
@@ -46,7 +52,7 @@ function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
     appModule.locals.page = appName
     appModule.locals.baseURL = '/' + appName
     appModule.locals.appNames = rootApp.locals.appNames = appPaths.map(
-      localAppPath => path.basename(localAppPath)
+      localAppPath => path.basename(localAppPath),
     )
 
     rootApp.use('/' + appName, appModule)
@@ -60,43 +66,41 @@ function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 }
 
 
-module.exports = (rootApp, locals) => {
+export default async function (rootApp, locals) {
   let appDirectories
 
-  if (!fs.existsSync('apps')) {
+  if (!fs.existsSync(appsDir)) {
     appDirectories = Object.keys(packageData.optionalDependencies)
-      .map(name => {
-        return path.join('node_modules', name)
-      })
+      .map(name => path.join('node_modules', name))
   }
   else {
     appDirectories = fs
-      .readdirSync('./apps')
-      .map(() => {
-        return path.join('apps', name)
-      })
+      .readdirSync(appsDir)
+      .filter(appDir =>
+        appDir !== '.DS_Store' &&
+        !appDir.endsWith('boilerplate') &&
+        !appDir.startsWith('_draft_'),
+        // Should not be necessary, since the content of the dir is predefined
+        // const isDirectory = fs
+        //   .statSync(appPath)
+        //   .isDirectory()
+      )
+      .map(name => path.join('apps', name))
   }
 
-  const apps = appDirectories
-    .filter(appPath => {
-      const isDirectory = fs
-        .statSync(appPath)
-        .isDirectory()
-      return isDirectory && path.basename(appPath) !== 'boilerplate'
-    })
-    .reduce(
-      (map, appPath, index, appPaths) =>
-        addAppToAppMap(
-          map,
-          appPath,
-          rootApp,
-          locals,
-          appPaths
-        ),
-    {}
+  const apps = appDirectories.reduce(
+    async (map, appPath, index, appPaths) =>
+      await addAppToAppMap(
+        map,
+        appPath,
+        rootApp,
+        locals,
+        appPaths,
+      ),
+    {},
   )
 
-  console.dir(apps, {depth: 1, colors: true})
+  console.info(apps)
 
   return apps
 }

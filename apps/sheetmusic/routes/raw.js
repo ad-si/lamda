@@ -1,15 +1,15 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const getPieceImages = require('../modules/getPieceImages')
+import getPieceImages from '../modules/getPieceImages.js'
 
 
-module.exports = (songsPath, thumbsPath, baseURL) => {
+export default function (songsPath, thumbsPath, baseURL) {
   return (request, response) => {
     const songId = request.params.name
     const files = fs.readdirSync(path.join(songsPath, songId))
     const images = getPieceImages(
-      files, songId, songsPath, thumbsPath, baseURL
+      files, songId, songsPath, thumbsPath, baseURL,
     )
 
     response.render('raw', {

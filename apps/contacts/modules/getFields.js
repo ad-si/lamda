@@ -1,4 +1,4 @@
-module.exports = (array) => {
+export default function (array) {
   const fieldsMap = {}
 
   array.forEach(subArray => {

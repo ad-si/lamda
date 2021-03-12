@@ -1,6 +1,6 @@
-const countries = require('world-countries')
+import countries from 'world-countries'
 
-module.exports = (countryName) => {
+export default function (countryName) {
 
   if (typeof countryName !== 'string') {
     return

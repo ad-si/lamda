@@ -1,19 +1,21 @@
-const path = require('path')
+import url from 'url'
+import path from 'path'
 
-const express = require('express')
-const stylus = require('stylus')
-const serveFavicon = require('serve-favicon')
+import express from 'express'
+import stylus from 'stylus'
+import serveFavicon from 'serve-favicon'
 
-const index = require('./routes/index')
-const faviconServer = require('./routes/faviconServer')
+import index from './routes/index.js'
+import faviconServer from './routes/faviconServer.js'
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const isMounted = Boolean(module.parent)
+const isMounted = false  // TODO: Boolean(module.parent)
+const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 
 if (!isMounted) {
   app.locals.baseURL = ''
-  const faviconPath = path.join(__dirname, 'public/images/favicon.ico')
+  const faviconPath = path.join(dirname, 'public/images/favicon.ico')
 
   app.use(serveFavicon(faviconPath))
   app.locals.styles = [{
@@ -21,26 +23,26 @@ if (!isMounted) {
     id: 'themeLink',
   }]
   app.use(stylus.middleware({
-    src: path.join(__dirname, '../styles/themes'),
-    dest: path.join(__dirname, 'public/styles'),
+    src: path.join(dirname, '../styles/themes'),
+    dest: path.join(dirname, 'public/styles'),
     debug: isDevMode,
     compress: !isDevMode,
   }))
 }
 
 app.use(stylus.middleware({
-  src: path.join(__dirname, 'public/styles'),
+  src: path.join(dirname, 'public/styles'),
   debug: isDevMode,
   compress: !isDevMode,
 }))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(dirname, 'public')))
 app.use(faviconServer())
 
-app.set('views', path.join(__dirname, '/views'))
+app.set('views', path.join(dirname, '/views'))
 
 app.get('/', index)
 
-module.exports = app
+export default app
 
 if (!isMounted) {
   const port = 3000

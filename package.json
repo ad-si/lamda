@@ -2,6 +2,7 @@
   "name": "@lamdahq/lamda",
   "description": "A simple and modern web desktop environment",
   "version": "0.1.0",
+  "type": "module",
   "bin": {
     "lamda": "bin/cli.js"
   },
@@ -9,7 +10,7 @@
     "start": "echo 'Use the lamda command line tool to start the server' && exit 1",
     "start-prod": "NODE_ENV=production node server.js",
     "start-dev": "NODE_ENV=development node server.js",
-    "lint": "eslint . ",
+    "lint": "eslint --max-warnings=0 --ignore-path=.gitignore .",
     "test": "npm run lint"
   },
   "homepage": "https://github.com/ad-si/lamda#readme",
@@ -37,6 +38,7 @@
     "morgan": "^1.10.0",
     "nib": "^1.1.2",
     "osenv": "^0.1.5",
+    "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
     "yargs": "^16.2.0"
@@ -61,6 +63,10 @@
     "things": "./things"
   },
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

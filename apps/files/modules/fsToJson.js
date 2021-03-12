@@ -1,7 +1,8 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-module.exports = function fsToJson (filename) {
+
+export default function fsToJson (filename) {
   const stats = fs.lstatSync(filename)
   const info = {
     path: filename,

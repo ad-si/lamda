@@ -1,4 +1,4 @@
-module.exports = (request, response) => {
+export default function (request, response) {
   const availableSettings = {
     theme: ['light', 'dark'],
     owner: {},

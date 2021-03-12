@@ -1,11 +1,12 @@
-const path = require('path')
-const json2csv = require('json2csv')
-const loadContacts = require('../modules/loadContacts')
-const getFields = require('../modules/getFields')
-const formatForCsv = require('../modules/formatForCsv')
+import path from 'path'
+import json2csv from 'json2csv'
+
+import loadContacts from '../modules/loadContacts.js'
+import getFields from '../modules/getFields.js'
+import formatForCsv from '../modules/formatForCsv.js'
 
 
-module.exports = (request, response) => {
+export default function (request, response) {
 
   const contactsPath = path.join(request.app.locals.basePath, 'contacts')
 
@@ -28,11 +29,11 @@ module.exports = (request, response) => {
           data: formatForCsv(contacts),
           fields: getFields(contacts),
         },
-        conversionCallback
+        conversionCallback,
       )
     })
     .catch(error =>
       // eslint-disable-next-line no-console
-      console.error(error.stack)
+      console.error(error.stack),
     )
 }
