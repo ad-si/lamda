@@ -1,14 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+
 import nodegit from 'nodegit'
 import findit from 'findit'
-
-import userHome from 'user-home'
-
-
-global.basePath = global.basePath || userHome
-global.config = global.config || {}
-let projectsDir = path.join(global.basePath, 'projects')
 
 
 function getNumberOfCommitsPromise (repoDir) {
@@ -31,142 +25,154 @@ function getNumberOfCommitsPromise (repoDir) {
     }))
 }
 
-try {
-  // Resolve projects directory if symbolic link
-  projectsDir = fs.readlinkSync(path.join(global.basePath, 'projects'))
-}
-catch (error) {
-  if (error.code === 'ENOENT') {
-    // eslint-disable-next-line
-    console.error('ERROR: Projects directory does not exist!')
+
+export default function (config = {}) {
+
+  let projectsDir
+
+  try {
+    // Resolve projects directory if symbolic link
+    projectsDir = fs.readlinkSync(config.projectsDir)
   }
-  else if (error.code !== 'EINVAL') {
-    throw new Error(error)
+  catch (error) {
+    if (error.code === 'ENOENT') {
+      // eslint-disable-next-line
+      console.error('ERROR: Projects directory does not exist!')
+    }
+    else if (error.code !== 'EINVAL') {
+      throw new Error(error)
+    }
   }
-}
+
+  projectsDir = projectsDir || config.projectsDir
 
 
-export default function (request, response) {
-  const projects = []
-  let traversedTree = false
-  let projectsCounter = 0
+  return function (request, response) {
+    const projects = []
+    let traversedTree = false
+    let projectsCounter = 0
 
-  function render () {
-    if (traversedTree && projects.length === projectsCounter) {
-      response.render('index', {
-        page: 'Projects',
-        projects: projects.sort((projectA, projectB) => {
-          return projectB.numberOfCommits - projectA.numberOfCommits
-        }),
-        numberOfCommits: projects
-          .map(project => {
-            return project.numberOfCommits
-          })
-          .reduce((projectA, projectB) => {
-            return projectA + projectB
+    function render () {
+      if (traversedTree && projects.length === projectsCounter) {
+        response.render('index', {
+          page: 'Projects',
+          projects: projects.sort((projectA, projectB) => {
+            return projectB.numberOfCommits - projectA.numberOfCommits
           }),
+          numberOfCommits: projects
+            .map(project => {
+              return project.numberOfCommits
+            })
+            .reduce((projectA, projectB) => {
+              return projectA + projectB
+            }),
+        })
+      }
+    }
+
+    if (!projectsDir) {
+      return false
+    }
+
+    console.log(projectsDir)
+
+    const repoFinder = findit(projectsDir)
+
+    repoFinder.on('directory', (dirPath, stat, stop) => {
+      const baseName = path.basename(dirPath)
+      const relativeDirName = dirPath.slice(projectsDir.length + 1)
+      let ignoreList = [
+        'node_modules',
+        'bower_components',
+        'components',
+        'classes',
+        'plugins',
+        'public',
+        'src',
+        'source',
+        'include',
+        'core',
+        'bin',
+        'lib',
+        'libs',
+        'build',
+        'example',
+        'examples',
+        'samples',
+        'trunk',
+        'misc',
+        'js',
+        'jscripts',
+        'scripts',
+        'css',
+        'img',
+        'gems',
+        'thumbs',
+        'cache',
+        'javadoc',
+        'contents',
+      ]
+
+
+      if (relativeDirName.split(path.sep).length > 3) {
+        stop()
+        return
+      }
+
+      if (global.config.Projects && global.config.Projects.ignore) {
+        ignoreList = ignoreList.concat(global.config.Projects.ignore)
+      }
+
+      const invalidName = ignoreList.some(toIgnore => {
+        return toIgnore.search('/') === -1
+          ? baseName.toLowerCase() === toIgnore.toLowerCase()
+          : relativeDirName.toLowerCase() === toIgnore.toLowerCase()
       })
-    }
-  }
 
-  if (!projectsDir) {
-    return false
-  }
+      if (invalidName || (baseName[0] === '.' && baseName !== '.git')) {
+        return stop()
+      }
 
-  const repoFinder = findit(projectsDir)
+      if (dirPath.search(/\.git$/) === -1) return
 
-  repoFinder.on('directory', (dirPath, stat, stop) => {
-    const baseName = path.basename(dirPath)
-    const relativeDirName = dirPath.slice(projectsDir.length + 1)
-    let ignoreList = [
-      'node_modules',
-      'bower_components',
-      'components',
-      'classes',
-      'plugins',
-      'public',
-      'src',
-      'source',
-      'include',
-      'core',
-      'bin',
-      'lib',
-      'libs',
-      'build',
-      'example',
-      'examples',
-      'samples',
-      'trunk',
-      'misc',
-      'js',
-      'jscripts',
-      'scripts',
-      'css',
-      'img',
-      'gems',
-      'thumbs',
-      'cache',
-      'javadoc',
-      'contents',
-    ]
+      const repoPath = path.dirname(dirPath)
 
+      console.log(repoPath)
 
-    if (relativeDirName.split(path.sep).length > 3) {
+      projectsCounter++
+
+      getNumberOfCommitsPromise(repoPath)
+        .then(numberOfCommits => {
+          const relativeRepoPath = path.relative(projectsDir, repoPath)
+          const project = {
+            id: repoPath,
+            path: repoPath,
+            link: relativeRepoPath,
+            name: relativeRepoPath,
+            numberOfCommits,
+            faviconPath: path.join(relativeRepoPath, 'favicon.ico'),
+          }
+
+          projects.push(project)
+
+          render()
+        })
+        .catch(error => {
+          projectsCounter--
+          // eslint-disable-next-line
+          console.error(repoPath, error)
+        })
+
       stop()
-      return
-    }
-
-    if (global.config.Projects && global.config.Projects.ignore) {
-      ignoreList = ignoreList.concat(global.config.Projects.ignore)
-    }
-
-    const invalidName = ignoreList.some(toIgnore => {
-      return toIgnore.search('/') === -1
-        ? baseName.toLowerCase() === toIgnore.toLowerCase()
-        : relativeDirName.toLowerCase() === toIgnore.toLowerCase()
     })
 
-    if (invalidName || (baseName[0] === '.' && baseName !== '.git')) {
-      return stop()
-    }
+    repoFinder.on('end', () => {
+      traversedTree = true
+      render()
+    })
 
-    if (dirPath.search(/\.git$/) === -1) return
-
-    const repoPath = path.dirname(dirPath)
-
-    projectsCounter++
-
-    getNumberOfCommitsPromise(repoPath)
-      .then(numberOfCommits => {
-        const relativeRepoPath = path.relative(projectsDir, repoPath)
-        const project = {
-          id: repoPath,
-          path: repoPath,
-          link: relativeRepoPath,
-          name: relativeRepoPath,
-          numberOfCommits,
-          faviconPath: path.join(relativeRepoPath, 'favicon.ico'),
-        }
-
-        projects.push(project)
-
-        render()
-      })
-      .catch(error => {
-        projectsCounter--
-        // eslint-disable-next-line
-        console.error(repoPath, error)
-      })
-
-    stop()
-  })
-
-  repoFinder.on('end', () => {
-    traversedTree = true
-    render()
-  })
-
-  repoFinder.on('error', error => {
-    throw new Error(error)
-  })
+    repoFinder.on('error', error => {
+      throw new Error(error)
+    })
+  }
 }

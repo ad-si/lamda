@@ -31,8 +31,15 @@
     "stylus": "^0.54.8",
     "user-home": "^2.0.0"
   },
+  "devDependencies": {
+    "eslint": "^7.21.0"
+  },
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/projects#readme",
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

@@ -51,6 +51,10 @@
   "private": "true",
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/events#readme",
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

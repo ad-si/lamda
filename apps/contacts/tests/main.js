@@ -1,6 +1,6 @@
 import consoleModule from 'console'
 import express from 'express'
-import setupRouting from '../modules/setupRouting'
+import setupRouting from '../modules/setupRouting.js'
 
 const app = express()
 const logger = new consoleModule.Console(process.stdin, process.stdout)

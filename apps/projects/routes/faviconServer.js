@@ -3,7 +3,7 @@ import path from 'path'
 import findit from 'findit'
 
 
-export default function () {
+export default function (config = {}) {
   const iconPathCache = {}
   const ignoreList = [
     'node_modules',
@@ -55,8 +55,7 @@ export default function () {
 
     function searchFavicon () {
       const absRepoPath = path.join(
-        global.basePath,
-        'projects',
+        config.projectsDir,
         path.dirname(request.url),
       )
       const faviconPaths = [

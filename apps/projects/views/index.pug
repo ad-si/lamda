@@ -16,17 +16,21 @@ block content
 				th Number of commits
 				th Language
 				th Number of files
+
 		tbody
 			each project in projects
 				tr
 					td.faviconCell
 						img.projectFavicon(
-						src=project.faviconPath,
-						onerror='this.parentNode.removeChild(this)'
+							src=project.faviconPath,
+							onerror='this.parentNode.removeChild(this)'
 						)
+
 					td(title=project.path)
-						= project.name + ' '
-						a(href=project.link) ->
+						//- TODO: Create endpoint and re-add link
+						//- a(href=project.link)
+						= project.name
+
 					td= project.numberOfCommits || ''
 					td
 					td

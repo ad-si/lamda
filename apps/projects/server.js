@@ -4,47 +4,60 @@ import path from 'path'
 import express from 'express'
 import stylus from 'stylus'
 import serveFavicon from 'serve-favicon'
+import userHome from 'user-home'
 
 import index from './routes/index.js'
 import faviconServer from './routes/faviconServer.js'
 const app = express()
 const isDevMode = app.get('env') === 'development'
-const isMounted = false  // TODO: Boolean(module.parent)
+const runsStandalone = true  // TODO: !module.parent
+
 const dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const viewsPath =  path.join(dirname, 'views')
+const modulesPath = path.join(dirname, 'node_modules')
+const publicPath = path.join(dirname, 'public')
+const stylesPath = path.join(publicPath, 'styles')
+const faviconPath = path.join(publicPath, 'images/favicon.ico')
+
+let projectsDir = path.join(userHome, 'Dropbox/Projects')
+
+global.config = {}
 
 
-if (!isMounted) {
+if (runsStandalone) {
   app.locals.baseURL = ''
-  const faviconPath = path.join(dirname, 'public/images/favicon.ico')
 
   app.use(serveFavicon(faviconPath))
+
   app.locals.styles = [{
     path: '/styles/dark.css',
     id: 'themeLink',
   }]
+
   app.use(stylus.middleware({
-    src: path.join(dirname, '../styles/themes'),
-    dest: path.join(dirname, 'public/styles'),
+    src: path.join(modulesPath, '@lamdahq/styles/themes'),
+    dest: stylesPath,
     debug: isDevMode,
     compress: !isDevMode,
   }))
 }
 
 app.use(stylus.middleware({
-  src: path.join(dirname, 'public/styles'),
+  src: stylesPath,
   debug: isDevMode,
   compress: !isDevMode,
 }))
 app.use(express.static(path.join(dirname, 'public')))
-app.use(faviconServer())
+app.use(faviconServer({projectsDir}))
 
 app.set('views', path.join(dirname, '/views'))
 
-app.get('/', index)
+app.get('/', index({projectsDir}))
+
 
 export default app
 
-if (!isMounted) {
+if (runsStandalone) {
   const port = 3000
   app.set('view engine', 'pug')
   app.listen(port)

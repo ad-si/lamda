@@ -21,7 +21,7 @@
   },
   "main": "server.js",
   "devDependencies": {
-    "eslint": "^3.11.1",
+    "eslint": "^7.21.0",
     "eslint-config-javascript": "^1.1.0"
   },
   "scripts": {
@@ -37,6 +37,10 @@
   "private": "true",
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/news#readme",
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

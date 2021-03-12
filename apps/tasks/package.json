@@ -44,7 +44,7 @@
     "yargs": "^7.0.2"
   },
   "devDependencies": {
-    "eslint": "^3.18.0",
+    "eslint": "^7.21.0",
     "eslint-config-javascript": "^1.3.0"
   },
   "repository": {
@@ -55,6 +55,10 @@
   "private": true,
   "homepage": "https://github.com/ad-si/lamda",
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

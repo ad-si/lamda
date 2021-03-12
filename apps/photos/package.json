@@ -23,7 +23,7 @@
     "user-home": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.11.1",
+    "eslint": "^7.21.0",
     "eslint-config-javascript": "^1.1.0"
   },
   "keywords": [
@@ -38,6 +38,10 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/photos#readme",
   "eslintConfig": {
-    "extends": "eslint-config-javascript"
+    "extends": "eslint-config-javascript",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    }
   }
 }

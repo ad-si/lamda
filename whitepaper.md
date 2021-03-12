@@ -1,5 +1,11 @@
 # Lamda - A browser based desktop environment built with web technologies
 
+---
+**⚠️ This is currently just an unsorted collection of ideas and inspirations.**
+**So please don't take anything too seriously. ⚠️**
+---
+
+
 ## Structure
 
 Operating system must handle data.
