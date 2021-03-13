@@ -1,3 +1,4 @@
+import url from 'url'
 import path from 'path'
 import runTest from 'ava'
 import loadEvents from '../modules/loadEvents'

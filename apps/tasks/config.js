@@ -23,7 +23,7 @@ const configDirectory = path.join(userHome, '.config/lamda')
 const defaults = {
   port: 2188,
   directories: [
-    path.join(userHome, 'Tasks'),
+    path.join(userHome, 'Dropbox/Tasks'),
   ],
   faviconPath: path.join(publicDirectory, 'images/favicon.ico'),
   views: [

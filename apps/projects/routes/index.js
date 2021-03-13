@@ -74,8 +74,6 @@ export default function (config = {}) {
       return false
     }
 
-    console.log(projectsDir)
-
     const repoFinder = findit(projectsDir)
 
     repoFinder.on('directory', (dirPath, stat, stop) => {
@@ -136,8 +134,6 @@ export default function (config = {}) {
       if (dirPath.search(/\.git$/) === -1) return
 
       const repoPath = path.dirname(dirPath)
-
-      console.log(repoPath)
 
       projectsCounter++
 

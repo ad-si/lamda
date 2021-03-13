@@ -3,7 +3,6 @@ import path from 'path'
 import childProcess from 'child_process'
 
 import express from 'express'
-import bodyParser from 'body-parser'
 import stylus from 'stylus'
 import errorHandler from 'errorhandler'
 import browserifyMiddleware from 'browserify-middleware'
@@ -40,41 +39,42 @@ function setupRouting () {
   app.use('/scripts', browserifyMiddleware(scriptsDirectory))
   app.use(express.static(publicDirectory))
   app.set('views', viewsDirectory)
+
+  // For parsing submitted forms
+  app.use(express.urlencoded({ extended: true }))
+
   app
     .route('/')
     .get(tasks)
-    .post(
-      bodyParser.json(),
-      (request, response, next) => {
-        const nowISO = new Instant()
-          .toISOString()
-        const nowSecond = nowISO
-          .slice(0, 19)
-          .replace(/:/g, '')
-        const filePath = path.join(
-          // directories[0] is always the main directory
-          // TODO: Prompt the user where to store the task
-          request.app.locals.directories[0],
-          `${nowSecond}.yaml`,
-        )
-        const nowMinute = nowISO
-          .slice(0, 16)
-          .replace('T', ' ')
-        const newTask = {
-          [nowMinute]: {
-            title: request.body.title,
-          },
-        }
-        console.info(`Create task "${filePath}"`)
+    .post((request, response, next) => {
+      const nowISO = new Instant()
+        .toISOString()
+      const nowSecond = nowISO
+        .slice(0, 19)
+        .replace(/:/g, '')
+      const filePath = path.join(
+        // directories[0] is always the main directory
+        // TODO: Prompt the user where to store the task
+        request.app.locals.directories[0],
+        `${nowSecond}.yaml`,
+      )
+      const nowMinute = nowISO
+        .slice(0, 16)
+        .replace('T', ' ')
+      const newTask = {
+        [nowMinute]: {
+          title: request.body.title,
+        },
+      }
+      console.info(`Create task "${filePath}"`)
 
-        fsp
-          .writeFile(filePath, yaml.safeDump(newTask))
-          .then(() => {
-            response.sendStatus(200)
-          })
-          .catch(next)
-      },
-    )
+      fsp
+        .writeFile(filePath, yaml.safeDump(newTask))
+        .then(() => {
+          response.sendStatus(200)
+        })
+        .catch(next)
+    })
   app.get('/:taskView', tasks)
 }
 

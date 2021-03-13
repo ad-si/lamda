@@ -2,7 +2,7 @@ import path from 'path'
 import fsp from 'fs-promise'
 import yaml from 'js-yaml'
 import Interval from '@datatypes/interval'
-import momentFromString from '@datatypes/moment'
+import moment from '@datatypes/moment'
 
 const yamlRegex = /\.ya?ml$/i
 
@@ -28,7 +28,7 @@ export default function (eventsPath, request) {
             let interval = {}
 
             if (!timeString.includes('--')) {
-              timeString = momentFromString(timeString)
+              timeString = moment.default(timeString)
                 .intervalString
             }
             else {

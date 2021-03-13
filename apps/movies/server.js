@@ -14,9 +14,9 @@ const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = true  // TODO: !module.parent
 const dirname = path.dirname(url.fileURLToPath(import.meta.url))
-const projectDirectory = dirname
-const publicDirectory = path.join(projectDirectory, 'public')
+const publicDirectory = path.join(dirname, 'public')
 const stylesDirectory = path.join(publicDirectory, 'styles')
+const modulesPath = path.join(dirname, 'node_modules')
 
 
 function setupRouting () {
@@ -27,7 +27,7 @@ function setupRouting () {
   }))
   app.use(express.static(publicDirectory))
   app.use(express.static(path.join(app.locals.basePath, 'movies')))
-  app.set('views', path.join(projectDirectory, 'views'))
+  app.set('views', path.join(dirname, 'views'))
   app.get('/', index)
 }
 
@@ -46,7 +46,7 @@ if (runsStandalone) {
   }]
 
   app.use(stylus.middleware({
-    src: path.join(projectDirectory, '../styles/themes'),
+    src: path.join(modulesPath, '@lamdahq/styles/themes'),
     dest: stylesDirectory,
     debug: isDevMode,
     compress: !isDevMode,

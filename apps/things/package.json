@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "clean": "rm -rf ./public/thumbnails"
   },
   "dependencies": {
     "@datatypes/moment": "^0.11.0",

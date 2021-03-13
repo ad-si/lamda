@@ -2,7 +2,7 @@ import path from 'path'
 
 import fsp from 'fs-promise'
 import yaml from 'js-yaml'
-import momentFromString from '@datatypes/moment'
+import moment from '@datatypes/moment'
 
 import defaultConfig from '../config.js'
 
@@ -17,11 +17,16 @@ function alphabeticallyBy (attribute, order) {
     const first = itemA[attribute]
     const second = itemB[attribute]
 
+    if (!first || !second) {
+      return factor
+    }
+
     if (first < second) return -factor
     if (first > second) return factor
     return 0
   }
 }
+
 
 function normalizeTask (task) {
   if (!task.creationDate) task.creationDate = task.creation_date
@@ -162,7 +167,7 @@ export default function (request, response) {
         )
 
         try {
-          reducedObject.creationDate = momentFromString(dateStringFromFilename)
+          reducedObject.creationDate = moment.default(dateStringFromFilename)
         }
         catch (error) {
           console.error(
@@ -175,7 +180,8 @@ export default function (request, response) {
 
         return normalizeTask(reducedObject)
       })
-      // .filter(reducedObject => !reducedObject.completed)
+      .filter(reducedObject =>
+        !reducedObject.completionDate && !reducedObject.isClosed)
       .sort(alphabeticallyBy('creationDate', 'descending')),
     )
     .then(tasks => {

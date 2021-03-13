@@ -17,8 +17,10 @@ const app = express()
 const isDevMode = app.get('env') === 'development'
 const runsStandalone = true  // TODO: !module.parent
 const dirname = path.dirname(url.fileURLToPath(import.meta.url))
-const projectDirectory = dirname
-const publicDirectory = path.join(projectDirectory, 'public')
+const publicDirectory = path.join(dirname, 'public')
+const modulesPath = path.join(dirname, 'node_modules')
+const publicPath = path.join(dirname, 'public')
+const stylesPath = path.join(publicPath, 'styles')
 
 
 function setupRouting () {
@@ -29,14 +31,14 @@ function setupRouting () {
   }))
   app.use(express.static(publicDirectory))
 
-  const photosDirectory = path.join(app.locals.basePath, 'photos')
+  const photosDirectory = path.join(app.locals.basePath, 'Dropbox/Photos')
   app.use(imageResizer.getMiddleware({
     basePath: photosDirectory,
     thumbnailsPath: path.join(publicDirectory, 'thumbnails'),
   }))
   // TODO: Use dedicated subpath for image-loading
-  app.use(express.static(path.join(app.locals.basePath, 'photos')))
-  app.set('views', path.join(projectDirectory, 'views'))
+  app.use(express.static(photosDirectory))
+  app.set('views', path.join(dirname, 'views'))
 
   app.get('/', index)
   app.get('/:year', events.period)
@@ -56,9 +58,10 @@ if (runsStandalone) {
     path: '/styles/dark.css',
     id: 'themeLink',
   }]
+
   app.use(stylus.middleware({
-    src: path.join(projectDirectory, 'styles/themes'),
-    dest: path.join(publicDirectory, 'styles'),
+    src: path.join(modulesPath, '@lamdahq/styles/themes'),
+    dest: stylesPath,
     debug: isDevMode,
     compress: !isDevMode,
   }))

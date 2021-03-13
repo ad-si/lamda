@@ -14,14 +14,15 @@ import dataExport from '../routes/export.js'
 
 const dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const projectDirectory = path.join(dirname, '..')
+const modulesPath = path.join(projectDirectory, 'node_modules')
 const publicDirectory = path.join(projectDirectory, 'public')
 const scriptsDirectory = path.join(publicDirectory, 'scripts')
-const stylesDirectory = path.join(publicDirectory, 'styles')
+const stylesPath = path.join(publicDirectory, 'styles')
 
 
 function setupRoutes (app, isDevMode) {
   app.use(stylus.middleware({
-    src: stylesDirectory,
+    src: stylesPath,
     compile: (stylusString, filePath) => stylus(stylusString)
       .set('filename', filePath)
       .set('compress', !isDevMode)
@@ -47,8 +48,9 @@ function setupRoutes (app, isDevMode) {
   app.get('/export', dataExport)
 }
 
+
 function setupStandalone (app, isDevMode) {
-  app.locals.basePath = userHome
+  app.locals.basePath = path.join(userHome, 'Dropbox')
   app.locals.baseURL = ''
 
   app.use(serveFavicon(path.join(publicDirectory, 'images/favicon.ico')))
@@ -56,9 +58,10 @@ function setupStandalone (app, isDevMode) {
     path: '/styles/dark.css',
     id: 'themeLink',
   }]
+
   app.use(stylus.middleware({
-    src: path.join(projectDirectory, '../../styles/themes'),
-    dest: path.join(publicDirectory, 'styles'),
+    src: path.join(modulesPath, '@lamdahq/styles/themes'),
+    dest: stylesPath,
     debug: isDevMode,
     compress: !isDevMode,
   }))

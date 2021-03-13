@@ -1,8 +1,8 @@
-// eslint-disable-next-line no-unused-vars
-import moment from '@datatypes/moment'
-const {Instant} = moment
 import Duration from '@datatypes/duration'
-import add from '@datatypes/moment'
+import moment from '@datatypes/moment'
+
+// eslint-disable-next-line no-unused-vars
+const {add, Instant} = moment
 
 
 export default function (separatedEvents, event) {

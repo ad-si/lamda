@@ -19,7 +19,7 @@ const publicPath = path.join(dirname, 'public')
 const stylesPath = path.join(publicPath, 'styles')
 const faviconPath = path.join(publicPath, 'images/favicon.ico')
 
-let projectsDir = path.join(userHome, 'Dropbox/Projects')
+const projectsDir = path.join(userHome, 'Dropbox/Projects')
 
 global.config = {}
 
@@ -47,10 +47,10 @@ app.use(stylus.middleware({
   debug: isDevMode,
   compress: !isDevMode,
 }))
-app.use(express.static(path.join(dirname, 'public')))
+app.use(express.static(publicPath))
 app.use(faviconServer({projectsDir}))
 
-app.set('views', path.join(dirname, '/views'))
+app.set('views', viewsPath)
 
 app.get('/', index({projectsDir}))
 
