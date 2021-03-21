@@ -1,12 +1,13 @@
-import path from 'path'
-
 import formatContact from '../modules/formatContact.js'
 import loadContacts from '../modules/loadContacts.js'
 
 
 export default function (request, response) {
+  if (request.app.locals.lamda.filePaths?.length !== 1) {
+    throw new Error('Contacts currently supports only exactly one file path')
+  }
+  const contactsPath = request.app.locals.lamda.filePaths[0]
 
-  const contactsPath = path.join(request.app.locals.basePath, 'contacts')
   const keys = new Set()
   const errors = []
 

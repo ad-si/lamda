@@ -10,7 +10,7 @@
   "dependencies": {
     "@lamdahq/styles": "^0.1.1",
     "@lamdahq/views": "^0.1.1",
-    "express": "^4.14.0",
+    "express": "^4.17.1",
     "feedparser": "~1.1.5",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",

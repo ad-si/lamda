@@ -1,27 +1,29 @@
 import path from 'path'
-
-import osenv from 'osenv'
-import express from 'express'
-import errorHandler from 'errorhandler'
-import favicon from 'serve-favicon'
-import compress from 'compression'
-import logger from 'morgan'
-import stylus from 'stylus'
-import Config from '@datatypes/config'
 import { fileURLToPath } from 'url'
 
-const app = express()
+import compress from 'compression'
+import Config from '@datatypes/config'
+import errorHandler from 'errorhandler'
+import express from 'express'
+import favicon from 'serve-favicon'
+import logger from 'morgan'
+import stylus from 'stylus'
+import userHome from 'user-home'
 
 import index from '../source/api/index.js'
 import settings from '../source/api/settings.js'
 import profile from '../source/api/profile.js'
 import appLoader from '../source/modules/appLoader.js'
+import debug from 'debug'
 
 
+const app = express()
+const log = debug('lamda')
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectPath = path.join(dirname, '..')
-const homeDirectory = process.env.LAMDA_HOME || osenv.home()
+const homeDirectory = process.env.LAMDA_HOME || userHome
 const stylesDirectory = path.join(projectPath, 'public/styles')
+const viewsPath = path.join(projectPath, 'source/views')
 
 const devMode = app.get('env') === 'development'
 
@@ -49,12 +51,27 @@ const config = new Config({appName: 'lamda'})
   .loadDefaultFiles()
   .merge(defaults)
   .config
+const appToPaths = {
+  'events': [path.join(userHome, 'Dropbox/Events')],
+  'files': [path.join(userHome, 'Dropbox/Files')],
+  'movies': [path.join(userHome, 'Dropbox/Movies')],
+  'news': [path.join(userHome, 'Dropbox/News')],
+  'photos': [path.join(userHome, 'Dropbox/Photos')],
+  'projects': [path.join(userHome, 'Dropbox/Projects')],
+  'sheetmusic': [path.join(userHome, 'Dropbox/Sheetmusic')],
+  'songs': [path.join(userHome, 'Dropbox/Songs')],
+  'tasks': [path.join(userHome, 'Dropbox/Tasks')],
+  'things': [path.join(userHome, 'Dropbox/Things')],
+  'books': [path.join(userHome, 'Dropbox/Books')],
+  'contacts': [path.join(userHome, 'Dropbox/Contacts')],
+}
 
-function startServer () {
+
+async function startServer () {
   // All environments
   app.set('port', config.port)
 
-  app.set('views', path.join(projectPath, 'views'))
+  app.set('views', viewsPath)
   app.set('view engine', 'pug')
 
   app.use(favicon(config.faviconPath))
@@ -83,11 +100,12 @@ function startServer () {
     styles: config.styles,
     config,
     homeDirectory,
-    basePath: homeDirectory, // TODO: Deprecated
     projectPath,
   }
+
   app.locals = Object.assign({}, locals)
-  appLoader(app, locals)
+
+  await appLoader({app, locals, appToPaths})
 
   // TODO:
   // config.views.forEach(view => {
@@ -124,12 +142,8 @@ function startServer () {
   })
 
   app.listen(app.get('port'), () => {
-    // eslint-disable-next-line no-console
-    console.info(
-      'Express server listening on http://localhost:' + app.get('port'),
-    )
+    log(`Express server listening on http://localhost:${app.get('port')}`)
   })
-
 }
 
 

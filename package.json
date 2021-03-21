@@ -7,7 +7,7 @@
     "lamda": "bin/cli.js"
   },
   "scripts": {
-    "start": "echo 'Use the lamda command line tool to start the server' && exit 1",
+    "start": "echo \"Use the Lamda cli tool to start the server.\nE.g. DEBUG='lamda*' node bin/cli.js start\" && exit 1",
     "start-prod": "NODE_ENV=production node server.js",
     "start-dev": "NODE_ENV=development node server.js",
     "lint": "eslint --max-warnings=0 --ignore-path=.gitignore .",
@@ -31,36 +31,24 @@
     "@datatypes/config": "^0.5.1",
     "commander": "^7.1.0",
     "compression": "^1.7.4",
+    "debug": "^2.6.9",
     "deepmerge": "^4.2.2",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "js-yaml": "^4.0.0",
     "morgan": "^1.10.0",
     "nib": "^1.1.2",
-    "osenv": "^0.1.5",
+    "open-iconic": "^1.1.1",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
+    "user-home": "^2.0.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-javascript": "^1.3.0",
     "lerna": "^4.0.0"
-  },
-  "optionalDependencies": {
-    "boilerplate": "./boilerplate",
-    "books": "./books",
-    "contacts": "./contacts",
-    "events": "./events",
-    "files": "./files",
-    "movies": "./movies",
-    "news": "./news",
-    "photos": "./photos",
-    "sheetmusic": "./sheetmusic",
-    "songs": "./songs",
-    "tasks": "./tasks",
-    "things": "./things"
   },
   "eslintConfig": {
     "extends": "eslint-config-javascript",

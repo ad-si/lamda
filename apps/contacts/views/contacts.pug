@@ -13,9 +13,9 @@ block content
     .getting-started
       if !contacts
         p.
-          You do not have a "contacts" directory yet.
-          In order to get started create a "contacts" directory
-          in your Lamda root directory.
+          In order to get started you need to
+          create a #[code= lamda.filePaths] directory
+          and populate it with YAML files.
 
       else
         p
@@ -25,12 +25,15 @@ block content
           | &lt;timestamp&gt;.yaml file for each contact
           | to your "contacts" directory.
 
-    p Each yaml file must be structured like this:
+    p Each YAML file must be timeline of events for that contact:
+
+    br
 
     pre: code.
-      2015-01-01 12:38:
+      1983-08-26:
         name: John Doe
-        birthday: 1983-08-26
+
+      2015-01-01 12:38:
         tags:
           - friend
 

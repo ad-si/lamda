@@ -50,9 +50,9 @@ function workOffQueue (worker, firstPdf, afterWriteCb) {
     const pathDirectories = pdf.absoluteThumbnailPath.split('/')
     pathDirectories.pop()
 
-    mkdirp(
-      path.normalize(pathDirectories.join('/')),
-      (mkdirError) => {
+    return mkdirp(path.normalize(pathDirectories.join('/')))
+      .then(() => convert(firstPdf))
+      .catch((mkdirError) => {
         if (mkdirError) {
           afterWriteCb(mkdirError)
           return
@@ -73,12 +73,11 @@ function workOffQueue (worker, firstPdf, afterWriteCb) {
             pdf.absoluteThumbnailPath,
             error => afterWrite(error, pdf),
           )
-      },
-    )
+      })
   }
 
 
-  convert(firstPdf)
+
 }
 
 
@@ -131,7 +130,7 @@ function getMiddleware (options = {}) {
   const basePath = options.basePath || global.basePath
 
   if (!basePath) {
-    throw new Error('BasePath is not specified')
+    throw new Error('basePath is not specified')
   }
 
   return function (request, response, next) {

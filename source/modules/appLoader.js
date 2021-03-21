@@ -1,8 +1,11 @@
 import fs from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
 import { fileURLToPath } from 'url'
 
+import yaml from 'js-yaml'
+import debug from 'debug'
+
+const log = debug('lamda:app-loader')
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const packageData = JSON.parse(
   fs.readFileSync(path.join(dirname, '../../package.json'), 'utf-8'),
@@ -20,7 +23,9 @@ function getPackageContent (appPath) {
     )
   }
   else if (fs.existsSync(path.join(appPath, 'package.json'))) {
-    return require(path.join(appPath, 'package.json'))
+    return JSON.parse(
+      fs.readFileSync(path.join(appPath, 'package.json'), 'utf-8')
+    )
   }
   else {
     throw new Error('Package file is missing!')
@@ -28,23 +33,24 @@ function getPackageContent (appPath) {
 }
 
 
-async function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
+async function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths, appToPaths) {
   const absoluteAppPath = path.join(locals.projectPath, appPath)
   const appName = path.basename(appPath)
   const localsClone = Object.assign({}, locals)
 
+  localsClone.lamda = {filePaths: appToPaths[appName.toLowerCase()]}
+
+  log('Try to add app %s to appMap', appName)
+
   try {
-    let appModule = await import(path.join(absoluteAppPath, 'server.js'))
+    const modulePath = path.join(absoluteAppPath, 'index.js')
+    let appModule = await import(modulePath)
 
     if (appModule.isCallback) {
-      appModule = appModule(localsClone)
+      appModule = appModule.default(localsClone)
     }
     appMap[appName] = getPackageContent(absoluteAppPath)
-
-    if (!Object.hasOwnProperty.call(appMap[appName], 'lamda')) {
-      appMap[appName].lamda = {}
-    }
-
+    appMap[appName].lamda = appMap[appName].lamda || localsClone.lamda || {}
     appMap[appName].lamda.module = appModule
     appMap[appName].lamda.path = absoluteAppPath
 
@@ -66,7 +72,7 @@ async function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths) {
 }
 
 
-export default async function (rootApp, locals) {
+export default async function ({app, locals, appToPaths}) {
   let appDirectories
 
   if (!fs.existsSync(appsDir)) {
@@ -88,19 +94,21 @@ export default async function (rootApp, locals) {
       .map(name => path.join('apps', name))
   }
 
-  const apps = appDirectories.reduce(
+  const appsPromise = appDirectories.reduce(
     async (map, appPath, index, appPaths) =>
       await addAppToAppMap(
         map,
         appPath,
-        rootApp,
+        app,
         locals,
         appPaths,
+        appToPaths,
       ),
     {},
   )
 
-  console.info(apps)
+  const apps = await appsPromise
+  log('Following apps are available: %o', Object.keys(apps))
 
   return apps
 }

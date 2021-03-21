@@ -5,7 +5,7 @@ import url from 'url'
 import fastmatter from 'fastmatter'
 import objectAssign from 'object-assign'
 import epubMetadata from 'epub-metadata'
-import exif from 'exif2'
+import { exiftool } from 'exiftool-vendored'
 import JsZip from 'jszip'
 
 
@@ -104,16 +104,15 @@ function getAttributePromise (book) {
         })
     }
     else if (book.type === 'pdf') {
-      exif(book.filePath, (error, exifData) => {
-        if (error) {
-          // Log error but ignore it otherwise (correct would be reject(error))
-          console.error(error)
+      exiftool
+        .read(book.filePath)
+        .then(exifData => {
+          objectAssign(book, exifData)
           fulfill(book)
-          return
-        }
-        objectAssign(book, exifData)
-        fulfill(book)
-      })
+        })
+        .catch(error => {
+          reject(error)
+        })
     }
     else {
       fulfill(book)
@@ -214,7 +213,11 @@ export async function one (request, response) {
 
 
 export async function all (request, response) {
-  const booksPath = request.app.locals.basePath
+  if (request.app.locals.lamda.filePaths.length !== 1) {
+    throw new Error('Books currently supports only exactly one file path')
+  }
+  const booksPath = request.app.locals.lamda.filePaths[0]
+
   const dirEnts = await getDirEnts(booksPath)
   const booksPromises = dirEnts
     .filter(isBook)

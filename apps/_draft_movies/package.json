@@ -1,32 +1,29 @@
 {
-  "name": "@lamdahq/songs",
+  "name": "@lamdahq/movies",
   "version": "0.0.1",
-  "description": "All you songs",
+  "description": "Display all your movies in a grid or table",
   "type": "module",
-  "main": "server.js",
-  "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint",
-    "start": "node server.js"
-  },
   "keywords": [
-    "lamda",
-    "music",
-    "songs"
+    "movies",
+    "lamda"
   ],
+  "main": "server.js",
+  "author": "Adrian Sieber",
+  "license": "UNLICENSED",
+  "private": "true",
   "repository": {
     "type": "git",
     "url": "https://github.com/ad-si/lamda"
   },
-  "author": "Adrian Sieber",
-  "license": "UNLICENSED",
-  "private": "true",
-  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/songs#readme",
+  "homepage": "https://github.com/ad-si/lamda/tree/master/apps/movies#readme",
+  "scripts": {
+    "test": "eslint ."
+  },
   "dependencies": {
     "@lamdahq/styles": "^0.1.1",
     "@lamdahq/views": "^0.1.1",
-    "errorhandler": "^1.5.0",
-    "express": "^4.14.0",
+    "better-path": "^0.2.0",
+    "express": "^4.17.1",
     "js-yaml": "^3.7.0",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",

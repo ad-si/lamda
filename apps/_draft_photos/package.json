@@ -12,7 +12,7 @@
   "dependencies": {
     "@lamdahq/styles": "^0.1.1",
     "@lamdahq/views": "^0.1.1",
-    "express": "^4.12.4",
+    "express": "^4.17.1",
     "gm": "^1.18.1",
     "image-resizer-middleware": "^0.4.0",
     "is-image": "^1.0.1",
