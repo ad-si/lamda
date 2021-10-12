@@ -27,7 +27,7 @@ Built with web technologies.
     No useless whitespace, no animations, and no other pointless baggage.
 
 - **Innovative** -
-    Rethinks several UI and UX patterns which we've taken for granted.
+    Rethinks several UI and UX patterns which we've been taking for granted.
     (E.g. how a calendar is supposed to look like)
 
 
@@ -79,6 +79,21 @@ and not the whole Lamda Suite is needed.
 
 
 **Checkout the [whitepaper](./whitepaper.md) for a more in depth explanation**
+
+
+## Usage
+
+### Helpers
+
+Use plop scripts to easily generate new files:
+
+```sh
+npm run generate -- thing -- \
+  --date 2021-10-11 \
+  --slug bicycle \
+  --title "Hyper Bike" \
+  --articleNumber 1234
+```
 
 
 ## Ideas
