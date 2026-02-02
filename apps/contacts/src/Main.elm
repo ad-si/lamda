@@ -8,105 +8,100 @@ import Dict
 
 
 type JsVal
-    = JsString String
-    | JsInt Int
-    | JsFloat Float
-    | JsArray (List JsVal)
-    | JsObject (Dict.Dict String JsVal)
-    | JsNull
+  = JsString String
+  | JsInt Int
+  | JsFloat Float
+  | JsArray (List JsVal)
+  | JsObject (Dict.Dict String JsVal)
+  | JsNull
 
 
 jsValDecoder : Decode.Decoder JsVal
 jsValDecoder =
-    Decode.oneOf
-        [ Decode.map JsString Decode.string
-        , Decode.map JsInt Decode.int
-        , Decode.map JsFloat Decode.float
-        , Decode.list (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsArray
-        , Decode.dict (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsObject
-        , Decode.null JsNull
-        ]
+  Decode.oneOf
+    [ Decode.map JsString Decode.string
+    , Decode.map JsInt Decode.int
+    , Decode.map JsFloat Decode.float
+    , Decode.list (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsArray
+    , Decode.dict (Decode.lazy (\_ -> jsValDecoder)) |> Decode.map JsObject
+    , Decode.null JsNull
+    ]
 
 
 main : Html msg
 main =
-    view initialModel
+  view initialModel
 
 
 initialModel : Model
 initialModel =
-    Model
-        "What"
-        [ Contact "John Doe" Male "1995-10-16"
-        , Contact "Anna Smith" Female "1986-03-08"
-        ]
+  Model
+    "What"
+    [ Contact "John Doe" Male "1995-10-16"
+    , Contact "Anna Smith" Female "1986-03-08"
+    ]
 
 
 getContacts : Cmd Msg
 getContacts =
-    let
-        contactsUrl =
-            "/adius/lamda/api/dropbox?path=Contacts"
+  let
+    contactsUrl =
+      "/adius/lamda/api/dropbox?path=Contacts"
 
-        request =
-            Http.get contactsUrl jsValDecoder
-    in
-        Http.send ContactsLoaded request
-
+    request =
+      Http.get contactsUrl jsValDecoder
+  in
+  Http.post ContactsLoaded request
 
 
 -- UPDATE
-
-
 type Msg
-    = Reset
-    | Search
-    | ContactsLoaded (Result Http.Error (List Contact))
+  = Reset
+  | Search
+  | ContactsLoaded (Result Http.Error (List Contact))
 
 
 update : Msg -> Model -> Model
 update msg model =
-    case msg of
-        Reset ->
-            { model | contacts = [] }
-
-        Search ->
-            { model | contacts = [] }
-
-        ContactsLoaded (Ok contacts) ->
-            { model | contacts = contacts }
-
-        ContactsLoaded (Err _) ->
-            model
-
+  case msg of
+    Reset ->
+      { model | contacts = [] }
+    Search ->
+      { model | contacts = [] }
+    ContactsLoaded (Ok contacts) ->
+      { model | contacts = contacts }
+    ContactsLoaded (Err _) ->
+      model
 
 
 -- VIEW
-
-
 contactToRow : Contact -> Html msg
 contactToRow contact =
-    tr []
-        [ td [] [ text contact.name ]
-        , td [] [ text (toString contact.gender) ]
-        , td [] [ text contact.birthday ]
-        ]
+  tr
+    []
+    [ td [] [ text contact.name ]
+    , td [] [ text (Debug.toString contact.gender) ]
+    , td [] [ text contact.birthday ]
+    ]
 
 
 view : Model -> Html msg
 view model =
-    table
+  table
+    []
+    [ thead
         []
-        [ thead []
-            [ tr []
-                [ th [] [ text "Name" ]
-                , th [] [ text "Gender" ]
-                , th [] [ text "Birthday" ]
-                ]
+        [ tr
+            []
+            [ th [] [ text "Name" ]
+            , th [] [ text "Gender" ]
+            , th [] [ text "Birthday" ]
             ]
-        , tbody []
-            (List.map
-                contactToRow
-                model.contacts
-            )
         ]
+    , tbody
+        []
+        (List.map
+            contactToRow
+            model.contacts
+        )
+    ]
