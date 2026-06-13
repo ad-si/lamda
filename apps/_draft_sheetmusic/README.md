@@ -25,12 +25,39 @@ type: String
 
 ## Lilypond
 
-Convert lilypond files to svg and create preview:
+Convert Lilypond files to SVG and create preview:
 
-`$ lilypond -d backend=svg -d no-point-and-click -d preview=#t input.ly`
+```sh
+lilypond \
+  -d backend=svg \
+  -d no-point-and-click \
+  -d preview=#t \
+  input.ly
+```
 
 
-## Image Binarization
+## Image Optimization
+
+
+### Convert to Grayscale
+
+1. Rotate image
+2. Convert to grayscale
+3. Increases the contrast by stretching the intensity values and
+    blacks-out max 2% and whites-out max 1% of the pixels
+4. Convert to PNG
+
+```sh
+mogrify \
+  -auto-orient \
+  -colorspace gray \
+  -normalize \
+  -format png \
+  *.jpeg
+```
+
+
+### Image Binarization
 
 How to create binary (black & white) images from photos/scans.
 
@@ -49,3 +76,21 @@ How to create binary (black & white) images from photos/scans.
   `$ localthresh <source-image> <output-image>`
   The local threshold algorithm should be favored when the input-image or the background is not uniformly bright. In order to get good results the radius should be larger than the features that are to be detected.
 
+
+### Conversion to PDF (Optional)
+
+This uses a maximum size smaller than half a laptop screen,
+to give a good overview when opening it on a laptop.
+The images are simply resized to fit that maximum size without
+changing the aspect ratio.
+Although eventually you should of course fit it to the height
+of your device for maximum readability.
+
+Use following command in a directory of PNG images:
+
+```bash
+img2pdf \
+  --imgsize=A6 \
+  --output="$(basename "$(pwd)")".pdf \
+  *.png
+```
