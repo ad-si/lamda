@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+
 import path from 'path'
 import { fileURLToPath } from 'url'
 
