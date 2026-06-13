@@ -27,7 +27,7 @@ export function getApp (config = {}) {
   const publicDirectory = path.join(dirname, 'public')
   const scriptsDirectory = path.join(publicDirectory, 'scripts')
   const stylesPath = path.join(publicDirectory, 'styles')
-  const defaultFilesPath = path.join(userHome, 'Contacts')
+  const defaultFilesPath = path.join(userHome, 'Dropbox/Contacts')
 
   if (runsStandalone) {
     app.locals.lamda.filePaths = [process.argv[2] || defaultFilesPath]
