@@ -4,11 +4,6 @@
   "description": "Display all git projects in your projects directory",
   "type": "module",
   "main": "server.js",
-  "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint",
-    "start": "node server.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ad-si/lamda"
@@ -21,15 +16,14 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "express": "^4.17.1",
     "findit": "^2.0.0",
     "nodegit": "^0.27.0",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0"

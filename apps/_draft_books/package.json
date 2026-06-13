@@ -4,9 +4,6 @@
   "description": "All your books in one place",
   "type": "module",
   "main": "index.js",
-  "scripts": {
-    "test": "eslint ."
-  },
   "keywords": [
     "lamda",
     "books"
@@ -20,8 +17,6 @@
   "private": true,
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/books#readme",
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "epub-metadata": "^0.2.0",
     "epubjs": "^0.4.2",
     "exiftool-vendored": "^14.1.1",
@@ -34,7 +29,8 @@
     "pug": "^3.0.0",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

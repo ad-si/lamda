@@ -4,14 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "main": "server.js",
-  "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint",
-    "start": "node server.js"
-  },
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "express": "^4.17.1",
     "gm": "^1.18.1",
     "image-resizer-middleware": "^0.4.0",
@@ -20,7 +13,8 @@
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.0",
     "stylus": "^0.53.0",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

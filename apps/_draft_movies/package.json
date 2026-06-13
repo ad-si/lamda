@@ -16,12 +16,7 @@
     "url": "https://github.com/ad-si/lamda"
   },
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/movies#readme",
-  "scripts": {
-    "test": "eslint ."
-  },
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "better-path": "^0.2.0",
     "express": "^4.17.1",
     "js-yaml": "^3.7.0",
@@ -29,7 +24,8 @@
     "pug": "^2.0.0-beta6",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

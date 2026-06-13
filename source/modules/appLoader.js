@@ -24,7 +24,7 @@ function getPackageContent (appPath) {
   }
   else if (fs.existsSync(path.join(appPath, 'package.json'))) {
     return JSON.parse(
-      fs.readFileSync(path.join(appPath, 'package.json'), 'utf-8')
+      fs.readFileSync(path.join(appPath, 'package.json'), 'utf-8'),
     )
   }
   else {
@@ -33,7 +33,10 @@ function getPackageContent (appPath) {
 }
 
 
-async function addAppToAppMap (appMap, appPath, rootApp, locals, appPaths, appToPaths) {
+async function addAppToAppMap (
+  appMap, appPath, rootApp,
+  locals, appPaths, appToPaths,
+) {
   const absoluteAppPath = path.join(locals.projectPath, appPath)
   const appName = path.basename(appPath)
   const localsClone = Object.assign({}, locals)

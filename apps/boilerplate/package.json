@@ -4,12 +4,6 @@
   "description": "Basic app for Lamda views",
   "type": "module",
   "main": "index.js",
-  "scripts": {
-    "lint": "eslint .",
-    "start": "node server.js",
-    "test": "npm run lint",
-    "prepublish": "npm test"
-  },
   "keywords": [
     "lamda",
     "boilerplate"
@@ -36,7 +30,6 @@
     }
   },
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1"
+    "yaml": "^1.10.2"
   }
 }

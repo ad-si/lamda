@@ -1,36 +1,36 @@
 extends ../node_modules/@lamdahq/views/layout
 
 block styles
-	link(rel='stylesheet' href=`${baseURL}/styles/screen.css`)
+  link(rel='stylesheet' href=`${baseURL}/styles/screen.css`)
 
 block content
-	p Total number of commits: #{numberOfCommits}
-	p Number of projects: #{projects.length}
-	br
+  p Total number of commits: #{numberOfCommits}
+  p Number of projects: #{projects.length}
+  br
 
-	table
-		thead
-			tr
-				th Icon
-				th Name
-				th Number of commits
-				th Language
-				th Number of files
+  table
+    thead
+      tr
+        th Icon
+        th Name
+        th Number of commits
+        th Language
+        th Number of files
 
-		tbody
-			each project in projects
-				tr
-					td.faviconCell
-						img.projectFavicon(
-							src=project.faviconPath,
-							onerror='this.parentNode.removeChild(this)'
-						)
+    tbody
+      each project in projects
+        tr
+          td.faviconCell
+            img.projectFavicon(
+              src=project.faviconPath,
+              onerror='this.parentNode.removeChild(this)'
+            )
 
-					td(title=project.path)
-						//- TODO: Create endpoint and re-add link
-						//- a(href=project.link)
-						= project.name
+          td(title=project.path)
+            //- TODO: Create endpoint and re-add link
+            //- a(href=project.link)
+            = project.name
 
-					td= project.numberOfCommits || ''
-					td
-					td
+          td= project.numberOfCommits || ''
+          td
+          td

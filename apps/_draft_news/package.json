@@ -8,8 +8,6 @@
     "news"
   ],
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "express": "^4.17.1",
     "feedparser": "~1.1.5",
     "morgan": "^1.7.0",
@@ -17,16 +15,13 @@
     "request": "^2.79.0",
     "serve-favicon": "^2.3.2",
     "stylus": "^0.54.5",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "main": "server.js",
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-javascript": "^1.1.0"
-  },
-  "scripts": {
-    "test": "eslint .",
-    "start": "node server.js"
   },
   "repository": {
     "type": "git",

@@ -10,7 +10,8 @@
     "@lamdahq/views": "^0.1.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "tough-cookie": "^2.3.3"
+    "tough-cookie": "^2.3.3",
+    "yaml": "^1.10.2"
   },
   "private": true,
   "stdlib": {

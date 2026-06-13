@@ -32,7 +32,7 @@ export function getApp (config = {}) {
   const modulesPath = path.join(projectDirectory, 'node_modules')
   const publicDirectory = path.join(projectDirectory, 'public')
   const stylesDirectory = path.join(publicDirectory, 'styles')
-  const defaultFilesPath = path.join(userHome, 'Books')
+  const defaultFilesPath = path.join(userHome, 'Dropbox/Books')
 
   if (runsStandalone) {
     app.use(morgan('dev', {skip: () => !isDevMode}))

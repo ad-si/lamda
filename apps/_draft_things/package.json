@@ -4,15 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "main": "server.js",
-  "scripts": {
-    "lint": "eslint .",
-    "test": "npm run lint",
-    "clean": "rm -rf ./public/thumbnails"
-  },
   "dependencies": {
     "@datatypes/moment": "^0.11.0",
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "express": "^4.17.1",
     "fs-promise": "^2.0.3",
     "image-resizer-middleware": "^0.4.0",
@@ -24,7 +17,8 @@
     "shaven": "^2.1.0",
     "stylus": "^0.54.8",
     "table-to-json": "^1.0.0",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "errorhandler": "^1.5.1",

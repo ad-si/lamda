@@ -10,7 +10,8 @@
   "author": "Adrian Sieber",
   "license": "UNLICENSED",
   "dependencies": {
-    "open-iconic": "^1.1.1"
+    "open-iconic": "^1.1.1",
+    "yaml": "^1.10.2"
   },
   "scripts": {},
   "repository": {

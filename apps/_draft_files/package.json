@@ -10,10 +10,6 @@
     "lamda"
   ],
   "main": "server.js",
-  "scripts": {
-    "test": "eslint .",
-    "start": "node server.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ad-si/lamda"
@@ -24,15 +20,14 @@
   "homepage": "https://github.com/ad-si/lamda/tree/master/apps/files#readme",
   "dependencies": {
     "@lamdahq/file-formats": "^0.3.0",
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "express": "^4.17.1",
     "fs-promise": "^1.0.0",
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

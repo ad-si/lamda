@@ -4,5 +4,7 @@
   "type": "module",
   "author": "Adrian Sieber <mail@adriansieber.com>",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "yaml": "^1.10.2"
+  }
 }

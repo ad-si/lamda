@@ -4,14 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "main": "server.js",
-  "scripts": {
-    "lint": "eslint .",
-    "smoke-test": "node --require './server.js' --eval 'console.log(\"OK\")'",
-    "test": "npm run lint && npm run smoke-test"
-  },
   "dependencies": {
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "gm": "^1.23.1",
@@ -22,7 +15,8 @@
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "stylus": "^0.54.8",
-    "user-home": "^2.0.0"
+    "user-home": "^2.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "eslint": "^7.21.0",

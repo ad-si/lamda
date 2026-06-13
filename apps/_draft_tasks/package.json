@@ -16,16 +16,8 @@
   "browser": {
     "vue": "vue/dist/vue.common"
   },
-  "scripts": {
-    "start": "node server.js",
-    "lint": "eslint --ignore-path .gitignore .",
-    "test": "npm run lint",
-    "prepublish": "npm run test"
-  },
   "dependencies": {
     "@datatypes/moment": "^0.10.0",
-    "@lamdahq/styles": "^0.1.1",
-    "@lamdahq/views": "^0.1.1",
     "body-parser": "^1.17.1",
     "browserify-middleware": "^7.1.0",
     "deepmerge": "^1.3.2",
@@ -41,6 +33,7 @@
     "user-home": "^2.0.0",
     "vue": "^2.2.4",
     "vue-resource": "^1.2.1",
+    "yaml": "^1.10.2",
     "yargs": "^7.0.2"
   },
   "devDependencies": {
