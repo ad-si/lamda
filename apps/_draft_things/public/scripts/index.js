@@ -1,5 +1,6 @@
 // TODO: Use browserify to load javascript
 /* global things, shaven */
+/* eslint-disable quote-props */
 
 const typeMap = {
   // Pants
@@ -107,14 +108,22 @@ const typeMap = {
   'ukulele': 'music-gear',
 
   // Houseware
+  bed: 'houseware',
   bedframe: 'houseware',
   blanket: 'houseware',
   furniture: 'houseware',
   homeware: 'houseware',
   pillow: 'houseware',
   sheet: 'houseware',
+  sheets: 'houseware',
   'washing machine': 'houseware',
   seating: 'houseware',
+  vacuum: 'houseware',
+
+  // Bathware
+  'shower-hose': 'bathware',
+  'washing-machine': 'bathware',
+  'scissors': 'bathware',
 
   // 'Lighting'
   light: 'lighting',
@@ -129,6 +138,8 @@ const typeMap = {
   dishes: 'kitchenware',
   microwave: 'kitchenware',
   plate: 'kitchenware',
+  'kitchen-utensil': 'kitchenware',
+  fridge: 'kitchenware',
 
   // Baggage
   backpack: 'baggage',
@@ -170,6 +181,7 @@ const typeMap = {
   stylus: 'gadget',
   tablet: 'gadget',
   tripod: 'gadget',
+  tv: 'gadget',
   'usb hub': 'gadget',
   'usb-stick': 'gadget',
 
@@ -206,6 +218,8 @@ const typeMap = {
 
   // T-Shirt
   'polo shirt': 't-shirt',
+  poloshirt: 't-shirt',
+  undershirt: 't-shirt',
 
   // Shoes
   boots: 'shoes',
