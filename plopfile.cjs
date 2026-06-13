@@ -7,12 +7,17 @@ module.exports = function (plop) {
       {
         type: 'input',
         name: 'date',
-        message: 'Filename of thing',
+        message: 'Received date of thing',
       },
       {
         type: 'input',
         name: 'slug',
         message: 'Slug of thing (for filename / id)',
+      },
+      {
+        type: 'input',
+        name: 'brand',
+        message: 'Brand of thing',
       },
       {
         type: 'input',
